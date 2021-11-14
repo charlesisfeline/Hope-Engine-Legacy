@@ -74,6 +74,8 @@ class PlayState extends MusicBeatState
 	public static var weekGoods:Int = 0;
 	public static var weekSicks:Int = 0;
 	public static var weekMisses:Int = 0;
+	
+	public static var weekName:String = "";
 
 	public static var peakCombo:Int = 0;
 	public static var weekPeakCombo:Array<Int> = [];
@@ -275,6 +277,7 @@ class PlayState extends MusicBeatState
 			weekMisses = 0;
 			weekPeakCombo = [];
 			weekAccuracies = [];
+			weekName = "";
 		}
 
 		accuracy = 0.00;
@@ -286,10 +289,6 @@ class PlayState extends MusicBeatState
 
 		// pre lowercasing the song name (create)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-			switch (songLowercase) {
-				case 'dad-battle': songLowercase = 'dadbattle';
-				case 'philly-nice': songLowercase = 'philly';
-			}
 		
 		#if windows
 		executeModchart = FileSystem.exists(Paths.lua(songLowercase  + "/modchart"));
@@ -1618,10 +1617,7 @@ class PlayState extends MusicBeatState
 
 		// pre lowercasing the song name (generateSong)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-			switch (songLowercase) {
-				case 'dad-battle': songLowercase = 'dadbattle';
-				case 'philly-nice': songLowercase = 'philly';
-			}
+		
 		// Per song offset check
 		#if windows
 			var songPath = 'assets/data/' + songLowercase + '/';
@@ -2248,7 +2244,7 @@ class PlayState extends MusicBeatState
 				FlxG.switchState(new GitarooPause());
 			}
 			else
-				openSubState(new PauseSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+				openSubState(new PauseSubState());
 		}
 		
 		if (FlxG.keys.justPressed.SEVEN)
@@ -2938,6 +2934,7 @@ class PlayState extends MusicBeatState
 			if (offsetTesting)
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				Conductor.changeBPM(102);
 				offsetTesting = false;
 				LoadingState.loadAndSwitchState(new OptionsMenu());
 				FlxG.save.data.offset = offsetTest;
@@ -2983,6 +2980,7 @@ class PlayState extends MusicBeatState
 						else
 						{
 							FlxG.sound.playMusic(Paths.music('freakyMenu'));
+							Conductor.changeBPM(102);
 							FlxG.switchState(new StoryMenuState());
 						}
 	
@@ -3056,6 +3054,7 @@ class PlayState extends MusicBeatState
 					{
 						trace('free play!');
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
+						Conductor.changeBPM(102);
 						FlxG.switchState(new FreeplayState());
 					}
 					

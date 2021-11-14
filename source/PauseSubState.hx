@@ -48,7 +48,7 @@ class PauseSubState extends MusicBeatSubstate
 		"Lifesteal Notes"
 	];
 
-	public function new(x:Float, y:Float)
+	public function new()
 	{
 		super();
 

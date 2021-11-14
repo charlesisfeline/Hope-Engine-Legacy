@@ -10,6 +10,8 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import haxe.Json;
+import sys.io.File;
 
 using StringTools;
 #if windows
@@ -21,24 +23,13 @@ class StoryMenuState extends MusicBeatState
 {
 	var scoreText:FlxText;
 
-	var weekData:Array<Dynamic> = [
-		['Tutorial'],
-		['Runaway', 'Distrust']
-	];
-	
 	var curDifficulty:Int = 1;
 
 	public static var weekUnlocked:Array<Bool> = [];
 
-	var weekCharacters:Array<Dynamic> = [
-		['', 'gf', 'bf'],
-		['', 'gf', 'bf']
-	];
-
-	public static var weekNames:Array<String> = [
-		"Beep bop bap",
-		"Runaway Robot"
-	];
+	var weekData:Array<Dynamic> = [];
+	var weekCharacters:Array<Dynamic> = [];
+	var weekNames:Array<String> = [];
 
 	var txtWeekTitle:FlxText;
 	var curWeek:Int = 0;
@@ -61,8 +52,8 @@ class StoryMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
 		#end
-
-		weekUnlocked = FlxG.save.data.weeksUnlocked;
+		
+		weekUnlocked = FlxG.save.data.weeksUnlocked == null ? [] : FlxG.save.data.weeksUnlocked;
 
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
@@ -70,7 +61,25 @@ class StoryMenuState extends MusicBeatState
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
+			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'));
+				Conductor.changeBPM(102);
+			}
+		}
+
+		for (i in CoolUtil.coolTextFile("assets/_weeks/_weekList.txt"))
+		{
+			#if sys
+			var path = Sys.getCwd() + "assets/_weeks/" + i + ".json";
+			var week = Json.parse(File.getContent(path));
+			#else
+			var path = "assets/_weeks/" + i + ".json";
+			var week = Json.parse(Assets.getText(path));
+			#end
+			
+			weekData.push(week.tracks);
+			weekNames.push(week.weekName);
+			weekCharacters.push(week.characters);
 		}
 
 		persistentUpdate = persistentDraw = true;
@@ -112,6 +121,10 @@ class StoryMenuState extends MusicBeatState
 			weekThing.screenCenter(X);
 			weekThing.antialiasing = true;
 			// weekThing.updateHitbox();
+
+			#if UNLOCK_ALL_WEEKS
+			weekUnlocked.insert(i, true);
+			#end
 
 			// Needs an offset thingie
 			if (!weekUnlocked[i])
@@ -294,6 +307,7 @@ class StoryMenuState extends MusicBeatState
 			}
 
 			PlayState.storyPlaylist = weekData[curWeek];
+			PlayState.weekName = weekNames[curWeek];
 			PlayState.isStoryMode = true;
 			selectedWeek = true;
 

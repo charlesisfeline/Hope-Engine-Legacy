@@ -234,7 +234,10 @@ class ResultsScreen extends MusicBeatSubstate
 		songThings.y = FlxG.height - songThings.height - 10;
 		otherShit.add(songThings);
 
-		songThings.text = '${(FlxG.save.data.botplay ? 'FNF played' : 'Played')} ${PlayState.SONG.song.toUpperCase()} on ${CoolUtil.difficultyFromInt(PlayState.storyDifficulty)}';
+		if (!PlayState.isStoryMode)
+			songThings.text = '${(FlxG.save.data.botplay ? 'FNF played' : 'Played')} ${PlayState.SONG.song.toUpperCase()} on ${CoolUtil.difficultyFromInt(PlayState.storyDifficulty)}';
+		else
+			songThings.text = '${(FlxG.save.data.botplay ? 'FNF played WEEK' : 'Played WEEK')} ${PlayState.storyWeek} on ${CoolUtil.difficultyFromInt(PlayState.storyDifficulty)}';
 
 		forEachOfType(FlxSprite, function(spr:FlxSprite) 
 		{
@@ -281,7 +284,7 @@ class ResultsScreen extends MusicBeatSubstate
 
 		#if windows
 		var location:String = (PlayState.isStoryMode ? 
-			"WEEK \"" + StoryMenuState.weekNames[PlayState.storyWeek].toUpperCase() + "\"" : 
+			"WEEK \"" + PlayState.weekName.toUpperCase() + "\"" : 
 			"SONG \"" + PlayState.SONG.song.toUpperCase() + "\"");
 		
 		DiscordClient.changePresence("In the Results Screen", "\nWIN! At " + location);
@@ -383,6 +386,7 @@ class ResultsScreen extends MusicBeatSubstate
 				FlxG.switchState(PlayState.isStoryMode ? new StoryMenuState() : new FreeplayState());
 				FlxG.sound.music.fadeIn(0, 0.7, 0.7);
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
+				Conductor.changeBPM(102);
 			});
 		}
 		else if (FlxG.keys.justPressed.ENTER && !dontSpam && !theWaitIsFinished)

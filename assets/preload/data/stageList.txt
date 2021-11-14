@@ -6,5 +6,4 @@ mall
 mallEvil
 school
 schoolEvil
-city
 void

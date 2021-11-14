@@ -42,12 +42,6 @@ class TitleState extends MusicBeatState
 	var credGroup:FlxGroup = new FlxGroup();
 	var credTextShit:Alphabet;
 
-	var whyDoesThis:FlxParticle;
-	var haveToBeThisComplicated:FlxEmitter;
-
-	var particleFront:FlxParticle;
-	var particleFrontEmitter:FlxEmitter;
-
 	var curWacky:Array<String> = [];
 
 	var wackyImage:FlxSprite;
@@ -64,7 +58,7 @@ class TitleState extends MusicBeatState
 
 		NoteSkinSelection.refreshSkins();
 		#else
-		FlxG.save.bind('save', 'caret3saves');
+		FlxG.save.bind('save', 'hopeEngine');
 
         PlayerSettings.init();
 		Data.initSave();
@@ -110,7 +104,6 @@ class TitleState extends MusicBeatState
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
-	var titleTextTest:FlxText;
 	var fnfLogo:FlxSprite;
 
 	function startIntro()
@@ -154,57 +147,15 @@ class TitleState extends MusicBeatState
 			Conductor.changeBPM(102);
 			FlxG.sound.music.fadeIn(4, 0, 0.7);
 		}
+		
 		persistentUpdate = true;
 
-		var funnyParticleSwitch = FlxG.random.bool(0.69);
-		var funnyParticleNumber = funnyParticleSwitch ? FlxG.random.int(2, 3) : 1;
+		// var bg:FlxSprite = FlxGradient.createGradientFlxSprite(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5), [0xFFad34ff, 0xFF000000], 1, -90);
+		// bg.alpha = 0;
+		// bg.screenCenter();
+		// add(bg);
 
-		haveToBeThisComplicated = new FlxEmitter(0, FlxG.height + 50);
-		haveToBeThisComplicated.launchMode = SQUARE;
-		haveToBeThisComplicated.width = FlxG.width;
-
-		for (fuck in 0...40)
-		{
-			whyDoesThis = new FlxParticle();
-			whyDoesThis.loadGraphic(Paths.image('funnyparticles/particle-' + funnyParticleNumber));
-			whyDoesThis.lifespan = 200;
-			whyDoesThis.exists = false;
-			haveToBeThisComplicated.add(whyDoesThis); 
-		}
-
-		add(haveToBeThisComplicated);
-		haveToBeThisComplicated.start(false, 0.75, 0);
-		haveToBeThisComplicated.velocity.set(-50, -100, 50, -100);
-		haveToBeThisComplicated.scale.set(0.5);
-		haveToBeThisComplicated.color.set(0xad34ff);
-		haveToBeThisComplicated.alpha.set(1, 1, 0, 0);
-
-		// front
-		particleFrontEmitter = new FlxEmitter(0, FlxG.height + 50);
-		particleFrontEmitter.launchMode = SQUARE;
-		particleFrontEmitter.width = FlxG.width;
-
-		for (fuck in 0...40)
-		{
-			particleFront = new FlxParticle();
-			particleFront.loadGraphic(Paths.image('funnyparticles/particle-' + funnyParticleNumber));
-			particleFront.lifespan = 200;
-			particleFront.exists = false;
-			particleFrontEmitter.add(particleFront); 
-		}
-
-		particleFrontEmitter.start(false, 1, 0);
-		particleFrontEmitter.velocity.set(-25, -50, 25, -50);
-		particleFrontEmitter.scale.set(0.5);
-		particleFrontEmitter.color.set(0xad34ff);
-		particleFrontEmitter.alpha.set(1, 1, 0, 0);
-
-		var bg:FlxSprite = FlxGradient.createGradientFlxSprite(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5), [0xFFad34ff, 0xFF000000], 1, -90);
-		bg.alpha = 0;
-		bg.screenCenter();
-		add(bg);
-
-		FlxTween.tween(bg, {alpha: 0.25}, 2.7);
+		// FlxTween.tween(bg, {alpha: 0.25}, 2.7);
 
 		logoBl = new FlxSprite(25, 25).loadGraphic(Paths.image('YEAHHH WE FUNKIN'));
 		logoBl.scale.set(0.75, 0.75);
@@ -220,7 +171,6 @@ class TitleState extends MusicBeatState
 		gfDance.antialiasing = true;
 		gfDance.visible = false;
 		add(gfDance);
-		add(particleFrontEmitter);
 		add(logoBl);
 
 		fnfLogo = new FlxSprite(0, 0).loadGraphic(Paths.image((FlxG.random.bool(10) ? 'logo' : 'logoNew')));
@@ -242,19 +192,6 @@ class TitleState extends MusicBeatState
 		titleText.visible = false;
 		add(titleText);
 
-		// titleTextTest = new FlxText(0, FlxG.height * 0.8, FlxG.width, "Press Enter to Begin", 64);
-		// titleTextTest.color = FlxColor.WHITE;
-		// titleTextTest.alignment = CENTER;
-		// titleTextTest.shadowOffset.set(0.5, 0.5);
-		// titleTextTest.screenCenter(X);
-		// titleTextTest.visible = false;
-		// add(titleTextTest);
-		
-
-		// var logo:FlxSprite = new FlxSprite().loadGraphic(Paths.image('logo'));
-		// logo.screenCenter();
-		// logo.antialiasing = true;
-
 		credGroup = new FlxGroup();
 		add(credGroup);
 
@@ -264,9 +201,6 @@ class TitleState extends MusicBeatState
 			skipIntro();
 		else
 			initialized = true;
-			
-
-		// credGroup.add(credTextShit);
 	}
 
 	function getIntroTextShit():Array<Array<String>>
@@ -397,8 +331,10 @@ class TitleState extends MusicBeatState
 
 		switch (curBeat)
 		{
+			case 0:
+				deleteCoolText();
 			case 1:
-				createCoolText(['skuqre']);
+				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
 			case 3:
 				addMoreText('presents');
 			case 4:
@@ -421,11 +357,11 @@ class TitleState extends MusicBeatState
 			case 12:
 				deleteCoolText();
 			case 13:
-				addMoreText('W Slash');
+				addMoreText('Friday');
 			case 14:
-				addMoreText('Caret');
+				addMoreText('Night');
 			case 15:
-				addMoreText('Three');
+				addMoreText('Funkin');
 			case 16:
 				skipIntro();
 				

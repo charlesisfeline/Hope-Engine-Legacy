@@ -1,6 +1,8 @@
 package;
 
+import flash.media.Sound;
 import flixel.FlxG;
+import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
@@ -10,6 +12,14 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;
+
+	#if (haxe >= "4.0.0")
+	public static var customImages:Map<String, Bool> = new Map();
+	public static var customSongs:Map<String, Sound> = new Map();
+	#else
+	public static var customImages:Map<String, Bool> = new Map<String, Bool>();
+	public static var customSongs:Map<String, Sound> = new Map<String, Sound>();
+	#end
 
 	static public function setCurrentLevel(name:String)
 	{
@@ -101,20 +111,12 @@ class Paths
 	inline static public function voices(song:String)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-			switch (songLowercase) {
-				case 'dad-battle': songLowercase = 'dadbattle';
-				case 'philly-nice': songLowercase = 'philly';
-			}
 		return 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 	}
 
 	inline static public function inst(song:String)
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-			switch (songLowercase) {
-				case 'dad-battle': songLowercase = 'dadbattle';
-				case 'philly-nice': songLowercase = 'philly';
-			}
 		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 

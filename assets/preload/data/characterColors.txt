@@ -8,4 +8,3 @@ monster:f3ff6e
 parents:9f558e
 pico:b7d855
 spooky:b28d68
-kube:ad34ff

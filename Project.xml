@@ -2,7 +2,7 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Funkin' With Kube" file="With 3" packageName="com.skuqre.with3" package="com.skuqre.with3" main="Main" version="0.2.7.1" company="skuqre" />
+	<app title="Friday Night Funkin' | Hope Engine" file="With 3" packageName="com.skuqre.hopeEngine" package="com.skuqre.hopeEngine" main="Main" version="0.2.7.1" company="skuqre" />
 
 	<!--Switch Export with Unique ApplicationID and Icon-->
 	<set name="APP_ID" value="0x0100f6c013bbc000" />
@@ -59,26 +59,24 @@
 		<library name="songs"    preload="true" />
 		<library name="shared"   preload="true" />
 		<library name="tutorial" preload="true" />
-		<!-- <library name="week1"    preload="true" /> -->
-		<!-- <library name="week2"    preload="true" />
+		<library name="week1"    preload="true" />
+		<library name="week2"    preload="true" />
 		<library name="week3"    preload="true" />
 		<library name="week4"    preload="true" />
 		<library name="week5"    preload="true" />
-		<library name="week6"    preload="true" /> -->
-		<library name="squared"  preload="true" />
+		<library name="week6"    preload="true" />
 	</section>
 	
 	<section if="NO_PRELOAD_ALL">
 		<library name="songs"    preload="false" />
 		<library name="shared"   preload="false" />
 		<library name="tutorial" preload="false" />
-		<!-- <library name="week1"    preload="false" /> -->
-		<!-- <library name="week2"    preload="false" />
+		<library name="week1"    preload="false" />
+		<library name="week2"    preload="false" />
 		<library name="week3"    preload="false" />
 		<library name="week4"    preload="false" />
 		<library name="week5"    preload="false" />
-		<library name="week6"    preload="false" /> -->
-		<library name="squared"  preload="false"  />
+		<library name="week6"    preload="false" />
 	</section>
 	
 	<assets path="assets/songs"    library="songs"    exclude="*.ogg" if="web"/>
@@ -87,7 +85,7 @@
 	<assets path="assets/shared"   library="shared"   exclude="*.mp3" unless="web"/>
 	<assets path="assets/tutorial" library="tutorial" exclude="*.ogg" if="web"/>
 	<assets path="assets/tutorial" library="tutorial" exclude="*.mp3" unless="web"/>
-	<!-- <assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web"/>
+	<assets path="assets/week1"    library="week1"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week1"    library="week1"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week2"    library="week2"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week2"    library="week2"    exclude="*.mp3" unless="web"/>
@@ -98,9 +96,7 @@
 	<assets path="assets/week5"    library="week5"    exclude="*.ogg" if="web"/>
 	<assets path="assets/week5"    library="week5"    exclude="*.mp3" unless="web"/>
 	<assets path="assets/week6"    library="week6"    exclude="*.ogg" if="web"/>
-	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/> -->
-	<assets path="assets/squared"  library="squared"  exclude="*.ogg" if="web"/>
-	<assets path="assets/squared"  library="squared"  exclude="*.mp3" unless="web"/>
+	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 
 	<assets path='art/readme.txt' rename='README.txt' />
 	<assets path='art/misc.txt' rename='CREDITS STUFF.txt' />

@@ -184,20 +184,7 @@ class Highscore
 		if (FlxG.save.data.songRanks != null)
 			songRanks = FlxG.save.data.songRanks;
 
-		#if UNLOCK_ALL_WEEKS
-		if (FlxG.save.data.weeksUnlocked == null)
-		{
-			var toSet:Array<Bool> = [];
-			var weeks:Int = 1;
-
-			weeks = StoryMenuState.weekNames.length;
-
-			for (i in 0...weeks)
-				toSet.push(true);
-
-			FlxG.save.data.weeksUnlocked = toSet;
-		}
-		#elseif LOCK_ALL_WEEKS
+		#if LOCK_ALL_WEEKS
 		if (FlxG.save.data.weeksUnlocked == null)
 			FlxG.save.data.weeksUnlocked = [true];
 		#end

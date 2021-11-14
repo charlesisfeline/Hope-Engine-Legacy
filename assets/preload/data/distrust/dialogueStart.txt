@@ -1,5 +1,0 @@
-:kube:normal:left:normal:Huh, that wasn't so bad.
-:bf:normal:right:normal:bap bop
-:kube:normal:left:normal:There's another one?
-:bf:normal:right:normal:beep bap bop
-:kube:normal:left:normal:Dammit.

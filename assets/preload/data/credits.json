@@ -1,14 +1,5 @@
 [
     {
-        "categoryName" : "Mod Creator",
-        "categoryItems" : [
-            {
-                "name" : "skuqre",
-                "link" : "https://skuqre.github.io"
-            }
-        ]
-    },
-    {
         "categoryName" : "Friday Night Funkin'",
         "categoryItems" : [
             {
@@ -70,6 +61,16 @@
                 "name" : "GITHUB REPO",
                 "desc" : "Press ENTER to get redirected",
                 "link" : "https://github.com/KadeDev/Kade-Engine"
+            }
+        ]
+    },
+    {
+        "categoryName" : "Hope Engine",
+        "categoryItems" : [
+            {
+                "name" : "skuqre",
+                "desc" : "Maintainer of whatever the hell this is",
+                "link" : "https://twitter.com/skuqre"
             }
         ]
     }

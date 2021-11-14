@@ -10,6 +10,10 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import haxe.Json;
+import lime.utils.Assets;
+import sys.FileSystem;
+import sys.io.File;
 
 using StringTools;
 
@@ -43,6 +47,12 @@ class DialogueSubstate extends MusicBeatSubstate
 
     var portraitGroup:FlxTypedGroup<FlxSprite>;
 
+    var desiredBgAlpha:Null<Float> = 0.5;
+    var desiredBgColor:FlxColor = FlxColor.fromString("#000000");
+    var desiredBgDuration:Null<Float> = 0;
+
+    var bg:FlxSprite;
+
     public function new(dialogues:Array<String>, style:DialogueStyle = NORMAL, ?onComplete:Void->Void)
     {
         super();
@@ -50,8 +60,39 @@ class DialogueSubstate extends MusicBeatSubstate
         persistentUpdate = false;
 
         pissCamera = new FlxCamera();
-        pissCamera.bgColor.alphaFloat = 0.5;
+        pissCamera.bgColor.alphaFloat = 0;
         FlxG.cameras.add(pissCamera);
+
+        bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5));
+        bg.cameras = [pissCamera];
+        bg.alpha = 0;
+        bg.screenCenter();
+        add(bg);
+
+        // set the setting shit
+        var settingsJSON = null;
+
+        #if sys
+        if (FileSystem.exists(Sys.getCwd() + "assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"))
+            settingsJSON = Json.parse(File.getContent(Sys.getCwd() + "assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"));
+        #else
+        if (Assets.exists("assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"))
+            settingsJSON = Json.parse(Assets.getText("assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"));
+        #end
+
+        if (settingsJSON != null)
+        {
+            desiredBgAlpha = settingsJSON.bg.alpha != null ? settingsJSON.bg.alpha : 0.5;
+            desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
+            desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
+        }
+
+        bg.color = desiredBgColor;
+        
+        if (desiredBgDuration == 0)
+            bg.alpha = desiredBgAlpha;
+        else
+            FlxTween.tween(bg, {alpha: desiredBgAlpha}, desiredBgDuration, {ease: FlxEase.linear});
 
         dialogueBox = new FlxSprite();
 

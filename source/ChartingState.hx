@@ -171,7 +171,7 @@ class ChartingState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 		FlxG.mouse.useSystemCursor = true; 
-		FlxG.save.bind('save', 'caret3saves');
+		FlxG.save.bind('save', 'hopeEngine');
 
 		tempBpm = _song.bpm;
 
