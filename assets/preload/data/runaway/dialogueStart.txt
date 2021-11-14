@@ -1,0 +1,5 @@
+:kube:normal:left:normal:I should be safe here...
+:kube:normal:left:normal:Woah! Now who are YOU\nsupposed to be?
+:bf:normal:right:normal:bop bop beep bop
+:kube:normal:left:normal:Let this be fast. I don't\nreally sing well.
+:bf:normal:right:normal:bop beep bop bap

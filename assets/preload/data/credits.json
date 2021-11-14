@@ -1,0 +1,76 @@
+[
+    {
+        "categoryName" : "Mod Creator",
+        "categoryItems" : [
+            {
+                "name" : "skuqre",
+                "link" : "https://skuqre.github.io"
+            }
+        ]
+    },
+    {
+        "categoryName" : "Friday Night Funkin'",
+        "categoryItems" : [
+            {
+                "name" : "ninjamuffin99",
+                "desc" : "Programmer for the Funk",
+                "link" : "https://twitter.com/ninja_muffin99"
+            },
+            {
+                "name" : "Kawai Sprite",
+                "desc" : "Musician for the Funk",
+                "link" : "https://twitter.com/kawaisprite"
+            },
+            {
+                "name" : "PhantomArcade",
+                "desc" : "Artist for the Funk",
+                "link" : "https://twitter.com/phantomarcade3k"
+            },
+            {
+                "name" : "EvilSk8r",
+                "desc" : "Artist for the Funk",
+                "link" : "https://twitter.com/evilsk8r"
+            },
+            {
+                "name" : "THE ORIGINAL GAME",
+                "desc" : "Press ENTER to get redirected",
+                "link" : "https://www.newgrounds.com/portal/view/770371"
+            },
+            {
+                "name" : "FUNKIN' KICKSTARTER",
+                "desc" : "Press ENTER to get redirected",
+                "link" : "https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game"
+            },
+            {
+                "name" : "ITCH.IO PAGE",
+                "desc" : "Press ENTER to get redirected",
+                "link" : "https://ninja-muffin24.itch.io/funkin"
+            }
+        ]
+    },
+    {
+        "categoryName" : "Kade Engine",
+        "categoryItems" : [
+            {
+                "name" : "KadeDev",
+                "desc" : "Main Developer and Maintainer of Kade Engine",
+                "link" : "https://twitter.com/KadeDeveloper"
+            },
+            {
+                "name" : "The contributors",
+                "desc" : "People who contributed to Kade Engine\n(Press ENTER to get redirected)",
+                "link" : "https://github.com/KadeDev/Kade-Engine/graphs/contributors"
+            },
+            {
+                "name" : "GAMEBANANA PAGE",
+                "desc" : "Press ENTER to get redirected",
+                "link" : "https://gamebanana.com/mods/44291"
+            },
+            {
+                "name" : "GITHUB REPO",
+                "desc" : "Press ENTER to get redirected",
+                "link" : "https://github.com/KadeDev/Kade-Engine"
+            }
+        ]
+    }
+]

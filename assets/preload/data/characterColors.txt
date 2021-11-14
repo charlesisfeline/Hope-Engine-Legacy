@@ -1,0 +1,11 @@
+bf:31b0d1
+gf:a5004d
+mom:d8558e
+dad:af66ce
+senpai:ffaa6f
+spirit:ff3c6e
+monster:f3ff6e
+parents:9f558e
+pico:b7d855
+spooky:b28d68
+kube:ad34ff

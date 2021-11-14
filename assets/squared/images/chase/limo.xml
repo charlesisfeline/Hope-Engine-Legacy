@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="limo.png">
+	<SubTexture name="vroom 0000" x="0" y="0" width="1929" height="646"/>
+	<SubTexture name="vroom 0001" x="0" y="656" width="1929" height="646"/>
+	<SubTexture name="vroom 0002" x="0" y="1312" width="1929" height="646"/>
+	<SubTexture name="vroom 0003" x="0" y="0" width="1929" height="646"/>
+</TextureAtlas>

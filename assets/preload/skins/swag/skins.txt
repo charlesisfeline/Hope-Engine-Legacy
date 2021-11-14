@@ -1,0 +1,29 @@
+SKINS TIME SWAG
+
+So, you want to add a skin. How?
+
+Here are some needed files:
+- NOTE_assets.png
+- NOTE_assets.xml
+(if you want to see the ".png" or ".xml", open the
+"View" tab at the top of the file explorer and tick
+"File name extensions" :))
+
+If they're not named like that,
+rename them both to "NOTE_assets",
+then open the XML file, and the second line
+should look like something like this,
+<TextureAtlas imagePath="exampleNameDontMindThis.png">
+change "exampleNameDontMindThis.png" (or just the words inside the quote marks) to "NOTE_assets.png" and save
+and you should have your needed files.
+
+Now, adding a skin is quite easy,
+go to assets/images/skins, and create a new folder.
+you can't name your folder "default"! name it something
+unique, like "my awesome skin" or something.
+
+Once you have done that, copy your 2 files (NOTE_assets.png and NOTE_assets.xml)
+and paste them in the folder that you have created.
+
+Once you have done all that, you can reopen the Note Skins menu and have your
+skin registered. It should load in quick. I hope.

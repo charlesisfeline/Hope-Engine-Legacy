@@ -1,0 +1,13 @@
+"funkerin.otf" is a modified version of 
+https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/fonts/funkin.otf
+
+it's been modified to look more like how the Alphabet class makes it
+also so that dialogues dont null out (it's so buggy)
+
+--
+
+also, not sure where Funkin Modding Plus got the font, when I was exporting it,
+credits had Rozebud on it
+
+da rozebud twt: https://twitter.com/helpme_thebigt
+	   yt : https://www.youtube.com/c/Rozebud/

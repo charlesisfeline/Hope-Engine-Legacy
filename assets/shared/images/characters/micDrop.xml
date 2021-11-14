@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="micDrop.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="mic dies0000" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0001" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0002" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0003" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0004" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0005" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0006" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0007" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0008" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0009" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0010" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0011" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0012" x="10" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0013" x="195" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0014" x="195" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0015" x="195" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0016" x="380" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0017" x="380" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0018" x="565" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0019" x="565" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0020" x="750" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0021" x="750" y="10" width="175" height="358"/>
+	<SubTexture name="mic dies0022" x="10" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0023" x="195" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0024" x="195" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0025" x="380" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0026" x="380" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0027" x="565" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0028" x="565" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0029" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0030" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0031" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0032" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0033" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0034" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0035" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0036" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0037" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0038" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0039" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0040" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0041" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0042" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0043" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0044" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0045" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0046" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0047" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0048" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0049" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0050" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0051" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0052" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0053" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0054" x="750" y="378" width="175" height="358"/>
+	<SubTexture name="mic dies0055" x="750" y="378" width="175" height="358"/>
+</TextureAtlas>

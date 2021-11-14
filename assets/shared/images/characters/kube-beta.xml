@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='utf-8'?>
+<TextureAtlas imagePath="kube-beta.png"><SubTexture name="kube up0000" x="0" y="0" width="170" height="327" frameX="0" frameY="0" frameWidth="170" frameHeight="327" />
+<SubTexture name="kube up0001" x="170" y="0" width="172" height="327" frameX="0" frameY="0" frameWidth="172" frameHeight="327" />
+<SubTexture name="kube up0002" x="342" y="0" width="172" height="326" frameX="0" frameY="0" frameWidth="172" frameHeight="326" />
+<SubTexture name="kube up0003" x="514" y="0" width="172" height="324" frameX="0" frameY="0" frameWidth="172" frameHeight="324" />
+<SubTexture name="kube down0000" x="0" y="327" width="173" height="324" frameX="0" frameY="0" frameWidth="173" frameHeight="324" />
+<SubTexture name="kube down0001" x="173" y="327" width="176" height="323" frameX="0" frameY="0" frameWidth="176" frameHeight="323" />
+<SubTexture name="kube down0002" x="349" y="327" width="178" height="322" frameX="0" frameY="0" frameWidth="178" frameHeight="322" />
+<SubTexture name="kube down0003" x="527" y="327" width="180" height="321" frameX="0" frameY="0" frameWidth="180" frameHeight="321" />
+<SubTexture name="kube left0000" x="0" y="651" width="151" height="318" frameX="0" frameY="0" frameWidth="151" frameHeight="318" />
+<SubTexture name="kube left0001" x="151" y="651" width="153" height="316" frameX="0" frameY="0" frameWidth="153" frameHeight="316" />
+<SubTexture name="kube left0002" x="304" y="651" width="155" height="314" frameX="0" frameY="0" frameWidth="155" frameHeight="314" />
+<SubTexture name="kube left0003" x="459" y="651" width="158" height="311" frameX="0" frameY="0" frameWidth="158" frameHeight="311" />
+<SubTexture name="kube right0000" x="0" y="969" width="167" height="322" frameX="0" frameY="0" frameWidth="167" frameHeight="322" />
+<SubTexture name="kube right0001" x="167" y="969" width="170" height="322" frameX="0" frameY="0" frameWidth="170" frameHeight="322" />
+<SubTexture name="kube right0002" x="337" y="969" width="172" height="321" frameX="0" frameY="0" frameWidth="172" frameHeight="321" />
+<SubTexture name="kube right0003" x="509" y="969" width="174" height="319" frameX="0" frameY="0" frameWidth="174" frameHeight="319" />
+<SubTexture name="kube idle0001" x="0" y="1291" width="171" height="324" frameX="0" frameY="0" frameWidth="171" frameHeight="324" />
+<SubTexture name="kube idle0002" x="0" y="1291" width="171" height="324" frameX="0" frameY="0" frameWidth="171" frameHeight="324" />
+<SubTexture name="kube idle0003" x="171" y="1291" width="169" height="325" frameX="0" frameY="0" frameWidth="169" frameHeight="325" />
+<SubTexture name="kube idle0004" x="171" y="1291" width="169" height="325" frameX="0" frameY="0" frameWidth="169" frameHeight="325" />
+<SubTexture name="kube idle0005" x="340" y="1291" width="166" height="328" frameX="0" frameY="0" frameWidth="166" frameHeight="328" />
+<SubTexture name="kube idle0006" x="340" y="1291" width="166" height="328" frameX="0" frameY="0" frameWidth="166" frameHeight="328" />
+<SubTexture name="kube idle0007" x="506" y="1291" width="169" height="325" frameX="0" frameY="0" frameWidth="169" frameHeight="325" />
+<SubTexture name="kube idle0008" x="506" y="1291" width="169" height="325" frameX="0" frameY="0" frameWidth="169" frameHeight="325" />
+<SubTexture name="kube idle0009" x="0" y="1619" width="171" height="324" frameX="0" frameY="0" frameWidth="171" frameHeight="324" />
+<SubTexture name="kube idle0010" x="0" y="1619" width="171" height="324" frameX="0" frameY="0" frameWidth="171" frameHeight="324" />
+</TextureAtlas>

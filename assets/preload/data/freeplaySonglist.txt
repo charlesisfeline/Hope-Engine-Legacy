@@ -1,0 +1,5 @@
+Tutorial:gf:0:100
+Runaway:kube:1:77
+Distrust:kube:1:114
+Guns:kube:1:185
+Guns-but-gf:gf:1:185
