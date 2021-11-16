@@ -114,16 +114,12 @@ class Alphabet extends FlxSpriteGroup
 				letter.row = curRow;
 				listOAlphabets.add(letter);
 
-				if (isBold && !isSymbol)
+				if (isBold)
 					letter.createBold(character);
 				else if (isNumber)
 					letter.createNumber(character);
 				else if (isSymbol)
-				{
 					letter.createSymbol(character);
-					if (isBold)
-						letter.color = 0xFF000000;
-				}
 				else
 					letter.createLetter(character);
 
@@ -177,10 +173,46 @@ class AlphaCharacter extends FlxSprite
 
 	public function createBold(letter:String)
 	{
-		animation.addByPrefix(letter, letter.toUpperCase() + " bold", 24);
-		animation.play(letter);
+		y = (row * 80);
 		
+		var theActualLetter = letter;
+		var boldBefore:String = "&()*+-<>1234567890";
+
+		switch (letter)
+		{
+			case "'" | ",":
+				theActualLetter = "apostraphie";
+			case ".":
+				theActualLetter = "period";
+			case "!":
+				theActualLetter = "exclamation point";
+			case "?":
+				theActualLetter = "question mark";
+			case "<":
+				theActualLetter = "LESS THAN";
+			case ">":
+				theActualLetter = "MORE THAN";
+			case "_":
+				theActualLetter = "-";
+		}
+
+		if (boldBefore.contains(letter))
+			animation.addByPrefix(letter, "bold" + theActualLetter.toUpperCase(), 24);
+		else
+			animation.addByPrefix(letter, theActualLetter.toUpperCase() + " bold", 24);
+
+		animation.play(letter);
 		updateHitbox();
+
+		switch (letter)
+		{
+			case "," | "_" | ".":
+				y += 45;
+			case "-":
+				y += 30;
+			case "+":
+				y += 14;
+		}
 	}
 
 	public function createLetter(letter:String):Void
@@ -196,8 +228,6 @@ class AlphaCharacter extends FlxSprite
 		
 		updateHitbox();
 
-		FlxG.log.add('the row ' + row);
-
 		y = (110 - height);
 		y += row * 60;
 		y -= 55;
@@ -207,7 +237,6 @@ class AlphaCharacter extends FlxSprite
 	{
 		animation.addByPrefix(letter, letter, 24);
 		animation.play(letter);
-
 		
 		updateHitbox();
 	}
@@ -279,7 +308,6 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, ':', 24);
 				animation.play(letter);
 		}
-		
 		
 		updateHitbox();
 	}

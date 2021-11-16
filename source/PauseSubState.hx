@@ -257,89 +257,22 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					resuming = true;
 					var swagCounter:Int = 0;
-					var curStage:String = PlayState.SONG.stage;
 
-					// TO DO: REMAKE THIS SHIT GOD WHAT THE FUCKKKKKKKKK
+					forEachOfType(FlxSprite, function(spr:FlxSprite) {
+						spr.visible = false;
+					}, true);
+
 					new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 					{
-						var altSuffix:String = "";
-						var pixel1:String = "";
-
-						if (PlayState.SONG.noteStyle == "pixel")
-						{
-							pixel1 = "pixelUI/";
-							altSuffix = "-pixel";
-						}
-						
-						switch (swagCounter)
-						{
-							case 0:
-								FlxG.sound.play(Paths.sound('intro3' + altSuffix), 0.6);
-
-								forEachOfType(FlxSprite, function(spr:FlxSprite) {
-									spr.visible = false;
-								}, true);
-							case 1:
-								var ready:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixel1 + "ready" + altSuffix));
-								ready.scrollFactor.set();
-								ready.updateHitbox();
-
-								if (PlayState.SONG.noteStyle == "pixel")
-									ready.setGraphicSize(Std.int(ready.width * PlayState.daPixelZoom));
-
-								ready.screenCenter();
-								add(ready);
-								FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-									ease: FlxEase.cubeInOut,
-									onComplete: function(twn:FlxTween)
-									{
-										ready.destroy();
-									}
-								});
-								FlxG.sound.play(Paths.sound('intro2' + altSuffix), 0.6);
-							case 2:
-								var set:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixel1 + "set" + altSuffix));
-								set.scrollFactor.set();
-
-								if (PlayState.SONG.noteStyle == "pixel")
-									set.setGraphicSize(Std.int(set.width * PlayState.daPixelZoom));
-
-								set.screenCenter();
-								add(set);
-								FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-									ease: FlxEase.cubeInOut,
-									onComplete: function(twn:FlxTween)
-									{
-										set.destroy();
-									}
-								});
-								FlxG.sound.play(Paths.sound('intro1' + altSuffix), 0.6);
-							case 3:
-								var go:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixel1 + "go" + altSuffix));
-								go.scrollFactor.set();
-
-								if (PlayState.SONG.noteStyle == "pixel")
-									go.setGraphicSize(Std.int(go.width * PlayState.daPixelZoom));
-
-								go.updateHitbox();
-
-								go.screenCenter();
-								add(go);
-								FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
-									ease: FlxEase.cubeInOut,
-									onComplete: function(twn:FlxTween)
-									{
-										go.destroy();
-									}
-								});
-								FlxG.sound.play(Paths.sound('introGo' + altSuffix), 0.6);
-							case 4:
-								close();
-						}
+						PlayState.instance.countdownThing(swagCounter);
+						if (swagCounter >= 4)
+							close();
 						swagCounter += 1;
 					}, 5);
+
 				case "Restart Song":
 					FlxG.resetState();
+					
 				case "Exit to menu":
 					if(PlayState.loadRep)
 					{

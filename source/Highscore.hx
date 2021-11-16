@@ -184,7 +184,7 @@ class Highscore
 		if (FlxG.save.data.songRanks != null)
 			songRanks = FlxG.save.data.songRanks;
 
-		#if LOCK_ALL_WEEKS
+		#if !UNLOCK_ALL_WEEKS
 		if (FlxG.save.data.weeksUnlocked == null)
 			FlxG.save.data.weeksUnlocked = [true];
 		#end

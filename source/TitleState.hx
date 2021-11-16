@@ -12,6 +12,7 @@ import flixel.effects.particles.FlxParticle;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.text.FlxText;
@@ -104,7 +105,7 @@ class TitleState extends MusicBeatState
 	var gfDance:FlxSprite;
 	var danceLeft:Bool = false;
 	var titleText:FlxSprite;
-	var fnfLogo:FlxSprite;
+	var ngLogo:FlxSprite;
 
 	function startIntro()
 	{
@@ -159,27 +160,30 @@ class TitleState extends MusicBeatState
 
 		logoBl = new FlxSprite(25, 25).loadGraphic(Paths.image('YEAHHH WE FUNKIN'));
 		logoBl.scale.set(0.75, 0.75);
-		logoBl.angle = -5;
 		logoBl.antialiasing = true;
 		logoBl.visible = false;
 		logoBl.updateHitbox();
 
-		gfDance = new FlxSprite(FlxG.width * 0.4, FlxG.height * 0.07);
+		gfDance = new FlxSprite();
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
 		gfDance.animation.addByIndices('danceLeft', 'gfDance', [30, 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14], "", 24, false);
 		gfDance.animation.addByIndices('danceRight', 'gfDance', [15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29], "", 24, false);
 		gfDance.antialiasing = true;
 		gfDance.visible = false;
+		gfDance.scale.set(0.95, 0.95);
+		gfDance.updateHitbox();
+		gfDance.x = FlxG.width - gfDance.width - 10;
+		gfDance.y = FlxG.height - gfDance.height - 10;
 		add(gfDance);
 		add(logoBl);
 
-		fnfLogo = new FlxSprite(0, 0).loadGraphic(Paths.image((FlxG.random.bool(10) ? 'logo' : 'logoNew')));
-		fnfLogo.setGraphicSize(0, 350);
-		fnfLogo.updateHitbox();
-		fnfLogo.screenCenter(X);
-		fnfLogo.antialiasing = true;
-		fnfLogo.visible = false;
-		add(fnfLogo);
+		ngLogo = new FlxSprite(0, 0).loadGraphic(Paths.image('FUCK YEAHHHHH NEWGROUNDS'));
+		ngLogo.setGraphicSize(0, 350);
+		ngLogo.updateHitbox();
+		ngLogo.screenCenter(X);
+		ngLogo.antialiasing = true;
+		ngLogo.visible = false;
+		add(ngLogo);
 
 		titleText = new FlxSprite(0, FlxG.height * 0.8);
 		titleText.frames = Paths.getSparrowAtlas('titleEnter');
@@ -258,10 +262,6 @@ class TitleState extends MusicBeatState
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
-			FlxTween.tween(logoBl, {y: 2000}, 3, {ease: FlxEase.quadInOut, startDelay: 0.5});
-			FlxTween.tween(titleText, {y: 2000}, 3, {ease: FlxEase.quadInOut, startDelay: 0.5});
-			FlxTween.tween(gfDance, {y: 2000}, 3, {ease: FlxEase.quadInOut, startDelay: 0.5});
-
 			if (FlxG.save.data.flashing)
 			{
 				titleText.animation.play('press');
@@ -334,7 +334,7 @@ class TitleState extends MusicBeatState
 			case 0:
 				deleteCoolText();
 			case 1:
-				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8er']);
+				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8r']);
 			case 3:
 				addMoreText('presents');
 			case 4:
@@ -344,12 +344,12 @@ class TitleState extends MusicBeatState
 			case 7:
 				if (!skippedIntro)
 				{
-					fnfLogo.y = FlxG.height * 0.45;
-					fnfLogo.visible = true;
+					ngLogo.y = FlxG.height * 0.45;
+					ngLogo.visible = true;
 				}
 			case 8:
 				deleteCoolText();
-				fnfLogo.visible = false;
+				ngLogo.visible = false;
 			case 9:
 				createCoolText([curWacky[0]]);
 			case 11:
@@ -361,15 +361,15 @@ class TitleState extends MusicBeatState
 			case 14:
 				addMoreText('Night');
 			case 15:
-				addMoreText('Funkin');
+				addMoreText("Funkin'");
 			case 16:
 				skipIntro();
 				
 		}
 
-		if (canBop == true)
+		if (canBop)
 		{
-			logoBl.scale.set(0.85, 0.85);
+			logoBl.scale.set(0.8, 0.8);
 			FlxTween.tween(logoBl, {"scale.x": 0.75, "scale.y": 0.75}, Conductor.crochet / 1500, {ease: FlxEase.quadOut});
 		}
 	}

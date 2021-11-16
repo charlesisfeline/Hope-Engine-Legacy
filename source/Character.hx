@@ -1,28 +1,46 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.effects.chainable.FlxEffectSprite;
-import flixel.addons.effects.chainable.FlxGlitchEffect;
-import flixel.addons.effects.chainable.FlxOutlineEffect;
-import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxColor;
-import haxe.macro.Type.AnonType;
 
 using StringTools;
+
+typedef CharacterJSON = {
+	var name:String;
+	var imagePath:String;
+
+	var antialiasing:Bool;
+	var facesLeft:Bool;
+	
+	var deathChar:Bool;
+	var initAnim:Bool;
+	var cameraOffset:Array<Int>;
+}
+
+typedef Animation = {
+	var animationName:String;
+	var animationPrefix:String;
+
+	var frameRate:String;
+	var looped:String;
+	var offset:Array<Int>;
+
+	var indices:Array<Int>;
+	var postfix:String;
+}
 
 class Character extends FlxSprite
 {
 	public var animOffsets:Map<String, Array<Dynamic>>;
 
-	public var isPlayer:Bool = false;
+	public var isPlayer:Bool = false; // if they are a player
+	public var isDeath:Bool = false;  // if they are a character that shows up on the gameover screen
+	
 	public var curCharacter:String = 'bf';
 
 	public var holdTimer:Float = 0;
 	public var debugMode:Bool = false;
-
-	var deathCharacter:Bool = false;
 
 	public static var colors = {};
 
@@ -237,21 +255,11 @@ class Character extends FlxSprite
 				animation.addByPrefix('idle', "Pico Idle Dance", 24);
 				animation.addByPrefix('singUP', 'pico Up note0', 24, false);
 				animation.addByPrefix('singDOWN', 'Pico Down Note0', 24, false);
-				if (isPlayer)
-				{
-					animation.addByPrefix('singLEFT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico Note Right Miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico NOTE LEFT miss', 24, false);
-				}
-				else
-				{
-					// Need to be flipped! REDO THIS LATER!
-					animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
-					animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
-					animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
-					animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
-				}
+
+				animation.addByPrefix('singLEFT', 'Pico Note Right0', 24, false);
+				animation.addByPrefix('singRIGHT', 'Pico NOTE LEFT0', 24, false);
+				animation.addByPrefix('singRIGHTmiss', 'Pico NOTE LEFT miss', 24, false);
+				animation.addByPrefix('singLEFTmiss', 'Pico Note Right Miss', 24, false);
 
 				animation.addByPrefix('singUPmiss', 'pico Up note miss', 24);
 				animation.addByPrefix('singDOWNmiss', 'Pico Down Note MISS', 24);
@@ -401,7 +409,7 @@ class Character extends FlxSprite
 
 				flipX = true;
 			case 'bf-pixel-dead':
-				deathCharacter = true;
+				isDeath = true;
 				frames = Paths.getSparrowAtlas('characters/bfPixelsDEAD');
 				animation.addByPrefix('singUP', "BF Dies pixel", 24, false);
 				animation.addByPrefix('firstDeath', "BF Dies pixel", 24, false);
@@ -416,6 +424,7 @@ class Character extends FlxSprite
 				// pixel bullshit
 				setGraphicSize(Std.int(width * 6));
 				updateHitbox();
+				
 				antialiasing = false;
 				flipX = true;
 			case 'senpai':
@@ -556,7 +565,7 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 			case 'mic':
-				deathCharacter = true;
+				isDeath = true;
 				var tex = Paths.getSparrowAtlas('characters/micDrop', 'shared');
 				frames = tex;
 
@@ -572,7 +581,7 @@ class Character extends FlxSprite
 
 		dance();
 
-		if (!deathCharacter)
+		if (!isDeath)
 		{
 			if (isPlayer)
 			{
@@ -634,9 +643,9 @@ class Character extends FlxSprite
 		if (!curCharacter.startsWith('bf'))
 		{
 			if (animation.curAnim.name.startsWith('sing'))
-			{
 				holdTimer += elapsed;
-			}
+			else
+				holdTimer = 0;
 
 			var dadVar:Float = 4;
 
@@ -668,26 +677,10 @@ class Character extends FlxSprite
 	{
 		if (!debugMode)
 		{
-			if (curCharacter.startsWith("gf"))
-			{
-				if (!animation.curAnim.name.startsWith('hair'))
-				{
-					danced = !danced;
-
-					if (danced)
-						playAnim('danceRight');
-					else
-						playAnim('danceLeft');
-				}
-			}
-			else if (curCharacter.startsWith("spooky"))
+			if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)
 			{
 				danced = !danced;
-
-				if (danced)
-					playAnim('danceRight');
-				else
-					playAnim('danceLeft');
+				playAnim("dance" + (danced ? "Right" : "Left"));
 			}
 			else
 				playAnim('idle');
@@ -696,38 +689,30 @@ class Character extends FlxSprite
 
 	public function playAnim(AnimName:String, Force:Bool = false, Reversed:Bool = false, Frame:Int = 0):Void
 	{
-		animation.play(AnimName, Force, Reversed, Frame);
+		if (animation.getByName(AnimName) != null)
+			animation.play(AnimName, Force, Reversed, Frame);
+		else
+			return;
 
 		var daOffset = animOffsets.get(AnimName);
 
-		// "Almost" there. Though some will be fucked.
-		if (animOffsets.exists(AnimName) && !curCharacter.startsWith("bf") && isPlayer)
-			offset.set(daOffset[0] * -1, daOffset[1]);
-		else if (animOffsets.exists(AnimName))
+		if (animOffsets.exists(AnimName))
 			offset.set(daOffset[0], daOffset[1]);
 		else
 			offset.set(0, 0);
 
-		if (curCharacter == 'gf')
+		if (curCharacter.startsWith("gf"))
 		{
 			if (AnimName == 'singLEFT')
-			{
 				danced = true;
-			}
 			else if (AnimName == 'singRIGHT')
-			{
 				danced = false;
-			} 
 
 			if (AnimName == 'singUP' || AnimName == 'singDOWN')
-			{
 				danced = !danced;
-			}
 		}
 	}
 
 	public function addOffset(name:String, x:Float = 0, y:Float = 0)
-	{
 		animOffsets[name] = [x, y];
-	}
 }
