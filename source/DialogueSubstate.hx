@@ -12,10 +12,14 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import haxe.Json;
 import lime.utils.Assets;
-import sys.FileSystem;
-import sys.io.File;
 
 using StringTools;
+
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
+
 
 // remade it into a substate cuz substates are awesome
 

@@ -370,15 +370,10 @@ class ResultsScreen extends MusicBeatSubstate
 				FlxG.save.data.downscroll = false;
 			}
 			PlayState.loadRep = false;
-			#if windows
-			if (PlayState.luaModchart != null)
-			{
-				PlayState.luaModchart.die();
-				PlayState.luaModchart = null;
-			}
-			#end
+
 			if (FlxG.save.data.fpsCap > 290)
 				(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
+			
 			FlxG.sound.music.fadeOut(0.5, 0);
 
 			pissCamera.fade(FlxColor.BLACK, 0.5, false, function()

@@ -1,0 +1,11 @@
+function onStart()
+{
+    cutsceneDuration = 2;
+
+    FlxG.cameras.fade(0x00000000, 0);
+    FlxG.sound.play(Paths.sound('Lights_Turn_On'));
+    camFollow.y = -2050;
+    camFollow.x += 200;
+    FlxG.camera.focusOn(camFollow.getPosition());
+    FlxG.camera.zoom = 1.5;
+}

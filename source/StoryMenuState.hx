@@ -11,9 +11,14 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import haxe.Json;
-import sys.io.File;
+import openfl.utils.Assets;
 
 using StringTools;
+
+#if sys
+import sys.io.File;
+#end
+
 #if windows
 import Discord.DiscordClient;
 #end

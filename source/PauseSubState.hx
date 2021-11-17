@@ -252,6 +252,7 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			var daSelected:String = menuItems[curSelected];
 
+
 			switch (daSelected)
 			{
 				case "Resume":
@@ -265,10 +266,11 @@ class PauseSubState extends MusicBeatSubstate
 					new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 					{
 						PlayState.instance.countdownThing(swagCounter);
-						if (swagCounter >= 4)
-							close();
 						swagCounter += 1;
-					}, 5);
+
+						if (swagCounter == 4)
+							close();
+					}, 4);
 
 				case "Restart Song":
 					FlxG.resetState();
@@ -283,13 +285,7 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.loadRep = false;
 					PlayState.flashNotesLeft = 0;
 					PlayState.deathNotesLeft = 0;
-					#if windows
-					if (PlayState.luaModchart != null)
-					{
-						PlayState.luaModchart.die();
-						PlayState.luaModchart = null;
-					}
-					#end
+					
 					if (FlxG.save.data.fpsCap > 290)
 						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
 					

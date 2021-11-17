@@ -402,9 +402,6 @@ class Character extends FlxSprite
 
 				playAnim('idle');
 
-				width -= 100;
-				height -= 100;
-
 				antialiasing = false;
 
 				flipX = true;

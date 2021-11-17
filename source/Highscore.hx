@@ -89,9 +89,13 @@ class Highscore
 
 	/**
 	 * Get modifier shit.
+	 * `check` returns `true` when all modifiers are off.
+	 * `list` returns the array of bools.
+	 * `nameList` retuns the array of strings.
+	 * 
 	 * @param type "check", "list", "nameList"
 	 */
-	public static function getModifierShit(type:String = 'check'):Dynamic // a bool, an array of bools, and an array of strings, what a handy function
+	public static function getModifierShit(type:String = 'check'):Dynamic
 	{
 		var modifierNames:Array<String> = [
 			"Botplay",

@@ -70,6 +70,11 @@ class Paths
 		return getPath('data/$key.lua', TEXT, library);
 	}
 
+	inline static public function modchart(key:String,?library:String)
+	{
+		return getPath('data/$key.hemc', TEXT, library);
+	}
+
 	inline static public function luaImage(key:String, ?library:String)
 	{
 		return getPath('data/$key.png', IMAGE, library);

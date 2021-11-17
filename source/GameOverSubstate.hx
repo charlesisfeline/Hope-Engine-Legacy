@@ -34,7 +34,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'bf-pixel':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
-			case 'bf':
+			case 'bf' | 'bf-christmas':
 				daBf = 'bf';
 			default:
 				daBf = 'mic';
@@ -210,14 +210,6 @@ class GameOverSubstate extends MusicBeatSubstate
 				default:
 					FlxG.sound.play(Paths.music((stageSuffix == "-pixel" ? "pixel/" : "") + 'gameOverEnd' + stageSuffix));
 			}
-
-			#if windows
-			if (PlayState.luaModchart != null)
-			{
-				PlayState.luaModchart.die();
-				PlayState.luaModchart = null;
-			}
-			#end
 			
 			FlxTween.tween(restartImage, {"scale.x": 0}, 0.5, {ease: FlxEase.backIn, onComplete: function(twn:FlxTween) 
 			{
@@ -240,14 +232,6 @@ class GameOverSubstate extends MusicBeatSubstate
 	function quitBullshit():Void
 	{
 		FlxG.sound.music.stop();
-
-		#if windows
-		if (PlayState.luaModchart != null)
-		{
-			PlayState.luaModchart.die();
-			PlayState.luaModchart = null;
-		}
-		#end
 
 		var loser:FlxSprite = new FlxSprite(100, 100);
 		var loseTex = Paths.getSparrowAtlas('lose');

@@ -55,13 +55,11 @@ class OptionsMenu extends MusicBeatState
 		]),
 
 		new OptionCategory("Appearance", [
-			#if desktop
 			#if sys
 			new NoteSkins("Change your note skins here"),
 			#end
 			new AccuracyOption("Modify the info text under the health bar."),
 			new NPSDisplayOption("Shows your current Notes Per Second.\n(\"Extensive\" info text is needed for this!)"),
-			#end
 			new RatingColors("Toggle rating colors\n(e.g. Good is colored green)"),
 			new FancyHealthBar("Gets the health bar a bit of glow up."),
 			new HealthBarColors("Colors the health bar to fit the character's theme. Like boyfriend's bar side (right) will be cyan!"),

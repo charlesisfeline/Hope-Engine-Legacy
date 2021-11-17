@@ -1,0 +1,15 @@
+function beatHit(curBeat)
+{
+    // do something when a beat hits
+}
+
+function stepHit(curStep)
+{
+    // do something when a step hits (1/4th of a beat)
+}
+
+var a = ["3", "2", "1", "Go!"];
+function onCountdownTick(number)
+{
+    trace(number + " " + a[number]);
+}
