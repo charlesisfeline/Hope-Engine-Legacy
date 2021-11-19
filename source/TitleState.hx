@@ -95,7 +95,7 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		new FlxTimer().start(2, function(tmr:FlxTimer)
+		new FlxTimer().start((initialized ? 0 : 2), function(tmr:FlxTimer)
 		{
 			startIntro();
 		});
@@ -340,8 +340,9 @@ class TitleState extends MusicBeatState
 			case 4:
 				deleteCoolText();
 			case 5:
-				addMoreText('A mod for');
+				addMoreText('In association with');
 			case 7:
+				addMoreText('Newgrounds');
 				if (!skippedIntro)
 				{
 					ngLogo.y = FlxG.height * 0.45;
@@ -378,6 +379,8 @@ class TitleState extends MusicBeatState
 
 	function skipIntro():Void
 	{
+		ngLogo.visible = false;
+		
 		if (!skippedIntro)
 		{
 			FlxG.camera.flash(FlxColor.WHITE, 4);

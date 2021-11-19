@@ -80,8 +80,6 @@ class ChartingState extends MusicBeatState
 	var writingNotesText:FlxText;
 	var highlight:FlxSprite;
 
-	var strumLineNotes:FlxTypedGroup<FlxSprite> = new FlxTypedGroup<FlxSprite>();
-
 	var GRID_SIZE:Int = 60;
 
 	var dummyArrow:FlxSprite;
@@ -215,8 +213,6 @@ class ChartingState extends MusicBeatState
 
 		selectionHighlight = new FlxSprite().makeGraphic(GRID_SIZE, GRID_SIZE, 0xFFFFAA00);
 		add(selectionHighlight);
-
-		generateStaticArrows();
 		
 		add(snapText);
 		add(noteText);
@@ -245,8 +241,6 @@ class ChartingState extends MusicBeatState
 
 		add(curRenderedNotes);
 		add(curRenderedSustains);
-
-		add(strumLineNotes);
 
 		super.create();
 	}
@@ -574,23 +568,13 @@ class ChartingState extends MusicBeatState
 		tab_group_misc = new FlxUI(null, UI_box);
 		tab_group_misc.name = 'Misc';
 
-		var check_arrows_inst = new FlxUICheckBox(10, 10, null, null, "Show static arrows", 100);
-		check_arrows_inst.checked = false;
-		check_arrows_inst.callback = function()
-		{
-			for (note in strumLineNotes)
-				note.visible = check_arrows_inst.checked;
-		};
-
-		var hitsounds = new FlxUICheckBox(10, 30, null, null, "Play hitsounds", 100);
+		var hitsounds = new FlxUICheckBox(10, 10, null, null, "Play hitsounds", 100);
 		hitsounds.checked = false;
 		hitsounds.callback = function()
 		{
 			playClaps = hitsounds.checked;
 		};
-
-
-		tab_group_misc.add(check_arrows_inst);
+		
 		tab_group_misc.add(hitsounds);
 
 		UI_box.addGroup(tab_group_misc);
@@ -846,25 +830,6 @@ class ChartingState extends MusicBeatState
 
 		strumLine.y = getYfromStrum((Conductor.songPosition - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps));
 		camFollow.setPosition(strumLine.x + strumLine.width + camFollowXOffset, strumLine.y + camFollowYOffset);
-		
-		strumLineNotes.forEach(function(spr:FlxSprite) 
-		{
-			spr.centerOffsets();
-			spr.x = strumLine.x + (GRID_SIZE * spr.ID);
-			spr.y = strumLine.y;
-
-			if (spr.animation.curAnim.name == 'confirm' && spr.animation.finished)
-			{
-				spr.animation.play('static');
-				spr.centerOffsets();
-			}
-
-			if (spr.animation.curAnim.name == 'confirm')
-			{
-				spr.centerOffsets();
-				spr.offset.set(Math.abs((GRID_SIZE / 2) - (spr.width / 2)) + GRID_SIZE, Math.abs((GRID_SIZE / 2) - (spr.height / 2)) + GRID_SIZE);
-			}
-		});
 
 		curRenderedNotes.forEach(function(note:Note)
 		{
@@ -874,18 +839,6 @@ class ChartingState extends MusicBeatState
 				
 				if (playClaps)
 					FlxG.sound.play(Paths.sound('SNAP'));
-
-				if (strumLineNotes.members[note.noteData].animation.curAnim.name != "confirm")
-					strumLineNotes.members[note.noteData].animation.play("confirm", true);
-			}
-		});
-
-		curRenderedSustains.forEach(function(fuck:FlxSprite)
-		{
-			if (fuck.y <= strumLine.y && FlxG.overlap(fuck, strumLine) && FlxG.sound.music.playing)
-			{
-				if (strumLineNotes.members[Math.floor(fuck.x / GRID_SIZE)].animation.curAnim.name != "confirm")
-					strumLineNotes.members[Math.floor(fuck.x / GRID_SIZE)].animation.play("confirm", true);
 			}
 		});
 
@@ -1685,52 +1638,6 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
-	}
-
-	// this shit is literally from fucking Playstate
-	function generateStaticArrows():Void
-	{
-		for (i in 0...8)
-		{
-			var babyArrow:FlxSprite = new FlxSprite(strumLine.x, strumLine.y);
-			
-			babyArrow.frames = theSex; 
-			babyArrow.animation.addByPrefix('green', 'arrowUP');
-			babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
-			babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
-			babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
-
-			babyArrow.antialiasing = true;
-			babyArrow.setGraphicSize(GRID_SIZE, GRID_SIZE);
-
-			switch (Math.abs(i))
-			{
-				case 0 | 4:
-					babyArrow.animation.addByPrefix('static', 'arrowLEFT');
-					babyArrow.animation.addByPrefix('pressed', 'left press', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'left confirm', 24, false);
-				case 1 | 5:
-					babyArrow.animation.addByPrefix('static', 'arrowDOWN');
-					babyArrow.animation.addByPrefix('pressed', 'down press', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'down confirm', 24, false);
-				case 2 | 6:
-					babyArrow.animation.addByPrefix('static', 'arrowUP');
-					babyArrow.animation.addByPrefix('pressed', 'up press', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'up confirm', 24, false);
-				case 3 | 7:
-					babyArrow.animation.addByPrefix('static', 'arrowRIGHT');
-					babyArrow.animation.addByPrefix('pressed', 'right press', 24, false);
-					babyArrow.animation.addByPrefix('confirm', 'right confirm', 24, false);
-			}
-			babyArrow.updateHitbox();
-			babyArrow.visible = false;
-			babyArrow.x += GRID_SIZE * i;
-
-			babyArrow.ID = i;
-
-			babyArrow.animation.play('static');
-			strumLineNotes.add(babyArrow);
-		}
 	}
 
 	function resyncVocals():Void

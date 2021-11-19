@@ -54,9 +54,7 @@ class LoadingState extends MusicBeatState
 				
 				if (PlayState.storyWeek == 0)
 					checkLibrary("tutorial");
-				else if (PlayState.storyWeek == 1)
-					checkLibrary("squared");
-				else if (PlayState.storyWeek > 1)
+				else
 					checkLibrary("week" + PlayState.storyWeek);
 				
 				var fadeTime = 0.5;

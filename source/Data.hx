@@ -123,10 +123,6 @@ class Data
 			FlxG.save.data.chaosMode = false;
 		// Everything goes wrong. Strumline notes will go to a random position every 5 seconds.
 
-		if (FlxG.save.data.hiddenMode == null)
-			FlxG.save.data.hiddenMode = false;
-		// Notes will fade out before even hitting the strumline.
-
 		if (FlxG.save.data.fcOnly == null)
 			FlxG.save.data.fcOnly = false;
 		// Gets you blueballed if you miss.

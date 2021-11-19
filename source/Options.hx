@@ -924,31 +924,6 @@ class NoteSkins extends Option
 }
 #end
 
-class ForgetMe extends Option
-{
-	private var controls:Controls;
-
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function press():Bool
-	{
-		OptionsMenu.timesOpened = 0;
-		FlxG.save.data.answeredTheQuestion = false;
-		FlxG.switchState(new OptionsMenu());
-		return true;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Forget Me";
-	}
-}
-
-
 class PlayfieldBGTransparency extends Option
 {
 	public function new(desc:String)
@@ -1049,28 +1024,6 @@ class ChaosMode extends Option
 	
 	private override function updateDisplay():String
 		return "Chaos";
-}
-
-class HiddenMode extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-		dependantOption = FlxG.save.data.hiddenMode;
-	}
-	
-	public override function press():Bool
-	{
-		FlxG.save.data.hiddenMode = !FlxG.save.data.hiddenMode;
-		trace('Hidden : ' + FlxG.save.data.hiddenMode);
-		display = updateDisplay();
-		dependantOption = FlxG.save.data.hiddenMode;
-		return true;
-	}
-	
-	private override function updateDisplay():String
-		return "Hidden";
 }
 
 class FcOnly extends Option

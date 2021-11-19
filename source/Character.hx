@@ -11,11 +11,14 @@ typedef CharacterJSON = {
 	var imagePath:String;
 
 	var antialiasing:Bool;
+	var scale:Float;
 	var facesLeft:Bool;
 	
 	var deathChar:Bool;
 	var initAnim:Bool;
 	var cameraOffset:Array<Int>;
+
+	var color:String;
 }
 
 typedef Animation = {

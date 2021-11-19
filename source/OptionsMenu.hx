@@ -82,7 +82,6 @@ class OptionsMenu extends MusicBeatState
 
 		new OptionCategory("Modifiers", [
 			new ChaosMode("Every time the camera zooms in, the arrow positions will change."),
-			new HiddenMode("Notes will fade out before hitting your strumline."),
 			new FcOnly("Gets you blueballed if you miss."),
 			new SicksOnly("Gets you blueballed if you hit anything but a \"Sick!!\".\n(Overrides \"Goods Only\")"),
 			new GoodsOnly("Gets you blueballed if you hit anything but a \"Good\".\n(Even a \"Sick!!\" will get you blueballed!)"),
@@ -100,26 +99,12 @@ class OptionsMenu extends MusicBeatState
 	];
 
 	public var acceptInput:Bool = true;
-	public static var timesOpened:Int = 0;
-	public static var canAdd = true;
-	
-	var dialogues:Array<String> = [
-		"",
-		"hello..?",
-		"are you...\nthere?",
-		"if you're here...",
-		"please answer...",
-		"Release? [YES/NO]",
-		"thank you...",
-		"Missing ;"
-	];
 
 	private var currentDescription:String = "";
 	private var grpControls:FlxTypedGroup<Alphabet>;
 	private var grpCheckBoxes:FlxTypedGroup<FlxSprite>;
 
 	var menuBG:FlxSprite;
-	var whatDaBgSayin:FlxText;
 
 	var descriptionShit:FlxText;
 	var optionShit:FlxText;
@@ -141,30 +126,12 @@ class OptionsMenu extends MusicBeatState
 		DiscordClient.changePresence("In the Options Menu", null);
 		#end
 
-		menuBG = new FlxSprite().loadGraphic(Paths.image("optionsmenuthings/bgDesat"));
-		menuBG.color = 0xad34ff;
+		menuBG = new FlxSprite().loadGraphic(Paths.image("menuBGBlue"));
 		menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
 		menuBG.updateHitbox();
 		menuBG.screenCenter();
 		menuBG.antialiasing = true;
 		add(menuBG);
-
-		if (canAdd)
-			timesOpened++;
-
-		whatDaBgSayin = new FlxText(0, 0, FlxG.width, "", 32);
-		whatDaBgSayin.setFormat("VCR OSD Mono", 32, 0x000000, CENTER, FlxTextBorderStyle.OUTLINE, 0x00000000);
-		whatDaBgSayin.text =  dialogues[timesOpened <= 4 ? 0 : timesOpened - 5];
-		whatDaBgSayin.alpha = 0.5;
-		whatDaBgSayin.updateHitbox();
-		whatDaBgSayin.screenCenter();
-		add(whatDaBgSayin);
-
-		if (FlxG.save.data.answeredTheQuestion)
-			whatDaBgSayin.text = "Missing ;";
-
-		if (timesOpened == 5)
-			FlxG.camera.flash(0xFF00FF00);
 
 		grpControls = new FlxTypedGroup<Alphabet>();
 		add(grpControls);
@@ -243,42 +210,6 @@ class OptionsMenu extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-
-		/* Had a LOT of fun with this LMAO
-		if (FlxG.sound.music.playing)
-		{
-			#if cpp
-			@:privateAccess
-			{
-				lime.media.openal.AL.sourcef(FlxG.sound.music._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, 0.1);
-			}
-			#end
-		}
-		*/
-
-		if (timesOpened - 5 == 5 && !FlxG.save.data.answeredTheQuestion)
-		{
-			canAdd = false;
-
-			if (FlxG.keys.pressed.Y && FlxG.keys.pressed.E && FlxG.keys.pressed.S)
-			{
-				timesOpened++;
-				whatDaBgSayin.text = "thank you...";
-				FlxG.camera.flash();
-				FlxG.save.data.answeredTheQuestion = true;
-				FlxG.save.flush();
-			}
-			
-			if (FlxG.keys.pressed.N && FlxG.keys.pressed.O)
-			{
-				timesOpened++;
-				FlxG.save.data.answeredTheQuestion = true;
-				FlxG.save.flush();
-				throw "You are a dense one. You know that, right?";
-			}
-		}
-		else
-			canAdd = true;
 
 		if (acceptInput)
 		{
@@ -474,7 +405,7 @@ class CheckBox extends FlxSprite
 	{
 		super(x, y);
 
-		loadGraphic(Paths.image("optionsmenuthings/checkBox"), true, 150, 150);
+		loadGraphic(Paths.image("checkBox"), true, 150, 150);
 		antialiasing = true;
 
 		animation.add('unticked', [0, 2], 12);
