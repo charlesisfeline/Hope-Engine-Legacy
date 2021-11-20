@@ -30,6 +30,8 @@ class Highscore
 		}
 		else 
 			trace('A modifier is on! Score isn\'t saved :)');
+
+		trace(songScores);
 	}
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
@@ -48,6 +50,8 @@ class Highscore
 		}
 		else 
 			trace('A modifier is on! Week Score isn\'t saved :)');
+
+		trace(songScores);
 	}
 
 	public static function saveRank(song:String, rank:Int = 0, ?diff:Int = 0):Void

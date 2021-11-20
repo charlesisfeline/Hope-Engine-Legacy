@@ -1,5 +1,9 @@
 package;
 
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
 import flash.media.Sound;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
@@ -12,18 +16,24 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;
+	public static var currentMod:String;
 
 	#if (haxe >= "4.0.0")
-	public static var customImages:Map<String, Bool> = new Map();
+	public static var customImages:Map<String, FlxGraphic> = new Map();
 	public static var customSongs:Map<String, Sound> = new Map();
 	#else
-	public static var customImages:Map<String, Bool> = new Map<String, Bool>();
+	public static var customImages:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
 	public static var customSongs:Map<String, Sound> = new Map<String, Sound>();
 	#end
 
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
+	}
+
+	static public function setCurrentMod(name:String)
+	{
+		currentMod = name.toLowerCase();
 	}
 
 	static function getPath(file:String, type:AssetType, library:Null<String>)
@@ -113,15 +123,37 @@ class Paths
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
-	inline static public function voices(song:String)
+	inline static public function voices(song:String):Dynamic
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+
+		#if desktop
+		var pissOff = modVoices(songLowercase);
+		if (FileSystem.exists(pissOff))
+		{
+			if (!customSongs.exists(pissOff))
+				customSongs.set(pissOff, Sound.fromFile(pissOff));
+			return customSongs.get(pissOff);
+		}
+		#end
+
 		return 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
 	}
 
-	inline static public function inst(song:String)
+	inline static public function inst(song:String):Dynamic
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		
+		#if desktop
+		var pissOff = modInst(songLowercase);
+		if (FileSystem.exists(pissOff))
+		{
+			if (!customSongs.exists(pissOff))
+				customSongs.set(pissOff, Sound.fromFile(pissOff));
+			return customSongs.get(pissOff);
+		}
+		#end
+		
 		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 
@@ -144,4 +176,21 @@ class Paths
 	{
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
+
+	#if desktop
+	inline static public function modInst(song:String)
+	{
+		return 'mods/${currentMod}/assets/songs/${song}/Inst.$SOUND_EXT';
+	}
+
+	inline static public function modVoices(song:String)
+	{
+		return 'mods/${currentMod}/assets/songs/${song}/Voices.$SOUND_EXT';
+	}
+
+	inline static public function modModchart(song:String) // I am so fucking terrified
+	{
+		return 'mods/${currentMod}/assets/data/${song}/modchart.hemc';
+	}
+	#end
 }

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="FLASH.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="hold end" x="162" y="0" width="50" height="64"/>
+	<SubTexture name="hold piece" x="162" y="69" width="50" height="44"/>
+	<SubTexture name="note" x="0" y="0" width="157" height="154"/>
+</TextureAtlas>

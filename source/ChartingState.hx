@@ -258,7 +258,6 @@ class ChartingState extends MusicBeatState
 		check_voices.callback = function()
 		{
 			_song.needsVoices = check_voices.checked;
-			trace('CHECKED!');
 		};
 
 		var check_mute_inst = new FlxUICheckBox(10, 200, null, null, "Mute Instrumental (in editor)", 100);
@@ -913,8 +912,6 @@ class ChartingState extends MusicBeatState
 			vocals.stop();
 			LoadingState.loadAndSwitchState(new PlayState());
 			FlxG.mouse.visible = false;
-			PlayState.flashNotesLeft = 0;
-			PlayState.deathNotesLeft = 0;
 		}
 
 		if (FlxG.keys.justPressed.E)

@@ -38,8 +38,6 @@ import lime.utils.Assets;
 import openfl.display.BitmapData;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
-import openfl.events.IOErrorEvent;
-import openfl.events.IOErrorEvent;
 import openfl.media.Sound;
 import openfl.net.FileReference;
 import openfl.utils.ByteArray;
@@ -55,7 +53,32 @@ class EditorCharacter extends MusicBeatState
     var _file:FileReference;
 	var UI_box:FlxUITabMenu;
 
+    var characterName:FlxInputText;
+    var animationName:FlxInputText;
+    var prefix:FlxInputText;
+    var postfix:FlxInputText;
+
     override function create() 
+    {
+        FlxG.mouse.visible = true;
+        FlxG.mouse.useSystemCursor = true;
+        
+        var tabs = [
+			{name: "Assets", label: 'Assets'},
+            {name: "Animations", label: 'Animations'},
+            {name: "Miscellaneous", label: 'Miscellaneous'}
+		];
+        
+        UI_box = new FlxUITabMenu(null, tabs, true);
+
+		UI_box.scrollFactor.set();
+		UI_box.resize(480, 400);
+		UI_box.x = FlxG.width - UI_box.width - 20;
+		UI_box.y = 20;
+		add(UI_box);
+    }
+
+    function addAssetStuff():Void
     {
         
     }

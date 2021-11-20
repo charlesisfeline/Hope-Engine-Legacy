@@ -8,10 +8,6 @@ import flixel.util.FlxColor;
 
 using StringTools;
 
-#if polymod
-import polymod.format.ParseRules.TargetSignatureElement;
-#end
-
 class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
@@ -60,7 +56,7 @@ class Note extends FlxSprite
 		y -= 2000;
 		this.strumTime = strumTime;
 
-		if (this.strumTime < 0 )
+		if (this.strumTime < 0)
 			this.strumTime = 0;
 
 		this.noteData = noteData;
@@ -135,29 +131,6 @@ class Note extends FlxSprite
 		}
 
 		var pissShit = PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "";
-
-		// THIS ONLY HAPPENS UPON NOTE CREATION, NOT NOTE CHANGING!
-		if (noteType != 0)
-		{
-			switch (noteType)
-			{
-				case 1:
-					loadGraphic(Paths.image('styles/NOTE_death' + pissShit));
-					if (mustPress)
-						PlayState.deathNotesLeft += 1;
-				case 2:
-					loadGraphic(Paths.image('styles/NOTE_flash' + pissShit));
-					if (mustPress)
-						PlayState.flashNotesLeft += 1;
-				case 3: 
-					loadGraphic(Paths.image('JUST_DIE/note' + pissShit));
-					unblandNote();
-			}
-
-			// most notes are in 1 direction (up)
-			if (!isSustainNote)
-				unblandNote('direction');
-		}
 		
 		if (pissShit == "-pixel")
 			antialiasing = false;
@@ -186,12 +159,6 @@ class Note extends FlxSprite
 					animation.play('purpleholdend');
 			}
 
-			switch(noteType)
-			{
-				case 3:
-					loadGraphic(Paths.image('JUST_DIE/holdend' + pissShit));
-			}
-
 			updateHitbox();
 
 			x -= width / 2;
@@ -213,12 +180,6 @@ class Note extends FlxSprite
 					case 3:
 						prevNote.animation.play('redhold');
 				}
-
-				switch(noteType)
-				{
-					case 3:
-						prevNote.loadGraphic(Paths.image('JUST_DIE/holdpiece' + pissShit));
-				}
 				
 				if (FlxG.save.data.scrollSpeed != 1)
 					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * FlxG.save.data.scrollSpeed;
@@ -229,6 +190,48 @@ class Note extends FlxSprite
 				// prevNote.setGraphicSize();
 			}
 		}
+
+		if (this.noteType != 0)
+			changeType(this.noteType);
+	}
+
+	public function changeType(type:Int)
+	{
+		noteType = type;
+		var styles = ["death", "flash", "tabi"];
+		var imageName = styles[type - 1];
+		var pissShit = PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "";
+
+		
+		var a = Paths.getSparrowAtlas("styles/" + imageName.toUpperCase() + pissShit);
+		frames = a;
+		
+		if (isSustainNote)
+		{
+			animation.addByPrefix('holdend', 'hold end');
+			animation.play('holdend');
+
+			if (prevNote.isSustainNote)
+			{
+				prevNote.animation.addByPrefix('hold', 'hold piece');
+				prevNote.animation.play('hold');
+
+				prevNote.updateHitbox();
+			}
+		}
+		else
+		{
+			animation.addByPrefix('Scroll', 'note');
+			animation.play('Scroll');
+		}
+
+		if (!isSustainNote)
+			unblandNote('direction');
+
+		if (styles[type - 1] == "tabi")
+			unblandNote();
+		
+		updateHitbox();
 	}
 
 	public function unblandNote(unblandWhat:String = 'color')
@@ -315,9 +318,9 @@ class Note extends FlxSprite
 		if (animation.curAnim != null && animation.curAnim.name.endsWith('hold'))
 		{
 			if (FlxG.save.data.scrollSpeed != 1)
-				scale.y = Conductor.stepCrochet / 100 * (PlayState.SONG.noteStyle != "pixel" ? 1.05 : 7.6) * FlxG.save.data.scrollSpeed;
+				scale.y = Conductor.stepCrochet / 100 * (PlayState.SONG.noteStyle != "pixel" ? 1.045 : 7.6) * FlxG.save.data.scrollSpeed;
 			else
-				scale.y = Conductor.stepCrochet / 100 * (PlayState.SONG.noteStyle != "pixel" ? 1.05 : 7.6) * Math.abs(PlayState.SONG.speed);
+				scale.y = Conductor.stepCrochet / 100 * (PlayState.SONG.noteStyle != "pixel" ? 1.045 : 7.6) * Math.abs(PlayState.SONG.speed);
 
 			updateHitbox();
 		}

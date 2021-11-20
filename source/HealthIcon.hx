@@ -47,6 +47,7 @@ class HealthIcon extends FlxSprite
 	{
 		var pissOffMate:Array<String> = CoolUtil.coolTextFile('assets/images/icons/_dontSplitThese.txt');
 
+
 		if (splitWhitelist != pissOffMate)
 			splitWhitelist = pissOffMate;
 			

@@ -48,7 +48,7 @@ class Song
 		this.bpm = bpm;
 	}
 
-	public static function loadFromJson(jsonInput:String, ?folder:String):SwagSong
+	public static function loadFromJson(jsonInput:String, ?folder:String, ?mod:String = ""):SwagSong
 	{
 		trace(jsonInput);
 		
@@ -58,7 +58,7 @@ class Song
 		trace('loading ' + folderLowercase + '/' + jsonInput.toLowerCase());
 
 		#if sys
-		var rawJson = File.getContent(Sys.getCwd() + "assets/data/" + folderLowercase + '/' + jsonInput.toLowerCase() + ".json").trim();
+		var rawJson = File.getContent(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/' + jsonInput.toLowerCase() + ".json").trim();
 		#else
 		var rawJson = Assets.getText(Paths.json(folderLowercase + '/' + jsonInput.toLowerCase())).trim();
 		#end

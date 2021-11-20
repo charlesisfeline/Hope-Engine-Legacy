@@ -58,6 +58,25 @@ class FreeplayState extends MusicBeatState
 			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseFloat(data[3])));
 		}
 
+		#if desktop
+		trace(Sys.getCwd() + 'mods');
+		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
+		{
+			var frepla = Sys.getCwd() + "mods/" + i + "/assets/data/freeplaySonglist.txt";
+			if (FileSystem.exists(frepla))
+			{
+				trace("mod freeplay songlist is funnily availabale");
+				var songlist = CoolUtil.coolStringFile(File.getContent(frepla));
+				
+				for (i2 in 0...songlist.length)
+				{	
+					var data:Array<String> = songlist[i2].split(':');
+					songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseFloat(data[3]), i));
+				}
+			}
+		}
+		#end
+
 		#if windows
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Freeplay Menu", null);
@@ -216,9 +235,10 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{	
+			var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
 			var songLowercase = songs[curSelected].songName.toLowerCase();
 			var poop:String = Highscore.formatSong(StringTools.replace(songLowercase, " ", "-"), curDifficulty);
-			var songPath = 'assets/data/' + songLowercase + '/' + poop + ".json";
+			var songPath = mod + '/assets/data/' + songLowercase + '/' + poop + ".json";
 			
 			#if sys
 			if (FileSystem.exists(Sys.getCwd() + songPath))
@@ -226,7 +246,7 @@ class FreeplayState extends MusicBeatState
 			if (Assets.exists(songPath))
 			#end
 			{
-				PlayState.SONG = Song.loadFromJson(poop, songLowercase);
+				PlayState.SONG = Song.loadFromJson(poop, songLowercase, mod);
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
 				PlayState.storyWeek = songs[curSelected].week;
@@ -303,6 +323,13 @@ class FreeplayState extends MusicBeatState
 
 		Conductor.changeBPM(songs[curSelected].bpm);
 
+		#if desktop
+		if (songs[curSelected].mod != "")
+			Paths.setCurrentMod(songs[curSelected].mod.split('/')[1]);
+
+		trace(songs[curSelected].mod.split('/')[1]);
+		#end
+
 		#if PRELOAD_ALL
 		FlxG.sound.music.stop();
 		playMusic(true);
@@ -369,12 +396,16 @@ class SongMetadata
 	public var week:Int = 0;
 	public var songCharacter:String = "";
 	public var bpm:Float = 0;
+	public var mod:String = "";
 
-	public function new(song:String, week:Int, songCharacter:String, bpm:Float)
+	public function new(song:String, week:Int, songCharacter:String, bpm:Float, ?mod:String)
 	{
 		this.songName = song;
 		this.week = week;
 		this.songCharacter = songCharacter;
 		this.bpm = bpm;
+
+		if (mod != null)
+			this.mod = "mods/" + mod;
 	}
 }
