@@ -1,10 +1,15 @@
-# Hope Engine
-![Hope Engine Icon 128x128](art/icon128.png)
+<p align="center">
+<img src="art/placeholder.png" />
+</p>
 
+# <p align="center">Hope Engine</p>
 
 Hope Engine is an "engine" built from Kade Engine 1.5.2.
 
-Currently working on un-hardcoding most stuff.
+**100% in beta, expect bugs lmaoo**
+
+
+---
 
 ## Credits
 Built from Kade Engine by [KadeDev](https://github.com/KadeDev) with their [contributors](https://github.com/KadeDev/Kade-Engine/graphs/contributors).

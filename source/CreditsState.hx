@@ -50,7 +50,7 @@ class CreditsState extends MusicBeatState
 
         descBackground.setPosition(descriptionShit.x - 4, descriptionShit.y - 4);
 
-        var credits = Json.parse(Assets.getText(Paths.json('credits')));
+        var credits:Array<Dynamic> = Json.parse(Assets.getText(Paths.json('credits')));
 
         for (i in 0...credits.length)
         {

@@ -69,9 +69,11 @@ class Note extends FlxSprite
 			case 'pixel':
 				loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
+				#if sys
 				if (FlxG.save.data.currentNoteSkin != "default" && 
 					NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
 					loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
+				#end
 
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
@@ -82,9 +84,11 @@ class Note extends FlxSprite
 				{
 					loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
 
+					#if sys
 					if (FlxG.save.data.currentNoteSkin != "default" && 
 						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds") != null)
 						loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds"), true, 7, 6);
+					#end
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);

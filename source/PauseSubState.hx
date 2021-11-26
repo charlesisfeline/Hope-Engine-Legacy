@@ -245,6 +245,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	var originalOffset:Null<Float>;
 
+	#if sys
 	function changeOffset(huh:Float = 0)
 	{
 		if (originalOffset == null)
@@ -286,6 +287,7 @@ class PauseSubState extends MusicBeatSubstate
 			changeSelection();
 		}
 	}
+	#end
 
 	override function destroy()
 	{

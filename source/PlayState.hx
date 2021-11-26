@@ -1795,12 +1795,14 @@ class PlayState extends MusicBeatState
 				case 'pixel':
 					babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
+					#if sys
 					if (FlxG.save.data.currentNoteSkin != "default" && 
 						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
 					{
 						babyArrow.loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
 						trace("yo this shit has a pixel skin :flushed:");
 					}
+					#end
 
 					babyArrow.animation.add('green', [6]);
 					babyArrow.animation.add('red', [7]);
