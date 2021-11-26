@@ -59,13 +59,11 @@ class FreeplayState extends MusicBeatState
 		}
 
 		#if desktop
-		trace(Sys.getCwd() + 'mods');
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			var frepla = Sys.getCwd() + "mods/" + i + "/assets/data/freeplaySonglist.txt";
 			if (FileSystem.exists(frepla))
 			{
-				trace("mod freeplay songlist is funnily availabale");
 				var songlist = CoolUtil.coolStringFile(File.getContent(frepla));
 				
 				for (i2 in 0...songlist.length)
@@ -234,7 +232,7 @@ class FreeplayState extends MusicBeatState
 			FlxG.switchState(new MainMenuState());
 
 		if (accepted)
-		{	
+		{
 			var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
 			var songLowercase = songs[curSelected].songName.toLowerCase();
 			var poop:String = Highscore.formatSong(StringTools.replace(songLowercase, " ", "-"), curDifficulty);
@@ -324,7 +322,7 @@ class FreeplayState extends MusicBeatState
 		Conductor.changeBPM(songs[curSelected].bpm);
 
 		#if desktop
-		if (songs[curSelected].mod != "")
+		if (songs[curSelected].mod != null)
 			Paths.setCurrentMod(songs[curSelected].mod.split('/')[1]);
 
 		trace(songs[curSelected].mod.split('/')[1]);

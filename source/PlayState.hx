@@ -250,6 +250,10 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		instance = this;
+
+		#if desktop
+		Paths.destroyCustomImages();
+		#end
 		
 		if (FlxG.save.data.fpsCap > 290)
 			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(800);
@@ -302,17 +306,15 @@ class PlayState extends MusicBeatState
 		// We out here using hscript modcharts
 		#if sys
 		executeModchart = FileSystem.exists(Paths.modchart(songLowercase  + "/modchart"));
-		trace(executeModchart);
 		#else
 		executeModchart = Assets.exists(Paths.modchart(songLowercase  + "/modchart"));
 		#end
 
 		#if desktop
-		if (Paths.currentMod != null) // shit they in a mod's song
+		if (Paths.currentMod != null && Paths.currentMod.length > 0 && !executeModchart) // shit they in a mod's song
 		{
-			trace(Paths.currentMod);
 			executeModchart = FileSystem.exists(Paths.modModchart(songLowercase));
-			trace("yes this also functions WHY DOES IT DO THAT");
+			trace("EXECUTING A MOD'S MODCHART");
 		}
 		#end
 
@@ -324,7 +326,7 @@ class PlayState extends MusicBeatState
 			interp = new hscript.Interp();
 
 			#if desktop
-			if (Paths.currentMod != null)
+			if (Paths.currentMod != null && Paths.currentMod.length > 0)
 				modchart = File.getContent(Paths.modModchart(songLowercase));
 			#end
 
@@ -1201,7 +1203,7 @@ class PlayState extends MusicBeatState
 			{
 				// we soft-codin this bitch in
 				#if sys
-				if (FileSystem.exists(Sys.getCwd() + "assets/data/" + StringTools.replace(curSong," ", "-").toLowerCase() + '/dialogueStart.txt'))
+				if (FileSystem.exists(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase())))
 				{
 					inCutscene = true;
 	
@@ -1339,13 +1341,12 @@ class PlayState extends MusicBeatState
 	function startDialogue():Void
 	{
 		#if sys
-		if (FileSystem.exists(Sys.getCwd() + "assets/data/" + StringTools.replace(curSong," ", "-").toLowerCase() + '/dialogueStart.txt'))
+		if (FileSystem.exists(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase())))
 		{
 			if (SONG.noteStyle == "pixel")
-				openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Sys.getCwd() + 'assets/data/' + StringTools.replace(SONG.song," ", "-").toLowerCase() + '/dialogueStart.txt')), (SONG.song.toLowerCase() == "thorns" ? DialogueStyle.PIXEL_SPIRIT : DialogueStyle.PIXEL_NORMAL), startCountdown));
+				openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase()))), (SONG.song.toLowerCase() == "thorns" ? DialogueStyle.PIXEL_SPIRIT : DialogueStyle.PIXEL_NORMAL), startCountdown));
 			else
-				openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Sys.getCwd() + 'assets/data/' + StringTools.replace(SONG.song," ", "-").toLowerCase() + '/dialogueStart.txt')), DialogueStyle.NORMAL, startCountdown));
-				
+				openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase()))), DialogueStyle.NORMAL, startCountdown));
 		}
 		#else
 		if (Assets.exists("assets/data/" + StringTools.replace(curSong," ", "-").toLowerCase() + '/dialogueStart.txt'))
@@ -1354,7 +1355,6 @@ class PlayState extends MusicBeatState
 				openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(Assets.getText('assets/data/' + StringTools.replace(SONG.song," ", "-").toLowerCase() + '/dialogueStart.txt')), (SONG.song.toLowerCase() == "thorns" ? DialogueStyle.PIXEL_SPIRIT : DialogueStyle.PIXEL_NORMAL), startCountdown));
 			else
 				openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(Assets.getText('assets/data/' + StringTools.replace(SONG.song," ", "-").toLowerCase() + '/dialogueStart.txt')), DialogueStyle.NORMAL, startCountdown));
-				
 		}
 		#end
 	}
@@ -1368,7 +1368,7 @@ class PlayState extends MusicBeatState
 		var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets');
 		#if sys
 		if (FlxG.save.data.currentNoteSkin != "default")
-			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/NOTE_assets.xml"));
+			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/normal/NOTE_assets.xml"));
 		#end
 
 		generateStaticArrows(0, theSex, FlxG.save.data.enemySide);
@@ -1470,7 +1470,7 @@ class PlayState extends MusicBeatState
 
 				ready.screenCenter();
 				add(ready);
-				FlxTween.tween(ready, {y: ready.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+				FlxTween.tween(ready, {y: ready.y + 100, alpha: 0}, Conductor.crochet / 1000, {
 					ease: FlxEase.cubeInOut,
 					onComplete: function(twn:FlxTween)
 					{
@@ -1487,7 +1487,7 @@ class PlayState extends MusicBeatState
 
 				set.screenCenter();
 				add(set);
-				FlxTween.tween(set, {y: set.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+				FlxTween.tween(set, {y: set.y + 100, alpha: 0}, Conductor.crochet / 1000, {
 					ease: FlxEase.cubeInOut,
 					onComplete: function(twn:FlxTween)
 					{
@@ -1506,7 +1506,7 @@ class PlayState extends MusicBeatState
 
 				go.screenCenter();
 				add(go);
-				FlxTween.tween(go, {y: go.y += 100, alpha: 0}, Conductor.crochet / 1000, {
+				FlxTween.tween(go, {y: go.y + 100, alpha: 0}, Conductor.crochet / 1000, {
 					ease: FlxEase.cubeInOut,
 					onComplete: function(twn:FlxTween)
 					{
@@ -1554,7 +1554,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.onComplete = endSong;
 
 		#if sys
-		if (FileSystem.exists(Sys.getCwd() + "assets/data/" + StringTools.replace(curSong," ", "-").toLowerCase() + '/dialogueEnd.txt') && isStoryMode)
+		if (FileSystem.exists(Paths.dialogueEndFile(curSong.replace(" ", "-").toLowerCase())) && isStoryMode)
 			FlxG.sound.music.onComplete = function() {
 				inCutscene = true;
 
@@ -1562,9 +1562,9 @@ class PlayState extends MusicBeatState
 				vocals.volume = 0;
 				
 				if (SONG.noteStyle == "pixel")
-					openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Sys.getCwd() + 'assets/data/' + StringTools.replace(SONG.song," ", "-").toLowerCase() + '/dialogueEnd.txt')), (SONG.song.toLowerCase() == "thorns" ? DialogueStyle.PIXEL_SPIRIT : DialogueStyle.PIXEL_NORMAL), endSong));
+					openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueEndFile(curSong.replace(" ", "-").toLowerCase()))), (SONG.song.toLowerCase() == "thorns" ? DialogueStyle.PIXEL_SPIRIT : DialogueStyle.PIXEL_NORMAL), endSong));
 				else
-					openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Sys.getCwd() + 'assets/data/' + StringTools.replace(SONG.song," ", "-").toLowerCase() + '/dialogueEnd.txt')), DialogueStyle.NORMAL, endSong));
+					openSubState(new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueEndFile(curSong.replace(" ", "-").toLowerCase()))), DialogueStyle.NORMAL, endSong));
 			};
 		#else
 		if (Assets.exists("assets/data/" + StringTools.replace(curSong," ", "-").toLowerCase() + '/dialogueEnd.txt') && isStoryMode)
@@ -1674,31 +1674,23 @@ class PlayState extends MusicBeatState
 		
 		// Per song offset check
 		#if sys
-		var songPath = 'assets/data/' + songLowercase + '/';
+		var songPath = 'assets/data/' + songLowercase + '/.offset';
 
-		if (FileSystem.exists(Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath))
-		{
+		if (Paths.currentMod != null)
 			songPath = Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath;
-			trace(songPath);
-		}
-			
-		for(file in sys.FileSystem.readDirectory(songPath))
+
+		trace(songPath);
+
+		if(FileSystem.exists(songPath))
 		{
-			var path = haxe.io.Path.join([songPath, file]);
-			if(!sys.FileSystem.isDirectory(path))
-			{
-				if(path.endsWith('.offset'))
-				{
-					trace('Found offset file: ' + path);
-					songOffset = Std.parseFloat(file.substring(0, file.indexOf('.off')));
-					break;
-				}
-				else 
-				{
-					trace('Offset file not found. Creating one @: ' + songPath);
-					sys.io.File.saveContent(songPath + songOffset + '.offset', '');
-				}
-			}
+			trace('Found offset file: ' + songPath);
+			trace('Fetched offset: ' + File.getContent(songPath));
+			songOffset = Std.parseFloat(File.getContent(songPath));
+		}
+		else 
+		{
+			trace('Offset file not found. Creating one @: ' + songPath);
+			File.saveContent(songPath, '0');
 		}
 		#end
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
@@ -1706,7 +1698,7 @@ class PlayState extends MusicBeatState
 		
 		#if sys
 		if (FlxG.save.data.currentNoteSkin != "default")
-			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/NOTE_assets.xml"));
+			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/normal/NOTE_assets.xml"));
 		#end
 
 		for (section in noteData)
@@ -1802,6 +1794,14 @@ class PlayState extends MusicBeatState
 			{
 				case 'pixel':
 					babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
+
+					if (FlxG.save.data.currentNoteSkin != "default" && 
+						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
+					{
+						babyArrow.loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
+						trace("yo this shit has a pixel skin :flushed:");
+					}
+
 					babyArrow.animation.add('green', [6]);
 					babyArrow.animation.add('red', [7]);
 					babyArrow.animation.add('blue', [5]);
@@ -2697,6 +2697,15 @@ class PlayState extends MusicBeatState
 
 				}
 
+				// botplay code
+				if (daNote.mustPress && FlxG.save.data.botplay)
+				{
+					if (daNote.canBeHit && daNote.noteType == 0)
+					{
+						if (daNote.strumTime <= Conductor.songPosition)
+							goodNoteHit(daNote);
+					}
+				}
 
 				if (!daNote.mustPress && !daNote.wasGoodHit && daNote.strumTime <= Conductor.songPosition)
 				{
@@ -2773,7 +2782,7 @@ class PlayState extends MusicBeatState
 						if (daNote.noteType == 0)
 							daNote.angle = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].angle;
 						else
-							daNote.angle += playerStrums.members[Math.floor(Math.abs(daNote.noteData))].angle;
+							daNote.angle = Note.noteAngles[daNote.noteData] + playerStrums.members[Math.floor(Math.abs(daNote.noteData))].angle;
 
 						daNote.alpha = playerStrums.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
@@ -2790,7 +2799,7 @@ class PlayState extends MusicBeatState
 						if (daNote.noteType == 0)
 							daNote.angle = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].angle;
 						else
-							daNote.angle += strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].angle;
+							daNote.angle = Note.noteAngles[daNote.noteData] + strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].angle;
 
 						daNote.alpha = strumLineNotes.members[Math.floor(Math.abs(daNote.noteData))].alpha;
 					}
@@ -3092,22 +3101,8 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (FlxG.save.data.lifestealNotes != 0)
-			health += 0.0125 * (FlxG.save.data.lifestealNotes != 0 ? FlxG.save.data.lifestealNotes / 100 + 1 : 0);
-		
-
-		// trace('Wife accuracy loss: ' + wife + ' | Rating: ' + daRating + ' | Score: ' + score + ' | Weight: ' + (1 - wife));
-
 		songScore += Math.round(score);
 		songScoreDef += Math.round(ConvertScore.convertScore(noteDiff));
-
-		/* if (combo > 60)
-				daRating = 'sick';
-			else if (combo > 12)
-				daRating = 'good'
-			else if (combo > 4)
-				daRating = 'bad';
-		*/
 
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = '';
@@ -3519,11 +3514,6 @@ class PlayState extends MusicBeatState
 			{
 				// very frame-droppy? part of this shit
 
-				// botplay code
-				if (FlxG.save.data.botplay && daNote.mustPress && !daNote.wasGoodHit && 
-					daNote.strumTime <= Conductor.songPosition && daNote.noteType == 0)
-					goodNoteHit(daNote);
-
 				// replay code
 				if (loadRep)
 				{
@@ -3822,7 +3812,7 @@ class PlayState extends MusicBeatState
 					fuckYou = null;
 				});
 			case 3:
-				health -= 0.025;
+				health -= 0.05;
 		}
 	}
 	
@@ -3881,19 +3871,11 @@ class PlayState extends MusicBeatState
 
 			if (FlxG.random.bool(FlxG.save.data.deathNotes) && !swagNote.isSustainNote && swagNote.sustainLength == 0 && 
 				swagNote.mustPress && FlxG.save.data.deathNotes != 0 && swagNote.noteType == 0)
-			{
-				swagNote.noteType = 1;
-				swagNote.loadGraphic(Paths.image('styles/NOTE_death' + ohFUCK));
-				swagNote.unblandNote('direction');
-			}
+				swagNote.changeType(1);
 	
 			if (FlxG.random.bool(FlxG.save.data.flashNotes) && !swagNote.isSustainNote && swagNote.sustainLength == 0 && 
 				swagNote.mustPress && FlxG.save.data.flashNotes != 0 && swagNote.noteType == 0)
-			{
-				swagNote.noteType = 2;
-				swagNote.loadGraphic(Paths.image('styles/NOTE_flash' + ohFUCK));
-				swagNote.unblandNote('direction');
-			}
+				swagNote.changeType(2);
 		}
 
 		if (FlxG.save.data.botplay && warningSections.length > 0)
@@ -3904,8 +3886,8 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.save.data.lifestealNotes != 0)
 		{
-			var lifestealNotesGenerated = 0;
 			health = 2;
+			
 			for (i in 0...unspawnNotes.length) 
 			{
 				var swagNote = unspawnNotes[i];
@@ -3922,10 +3904,11 @@ class PlayState extends MusicBeatState
 		interp.variables.set("FlxTimer", FlxTimer);
 		interp.variables.set("Std", Std);
 		interp.variables.set("FlxRandom", FlxRandom);
-		interp.variables.set("tween", FlxTween.tween);
+		interp.variables.set("FlxTween", FlxTween);
 		interp.variables.set("FlxMath", FlxMath);
 		interp.variables.set("FlxEase", FlxEase);
 		interp.variables.set("FlxTimer", FlxTimer);
+		interp.variables.set("FlxTimer", FlxText);
 		interp.variables.set("Paths", Paths);
 		interp.variables.set("Math", Math);
 		interp.variables.set("FlxG", FlxG);
@@ -3958,6 +3941,7 @@ class PlayState extends MusicBeatState
 		interp.variables.set("storyMode", isStoryMode);
 		interp.variables.set("halloween", isHalloween);
 		interp.variables.set("defaultCamZoom", defaultCamZoom);
+		interp.variables.set("health", health);
 		
 		// cameras
 		interp.variables.set("camHUD", camHUD);

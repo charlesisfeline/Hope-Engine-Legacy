@@ -1,4 +1,4 @@
-# Credits
+# Assets
 This engine uses assets from other mods. (If you disapprove of me using ANY of these assets, please tell me!)
 
 - [**Psych Engine**](https://github.com/ShadowMario/FNF-PsychEngine)

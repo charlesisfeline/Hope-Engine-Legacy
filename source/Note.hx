@@ -1,5 +1,6 @@
 package;
 
+import Character.Animation;
 import PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -68,6 +69,10 @@ class Note extends FlxSprite
 			case 'pixel':
 				loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
+				if (FlxG.save.data.currentNoteSkin != "default" && 
+					NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
+					loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
+
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
 				animation.add('blueScroll', [5]);
@@ -76,6 +81,10 @@ class Note extends FlxSprite
 				if (isSustainNote)
 				{
 					loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
+
+					if (FlxG.save.data.currentNoteSkin != "default" && 
+						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds") != null)
+						loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds"), true, 7, 6);
 
 					animation.add('purpleholdend', [4]);
 					animation.add('greenholdend', [6]);
@@ -201,7 +210,6 @@ class Note extends FlxSprite
 		var styles = ["death", "flash", "tabi"];
 		var imageName = styles[type - 1];
 		var pissShit = PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "";
-
 		
 		var a = Paths.getSparrowAtlas("styles/" + imageName.toUpperCase() + pissShit);
 		frames = a;
@@ -234,34 +242,17 @@ class Note extends FlxSprite
 		updateHitbox();
 	}
 
+	public static var noteColors:Array<FlxColor> = [0xc24b99, 0x00ffff, 0x12fa05, 0xf9393f];
+	public static var noteAngles:Array<Float> = [-90, 180, 0, 90];
+
 	public function unblandNote(unblandWhat:String = 'color')
 	{
 		switch (unblandWhat.toLowerCase())
 		{
 			case 'color':
-				switch(this.noteData)
-				{
-					case 0:
-						this.color = 0xc24b99;
-					case 1:
-						this.color = 0x00ffff;
-					case 2:
-						this.color = 0x12fa05;
-					case 3:
-						this.color = 0xf9393f;
-				}
+				this.color = noteColors[this.noteData];
 			case 'direction':
-				switch (this.noteData)
-				{
-					case 0: 
-						this.angle = -90;
-					case 1:
-						this.angle = 180;
-					case 2:
-						// nothing
-					case 3:
-						this.angle = 90;
-				}
+				this.angle = noteAngles[this.noteData];
 			default:
 				trace('Yo shit ain\'t a note property goddamn');
 		}

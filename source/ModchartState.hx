@@ -1,5 +1,5 @@
-// this file is for modchart things, this is to declutter playstate.hx
-
+// This is technically useless now?
+/*
 // Lua
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -811,7 +811,7 @@ class ModchartState
 				//forgot and accidentally commit to master branch
 				// shader
 				
-				/*Lua_helper.add_callback(lua,"createShader", function(frag:String,vert:String) {
+				Lua_helper.add_callback(lua,"createShader", function(frag:String,vert:String) {
 					var shader:LuaShader = new LuaShader(frag,vert);
 
 					trace(shader.glFragmentSource);
@@ -828,7 +828,7 @@ class ModchartState
 
 				Lua_helper.add_callback(lua,"setFilterCam", function(shaderIndex:Int) {
 					FlxG.camera.setFilters([new ShaderFilter(shaders[shaderIndex])]);
-				});*/
+				});
 
 				// default strums
 
@@ -857,3 +857,4 @@ class ModchartState
     }
 }
 #end
+*/

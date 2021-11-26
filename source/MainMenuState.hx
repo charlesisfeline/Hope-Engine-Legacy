@@ -15,6 +15,11 @@ import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
+import lime.ui.Window;
+import lime.ui.WindowAttributes;
+import lime.utils.Assets;
+import openfl.display.Bitmap;
+import openfl.display.Sprite;
 
 using StringTools;
 

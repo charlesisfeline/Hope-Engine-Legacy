@@ -1,0 +1,4 @@
+:bf-pixel:normal:left:normal:oh hey what's up
+:bf:normal:right:normal:hell o
+:bf-pixel:normal:left:normal:imma need to test something out, u up for it
+:bf:normal:right:normal:sure

@@ -38,11 +38,13 @@ class OptionCategory
 		return _name;
 	}
 
-	public function new (catName:String, options:Array<Option>)
+	public function new(catName:String, options:Array<Option>)
 	{
 		_name = catName;
 		_options = options;
 	}
+
+	public function press():Bool { return throw "stub!"; }
 }
 
 class Option
@@ -83,6 +85,30 @@ class Option
 	private function updateDisplay():String { return throw "stub!"; }
 	public function left():Bool { return throw "stub!"; }
 	public function right():Bool { return throw "stub!"; }
+}
+
+class OptionSubCatTitle extends Option
+{
+	private var subcatName:String = "";
+	
+	public function new(name:String)
+	{
+		super();
+		subcatName = name;
+		display = updateDisplay();
+	}
+
+	public override function press():Bool
+		return true;
+
+	public override function left():Bool
+		return true;
+
+	public override function right():Bool
+		return true;
+
+	private override function updateDisplay():String
+		return subcatName;
 }
 
 
@@ -1000,6 +1026,15 @@ class Watermarks extends Option
 	private override function updateDisplay():String
 	{
 		return "Watermarks";
+	}
+}
+
+class ModsMenu extends OptionCategory
+{
+	public override function press():Bool
+	{
+		FlxG.switchState(new ModLoadingState());
+		return false;
 	}
 }
 

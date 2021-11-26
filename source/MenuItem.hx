@@ -10,12 +10,13 @@ class MenuItem extends FlxSpriteGroup
 {
 	public var targetY:Float = 0;
 	public var week:FlxSprite;
+	public var mod:String;
 	public var flashingInt:Int = 0;
 
-	public function new(x:Float, y:Float, weekNum:Int = 0)
+	public function new(x:Float, y:Float, weekJsonName:String)
 	{
 		super(x, y);
-		week = new FlxSprite().loadGraphic(Paths.image('storymenu/week' + weekNum));
+		week = new FlxSprite().loadGraphic(Paths.image('storymenu/' + weekJsonName));
 		week.antialiasing = true;
 		add(week);
 	}

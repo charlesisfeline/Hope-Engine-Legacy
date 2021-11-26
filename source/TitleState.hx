@@ -50,6 +50,7 @@ class TitleState extends MusicBeatState
 	override public function create():Void
 	{	
 		FlxG.fixedTimestep = false;
+		FlxG.mouse.useSystemCursor = true;
 		
 		#if sys
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/replays"))
@@ -159,7 +160,7 @@ class TitleState extends MusicBeatState
 		// FlxTween.tween(bg, {alpha: 0.25}, 2.7);
 
 		logoBl = new FlxSprite(25, 25).loadGraphic(Paths.image('YEAHHH WE FUNKIN'));
-		logoBl.scale.set(0.75, 0.75);
+		logoBl.setGraphicSize(0, 425);
 		logoBl.antialiasing = true;
 		logoBl.visible = false;
 		logoBl.updateHitbox();
@@ -376,8 +377,8 @@ class TitleState extends MusicBeatState
 
 		if (canBop)
 		{
-			logoBl.scale.set(0.8, 0.8);
-			FlxTween.tween(logoBl, {"scale.x": 0.75, "scale.y": 0.75}, Conductor.crochet / 1500, {ease: FlxEase.quadOut});
+			logoBl.scale.set(logoBl.scale.x + 0.02, logoBl.scale.y + 0.02);
+			FlxTween.tween(logoBl, {"scale.x": logoBl.scale.x - 0.02, "scale.y": logoBl.scale.y - 0.02}, Conductor.crochet / 1500, {ease: FlxEase.quadOut});
 		}
 	}
 

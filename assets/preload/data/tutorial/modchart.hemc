@@ -1,6 +1,5 @@
 var originalXs = [];
 var originalYs = [];
-var bruh = false;
 
 function beatHit(curBeat)
 {
@@ -25,6 +24,8 @@ function onUpdate(elapsed)
             var i = strumLineNotes.members.indexOf(note);
             note.x = originalXs[i] + 20 * Math.sin((currentBeat + i*0.25) * Math.PI);
             note.y = originalYs[i] + 20 * Math.cos((currentBeat + i*0.25) * Math.PI);
+
+            note.angle += 1;
         }
     }
 }

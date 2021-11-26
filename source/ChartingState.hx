@@ -148,7 +148,7 @@ class ChartingState extends MusicBeatState
 
 		#if sys
 		if (FlxG.save.data.currentNoteSkin != "default")
-			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/NOTE_assets.xml"));
+			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/normal/NOTE_assets.xml"));
 		#end
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
@@ -168,7 +168,6 @@ class ChartingState extends MusicBeatState
 		curRenderedSustains = new FlxTypedGroup<FlxSprite>();
 
 		FlxG.mouse.visible = true;
-		FlxG.mouse.useSystemCursor = true; 
 		FlxG.save.bind('save', 'hopeEngine');
 
 		tempBpm = _song.bpm;

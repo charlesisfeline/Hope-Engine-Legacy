@@ -94,7 +94,7 @@
 
 	<assets path='art/readme.txt' rename='README.txt' />
 	<assets path='art/misc.txt' rename='CREDITS STUFF.txt' />
-	<assets path='mods' rename='mods' if="desktop" />
+	<assets path='mods' rename='mods' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	
 	<!-- <assets path="CHANGELOG.md" rename='changelog.txt'/> -->
@@ -119,7 +119,6 @@
 	<!-- <haxelib name="newgrounds"/> -->
 	<haxelib name="faxe" if='switch'/>
 	<haxelib name="discord_rpc" if="windows"/>
-	<haxelib name="linc_luajit" if="windows"/>
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 

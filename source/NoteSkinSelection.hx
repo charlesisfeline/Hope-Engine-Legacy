@@ -104,7 +104,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 
             var theSex:FlxAtlasFrames = null;
             if (skinName != "default")
-                theSex = FlxAtlasFrames.fromSparrow(loadedNoteSkins.get(skinName), File.getContent(Sys.getCwd() + "assets/skins/" + skinName + "/NOTE_assets.xml"));
+                theSex = FlxAtlasFrames.fromSparrow(loadedNoteSkins.get(skinName), File.getContent(Sys.getCwd() + "assets/skins/" + skinName + "/normal/NOTE_assets.xml"));
 
             var skinPreview:FlxSpriteGroup = new FlxSpriteGroup();
 
@@ -243,6 +243,7 @@ class NoteSkinSelection extends MusicBeatSubstate
     public static function refreshSkins() 
     {
         registeredSkins = ['default'];
+        
         for (skinName in (FileSystem.readDirectory(Sys.getCwd() + "/assets/skins")))
             registeredSkins.push(skinName);
 
@@ -250,11 +251,31 @@ class NoteSkinSelection extends MusicBeatSubstate
         {
             if (skinName != 'default')
             {
-                var piss:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/NOTE_assets.png");
+                var piss:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/normal/NOTE_assets.png");
                 var shitoffmate:FlxGraphic = FlxGraphic.fromBitmapData(piss);
                 shitoffmate.persist = true;
                 shitoffmate.destroyOnNoUse = false;
                 loadedNoteSkins.set(skinName, shitoffmate);
+
+                if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/"))
+                {
+                    // if (!FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/arrows-pixels.png") ||
+                    //     !FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/arrowsEnds.png")) return;
+
+                    trace("The skin also has a pixel type!");
+                    
+                    var piss2:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/arrows-pixels.png");
+                    var shitoffmate2:FlxGraphic = FlxGraphic.fromBitmapData(piss2);
+                    shitoffmate2.persist = true;
+                    shitoffmate2.destroyOnNoUse = false;
+                    loadedNoteSkins.set(skinName + "-pixel", shitoffmate2);
+
+                    var piss3:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/arrowEnds.png");
+                    var shitoffmate3:FlxGraphic = FlxGraphic.fromBitmapData(piss3);
+                    shitoffmate3.persist = true;
+                    shitoffmate3.destroyOnNoUse = false;
+                    loadedNoteSkins.set(skinName + "-pixelEnds", shitoffmate3);
+                }
             }
         }
     }

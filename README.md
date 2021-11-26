@@ -1,4 +1,7 @@
 # Hope Engine
+![Hope Engine Icon 128x128](art/icon128.png)
+
+
 Hope Engine is an "engine" built from Kade Engine 1.5.2.
 
 Currently working on un-hardcoding most stuff.

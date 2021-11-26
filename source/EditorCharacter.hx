@@ -61,7 +61,6 @@ class EditorCharacter extends MusicBeatState
     override function create() 
     {
         FlxG.mouse.visible = true;
-        FlxG.mouse.useSystemCursor = true;
         
         var tabs = [
 			{name: "Assets", label: 'Assets'},

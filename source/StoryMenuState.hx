@@ -16,6 +16,7 @@ import openfl.utils.Assets;
 using StringTools;
 
 #if sys
+import sys.FileSystem;
 import sys.io.File;
 #end
 
@@ -32,9 +33,13 @@ class StoryMenuState extends MusicBeatState
 
 	public static var weekUnlocked:Array<Bool> = [];
 
+	// what the FUCK
 	var weekData:Array<Dynamic> = [];
 	var weekCharacters:Array<Dynamic> = [];
 	var weekNames:Array<String> = [];
+
+	var weekMods:Array<String> = [];
+	var weekJsonNames:Array<String> = [];
 
 	var txtWeekTitle:FlxText;
 	var curWeek:Int = 0;
@@ -85,7 +90,29 @@ class StoryMenuState extends MusicBeatState
 			weekData.push(week.tracks);
 			weekNames.push(week.weekName);
 			weekCharacters.push(week.characters);
+			weekJsonNames.push(i);
+			weekMods.push(null);
 		}
+
+		#if desktop
+		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
+		{
+			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt"))
+			{
+				for (jsonName in CoolUtil.coolStringFile(File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt")))
+				{
+					var path = Sys.getCwd() + "mods/" + i + "/assets/_weeks/" + jsonName + ".json";
+					var week = Json.parse(File.getContent(path));
+					
+					weekData.push(week.tracks);
+					weekNames.push(week.weekName);
+					weekCharacters.push(week.characters);
+					weekJsonNames.push(jsonName);
+					weekMods.push(i);
+				}
+			}
+		}
+		#end
 
 		persistentUpdate = persistentDraw = true;
 
@@ -118,7 +145,9 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...weekData.length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			Paths.setCurrentMod(weekMods[i]);
+			
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, weekJsonNames[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
@@ -292,6 +321,8 @@ class StoryMenuState extends MusicBeatState
 	{
 		if (weekUnlocked[curWeek])
 		{
+			Paths.setCurrentMod(weekMods[curWeek]);
+
 			if (stopspamming == false)
 			{
 				FlxG.sound.play(Paths.sound('confirmMenu'));
@@ -328,7 +359,7 @@ class StoryMenuState extends MusicBeatState
 
 			PlayState.storyDifficulty = curDifficulty;
 
-			PlayState.SONG = Song.loadFromJson(StringTools.replace(PlayState.storyPlaylist[0]," ", "-").toLowerCase() + diffic, StringTools.replace(PlayState.storyPlaylist[0]," ", "-").toLowerCase());
+			PlayState.SONG = Song.loadFromJson(StringTools.replace(PlayState.storyPlaylist[0]," ", "-").toLowerCase() + diffic, StringTools.replace(PlayState.storyPlaylist[0]," ", "-").toLowerCase(), (Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -383,6 +414,8 @@ class StoryMenuState extends MusicBeatState
 			curWeek = 0;
 		if (curWeek < 0)
 			curWeek = weekData.length - 1;
+
+		Paths.setCurrentMod(weekMods[curWeek]);
 
 		var bullShit:Int = 0;
 

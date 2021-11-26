@@ -31,9 +31,10 @@ class OptionsMenu extends MusicBeatState
 	var curSelected:Int = 0;
 
 	var options:Array<OptionCategory> = [
-		new OptionCategory("Gameplay", [
+		new OptionCategory("Preferences", [
+			new OptionSubCatTitle("GAMEPLAY"),
 			new DFJKOption("Change how you play."),
-			new Offset("Change your note's offset. (negative is early)\nIt's been migrated here for consistency."),
+			new Offset("Change your note's offset (negative is early).\nIt's been migrated here for consistency."),
 			new DownscrollOption("Changes the note scroll\ndirection from up to down (and vice versa)."),
 			new GhostTapOption("If this is on, pressing while there's no\nnotes to hit won't give you a penalty."),
 			new OffsetMenu("Not sure what offset you need? Play this!"),
@@ -44,17 +45,9 @@ class OptionsMenu extends MusicBeatState
 			new ScrollSpeedOption("Change your scroll speed (1 = Chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated.\n(Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
-			new CustomizeGameplay("Drag'n'Drop Gameplay Modules\naround to your preference")
-		]),
+			new CustomizeGameplay("Drag'n'Drop Gameplay Modules\naround to your preference"),
 
-		new OptionCategory("Accessbility", [
-			new FlashingLightsOption("Toggle flashing lights that can\ncause epileptic seizures and strain."),
-			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)"),
-			new PlayfieldBGTransparency("Change the opacity of the playfield's background."),
-			new StrumlineXOffset("Change the x-position of your strumline.\n(Use 367 to put it in the middle.)")
-		]),
-
-		new OptionCategory("Appearance", [
+			new OptionSubCatTitle("APPEARANCE"),
 			#if sys
 			new NoteSkins("Change your note skins here"),
 			#end
@@ -67,17 +60,14 @@ class OptionsMenu extends MusicBeatState
 			new SongPositionOption("Show the songs current position (as a bar)"),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)")
 		]),
-		
-		new OptionCategory("Misc", [
-			new FPSOption("Toggle the FPS Counter"),
-			new Watermarks("Toggle the Watermark at the top left"),
-			#if desktop
-			new ReplayOption("View replays\n(REVAMPED BETA! May be inaccurate.)"),
-			new CacheImages("Preloads the characters for a smoother experience. (HIGH MEMORY)"),
-			#end
-			new SkipResultsScreen("Skips the results screen."),
-			new FamilyFriendly("Recording a video? In a no-swearing stream? Enable this!"),
-			new BotPlay("Automatically play charts for you\n(Useful for showcasing, looking at charts, etc.)")
+
+		new ModsMenu("Modifications", []),
+
+		new OptionCategory("Accessbility", [
+			new FlashingLightsOption("Toggle flashing lights that can\ncause epileptic seizures and strain."),
+			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)"),
+			new PlayfieldBGTransparency("Change the opacity of the playfield's background."),
+			new StrumlineXOffset("Change the x-position of your strumline.\n(Use 367 to put it in the middle.)")
 		]),
 
 		new OptionCategory("Modifiers", [
@@ -91,10 +81,22 @@ class OptionsMenu extends MusicBeatState
 			new DeathNotes("Tricky time. Death Notes (colored black-red) will appear \nin the play field. Cause an instant death when hit."),
 			new LifestealNotes("Tabi time. Lifesteal notes (colored black + note color) will appear in the enemy's play field. Will damage you.")
 		]),
+		
+		new OptionCategory("Miscellaneous", [
+			new OptionSubCatTitle("MISCELLANEOUS"),
+			new FPSOption("Toggle the FPS Counter"),
+			new Watermarks("Toggle the Watermark at the top left"),
+			#if desktop
+			new ReplayOption("View replays\n(REVAMPED BETA! May be inaccurate.)"),
+			new CacheImages("Preloads the characters for a smoother experience. (HIGH MEMORY)"),
+			#end
+			new SkipResultsScreen("Skips the results screen."),
+			new FamilyFriendly("Recording a video? In a no-swearing stream? Enable this!"),
+			new BotPlay("Automatically play charts for you\n(Useful for showcasing, looking at charts, etc.)"),
 
-		new OptionCategory("Data", [
+			new OptionSubCatTitle("DANGEROUS STUFF"),
 			new EraseScores("WILL ERASE ALL SCORES AND RANKS!\n(prompted! be careful!)"),
-			new EraseData("WILL ERASE ALL DATA!\n(prompted! be careful!)"),
+			new EraseData("WILL ERASE ALL DATA!\n(prompted! be careful!)")
 		])
 	];
 
@@ -141,13 +143,13 @@ class OptionsMenu extends MusicBeatState
 
 		for (i in 0...options.length)
 		{
-			var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), true);
+			var controlLabel:Alphabet = new Alphabet(0, (70 * i) + 30, options[i].getName(), Std.isOfType(options[i], OptionSubCatTitle) || Std.isOfType(options[i], OptionCategory));
 			controlLabel.isMenuItem = true;
 			controlLabel.targetY = i;
 			grpControls.add(controlLabel);
 		}
 		
-		currentDescription = " ";
+		currentDescription = "";
 
 		descBackground = new FlxSprite().makeGraphic(Std.int((FlxG.width * 0.85) + 8), 72, 0xFF000000);
 		descBackground.alpha = 0.6;
@@ -200,11 +202,16 @@ class OptionsMenu extends MusicBeatState
 			{
 				if (grpControls.members[i].checkBox != null)
 				{
-					grpControls.members[i].x = FlxMath.lerp(grpControls.members[i].x, (grpControls.members[i].targetY * 20) + 265, 9 / lime.app.Application.current.window.frameRate);
+					grpControls.members[i].x = 300;
 					grpControls.members[i].checkBox.x = grpControls.members[i].x - grpControls.members[i].checkBox.width - 25;
 				}
 				else
-					grpControls.members[i].x = FlxMath.lerp(grpControls.members[i].x, (grpControls.members[i].targetY * 20) + 90, 9 / lime.app.Application.current.window.frameRate);
+				{
+					if (grpControls.members[i].isBold)
+						grpControls.members[i].screenCenter(X);
+					else
+						grpControls.members[i].x = 125;
+				}
 			}
 		}
 
@@ -225,7 +232,7 @@ class OptionsMenu extends MusicBeatState
 				grpCheckBoxes.clear();
 				for (i in 0...options.length)
 				{
-					var controlLabel:Alphabet = new Alphabet(0, (70 * i), options[i].getName(), true);
+					var controlLabel:Alphabet = new Alphabet(0, (70 * i), options[i].getName(), Std.isOfType(options[i], OptionSubCatTitle) || Std.isOfType(options[i], OptionCategory));
 					controlLabel.isMenuItem = true;
 					controlLabel.targetY = i;
 					grpControls.add(controlLabel);
@@ -238,9 +245,18 @@ class OptionsMenu extends MusicBeatState
 				changeSelection();
 			}
 			if (controls.UP_P)
+			{
 				changeSelection(-1);
+				if (grpControls.members[curSelected].isBold && isCat)
+					changeSelection(-1);
+			}
+
 			if (controls.DOWN_P)
+			{
 				changeSelection(1);
+				if (grpControls.members[curSelected].isBold && isCat)
+					changeSelection(1);
+			}
 			
 			if (isCat)
 			{
@@ -268,13 +284,17 @@ class OptionsMenu extends MusicBeatState
 						descriptionShit.text = currentDescription;
 						optionShit.text = currentSelectedCat.getOptions()[curSelected].getValue();
 						optionShit.screenCenter(Y);
-						descBackground.visible = true;
+
+						if (descriptionShit.text.length > 0)
+							descBackground.visible = true;
 					}
 				else
 					{
 						descriptionShit.text = currentDescription;
 						optionShit.text = "";
-						descBackground.visible = true;
+
+						if (descriptionShit.text.length > 0)
+							descBackground.visible = true;
 					}
 			}
 		
@@ -288,8 +308,8 @@ class OptionsMenu extends MusicBeatState
 				{
 					if (currentSelectedCat.getOptions()[curSelected].press()) 
 					{
-						var ctrl:Alphabet = new Alphabet(0, (grpControls.members[curSelected].y), currentSelectedCat.getOptions()[curSelected].getDisplay(), true);
-						ctrl.x = (ctrl.targetY * 20) + 90;
+						var ctrl:Alphabet = new Alphabet(0, (grpControls.members[curSelected].y), currentSelectedCat.getOptions()[curSelected].getDisplay(), Std.isOfType(currentSelectedCat.getOptions()[curSelected], OptionSubCatTitle) || Std.isOfType(currentSelectedCat.getOptions()[curSelected], OptionCategory));
+						ctrl.x = 125;
 						ctrl.isMenuItem = true;
 						
 						if (currentSelectedCat.getOptions()[curSelected].getOption() != null)
@@ -300,7 +320,7 @@ class OptionsMenu extends MusicBeatState
 
 						if (currentSelectedCat.getOptions()[curSelected].getOption() != null)
 						{
-							ctrl.x = (ctrl.targetY * 20) + 265;
+							ctrl.x = 300;
 							var piss:CheckBox = new CheckBox(ctrl.x - 175, ctrl.y + (ctrl.height / 2) - (150 / 2), currentSelectedCat.getOptions()[curSelected].getOption());
 							ctrl.checkBox = piss;
 							grpCheckBoxes.add(piss);
@@ -310,28 +330,35 @@ class OptionsMenu extends MusicBeatState
 				else
 				{
 					currentSelectedCat = options[curSelected];
-					isCat = true;
-					grpControls.clear();
-					for (i in 0...currentSelectedCat.getOptions().length)
+					if (currentSelectedCat.getOptions().length == 0)
 					{
-						var controlLabel:Alphabet = new Alphabet(0, (70 * i), currentSelectedCat.getOptions()[i].getDisplay(), true);
-						controlLabel.isMenuItem = true;
-						controlLabel.targetY = i;
-
-						if (currentSelectedCat.getOptions()[i].getOption() != null)
-						{
-							controlLabel.x = 175;
-							var piss:CheckBox = new CheckBox(controlLabel.x - 175, controlLabel.y + (controlLabel.height / 2) - (150 / 2), currentSelectedCat.getOptions()[i].getOption());
-							controlLabel.checkBox = piss;
-							grpCheckBoxes.add(piss);
-						}
-							
-
-						grpControls.add(controlLabel);
+						currentSelectedCat.press();
 					}
-					curSelected = 0;
+					else
+					{
+						isCat = true;
+						grpControls.clear();
+						for (i in 0...currentSelectedCat.getOptions().length)
+						{
+							var controlLabel:Alphabet = new Alphabet(0, (70 * i), currentSelectedCat.getOptions()[i].getDisplay(), Std.isOfType(currentSelectedCat.getOptions()[i], OptionSubCatTitle) || Std.isOfType(currentSelectedCat.getOptions()[i], OptionCategory));
+							controlLabel.isMenuItem = true;
+							controlLabel.targetY = i;
 
-					changeSelection();
+							if (currentSelectedCat.getOptions()[i].getOption() != null)
+							{
+								controlLabel.x = 300;
+								var piss:CheckBox = new CheckBox(controlLabel.x - 175, controlLabel.y + (controlLabel.height / 2) - (150 / 2), currentSelectedCat.getOptions()[i].getOption());
+								controlLabel.checkBox = piss;
+								grpCheckBoxes.add(piss);
+							}
+								
+
+							grpControls.add(controlLabel);
+						}
+						curSelected = 0;
+
+						changeSelection();
+					}
 				}
 			}
 		}
@@ -351,7 +378,7 @@ class OptionsMenu extends MusicBeatState
 		if (isCat)
 			currentDescription = currentSelectedCat.getOptions()[curSelected].getDescription();
 		else
-			currentDescription = " ";
+			currentDescription = "";
 		
 		if (isCat)
 		{

@@ -1,15 +1,16 @@
 package;
 
-#if desktop
-import sys.FileSystem;
-import sys.io.File;
-#end
 import flash.media.Sound;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+#if desktop
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class Paths
 {
@@ -33,7 +34,8 @@ class Paths
 
 	static public function setCurrentMod(name:String)
 	{
-		currentMod = name.toLowerCase();
+		currentMod = (name == null ? null : name);
+		trace(currentMod);
 	}
 
 	static function getPath(file:String, type:AssetType, library:Null<String>)
@@ -53,6 +55,24 @@ class Paths
 		}
 
 		return getPreloadPath(file);
+	}
+
+	static public function destroyCustomImages() 
+	{
+		#if desktop
+		for (key in customImages.keys())	
+		{
+			var piss:FlxGraphic = customImages.get(key);
+			if (piss != null)
+			{
+				piss.bitmap.dispose();
+				piss.destroy();
+				FlxG.bitmap.removeByKey(key);
+			}
+		}
+
+		customImages.clear();
+		#end
 	}
 
 	static public function getLibraryPath(file:String, library = "preload")
@@ -75,27 +95,34 @@ class Paths
 		return getPath(file, type, library);
 	}
 
-	inline static public function lua(key:String,?library:String)
-	{
-		return getPath('data/$key.lua', TEXT, library);
-	}
-
 	inline static public function modchart(key:String,?library:String)
 	{
 		return getPath('data/$key.hemc', TEXT, library);
 	}
 
-	inline static public function luaImage(key:String, ?library:String)
-	{
-		return getPath('data/$key.png', IMAGE, library);
-	}
-
 	inline static public function txt(key:String, ?library:String)
 	{
-		if (OpenFlAssets.exists(getPath('data/$key.txt', TEXT, library), TEXT))
-			return getPath('data/$key.txt', TEXT, library);
-		else
-			return null;
+		return getPath('data/$key.txt', TEXT, library);
+	}
+
+	inline static public function dialogueStartFile(key:String)
+	{
+		#if desktop
+		if (currentMod != null)
+			return modDialogueStartFile(key);
+		#end
+
+		return 'assets/data/${key}/dialogueStart.txt';
+	}
+
+	inline static public function dialogueEndFile(key:String)
+	{
+		#if desktop
+		if (currentMod != null)
+			return modDialogueEndFile(key);
+		#end
+
+		return 'assets/data/${key}/dialogueEnd.txt';
 	}
 
 	inline static public function xml(key:String, ?library:String)
@@ -157,8 +184,24 @@ class Paths
 		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
 	}
 
-	inline static public function image(key:String, ?library:String)
+	inline static public function image(key:String, ?library:String):Dynamic
 	{
+		#if desktop
+		var pissOff = modImage(key);
+		if (FileSystem.exists(pissOff))
+		{
+			if (!customImages.exists(pissOff))
+			{
+				var a = FlxGraphic.fromBitmapData(BitmapData.fromFile(pissOff));
+				a.persist = true;
+				
+				customImages.set(pissOff, a);
+			}
+
+			return customImages.get(pissOff);
+		}
+		#end
+		
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
@@ -188,9 +231,24 @@ class Paths
 		return 'mods/${currentMod}/assets/songs/${song}/Voices.$SOUND_EXT';
 	}
 
-	inline static public function modModchart(song:String) // I am so fucking terrified
+	inline static public function modImage(image:String)
 	{
-		return 'mods/${currentMod}/assets/data/${song}/modchart.hemc';
+		return 'mods/${currentMod}/assets/images/${image}.png';
+	}
+
+	inline static public function modModchart(key:String) // I am so fucking terrified
+	{
+		return 'mods/${currentMod}/assets/data/${key}/modchart.hemc';
+	}
+
+	inline static public function modDialogueStartFile(key:String)
+	{
+		return 'mods/${currentMod}/assets/data/${key}/dialogueStart.txt';
+	}
+
+	inline static public function modDialogueEndFile(key:String)
+	{
+		return 'mods/${currentMod}/assets/data/${key}/dialogueEnd.txt';
 	}
 	#end
 }
