@@ -318,8 +318,7 @@ class PlayState extends MusicBeatState
 		}
 		#end
 
-		
-
+	
 		if (executeModchart)
 		{
 			parser = new hscript.Parser();
@@ -345,7 +344,6 @@ class PlayState extends MusicBeatState
 			interp.variables.set("cutsceneDuration", 0);
 			interp.execute(ast);
 		}
-
 		trace(executeModchart ? "Modchart exists!" : "Modchart doesn't exist, tried path " + Paths.modchart(songLowercase  + "/modchart"));
 
 		#if windows

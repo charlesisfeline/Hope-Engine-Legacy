@@ -93,7 +93,6 @@
 	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 
 	<assets path='art/readme.txt' rename='README.txt' />
-	<assets path='art/misc.txt' rename='CREDITS STUFF.txt' />
 	<assets path='mods' rename='mods' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	
