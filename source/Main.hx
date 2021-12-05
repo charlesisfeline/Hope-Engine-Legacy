@@ -1,5 +1,6 @@
 package;
 
+import cpp.Float32;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
@@ -44,9 +45,7 @@ class Main extends Sprite
 	private function init(?E:Event):Void
 	{
 		if (hasEventListener(Event.ADDED_TO_STAGE))
-		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
-		}
 
 		setupGame();
 	}
@@ -79,52 +78,30 @@ class Main extends Sprite
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 
-		creds = new TextField();
-		creds.text = "HE 0.1.0\nKE 1.5.2";
-		creds.x = 10;
-		creds.y = 16;
-		creds.defaultTextFormat = new TextFormat("_sans", 12, 0xFFFFFF);
-		addChild(creds);
-
 		toggleFPS(FlxG.save.data.fps);
-		toggleWM(FlxG.save.data.watermarks);
 		#end
+
+		#if html5
+		FlxG.autoPause = false;
+		#end
+
+		FlxG.fixedTimestep = false;
+		FlxG.mouse.useSystemCursor = true;
+		FlxG.mouse.visible = false;
 	}
 
 	var game:FlxGame;
-
 	var fpsCounter:FPS;
-	var creds:TextField;
 
-	public function toggleFPS(fpsEnabled:Bool):Void {
+	public function toggleFPS(fpsEnabled:Bool):Void
 		fpsCounter.visible = fpsEnabled;
 
-		if (fpsCounter.visible)
-			creds.y = 16;
-		else
-			creds.y = 3;
-	}
-
-	public function toggleWM(enabled:Bool):Void
-		creds.visible = enabled;
-
-	public function changeFPSColor(color:FlxColor)
-	{
-		fpsCounter.textColor = color;
-	}
-
 	public function setFPSCap(cap:Float)
-	{
 		openfl.Lib.current.stage.frameRate = cap;
-	}
 
 	public function getFPSCap():Float
-	{
 		return openfl.Lib.current.stage.frameRate;
-	}
 
 	public function getFPS():Float
-	{
 		return fpsCounter.currentFPS;
-	}
 }

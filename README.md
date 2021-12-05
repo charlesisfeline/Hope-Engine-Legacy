@@ -1,5 +1,5 @@
 <p align="center">
-<img src="art/placeholder.png" />
+<img src="art/Awesome  new funkin logo.png" style="max-width: 85%;" />
 </p>
 
 # <p align="center">Hope Engine</p>

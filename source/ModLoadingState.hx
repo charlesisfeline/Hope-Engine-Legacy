@@ -4,10 +4,13 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxMath;
+import flixel.math.FlxRect;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
+import lime.app.Application;
 #if sys
 import sys.FileSystem;
 import sys.io.File;
@@ -17,6 +20,11 @@ class ModLoadingState extends MusicBeatState
 {
 	var selector:FlxText;
 	var curSelected:Int = 0;
+
+	var grpMods:FlxSpriteGroup = new FlxSpriteGroup(50, 50);
+
+	var scrollBarBG:FlxSprite;
+	var scrollThing:FlxSprite;
 	
 	override function create()
 	{
@@ -30,9 +38,14 @@ class ModLoadingState extends MusicBeatState
 		menuBG.screenCenter();
 		menuBG.antialiasing = true;
 		add(menuBG);
+		add(grpMods);
 
-		var piss:ModThing = new ModThing(50, 50, "Test Mod", "Adds the \"Test\" song to freeplay!", "0.1.0", "");
-		add(piss);
+		for (i in 0...100)
+		{
+			var piss:ModThing = new ModThing(0, 155 * i, i + "", i + "", i + "");
+			grpMods.add(piss);
+			piss.add(new FlxSprite(0, piss.height).makeGraphic(FlxG.width - 125, 5, 0xFF000000));
+		}
 
 		super.create();
 	}
@@ -44,6 +57,17 @@ class ModLoadingState extends MusicBeatState
 
 		if (controls.BACK)
 			FlxG.switchState(new OptionsMenu());
+		
+		grpMods.forEachOfType(ModThing, function(sprite:ModThing) 
+		{
+			sprite.targetY += 50 * FlxG.mouse.wheel;
+
+			var awesomeRect = new FlxRect(0, 0, sprite.width, sprite.height);
+			awesomeRect.y -= sprite.y - 50;
+			awesomeRect.height = FlxG.height - 100;
+			
+			sprite.clipRect = awesomeRect;
+		});
 	}
 }
 
@@ -55,12 +79,14 @@ class ModThing extends FlxSpriteGroup
 	var nameText:FlxText;
 	var descText:FlxText;
 	var versText:FlxText;
+	public var targetY:Float = 0;
 
 	public var checkBox:OptionsMenu.CheckBox;
 	
-	public function new(x:Float, y:Float, name:String = "Mod name not found.", desc:String = "Mod description not found.", ver:String = "", icon:String)
+	public function new(x:Float, y:Float, name:String = "Mod name not found.", desc:String = "Mod description not found.", ver:String = "", icon:String = "")
 	{
 		super(x, y);
+		targetY = y;
 		
 		var bg:FlxSprite = new FlxSprite().makeGraphic(FlxG.width - 125, 150, 0xFF000000);
 		bg.alpha = 0.6;
@@ -88,5 +114,11 @@ class ModThing extends FlxSpriteGroup
 		versText.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
 		versText.borderSize = 2;
 		add(versText);
+	}
+
+	override function update(elapsed:Float) 
+	{
+		y = FlxMath.lerp(y, targetY, 9 / Application.current.window.frameRate);
+		super.update(elapsed);	
 	}
 }

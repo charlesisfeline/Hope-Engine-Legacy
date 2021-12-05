@@ -174,6 +174,12 @@ class MainMenuState extends MusicBeatState
 				acceptItem();
 		}
 
+		if (FlxG.keys.justPressed.EIGHT)
+		{
+			if (FlxG.keys.pressed.SHIFT)
+				FlxG.switchState(new EditorCharacter());
+		}
+
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.screenCenter(X);

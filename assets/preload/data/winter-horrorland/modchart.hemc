@@ -1,8 +1,8 @@
 function onStart()
 {
     // if you're going to modify the cutscene and don't know what you're doing, make a backup!
-
-    if (storyMode)
+    
+    if (isStoryMode)
     {
         cutsceneDuration = 3;
 
@@ -27,7 +27,7 @@ function onStart()
             {
                 camHUD.visible = true;
                 remove(blackScreen);
-                tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {ease: FlxEase.quadInOut});
+                FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {ease: FlxEase.quadInOut});
             });
 
             gf.visible = false;

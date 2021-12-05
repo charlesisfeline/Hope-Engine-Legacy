@@ -80,7 +80,9 @@ class CreditsState extends MusicBeatState
             }
         }
 
-        changeSelection(1);
+        changeSelection();
+        if (alphabets.members[curSelected].isBold)
+            changeSelection(1);
         
         super.create();
     }

@@ -45,7 +45,6 @@ class OptionsMenu extends MusicBeatState
 			new ScrollSpeedOption("Change your scroll speed (1 = Chart dependent)"),
 			new AccuracyDOption("Change how accuracy is calculated.\n(Accurate = Simple, Complex = Milisecond Based)"),
 			new ResetButtonOption("Toggle pressing R to gameover."),
-			new CustomizeGameplay("Drag'n'Drop Gameplay Modules\naround to your preference"),
 
 			new OptionSubCatTitle("APPEARANCE"),
 			#if sys
@@ -61,13 +60,16 @@ class OptionsMenu extends MusicBeatState
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)")
 		]),
 
+		#if desktop
 		new ModsMenu("Modifications", []),
+		#end
 
 		new OptionCategory("Accessbility", [
 			new FlashingLightsOption("Toggle flashing lights that can\ncause epileptic seizures and strain."),
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)"),
 			new PlayfieldBGTransparency("Change the opacity of the playfield's background."),
-			new StrumlineXOffset("Change the x-position of your strumline.\n(Use 367 to put it in the middle.)")
+			new StrumlineMargin("Change the how far away the notes should be from the side of the screen."),
+			new Middlescroll("Put the notes in the middle.")
 		]),
 
 		new OptionCategory("Modifiers", [
@@ -174,10 +176,9 @@ class OptionsMenu extends MusicBeatState
 		
 		descriptionShit.alpha = 0;
 		FlxTween.tween(descriptionShit, {y: FlxG.height - 80, alpha: 1}, 0.5, {ease: FlxEase.quadOut});
-		// FlxTween.tween(versionShit,{y: FlxG.height - 18},2,{ease: FlxEase.elasticInOut});
-		// FlxTween.tween(blackBorder,{y: FlxG.height - 18},2, {ease: FlxEase.elasticInOut});
 		
 		changeSelection();
+		
 		super.create();
 	}
 
@@ -358,6 +359,8 @@ class OptionsMenu extends MusicBeatState
 						curSelected = 0;
 
 						changeSelection();
+						if (grpControls.members[curSelected].isBold)
+							changeSelection(1);
 					}
 				}
 			}
@@ -408,6 +411,9 @@ class OptionsMenu extends MusicBeatState
 			bullShit++;
 
 			item.alpha = 0.6;
+
+			if (isCat && item.isBold)
+				item.alpha = 1;
 
 			if (item.checkBox != null)
 				item.checkBox.alpha = 0.6;

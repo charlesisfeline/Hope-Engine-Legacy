@@ -100,11 +100,6 @@ class Paths
 		return getPath('data/$key.hemc', TEXT, library);
 	}
 
-	inline static public function txt(key:String, ?library:String)
-	{
-		return getPath('data/$key.txt', TEXT, library);
-	}
-
 	inline static public function dialogueStartFile(key:String)
 	{
 		#if desktop
@@ -125,6 +120,21 @@ class Paths
 		return 'assets/data/${key}/dialogueEnd.txt';
 	}
 
+	inline static public function dialogueSettingsFile(key:String)
+	{
+		#if desktop
+		if (currentMod != null)
+			return modDialogueSettingsFile(key);
+		#end
+
+		return 'assets/data/${key}/dialogueSettings.json';
+	}
+
+	inline static public function txt(key:String, ?library:String)
+	{
+		return getPath('data/$key.txt', TEXT, library);
+	}
+
 	inline static public function xml(key:String, ?library:String)
 	{
 		return getPath('data/$key.xml', TEXT, library);
@@ -135,18 +145,43 @@ class Paths
 		return getPath('data/$key.json', TEXT, library);
 	}
 
-	static public function sound(key:String, ?library:String)
+	inline static public function characterJson(key:String)
 	{
+		return 'assets/_characters/$key.json';
+	}
+
+	static public function sound(key:String, ?library:String):Dynamic
+	{
+		#if desktop
+		var pissOff = modSound(key, library);
+		if (FileSystem.exists(pissOff))
+		{
+			if (!customSongs.exists(pissOff))
+				customSongs.set(pissOff, Sound.fromFile(pissOff));
+			return customSongs.get(pissOff);
+		}
+		#end
+		
 		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
-	{
+	{	
 		return sound(key + FlxG.random.int(min, max), library);
 	}
 
-	inline static public function music(key:String, ?library:String)
+	inline static public function music(key:String, ?library:String):Dynamic
 	{
+		#if desktop
+		var pissOff = modMusic(key, library);
+		if (FileSystem.exists(pissOff))
+		{
+			if (!customSongs.exists(pissOff))
+				customSongs.set(pissOff, Sound.fromFile(pissOff));
+			return customSongs.get(pissOff);
+		}
+		#end
+
 		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
@@ -187,7 +222,7 @@ class Paths
 	inline static public function image(key:String, ?library:String):Dynamic
 	{
 		#if desktop
-		var pissOff = modImage(key);
+		var pissOff = modImage(key, library);
 		if (FileSystem.exists(pissOff))
 		{
 			if (!customImages.exists(pissOff))
@@ -231,14 +266,24 @@ class Paths
 		return 'mods/${currentMod}/assets/songs/${song}/Voices.$SOUND_EXT';
 	}
 
-	inline static public function modImage(image:String)
+	inline static public function modMusic(key:String, ?library:String)
 	{
-		return 'mods/${currentMod}/assets/images/${image}.png';
+		return 'mods/${currentMod}/' + getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
-	inline static public function modModchart(key:String) // I am so fucking terrified
+	inline static public function modSound(key:String, ?library:String)
 	{
-		return 'mods/${currentMod}/assets/data/${key}/modchart.hemc';
+		return 'mods/${currentMod}/' + getPath('sounds/$key.$SOUND_EXT', MUSIC, library);
+	}
+
+	inline static public function modImage(image:String, ?library:String)
+	{
+		return 'mods/${currentMod}/' + getPath('images/$image.png', IMAGE, library);
+	}
+
+	inline static public function modModchart(key:String, ?library:String) // I am so fucking terrified
+	{
+		return 'mods/${currentMod}/' + getPath('data/$key.hemc', TEXT, library);
 	}
 
 	inline static public function modDialogueStartFile(key:String)
@@ -249,6 +294,11 @@ class Paths
 	inline static public function modDialogueEndFile(key:String)
 	{
 		return 'mods/${currentMod}/assets/data/${key}/dialogueEnd.txt';
+	}
+
+	inline static public function modDialogueSettingsFile(key:String)
+	{
+		return 'mods/${currentMod}/assets/data/${key}/dialogueSettings.json';
 	}
 	#end
 }

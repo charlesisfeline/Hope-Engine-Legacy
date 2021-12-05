@@ -26,18 +26,11 @@ class Data
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = false;
 
-		if (FlxG.save.data.changedHit == null)
-		{
-			FlxG.save.data.changedHitX = -1;
-			FlxG.save.data.changedHitY = -1;
-			FlxG.save.data.changedHit = false;
-		}
-
 		if (FlxG.save.data.fpsCap == null)
-			FlxG.save.data.fpsCap = 120;
+			FlxG.save.data.fpsCap = 60;
 
 		if (FlxG.save.data.fpsCap > 285 || FlxG.save.data.fpsCap < 60)
-			FlxG.save.data.fpsCap = 120;
+			FlxG.save.data.fpsCap = 60;
 		
 		if (FlxG.save.data.scrollSpeed == null)
 			FlxG.save.data.scrollSpeed = 1;
@@ -66,8 +59,11 @@ class Data
 		if (FlxG.save.data.botplay == null)
 			FlxG.save.data.botplay = false;
 
-		if (FlxG.save.data.strumlineXOffset == null)
-			FlxG.save.data.strumlineXOffset = 50;
+		if (FlxG.save.data.strumlineMargin == null)
+			FlxG.save.data.strumlineMargin = 100;
+
+		if (FlxG.save.data.middleScroll == null)
+			FlxG.save.data.middleScroll = false;
 
 		if (FlxG.save.data.cpuStrums == null)
 			FlxG.save.data.cpuStrums = true;

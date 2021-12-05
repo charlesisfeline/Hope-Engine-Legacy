@@ -1,0 +1,16 @@
+{
+    "bgMusic" : {
+        "name" : "funnyBreakfast",
+        "fadeIn" : {
+            "from" : 0,
+            "to" : 0.5,
+            "duration" : 0.5
+        }
+    },
+
+    "bg" : {
+        "color" : "B3DFd8",
+        "alpha" : 0.7,
+        "duration" : 1
+    }
+}

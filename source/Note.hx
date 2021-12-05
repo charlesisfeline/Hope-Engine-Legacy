@@ -20,7 +20,6 @@ class Note extends FlxSprite
 	public var wasGoodHit:Bool = false;
 	public var wasEnemyNote = false;
 	public var prevNote:Note;
-	public var modifiedByLua:Bool = false;
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var noteType:Int = 0;
@@ -61,8 +60,6 @@ class Note extends FlxSprite
 			this.strumTime = 0;
 
 		this.noteData = noteData;
-
-		var daStage:String = PlayState.curStage;
 
 		switch (PlayState.SONG.noteStyle)
 		{

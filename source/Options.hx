@@ -247,7 +247,7 @@ class AccuracyOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Info Text - " + (!FlxG.save.data.accuracyDisplay ? "Simple" : "Extensive");
+		return "Info Text: " + (!FlxG.save.data.accuracyDisplay ? "Simple" : "Extensive");
 	}
 }
 
@@ -581,28 +581,7 @@ class AccuracyDOption extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Accuracy Mode - " + (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex");
-	}
-}
-
-class CustomizeGameplay extends Option
-{
-	public function new(desc:String)
-	{
-		super();
-		description = desc;
-	}
-
-	public override function press():Bool
-	{
-		trace("switch");
-		FlxG.switchState(new GameplayCustomizeState());
-		return false;
-	}
-
-	private override function updateDisplay():String
-	{
-		return "Customize Gameplay";
+		return "Accuracy Mode: " + (FlxG.save.data.accuracyMod == 0 ? "Accurate" : "Complex");
 	}
 }
 
@@ -678,11 +657,8 @@ class RatingColors extends Option
 		return "Rating Colors";
 }
 
-class StrumlineXOffset extends Option
+class StrumlineMargin extends Option
 {
-
-	// Want the strumline to be in the middle? Try 367!
-
 	public function new(desc:String)
 	{
 		super();
@@ -697,31 +673,58 @@ class StrumlineXOffset extends Option
 
 	private override function updateDisplay():String
 	{
-		return "Strumline X Offset";
+		return "Strumline Margin";
 	}
 	
 	override function right():Bool {
-		if (FlxG.keys.pressed.SHIFT)
-			FlxG.save.data.strumlineXOffset += 10;
-		else
-			FlxG.save.data.strumlineXOffset += 1;
+		if (!FlxG.save.data.middleScroll)
+		{
+			if (FlxG.keys.pressed.SHIFT)
+				FlxG.save.data.strumlineMargin += 10;
+			else
+				FlxG.save.data.strumlineMargin += 1;
+		}
 		return true;
 	}
 
 	override function left():Bool {
-		if (FlxG.keys.pressed.SHIFT)
-			FlxG.save.data.strumlineXOffset -= 10;
-		else
-			FlxG.save.data.strumlineXOffset -= 1;
+		if (!FlxG.save.data.middleScroll)
+		{
+			if (FlxG.keys.pressed.SHIFT)
+				FlxG.save.data.strumlineMargin -= 10;
+			else
+				FlxG.save.data.strumlineMargin -= 1;
+		}
 		return true;
 	}
 
 	override function getValue():String
 	{
-		return "X Offset: " + FlxG.save.data.strumlineXOffset
+		return (!FlxG.save.data.middleScroll ? "Margin: " + FlxG.save.data.strumlineMargin
 		+ "\n(LEFT or RIGHT to change)"
-		+ "\n(Hold SHIFT to add 10s.)";
+		+ "\n(Hold SHIFT to add 10s.)" : "DISABLED (Middle scroll is on!)");
 	}
+}
+
+class Middlescroll extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		dependantOption = FlxG.save.data.middleScroll;
+	}
+	
+	public override function press():Bool
+	{
+		FlxG.save.data.middleScroll = !FlxG.save.data.middleScroll;
+		display = updateDisplay();
+		dependantOption = FlxG.save.data.middleScroll;
+		return true;
+	}
+	
+	private override function updateDisplay():String
+		return "Middle Scroll";
 }
 
 class FamilyFriendly extends Option
@@ -1017,7 +1020,6 @@ class Watermarks extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.watermarks = !FlxG.save.data.watermarks;
-		(cast (Lib.current.getChildAt(0), Main)).toggleWM(FlxG.save.data.watermarks);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.watermarks;
 		return true;

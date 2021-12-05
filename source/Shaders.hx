@@ -24,6 +24,7 @@ class ChromaticAberration extends FlxShader
 
 			gl_FragColor = toUse;
 		}')
+		
 	public function new()
 	{
 		super();

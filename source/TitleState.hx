@@ -49,9 +49,6 @@ class TitleState extends MusicBeatState
 
 	override public function create():Void
 	{	
-		FlxG.fixedTimestep = false;
-		FlxG.mouse.useSystemCursor = true;
-		
 		#if sys
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
@@ -64,11 +61,7 @@ class TitleState extends MusicBeatState
 
         PlayerSettings.init();
 		Data.initSave();
-
-        FlxG.mouse.visible = false;
 		#end
-
-		FlxG.autoPause = false;
 
 		@:privateAccess
 		{
@@ -234,12 +227,6 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		if (FlxG.keys.justPressed.EIGHT)
-		{
-			if (FlxG.keys.pressed.SHIFT)
-				FlxG.switchState(new EditorCharacter());
-		}
-
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
 		#if mobile
@@ -343,7 +330,7 @@ class TitleState extends MusicBeatState
 			case 1:
 				createCoolText(['ninjamuffin99', 'phantomArcade', 'kawaisprite', 'evilsk8r']);
 			case 3:
-				addMoreText('presents');
+				addMoreText('present');
 			case 4:
 				deleteCoolText();
 			case 5:

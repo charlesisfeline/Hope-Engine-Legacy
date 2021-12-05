@@ -1,9 +1,5 @@
 package;
 
-#if sys
-import sys.FileSystem;
-import sys.io.File;
-#end
 import Conductor.BPMChangeEvent;
 import Section.SwagSection;
 import Song.SwagSong;
@@ -12,6 +8,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.addons.ui.Anchor;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
@@ -47,6 +44,10 @@ import openfl.net.FileReference;
 import openfl.utils.ByteArray;
 
 using StringTools;
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class ChartingState extends MusicBeatState
 {
@@ -415,6 +416,7 @@ class ChartingState extends MusicBeatState
 		var noteStyleDropDown = new FlxUIDropDownMenu(10, 130, FlxUIDropDownMenu.makeStrIdLabelArray(noteStyles, true), function(noteStyle:String)
 			{
 				_song.noteStyle = noteStyles[Std.parseInt(noteStyle)];
+				updateGrid();
 			});
 		noteStyleDropDown.selectedLabel = _song.noteStyle;
 
@@ -577,7 +579,7 @@ class ChartingState extends MusicBeatState
 
 		UI_box.addGroup(tab_group_misc);
 	}
-
+	
 	function loadSong(daSong:String):Void
 	{
 		if (FlxG.sound.music != null)

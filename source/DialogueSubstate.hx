@@ -55,6 +55,11 @@ class DialogueSubstate extends MusicBeatSubstate
     var desiredBgColor:FlxColor = FlxColor.fromString("#000000");
     var desiredBgDuration:Null<Float> = 0;
 
+    var desiredMusic:Null<String> = "breakfast";
+    var desiredFadeTo:Null<Float> = 0.8;
+    var desiredFadeFrom:Null<Float> = 0;
+    var desiredFadeDuration:Null<Float> = 1;
+
     var bg:FlxSprite;
 
     public function new(dialogues:Array<String>, style:DialogueStyle = NORMAL, ?onComplete:Void->Void)
@@ -77,16 +82,22 @@ class DialogueSubstate extends MusicBeatSubstate
         var settingsJSON = null;
 
         #if sys
-        if (FileSystem.exists(Sys.getCwd() + "assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"))
-            settingsJSON = Json.parse(File.getContent(Sys.getCwd() + "assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"));
+        if (FileSystem.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
+            settingsJSON = Json.parse(File.getContent(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
         #else
-        if (Assets.exists("assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"))
-            settingsJSON = Json.parse(Assets.getText("assets/data/" + PlayState.SONG.song.replace(" ", "-").toLowerCase() + "/dialogueSettings.json"));
+        if (Assets.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
+            settingsJSON = Json.parse(Assets.getText(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
         #end
 
         if (settingsJSON != null)
         {
             desiredBgAlpha = settingsJSON.bg.alpha != null ? settingsJSON.bg.alpha : 0.5;
+
+            desiredMusic = settingsJSON.bgMusic.name != null ? settingsJSON.bgMusic.name : "breakfast";
+            desiredFadeTo = settingsJSON.bgMusic.fadeIn.to != null ? settingsJSON.bgMusic.fadeIn.to : 0.8;
+            desiredFadeFrom = settingsJSON.bgMusic.fadeIn.from != null ? settingsJSON.bgMusic.fadeIn.from : 0;
+            desiredFadeDuration = settingsJSON.bgMusic.fadeIn.duration != null ? settingsJSON.bgMusic.fadeIn.duration : 1;
+            
             desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
             desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
         }
@@ -97,6 +108,10 @@ class DialogueSubstate extends MusicBeatSubstate
             bg.alpha = desiredBgAlpha;
         else
             FlxTween.tween(bg, {alpha: desiredBgAlpha}, desiredBgDuration, {ease: FlxEase.linear});
+
+        trace(Paths.music(desiredMusic));
+        FlxG.sound.playMusic(Paths.music(desiredMusic));
+        FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
 
         dialogueBox = new FlxSprite();
 

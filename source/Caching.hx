@@ -58,8 +58,7 @@ class Caching extends MusicBeatState
 
         PlayerSettings.init();
 		Data.initSave();
-
-        FlxG.mouse.visible = false;
+        
         FlxG.worldBounds.set(0,0);
 
         bitmapData = new Map<String,FlxGraphic>();
@@ -77,7 +76,7 @@ class Caching extends MusicBeatState
         loadingBarBG.makeGraphic(Std.int(loadingBar.width + 8), Std.int(loadingBar.height + 8), 0xFF000000);
         loadingBarBG.setPosition(loadingBar.x - 4, loadingBar.y - 4);
 
-        loadingText = new FlxText(0, 0, FlxG.width, "", 16);
+        loadingText = new FlxText(0, 0, FlxG.width, "GETTING FILES...", 16);
         loadingText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
         loadingText.screenCenter();
         loadingText.scrollFactor.set();

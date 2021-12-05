@@ -81,4 +81,12 @@ class EditorCharacter extends MusicBeatState
     {
         
     }
+
+    override function update(elapsed:Float) 
+    {
+        if (controls.BACK)
+            FlxG.switchState(new MainMenuState());
+        
+        super.update(elapsed);
+    }
 }

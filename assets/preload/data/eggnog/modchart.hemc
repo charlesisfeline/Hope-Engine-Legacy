@@ -1,6 +1,6 @@
 function onSongEnd()
 {
-    if (storyMode)
+    if (isStoryMode)
     {
         FlxG.cameras.fade(0xFF000000, 0);
         FlxG.sound.play(Paths.sound('Lights_Shut_off'));
