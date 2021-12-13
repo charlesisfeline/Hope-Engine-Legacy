@@ -104,54 +104,6 @@ class Data
 		if (FlxG.save.data.currentNoteSkin == null)
 			FlxG.save.data.currentNoteSkin = "default";
 
-		if (FlxG.save.data.answeredTheQuestion == null)
-			FlxG.save.data.answeredTheQuestion = false;
-
-		if (FlxG.save.data.completedDaWeek == null)
-			FlxG.save.data.completedDaWeek = false;
-
-
-		// Modifiers???
-		// Some of these might contain old/outdated descriptions
-		// I may have thought of cooler descriptions after adding them, lol
-		
-		if (FlxG.save.data.chaosMode == null)
-			FlxG.save.data.chaosMode = false;
-		// Everything goes wrong. Strumline notes will go to a random position every 5 seconds.
-
-		if (FlxG.save.data.fcOnly == null)
-			FlxG.save.data.fcOnly = false;
-		// Gets you blueballed if you miss.
-
-		if (FlxG.save.data.sicksOnly == null)
-			FlxG.save.data.sicksOnly = false;
-		// Gets you blueballed if you hit anything but a "Sick!!".
-
-		if (FlxG.save.data.goodsOnly == null)
-			FlxG.save.data.goodsOnly = false;
-		// Gets you blueballed if you hit anything but a "Good". (even a "Sick!!" will get you blueballed!)
-
-		if (FlxG.save.data.bothSides == null)
-			FlxG.save.data.bothSides = false;
-		// Play both sides. Combines both sides into 1.
-
-		if (FlxG.save.data.flashNotes == null)
-			FlxG.save.data.flashNotes = 0;
-		// (FLASHING LIGHTS) Flash Notes (white notes) will appear in the play field.
-
-		if (FlxG.save.data.deathNotes == null)
-			FlxG.save.data.deathNotes = 0;
-		// Tricky time. Death notes (black notes) will appear in the play field. Will instantly kill you.
-
-		if (FlxG.save.data.lifestealNotes == null)
-			FlxG.save.data.lifestealNotes = 0;
-		// Tabi time. Tabi notes (black-ish) will appear in the enemy's play field. Will damage you with your given damage.
-		// This has been renamed to "Lifesteal" notes because it sounds cooler. :)
-
-		if (FlxG.save.data.enemySide == null)
-			FlxG.save.data.enemySide = false;
-		// "I wish I could play his side. It looks harder" or "We have unequal sides, it's unfair!"
-
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();

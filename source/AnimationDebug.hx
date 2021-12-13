@@ -135,19 +135,13 @@ class AnimationDebug extends FlxState
 				camFollow.velocity.x = 0;
 		}
 		else
-		{
 			camFollow.velocity.set();
-		}
 
 		if (FlxG.keys.justPressed.W)
-		{
 			curAnim -= 1;
-		}
 
 		if (FlxG.keys.justPressed.S)
-		{
 			curAnim += 1;
-		}
 
 		if (curAnim < 0)
 			curAnim = animList.length - 1;

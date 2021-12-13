@@ -1,0 +1,21 @@
+{
+    "name" : "Flash Note",
+    "assetName" : "FLASH",
+    "canMiss" : true,
+    "canScore" : false,
+    "upSpriteOnly" : true,
+    "unblandWhat" : "direction",
+    "sprites" : {
+        "up" : {
+            "note" : {
+                "prefix" : "note"
+            },
+            "holdPiece" : {
+                "prefix" : "hold piece"
+            },
+            "holdEnd" : {
+                "prefix" :"hold end"
+            }
+        }
+    }
+}

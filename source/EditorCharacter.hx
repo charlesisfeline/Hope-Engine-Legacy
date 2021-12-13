@@ -53,19 +53,21 @@ class EditorCharacter extends MusicBeatState
     var _file:FileReference;
 	var UI_box:FlxUITabMenu;
 
-    var characterName:FlxInputText;
-    var animationName:FlxInputText;
-    var prefix:FlxInputText;
-    var postfix:FlxInputText;
+    var animList:Array<String> = [];
+	var curAnim:Int = 0;
 
     override function create() 
     {
         FlxG.mouse.visible = true;
         
+        var gridBG:FlxSprite = FlxGridOverlay.create(10, 10);
+		gridBG.scrollFactor.set(0.5, 0.5);
+		add(gridBG);
+        
         var tabs = [
-			{name: "Assets", label: 'Assets'},
-            {name: "Animations", label: 'Animations'},
-            {name: "Miscellaneous", label: 'Miscellaneous'}
+            {name: "1", label: 'Assets'},
+            {name: "2", label: 'Animations'},
+            {name: "3", label: 'Miscellaneous'}
 		];
         
         UI_box = new FlxUITabMenu(null, tabs, true);
@@ -75,17 +77,60 @@ class EditorCharacter extends MusicBeatState
 		UI_box.x = FlxG.width - UI_box.width - 20;
 		UI_box.y = 20;
 		add(UI_box);
+
+        addAssetStuff();
     }
 
+    var characterName:FlxInputText;
+    var assetPath:FlxInputText;
+
     function addAssetStuff():Void
+    {
+        var characterNameLabel = new FlxText(10, 10, 0, "Character Name");
+        characterName = new FlxUIInputText(10, characterNameLabel.y + characterNameLabel.height, 150);
+
+        var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
+        assetPath = new FlxUIInputText(10, assetPathLabel.y + assetPathLabel.height, 150);
+
+        var tab_group_assets = new FlxUI(null, UI_box);
+        tab_group_assets.name = "1";
+        tab_group_assets.add(characterNameLabel);
+        tab_group_assets.add(characterName);
+        tab_group_assets.add(assetPathLabel);
+        tab_group_assets.add(assetPath);
+
+        UI_box.addGroup(tab_group_assets);
+		UI_box.scrollFactor.set();
+    }
+
+    var animationName:FlxInputText;
+    var animationDropdown:FlxUIDropDownMenu;
+    var frameRate:FlxInputText;
+    var prefix:FlxInputText;
+    var postfix:FlxInputText;
+
+    function addAnimStuff():Void
     {
         
     }
 
+    function addMiscStuff():Void
+    {
+        
+    }
+
+    function reloadCharacter()
+    {
+
+    }
+
     override function update(elapsed:Float) 
     {
-        if (controls.BACK)
+        if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+        {
             FlxG.switchState(new MainMenuState());
+            FlxG.mouse.visible = false;
+        }
         
         super.update(elapsed);
     }

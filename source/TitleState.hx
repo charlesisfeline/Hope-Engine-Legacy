@@ -29,7 +29,7 @@ using StringTools;
 import Discord.DiscordClient;
 #end
 
-#if cpp
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 import sys.thread.Thread;
@@ -52,6 +52,7 @@ class TitleState extends MusicBeatState
 		#if sys
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
+		
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
 			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
 
@@ -89,10 +90,10 @@ class TitleState extends MusicBeatState
 
 		super.create();
 
-		new FlxTimer().start((initialized ? 0 : 2), function(tmr:FlxTimer)
-		{
+		// new FlxTimer().start(0, function(tmr:FlxTimer)
+		// {
 			startIntro();
-		});
+		// });
 	}
 
 	var logoBl:FlxSprite;
@@ -116,10 +117,6 @@ class TitleState extends MusicBeatState
 
 			transIn = FlxTransitionableState.defaultTransIn;
 			transOut = FlxTransitionableState.defaultTransOut;
-			
-			// FlxTransitionableState.defaultTransIn.tweenOptions = {onStart: function(twn:FlxTween) {
-			// 	trace("YOU'RE IN");
-			// }};
 
 			// HAD TO MODIFY SOME BACKEND SHIT
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
@@ -138,19 +135,27 @@ class TitleState extends MusicBeatState
 				}
 			}
 
-			FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
-			Conductor.changeBPM(102);
-			FlxG.sound.music.fadeIn(4, 0, 0.7);
+			// this as well
+			#if desktop
+			for (mod in FileSystem.readDirectory('mods'))
+			{
+				Paths.currentMod = mod;
+				if (FileSystem.exists(Sys.getCwd() + Paths.dotLoadModFile(mod)))
+					CoolUtil.loadCustomDifficulties();
+			}
+
+			Paths.currentMod = null;
+			#end
+
+			new FlxTimer().start(2, function(tmr:FlxTimer)
+			{
+				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
+				Conductor.changeBPM(102);
+				FlxG.sound.music.fadeIn(4, 0, 0.7);
+			});
 		}
 		
 		persistentUpdate = true;
-
-		// var bg:FlxSprite = FlxGradient.createGradientFlxSprite(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5), [0xFFad34ff, 0xFF000000], 1, -90);
-		// bg.alpha = 0;
-		// bg.screenCenter();
-		// add(bg);
-
-		// FlxTween.tween(bg, {alpha: 0.25}, 2.7);
 
 		logoBl = new FlxSprite(25, 25).loadGraphic(Paths.image('YEAHHH WE FUNKIN'));
 		logoBl.setGraphicSize(0, 425);

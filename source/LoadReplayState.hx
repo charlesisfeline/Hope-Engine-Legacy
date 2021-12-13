@@ -238,7 +238,6 @@ class LoadReplayState extends MusicBeatState
 
 	function deleteReplay()
 	{
-		trace('DELETING 1 REPLAY');
 		#if sys
 		FileSystem.deleteFile(Sys.getCwd() + "/assets/replays/" + actualNames[curSelected]);
         #end
@@ -247,7 +246,6 @@ class LoadReplayState extends MusicBeatState
 
 	function deleteAllReplays()
 	{
-		trace('DELETING ALL REPLAYS');
 		#if sys
 		for (name in actualNames)
 		{
@@ -261,10 +259,6 @@ class LoadReplayState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		#if !switch
-		// NGio.logEvent('Fresh');
-		#end
-		
 		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
 		curSelected += change;

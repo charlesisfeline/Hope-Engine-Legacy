@@ -1,22 +1,58 @@
 package;
 
+#if sys
+import sys.FileSystem;
+import sys.io.File;
+#end
 import lime.utils.Assets;
 
 using StringTools;
 
 class CoolUtil
 {
-	public static var difficultyArray:Array<String> = ['EASY', "NORMAL", "HARD"];
+	public static var difficultyArray:Array<Array<String>> = [
+		['EASY'		, '-easy', 		null],
+		['NORMAL'	, '', 			null],
+		['HARD'		, '-hard', 		null]
+	];
 
 	public static function difficultyFromInt(difficulty:Int):String
 	{
-		return difficultyArray[difficulty];
+		return difficultyArray[difficulty][0];
 	}
 
 	public static function difficultyString():String
 	{
-		return difficultyArray[PlayState.storyDifficulty];
+		return difficultyArray[PlayState.storyDifficulty][0];
 	}
+
+	public static function difficultySuffixfromInt(difficulty:Int):String
+	{
+		return difficultyArray[difficulty][1];
+	}
+
+	public static function difficultySuffix():String
+	{
+		return difficultyArray[PlayState.storyDifficulty][1];
+	}
+
+	#if desktop
+	public static function loadCustomDifficulties():Void
+	{
+		if (FileSystem.exists(Paths.txt('customDifficulties')))
+		{
+			var difficultyFile:Array<String> = coolStringFile(File.getContent(Paths.txt('customDifficulties')));
+
+			for (diff in difficultyFile)
+			{
+				var a = diff.split(':');
+
+				difficultyArray.push([a[0], a[1], Paths.currentMod]);
+				trace("difficulty loaded lmao: " + a[0], a[1], Paths.currentMod);
+			}
+		}
+	}
+	#end
 
 	public static function coolTextFile(path:String):Array<String>
 	{

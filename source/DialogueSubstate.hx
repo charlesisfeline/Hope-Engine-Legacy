@@ -109,7 +109,6 @@ class DialogueSubstate extends MusicBeatSubstate
         else
             FlxTween.tween(bg, {alpha: desiredBgAlpha}, desiredBgDuration, {ease: FlxEase.linear});
 
-        trace(Paths.music(desiredMusic));
         FlxG.sound.playMusic(Paths.music(desiredMusic));
         FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
 

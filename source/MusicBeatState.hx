@@ -39,16 +39,6 @@ class MusicBeatState extends FlxUIState
 		super.create();
 	}
 
-	var array:Array<FlxColor> = [
-		FlxColor.fromRGB(148, 0, 211),
-		FlxColor.fromRGB(75, 0, 130),
-		FlxColor.fromRGB(0, 0, 255),
-		FlxColor.fromRGB(0, 255, 0),
-		FlxColor.fromRGB(255, 255, 0),
-		FlxColor.fromRGB(255, 127, 0),
-		FlxColor.fromRGB(255, 0 , 0)
-	];
-
 	override function update(elapsed:Float)
 	{
 		//everyStep();
@@ -72,8 +62,6 @@ class MusicBeatState extends FlxUIState
 		curBeat = Math.floor(curStep / 4);
 	}
 
-	public static var currentColor = 0;
-
 	private function updateCurStep():Void
 	{
 		var lastChange:BPMChangeEvent = {
@@ -92,7 +80,6 @@ class MusicBeatState extends FlxUIState
 
 	public function stepHit():Void
 	{
-
 		if (curStep % 4 == 0)
 			beatHit();
 	}

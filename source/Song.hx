@@ -7,6 +7,7 @@ import lime.utils.Assets;
 
 using StringTools;
 #if sys
+import sys.FileSystem;
 import sys.io.File;
 #end
 
@@ -51,7 +52,7 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:String, ?mod:String = ""):SwagSong
 	{
 		trace(jsonInput);
-		
+
 		// pre lowercasing the song name (update)
 		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
 		

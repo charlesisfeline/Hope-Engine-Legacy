@@ -212,8 +212,6 @@ class KeyBindMenu extends FlxSubState
 
         for(x in blacklist){notAllowed.push(x);}
 
-        trace(notAllowed);
-
         for(x in 0...keys.length)
             {
                 var oK = keys[x];

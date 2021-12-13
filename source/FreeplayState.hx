@@ -47,8 +47,8 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-
 		persistentUpdate = persistentDraw = true;
+		Paths.setCurrentMod(null);
 
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
 
@@ -61,8 +61,10 @@ class FreeplayState extends MusicBeatState
 		#if desktop
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
-			var frepla = Sys.getCwd() + "mods/" + i + "/assets/data/freeplaySonglist.txt";
-			if (FileSystem.exists(frepla))
+			Paths.currentMod = i;
+			var frepla = Paths.txt('freeplaySonglist');
+			
+			if (FileSystem.exists(frepla) && FileSystem.exists(Sys.getCwd() + Paths.dotLoadModFile(i)))
 			{
 				var songlist = CoolUtil.coolStringFile(File.getContent(frepla));
 				
@@ -73,6 +75,8 @@ class FreeplayState extends MusicBeatState
 				}
 			}
 		}
+
+		Paths.currentMod = null;
 		#end
 
 		#if windows
@@ -212,13 +216,10 @@ class FreeplayState extends MusicBeatState
 		var accepted = controls.ACCEPT;
 
 		if (upP)
-		{
 			changeSelection(-1);
-		}
+
 		if (downP)
-		{
 			changeSelection(1);
-		}
 
 		if (FlxG.keys.justPressed.V)
 			playMusic(false);
@@ -233,22 +234,21 @@ class FreeplayState extends MusicBeatState
 
 		if (accepted)
 		{
-			var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
+			var mod = (songs[curSelected].mod != null ? songs[curSelected].mod + "/" : "");
 			var songLowercase = songs[curSelected].songName.toLowerCase();
-			var poop:String = Highscore.formatSong(StringTools.replace(songLowercase, " ", "-"), curDifficulty);
-			var songPath = mod + '/assets/data/' + songLowercase + '/' + poop + ".json";
+			var poop:String = StringTools.replace(songLowercase, " ", "-") + CoolUtil.difficultySuffixfromInt(curDifficulty);
+			var songPath = mod + 'assets/data/' + songLowercase + '/' + poop + ".json";
 			
 			#if sys
 			if (FileSystem.exists(Sys.getCwd() + songPath))
 			#else
-			if (Assets.exists(songPath))
+			if (Assets.exists('assets/data/' + songLowercase + '/' + poop + ".json")) // crap fix i know shut UP
 			#end
 			{
 				PlayState.SONG = Song.loadFromJson(poop, songLowercase, mod);
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
 				PlayState.storyWeek = songs[curSelected].week;
-				trace('CUR WEEK' + PlayState.storyWeek);
 				LoadingState.loadAndSwitchState(new PlayState());
 			}
 			else
@@ -266,8 +266,8 @@ class FreeplayState extends MusicBeatState
 		curDifficulty += change;
 
 		if (curDifficulty < 0)
-			curDifficulty = 2;
-		if (curDifficulty > 2)
+			curDifficulty = CoolUtil.difficultyArray.length - 1;
+		if (curDifficulty > CoolUtil.difficultyArray.length - 1)
 			curDifficulty = 0;
 
 		// adjusting the highscore song name to be compatible (changeDiff)
@@ -281,15 +281,8 @@ class FreeplayState extends MusicBeatState
 		rankImage.scale.set(0.35, 0.35);
 		rankImage.updateHitbox();
 
-		switch (curDifficulty)
-		{
-			case 0:
-				diffText.text = "< EASY >";
-			case 1:
-				diffText.text = '< NORMAL >';
-			case 2:
-				diffText.text = "< HARD >";
-		}
+		
+		diffText.text = "< "+ CoolUtil.difficultyFromInt(curDifficulty) +" >";
 	}
 
 	function changeSelection(change:Int = 0)
@@ -324,8 +317,6 @@ class FreeplayState extends MusicBeatState
 		#if desktop
 		if (songs[curSelected].mod != null)
 			Paths.setCurrentMod(songs[curSelected].mod.split('/')[1]);
-
-		trace(songs[curSelected].mod.split('/')[1]);
 		#end
 
 		#if PRELOAD_ALL

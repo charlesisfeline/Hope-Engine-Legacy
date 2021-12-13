@@ -426,7 +426,6 @@ class Character extends FlxSprite
 				updateHitbox();
 				
 				antialiasing = false;
-				flipX = true;
 			case 'senpai':
 				frames = Paths.getSparrowAtlas('characters/senpai');
 				animation.addByPrefix('idle', 'Senpai Idle', 24, false);
@@ -509,59 +508,6 @@ class Character extends FlxSprite
 				addOffset("singRIGHT-alt", -1, -24);
 				addOffset("singLEFT-alt", -30, 15);
 				addOffset("singDOWN-alt", -30, -27);
-
-				playAnim('idle');
-			case 'kube-beta':
-				frames = Paths.getSparrowAtlas('characters/kube-beta');
-				animation.addByPrefix('idle', 'kube idle', 24, false);
-				animation.addByPrefix('singUP', 'kube up', 24, false);
-				animation.addByPrefix('singDOWN', 'kube down', 24, false);
-				animation.addByPrefix('singLEFT', 'kube left', 24, false);
-				animation.addByPrefix('singRIGHT', 'kube right', 24, false);
-
-				addOffset('idle', -60, -160);
-				addOffset("singUP", -40, -160);
-				addOffset("singRIGHT", -100, -170);
-				addOffset("singLEFT", -50, -175);
-				addOffset("singDOWN", -50, -170);
-
-				antialiasing = true;
-				scale.set(2, 2);
-				updateHitbox();
-
-				playAnim('idle');
-			case 'kube-off':
-				frames = Paths.getSparrowAtlas('characters/kube-off');
-				animation.addByPrefix('idle', 'kube-off idle', 24, false);
-				animation.addByPrefix('singUP', 'kube-off up', 24, false);
-				animation.addByPrefix('singDOWN', 'kube-off down', 24, false);
-				animation.addByPrefix('singLEFT', 'kube-off left', 24, false);
-				animation.addByPrefix('singRIGHT', 'kube-off right', 24, false);
-
-				addOffset('idle');
-				addOffset("singUP");
-				addOffset("singRIGHT");
-				addOffset("singLEFT");
-				addOffset("singDOWN");
-				updateHitbox();
-
-				playAnim('idle');
-			case 'kube':
-				frames = Paths.getSparrowAtlas('characters/kube');
-				animation.addByPrefix('idle', 'kube idle', 12, false);
-				animation.addByPrefix('singUP', 'kube up', 24, false);
-				animation.addByPrefix('singDOWN', 'kube down', 24, false);
-				animation.addByPrefix('singLEFT', 'kube left', 24, false);
-				animation.addByPrefix('singRIGHT', 'kube right', 24, false);
-
-				addOffset('idle');
-				addOffset("singUP");
-				addOffset("singRIGHT");
-				addOffset("singLEFT");
-				addOffset("singDOWN");
-
-				setGraphicSize(Std.int(width * 1.1));
-				updateHitbox();
 
 				playAnim('idle');
 			case 'mic':

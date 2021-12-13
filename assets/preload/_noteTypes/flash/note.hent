@@ -1,0 +1,32 @@
+// note: if you know what you're doing, feel free to modify
+
+function onNoteHit(note)
+{
+    // happens/executes when this specific note gets hit properly
+
+    PlayState.health -= 0.05;
+    FlxG.sound.play(Paths.sound('note sounds/flash'), 0.5);
+
+    if (FlxG.save.data.flashing)
+        FlxG.cameras.flash(0xFFFFFFFF, 1.5, null, true);
+
+    boyfriend.stunned = true;
+
+    var fuckYou = new FlxText(0, 0, FlxG.width, "STUNNED!");
+    fuckYou.setFormat(Paths.font("vcr.ttf"), 72, FlxColor("WHITE"), FlxTextAlign.CENTER, FlxTextBorderStyle.OUTLINE, FlxColor("BLACK"));
+    fuckYou.borderSize = 5;
+    fuckYou.cameras = [camHUD];
+    fuckYou.screenCenter();
+    add(fuckYou);
+
+    new FlxTimer().start(0.5, function(tmr:FlxTimer)
+    {
+        boyfriend.stunned = false;
+        
+        FlxTween.tween(fuckYou, {alpha: 0}, 0.1, {onComplete: function(twn:FlxTween) 
+        {
+            remove(fuckYou);
+            fuckYou = null;
+        }});
+    });
+}

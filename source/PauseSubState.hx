@@ -33,21 +33,6 @@ class PauseSubState extends MusicBeatSubstate
 	
 	var offsetChanged:Bool = false;
 
-	public static var modifierNames:Array<String> = [
-		"MODIFIERS:",
-		"Botplay",
-		"Chaos",
-		"Hidden",
-		"No Miss",
-		"Sicks Only",
-		"Goods Only",
-		"Both Sides",
-		"Enemy's Side",
-		"Flash Notes",
-		"Death Notes",
-		"Lifesteal Notes"
-	];
-
 	public function new()
 	{
 		super();
@@ -85,40 +70,6 @@ class PauseSubState extends MusicBeatSubstate
 
 		var modLoops:Int = 0;
 		var currentMod:Int = 0;
-
-		var modifiers:Array<Bool> = [
-			true,
-			FlxG.save.data.botplay,
-			FlxG.save.data.chaosMode, 
-			FlxG.save.data.hiddenMode, 
-			FlxG.save.data.fcOnly, 
-			FlxG.save.data.sicksOnly,  
-			FlxG.save.data.goodsOnly,
-			FlxG.save.data.bothSides,
-			FlxG.save.data.enemySide,
-			FlxG.save.data.flashNotes != 0,
-			FlxG.save.data.deathNotes != 0,
-			FlxG.save.data.lifestealNotes != 0
-		];
-
-		for (mod in modifiers)
-		{
-			if (mod)
-			{
-				modLoops++;
-				var modText:FlxText = new FlxText(20, 79 + (32 * modLoops), 0, modifierNames[currentMod], 32);
-				modText.scrollFactor.set();
-				modText.alignment = RIGHT;
-				modText.setFormat(Paths.font('vcr.ttf'), 32);
-				modText.updateHitbox();
-				modText.x = FlxG.width - (modText.width + 20);
-				add(modText);
-
-				modText.alpha = 0;
-				FlxTween.tween(modText, {alpha: 1, y: modText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: (0.7 + (0.2 * modLoops))});
-			}
-			currentMod++;
-		}
 
 		if (modLoops == 1) 
 		{

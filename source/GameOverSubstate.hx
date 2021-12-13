@@ -34,7 +34,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			case 'bf-pixel':
 				stageSuffix = '-pixel';
 				daBf = 'bf-pixel-dead';
-			case 'bf' | 'bf-christmas':
+			case 'bf' | 'bf-christmas' | 'bf-car':
 				daBf = 'bf';
 			default:
 				daBf = 'mic';
@@ -76,7 +76,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		FlxTween.tween(restartImage, {"scale.x": piss}, 0.5, {ease: FlxEase.backOut});
 
-		deathReason = new FlxText(0, FlxG.height * 0.8, FlxG.width, "You died to a ", 64);
+		deathReason = new FlxText(0, FlxG.height * 0.8, FlxG.width, "", 64);
 		deathReason.color = FlxColor.WHITE;
 		deathReason.alignment = CENTER;
 		deathReason.y = bf.y + 250;
@@ -88,62 +88,13 @@ class GameOverSubstate extends MusicBeatSubstate
 		deathReasonClone.y = bf.y + 250;
 		deathReasonClone.setBorderStyle(FlxTextBorderStyle.OUTLINE, 0xFF3333cc, 10);
 
-		// Fuck me, LMAO
-
-		if (FlxG.save.data.fcOnly && PlayState.misses != 0)
-			deathReason.text += "miss!";
-
-		if (FlxG.save.data.sicksOnly)
-		{
-			if (PlayState.goods != 0)
-				deathReason.text += "\"Good\"!";
-			else if (PlayState.bads != 0)
-				deathReason.text += "\"Bad\"!";
-			else if (PlayState.shits != 0)
-				deathReason.text += "\"Shit\"!";
-		}
-
-		if (FlxG.save.data.goodsOnly)
-		{
-			if (PlayState.sicks != 0)
-				deathReason.text += "\"Sick!!\"!";
-			else if (PlayState.bads != 0)
-				deathReason.text += "\"Bad\"!";
-			else if (PlayState.shits != 0)
-				deathReason.text += "\"Shit\"!";
-		}
-
-		if (FlxG.save.data.fcOnly && PlayState.misses != 0 && FlxG.save.data.botplay)
-			deathReason.text += "\n(The \"bot\" can miss!)";
-
-		deathReasonClone.y = deathReason.y;
-		deathReasonClone.text += deathReason.text;
-		
-		if (FlxG.save.data.fcOnly || FlxG.save.data.sicksOnly || FlxG.save.data.goodsOnly)
-		{
-			deathReason.x = bf.getGraphicMidpoint().x - deathReason.width / 2;
-			deathReasonClone.x = bf.getGraphicMidpoint().x - deathReasonClone.width / 2;
-			remove(bf);
-			add(deathReasonClone);
-			add(bf);
-			add(deathReason);
-		}
-
-		if (cause != null) 
-		{
-			switch (cause)
-			{
-				case 'deathNote':
-					bf.visible = false;
-					deathReason.visible = false;
-					deathReasonClone.visible = false;
-					restartImage.visible = false;
-					wellRip = new FlxText(bf.getGraphicMidpoint().x - deathReasonClone.width / 2, FlxG.height * 0.8, FlxG.width, "you died to a death note.");
-					wellRip.scrollFactor.set();
-					wellRip.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-					add(wellRip);
-			}
-		}
+		// shitty layering but it works
+		deathReason.x = bf.getGraphicMidpoint().x - deathReason.width / 2;
+		deathReasonClone.x = bf.getGraphicMidpoint().x - deathReasonClone.width / 2;
+		remove(bf);
+		add(deathReasonClone);
+		add(bf);
+		add(deathReason);
 	}
 
 	var stopQuitting = false;
@@ -246,7 +197,6 @@ class GameOverSubstate extends MusicBeatSubstate
 		remove(restartImage);
 		remove(deathReason);
 		remove(deathReasonClone);
-		remove(wellRip);
 
 		new FlxTimer().start(0.7, function(tmr:FlxTimer)
 		{

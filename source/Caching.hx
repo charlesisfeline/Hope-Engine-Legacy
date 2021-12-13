@@ -12,10 +12,8 @@ import openfl.display.BitmapData;
 import openfl.utils.Assets;
 
 using StringTools;
-#if desktop
-import Discord.DiscordClient;
-#end
-#if cpp
+
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -45,11 +43,11 @@ class Caching extends MusicBeatState
 
     var tips:Array<String> = [
         "Turn on Family Friendly in the\noptions if you have to!",
-        "Going to the options 6 times does something!", // mod exclusive
         "Note Skins are available!\nGo follow how the \"Swag\" skin does it!",
         "Hate the results screen?\nTurn it off in the options!",
-        "Modifiers exist.",
-        "Wanna see how you did in a song?\nGo to Options > Misc > Replays!"
+        "Wanna see how you did in a song?\nGo to Options > Misc > Replays!",
+        "Wanna work on my fnf mod?\nIts gonna have 300 weeks i need 500 artists 200 charters 400 composers no pay though im a minor",
+        ""
     ];
 
     override function create() 
@@ -76,7 +74,7 @@ class Caching extends MusicBeatState
         loadingBarBG.makeGraphic(Std.int(loadingBar.width + 8), Std.int(loadingBar.height + 8), 0xFF000000);
         loadingBarBG.setPosition(loadingBar.x - 4, loadingBar.y - 4);
 
-        loadingText = new FlxText(0, 0, FlxG.width, "GETTING FILES...", 16);
+        loadingText = new FlxText(0, 0, FlxG.width, "GETTING FILES", 16);
         loadingText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
         loadingText.screenCenter();
         loadingText.scrollFactor.set();

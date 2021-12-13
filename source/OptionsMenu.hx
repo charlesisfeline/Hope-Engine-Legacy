@@ -71,18 +71,6 @@ class OptionsMenu extends MusicBeatState
 			new StrumlineMargin("Change the how far away the notes should be from the side of the screen."),
 			new Middlescroll("Put the notes in the middle.")
 		]),
-
-		new OptionCategory("Modifiers", [
-			new ChaosMode("Every time the camera zooms in, the arrow positions will change."),
-			new FcOnly("Gets you blueballed if you miss."),
-			new SicksOnly("Gets you blueballed if you hit anything but a \"Sick!!\".\n(Overrides \"Goods Only\")"),
-			new GoodsOnly("Gets you blueballed if you hit anything but a \"Good\".\n(Even a \"Sick!!\" will get you blueballed!)"),
-			new BothSides("Play both sides. Combines both sides into 1."),
-			new EnemySide("Makes you play as the enemy.\n(BETA! Some aspects may not be reversed.)"),
-			new FlashNotes("(FLASHING LIGHTS) Say cheese! Flash Notes (colored white)\nwill appear in the play field. Causes a flash when hit."),
-			new DeathNotes("Tricky time. Death Notes (colored black-red) will appear \nin the play field. Cause an instant death when hit."),
-			new LifestealNotes("Tabi time. Lifesteal notes (colored black + note color) will appear in the enemy's play field. Will damage you.")
-		]),
 		
 		new OptionCategory("Miscellaneous", [
 			new OptionSubCatTitle("MISCELLANEOUS"),

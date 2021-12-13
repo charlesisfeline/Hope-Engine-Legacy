@@ -1,0 +1,28 @@
+// note: if you know what you're doing, feel free to modify
+
+function onNoteHit(note)
+{
+    playerStrums.forEach(function(spr) 
+    {
+        if (spr.ID == 0)
+        {
+            spr.y = FlxG.random.int(100, Std.int(FlxG.height - spr.height - 100));
+            spr.x = FlxG.random.int(0, (FlxG.width / 2) - (FlxG.width / 4) - spr.width);
+        }
+        else if (spr.ID == 1)
+        {
+            spr.y = FlxG.random.int(100, Std.int(FlxG.height - spr.height - 100));
+            spr.x = FlxG.random.int(FlxG.width / 4, FlxG.width / 2 - spr.width);
+        }
+        else if (spr.ID == 2)
+        {
+            spr.y = FlxG.random.int(100, Std.int(FlxG.height - spr.height - 100));
+            spr.x = FlxG.random.int(FlxG.width / 2, FlxG.width - (FlxG.width / 4) - spr.width);
+        }
+        else if (spr.ID == 3)
+        {
+            spr.y = FlxG.random.int(100, Std.int(FlxG.height - spr.height - 100));
+            spr.x = FlxG.random.int((FlxG.width / 2) + (FlxG.width / 4), FlxG.width - spr.width);
+        }
+    });
+}

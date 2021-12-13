@@ -7,7 +7,8 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-#if desktop
+
+#if sys
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -35,7 +36,6 @@ class Paths
 	static public function setCurrentMod(name:String)
 	{
 		currentMod = (name == null ? null : name);
-		trace(currentMod);
 	}
 
 	static function getPath(file:String, type:AssetType, library:Null<String>)
@@ -132,6 +132,11 @@ class Paths
 
 	inline static public function txt(key:String, ?library:String)
 	{
+		#if desktop
+		if (currentMod != null)
+			return modTxt(key, library);
+		#end
+		
 		return getPath('data/$key.txt', TEXT, library);
 	}
 
@@ -142,12 +147,42 @@ class Paths
 
 	inline static public function json(key:String, ?library:String)
 	{
+		#if desktop
+		if (currentMod != null)
+			return modJson(key, library);
+		#end
+		
 		return getPath('data/$key.json', TEXT, library);
 	}
 
 	inline static public function characterJson(key:String)
 	{
+		#if desktop
+		if (currentMod != null)
+			return 'mods/$currentMod/assets/_characters/$key.json';
+		#end
+		
 		return 'assets/_characters/$key.json';
+	}
+
+	inline static public function noteJSON(key:String, mod:String)
+	{
+		#if desktop
+		if (mod != "hopeEngine")
+			return 'mods/$mod/assets/_noteTypes/$key/note.json';
+		#end
+
+		return 'assets/_noteTypes/$key/note.json';
+	}
+
+	inline static public function noteHENT(key:String, mod:String) // you know, I had a crisis between "hent" and "heNT" when naming the files
+	{
+		#if desktop
+		if (mod != "hopeEngine")
+			return 'mods/$mod/assets/_noteTypes/$key/note.hent';
+		#end
+
+		return 'assets/_noteTypes/$key/note.hent';
 	}
 
 	static public function sound(key:String, ?library:String):Dynamic
@@ -244,6 +279,7 @@ class Paths
 	{
 		return 'assets/fonts/$key';
 	}
+	
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
@@ -256,49 +292,69 @@ class Paths
 	}
 
 	#if desktop
+	inline static public function dotLoadModFile(mod:String) // the ".loadMod" file
+	{
+		return 'mods/$mod/.loadMod';
+	}
+
+	inline static public function modInfoFile(mod:String) // mod-info.json
+	{
+		return 'mods/$mod/mod-info.json';
+	}
+
 	inline static public function modInst(song:String)
 	{
-		return 'mods/${currentMod}/assets/songs/${song}/Inst.$SOUND_EXT';
+		return 'mods/$currentMod/assets/songs/${song}/Inst.$SOUND_EXT';
 	}
 
 	inline static public function modVoices(song:String)
 	{
-		return 'mods/${currentMod}/assets/songs/${song}/Voices.$SOUND_EXT';
+		return 'mods/$currentMod/assets/songs/${song}/Voices.$SOUND_EXT';
 	}
 
 	inline static public function modMusic(key:String, ?library:String)
 	{
-		return 'mods/${currentMod}/' + getPath('music/$key.$SOUND_EXT', MUSIC, library);
+		return 'mods/$currentMod/' + getPath('music/$key.$SOUND_EXT', MUSIC, library);
 	}
 
 	inline static public function modSound(key:String, ?library:String)
 	{
-		return 'mods/${currentMod}/' + getPath('sounds/$key.$SOUND_EXT', MUSIC, library);
+		return 'mods/$currentMod/' + getPath('sounds/$key.$SOUND_EXT', MUSIC, library);
 	}
 
 	inline static public function modImage(image:String, ?library:String)
 	{
-		return 'mods/${currentMod}/' + getPath('images/$image.png', IMAGE, library);
+		return 'mods/$currentMod/' + getPath('images/$image.png', IMAGE, library);
 	}
 
 	inline static public function modModchart(key:String, ?library:String) // I am so fucking terrified
 	{
-		return 'mods/${currentMod}/' + getPath('data/$key.hemc', TEXT, library);
+		return 'mods/$currentMod/' + getPath('data/$key.hemc', TEXT, library);
 	}
 
 	inline static public function modDialogueStartFile(key:String)
 	{
-		return 'mods/${currentMod}/assets/data/${key}/dialogueStart.txt';
+		return 'mods/$currentMod/assets/data/${key}/dialogueStart.txt';
 	}
 
 	inline static public function modDialogueEndFile(key:String)
 	{
-		return 'mods/${currentMod}/assets/data/${key}/dialogueEnd.txt';
+		return 'mods/$currentMod/assets/data/${key}/dialogueEnd.txt';
 	}
 
 	inline static public function modDialogueSettingsFile(key:String)
 	{
-		return 'mods/${currentMod}/assets/data/${key}/dialogueSettings.json';
+		return 'mods/$currentMod/assets/data/${key}/dialogueSettings.json';
+	}
+
+	inline static public function modTxt(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('data/$key.txt', TEXT, library);
+	}
+
+	inline static public function modJson(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('data/$key.json', TEXT, library);
 	}
 	#end
 }

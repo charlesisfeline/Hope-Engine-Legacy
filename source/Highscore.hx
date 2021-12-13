@@ -18,7 +18,7 @@ class Highscore
 	{
 		var daSong:String = formatSong(song, diff);
 		
-		if (getModifierShit())
+		if (!FlxG.save.data.botplay)
 		{
 			if (songScores.exists(daSong))
 			{
@@ -29,12 +29,12 @@ class Highscore
 				setScore(daSong, score);
 		}
 		else 
-			trace('A modifier is on! Score isn\'t saved :)');
+			trace('Botplay\'s on, no score saved');
 	}
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
 	{
-		if (getModifierShit())
+		if (!FlxG.save.data.botplay)
 		{
 			var daWeek:String = formatSong('week' + week, diff);
 
@@ -47,14 +47,14 @@ class Highscore
 				setScore(daWeek, score);
 		}
 		else 
-			trace('A modifier is on! Week Score isn\'t saved :)');
+			trace('Botplay\'s on, no score saved');
 	}
 
 	public static function saveRank(song:String, rank:Int = 0, ?diff:Int = 0):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
-		if (getModifierShit())
+		if (!FlxG.save.data.botplay)
 		{
 			if (songRanks.exists(daSong))
 			{
@@ -65,7 +65,7 @@ class Highscore
 				setRank(daSong, rank);
 		}
 		else 
-			trace('A modifier is on! Rank isn\'t saved :)');
+			trace('Botplay\'s on, no score saved');
 	}
 
 	/**
@@ -86,72 +86,17 @@ class Highscore
 		FlxG.save.data.songRanks = songRanks;
 		FlxG.save.flush();
 	}
-
-	/**
-	 * Get modifier shit.
-	 * `check` returns `true` when all modifiers are off.
-	 * `list` returns the array of bools.
-	 * `nameList` retuns the array of strings.
-	 * 
-	 * @param type "check", "list", "nameList"
-	 */
-	public static function getModifierShit(type:String = 'check'):Dynamic
-	{
-		var modifierNames:Array<String> = [
-			"Botplay",
-			"Chaos",
-			"Hidden",
-			"No Miss",
-			"Sicks Only",
-			"Goods Only",
-			"Both Sides",
-			"Enemy's Side",
-			"Flash Notes",
-			"Death Notes",
-			"Lifesteal Notes"
-		];
-
-		var modifiers:Array<Bool> = [
-			FlxG.save.data.botplay,
-			FlxG.save.data.chaosMode, 
-			FlxG.save.data.hiddenMode, 
-			FlxG.save.data.fcOnly, 
-			FlxG.save.data.sicksOnly,  
-			FlxG.save.data.goodsOnly,
-			FlxG.save.data.bothSides,
-			FlxG.save.data.enemySide,
-			FlxG.save.data.flashNotes != 0,
-			FlxG.save.data.deathNotes != 0,
-			FlxG.save.data.lifestealNotes != 0
-		];
-
-		switch (type)
-		{
-			case 'nameList':
-				var toReturn = [];
-				for (i in 0...modifiers.length) 
-				{
-					if (modifiers[i])
-						toReturn.push(modifierNames[i]);
-				}
-				return toReturn;
-			case 'list':
-				return modifiers;
-			case 'check':
-				return !modifiers.contains(true);
-		}
-
-		return null; // just Don't
-	}
-
+	
 	public static function formatSong(song:String, diff:Int):String
 	{
 		var daSong:String = song;
 
-		if (diff == 0)
-			daSong += '-easy';
-		else if (diff == 2)
-			daSong += '-hard';
+		daSong += CoolUtil.difficultySuffixfromInt(diff);
+
+		// mod songs have their mod's name as their prefix
+		// just so that nothing gets overwritten
+		if (Paths.currentMod != null)
+			daSong = Paths.currentMod + ':' + daSong;
 
 		return daSong;
 	}

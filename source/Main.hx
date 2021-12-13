@@ -1,6 +1,5 @@
 package;
 
-import cpp.Float32;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
