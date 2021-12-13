@@ -2081,26 +2081,6 @@ class PlayState extends MusicBeatState
 		if (executeModchart && songStarted)
 			interpVariables(interp);
 
-		if (FlxG.save.data.fcOnly)
-		{
-			if (misses != 0)
-				health = 0;
-		}
-		
-		if (FlxG.save.data.sicksOnly)
-		{
-			if (goods != 0 || bads != 0 || shits != 0) 
-				health = 0;
-		}
-		
-		if (FlxG.save.data.goodsOnly && !FlxG.save.data.sicksOnly)
-		{
-			if (sicks != 0 || bads != 0 || shits != 0) 
-				health = 0;
-		}
-		else if (FlxG.save.data.goodsOnly && FlxG.save.data.sicksOnly)
-			FlxG.save.data.goodsOnly = false;
-
 		if (FlxG.save.data.botplay && FlxG.keys.justPressed.ONE)
 			camHUD.visible = !camHUD.visible;
 
@@ -3023,12 +3003,12 @@ class PlayState extends MusicBeatState
 					score = 200;
 					ss = false;
 					goods++;
-					if (health < 2 && FlxG.save.data.lifestealNotes == 0)
+					if (health < 2)
 						health += 0.04;
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit += 0.75;
 				case 'sick':
-					if (health < 2 && FlxG.save.data.lifestealNotes == 0)
+					if (health < 2)
 						health += 0.1;
 					if (FlxG.save.data.accuracyMod == 0)
 						totalNotesHit += 1;
@@ -3730,7 +3710,6 @@ class PlayState extends MusicBeatState
 		funnyInterp.variables.set("isStoryMode", isStoryMode);
 		funnyInterp.variables.set("isHalloween", isHalloween);
 		funnyInterp.variables.set("defaultCamZoom", defaultCamZoom);
-		funnyInterp.variables.set("health", health);
 		funnyInterp.variables.set("PlayState", PlayState.instance);
 		funnyInterp.variables.set("PlayStateClass", PlayState);
 		funnyInterp.variables.set("getScore", function() { return songScore; });
