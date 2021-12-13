@@ -65,7 +65,8 @@ class CreditsState extends MusicBeatState
 
             allTheShit.push([curCategory.categoryName,"",""]);
 
-            for (i2 in 0...curCategory.categoryItems.length)
+            var catItems:Array<Dynamic> = curCategory.categoryItems;
+            for (i2 in 0...catItems.length)
             {
                 var curCredit = curCategory.categoryItems[i2];
 
