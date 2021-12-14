@@ -76,16 +76,16 @@ class MenuCharacter extends FlxSprite
 				if (fuck.animations != null)
 				{
 					if (fuck.animations.danceLeft != null)
-						addAnimation("danceLeft", fuck.animations.danceLeft.prefix, fuck.animations.danceLeft.fps, fuck.animations.danceLeft.indices);
+						addAnimation("danceLeft", fuck.animations.danceLeft.prefix, fuck.animations.danceLeft.fps, fuck.animations.danceLeft.indices, fuck.animations.danceLeft.looped);
 
 					if (fuck.animations.danceRight != null)
-						addAnimation("danceRight", fuck.animations.danceRight.prefix, fuck.animations.danceRight.fps, fuck.animations.danceRight.indices);
+						addAnimation("danceRight", fuck.animations.danceRight.prefix, fuck.animations.danceRight.fps, fuck.animations.danceRight.indices, fuck.animations.danceRight.looped);
 					
 					if (fuck.animations.hey != null)
-						addAnimation("hey", fuck.animations.hey.prefix, fuck.animations.hey.fps, fuck.animations.hey.indices);
+						addAnimation("hey", fuck.animations.hey.prefix, fuck.animations.hey.fps, fuck.animations.hey.indices, fuck.animations.hey.looped);
 
 					if (fuck.animations.idle != null)
-						addAnimation("idle", fuck.animations.idle.prefix, fuck.animations.idle.fps, fuck.animations.idle.indices);
+						addAnimation("idle", fuck.animations.idle.prefix, fuck.animations.idle.fps, fuck.animations.idle.indices, fuck.animations.idle.looped);
 				}
 			}
 		}
@@ -100,11 +100,11 @@ class MenuCharacter extends FlxSprite
 		updateHitbox();
 	}
 
-	function addAnimation(name:String, prefix:String, fps:Int = 24, ?indices:Array<Int>)
+	function addAnimation(name:String, prefix:String, fps:Int = 24, ?indices:Array<Int>, ?looped:Bool = false)
 	{
 		if (indices == null)
-			animation.addByPrefix(name, prefix, fps, false);
+			animation.addByPrefix(name, prefix, fps, looped);
 		else
-			animation.addByIndices(name, prefix, indices, "", fps, false);
+			animation.addByIndices(name, prefix, indices, "", fps, looped);
 	}
 }

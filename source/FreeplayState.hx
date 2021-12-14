@@ -58,7 +58,7 @@ class FreeplayState extends MusicBeatState
 			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseFloat(data[3])));
 		}
 
-		#if desktop
+		#if sys
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			Paths.currentMod = i;
@@ -314,7 +314,7 @@ class FreeplayState extends MusicBeatState
 
 		Conductor.changeBPM(songs[curSelected].bpm);
 
-		#if desktop
+		#if sys
 		if (songs[curSelected].mod != null)
 			Paths.setCurrentMod(songs[curSelected].mod.split('/')[1]);
 		#end

@@ -254,7 +254,7 @@ class PlayState extends MusicBeatState
 		parser = new hscript.Parser();
 		loadedNoteTypeInterps = new Map<String, Interp>();
 
-		#if desktop
+		#if sys
 		Paths.destroyCustomImages();
 		#end
 		
@@ -313,7 +313,7 @@ class PlayState extends MusicBeatState
 		executeModchart = Assets.exists(Paths.modchart(songLowercase  + "/modchart"));
 		#end
 
-		#if desktop
+		#if sys
 		if (Paths.currentMod != null && Paths.currentMod.length > 0 && !executeModchart) // shit they in a mod's song
 		{
 			executeModchart = FileSystem.exists(Paths.modModchart(songLowercase));
@@ -326,7 +326,7 @@ class PlayState extends MusicBeatState
 		{
 			interp = new hscript.Interp();
 
-			#if desktop
+			#if sys
 			if (Paths.currentMod != null && Paths.currentMod.length > 0)
 				modchart = File.getContent(Paths.modModchart(songLowercase));
 			#end
@@ -2918,7 +2918,6 @@ class PlayState extends MusicBeatState
 	
 						if (!FlxG.save.data.skipResultsScreen)
 						{
-							trace('results screen');
 							boyfriend.stunned = true;
 	
 							persistentUpdate = false;
@@ -2930,10 +2929,13 @@ class PlayState extends MusicBeatState
 						}
 						else
 						{
-							trace('free play!');
 							FlxG.sound.playMusic(Paths.music('freakyMenu'));
 							Conductor.changeBPM(102);
-							FlxG.switchState(new FreeplayState());
+							
+							if (!loadRep)
+								FlxG.switchState(new FreeplayState());
+							else
+								FlxG.switchState(new LoadReplayState());
 						}
 						
 					}
@@ -3659,6 +3661,7 @@ class PlayState extends MusicBeatState
 			character.playAnim('sing' + DIRECTIONS[note.noteData] + 'miss', true);
 	}
 
+	// TO DO: Dump this somewhere else :)
 	function interpVariables(funnyInterp:Interp):Void
 	{
 		// imports

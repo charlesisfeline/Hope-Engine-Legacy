@@ -36,7 +36,7 @@ class CoolUtil
 		return difficultyArray[PlayState.storyDifficulty][1];
 	}
 
-	#if desktop
+	#if sys
 	public static function loadCustomDifficulties():Void
 	{
 		if (FileSystem.exists(Paths.txt('customDifficulties')))

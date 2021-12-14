@@ -136,7 +136,7 @@ class TitleState extends MusicBeatState
 			}
 
 			// this as well
-			#if desktop
+			#if sys
 			for (mod in FileSystem.readDirectory('mods'))
 			{
 				Paths.currentMod = mod;

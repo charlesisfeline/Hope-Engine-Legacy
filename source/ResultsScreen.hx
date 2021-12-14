@@ -378,7 +378,7 @@ class ResultsScreen extends MusicBeatSubstate
 
 			pissCamera.fade(FlxColor.BLACK, 0.5, false, function()
 			{
-				FlxG.switchState(PlayState.isStoryMode ? new StoryMenuState() : new FreeplayState());
+				FlxG.switchState(PlayState.isStoryMode ? new StoryMenuState() : (PlayState.loadRep ? new LoadReplayState() : new FreeplayState()));
 				FlxG.sound.music.fadeIn(0, 0.7, 0.7);
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
 				Conductor.changeBPM(102);

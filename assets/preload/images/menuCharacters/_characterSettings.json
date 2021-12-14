@@ -49,8 +49,15 @@
     {
         "character" : "spooky",
         "animations" : {
-            "idle" : {
-                "prefix" : "idle0"
+            "danceLeft" : {
+                "prefix" : "idle0",
+                "indices" : [0, 2, 6],
+                "fps" : 12
+            },
+            "danceRight" : {
+                "prefix" : "idle0",
+                "indices" : [8, 10, 12, 14],
+                "fps" : 12
             }
         },
         "settings" : {

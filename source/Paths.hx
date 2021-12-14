@@ -59,7 +59,7 @@ class Paths
 
 	static public function destroyCustomImages() 
 	{
-		#if desktop
+		#if sys
 		for (key in customImages.keys())	
 		{
 			var piss:FlxGraphic = customImages.get(key);
@@ -102,7 +102,7 @@ class Paths
 
 	inline static public function dialogueStartFile(key:String)
 	{
-		#if desktop
+		#if sys
 		if (currentMod != null)
 			return modDialogueStartFile(key);
 		#end
@@ -112,7 +112,7 @@ class Paths
 
 	inline static public function dialogueEndFile(key:String)
 	{
-		#if desktop
+		#if sys
 		if (currentMod != null)
 			return modDialogueEndFile(key);
 		#end
@@ -122,7 +122,7 @@ class Paths
 
 	inline static public function dialogueSettingsFile(key:String)
 	{
-		#if desktop
+		#if sys
 		if (currentMod != null)
 			return modDialogueSettingsFile(key);
 		#end
@@ -132,7 +132,7 @@ class Paths
 
 	inline static public function txt(key:String, ?library:String)
 	{
-		#if desktop
+		#if sys
 		if (currentMod != null)
 			return modTxt(key, library);
 		#end
@@ -147,7 +147,7 @@ class Paths
 
 	inline static public function json(key:String, ?library:String)
 	{
-		#if desktop
+		#if sys
 		if (currentMod != null)
 			return modJson(key, library);
 		#end
@@ -157,7 +157,7 @@ class Paths
 
 	inline static public function characterJson(key:String)
 	{
-		#if desktop
+		#if sys
 		if (currentMod != null)
 			return 'mods/$currentMod/assets/_characters/$key.json';
 		#end
@@ -167,7 +167,7 @@ class Paths
 
 	inline static public function noteJSON(key:String, mod:String)
 	{
-		#if desktop
+		#if sys
 		if (mod != "hopeEngine")
 			return 'mods/$mod/assets/_noteTypes/$key/note.json';
 		#end
@@ -177,7 +177,7 @@ class Paths
 
 	inline static public function noteHENT(key:String, mod:String) // you know, I had a crisis between "hent" and "heNT" when naming the files
 	{
-		#if desktop
+		#if sys
 		if (mod != "hopeEngine")
 			return 'mods/$mod/assets/_noteTypes/$key/note.hent';
 		#end
@@ -187,7 +187,7 @@ class Paths
 
 	static public function sound(key:String, ?library:String):Dynamic
 	{
-		#if desktop
+		#if sys
 		var pissOff = modSound(key, library);
 		if (FileSystem.exists(pissOff))
 		{
@@ -207,7 +207,7 @@ class Paths
 
 	inline static public function music(key:String, ?library:String):Dynamic
 	{
-		#if desktop
+		#if sys
 		var pissOff = modMusic(key, library);
 		if (FileSystem.exists(pissOff))
 		{
@@ -224,7 +224,7 @@ class Paths
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 
-		#if desktop
+		#if sys
 		var pissOff = modVoices(songLowercase);
 		if (FileSystem.exists(pissOff))
 		{
@@ -241,7 +241,7 @@ class Paths
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		
-		#if desktop
+		#if sys
 		var pissOff = modInst(songLowercase);
 		if (FileSystem.exists(pissOff))
 		{
@@ -256,7 +256,7 @@ class Paths
 
 	inline static public function image(key:String, ?library:String):Dynamic
 	{
-		#if desktop
+		#if sys
 		var pissOff = modImage(key, library);
 		if (FileSystem.exists(pissOff))
 		{
@@ -291,7 +291,7 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
 
-	#if desktop
+	#if sys
 	inline static public function dotLoadModFile(mod:String) // the ".loadMod" file
 	{
 		return 'mods/$mod/.loadMod';

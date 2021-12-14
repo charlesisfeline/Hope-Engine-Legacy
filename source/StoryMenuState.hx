@@ -95,7 +95,7 @@ class StoryMenuState extends MusicBeatState
 			weekMods.push(null);
 		}
 
-		#if desktop
+		#if sys
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && FileSystem.exists(Sys.getCwd() + Paths.dotLoadModFile(i)))

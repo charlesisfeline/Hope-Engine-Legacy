@@ -60,8 +60,9 @@ class OptionsMenu extends MusicBeatState
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)")
 		]),
 
-		#if desktop
+		#if sys
 		new ModsMenu("Modifications", []),
+		new ReplayMenu("Replays", []),
 		#end
 
 		new OptionCategory("Accessbility", [
@@ -76,8 +77,7 @@ class OptionsMenu extends MusicBeatState
 			new OptionSubCatTitle("MISCELLANEOUS"),
 			new FPSOption("Toggle the FPS Counter"),
 			new Watermarks("Toggle the Watermark at the top left"),
-			#if desktop
-			new ReplayOption("View replays\n(REVAMPED BETA! May be inaccurate.)"),
+			#if sys
 			new CacheImages("Preloads the characters for a smoother experience. (HIGH MEMORY)"),
 			#end
 			new SkipResultsScreen("Skips the results screen."),
