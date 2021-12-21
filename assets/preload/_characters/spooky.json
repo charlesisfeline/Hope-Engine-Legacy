@@ -1,0 +1,105 @@
+{
+	"animations": [
+		{
+			"prefix": "spooky dance idle",
+			"offset": [
+				0,
+				0
+			],
+			"name": "danceRight",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 12,
+			"indices": [
+				8,
+				10,
+				12,
+				14
+			]
+		},
+		{
+			"prefix": "spooky dance idle",
+			"offset": [
+				0,
+				0
+			],
+			"name": "danceLeft",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 12,
+			"indices": [
+				0,
+				2,
+				6
+			]
+		},
+		{
+			"prefix": "spooky UP NOTE",
+			"offset": [
+				-20,
+				26
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "note sing left",
+			"offset": [
+				130,
+				-10
+			],
+			"name": "singLEFT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "spooky sing right",
+			"offset": [
+				-130,
+				-14
+			],
+			"name": "singRIGHT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "spooky DOWN note",
+			"offset": [
+				-50,
+				-130
+			],
+			"name": "singDOWN",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		}
+	],
+	"healthColor": "7F5210",
+	"facesLeft": false,
+	"image": "characters/spooky_kids_assets",
+	"singDuration": 4,
+	"initialAnimation": "danceLeft",
+	"antialiasing": true,
+	"name": "spooky",
+	"isDeath": false
+}

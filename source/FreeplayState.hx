@@ -61,10 +61,10 @@ class FreeplayState extends MusicBeatState
 		#if sys
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
-			Paths.currentMod = i;
+			Paths.setCurrentMod(i);
 			var frepla = Paths.txt('freeplaySonglist');
 			
-			if (FileSystem.exists(frepla) && FileSystem.exists(Sys.getCwd() + Paths.dotLoadModFile(i)))
+			if (FileSystem.exists(frepla) && FileSystem.exists(Sys.getCwd() + Paths.loadModFile(i)))
 			{
 				var songlist = CoolUtil.coolStringFile(File.getContent(frepla));
 				
@@ -76,7 +76,7 @@ class FreeplayState extends MusicBeatState
 			}
 		}
 
-		Paths.currentMod = null;
+		Paths.setCurrentMod(null);
 		#end
 
 		#if windows
@@ -221,7 +221,7 @@ class FreeplayState extends MusicBeatState
 		if (downP)
 			changeSelection(1);
 
-		if (FlxG.keys.justPressed.V)
+		if (FlxG.keys.justPressed.V && FlxG.save.data.cacheMusic)
 			playMusic(false);
 
 		if (controls.LEFT_P)
@@ -320,8 +320,11 @@ class FreeplayState extends MusicBeatState
 		#end
 
 		#if PRELOAD_ALL
-		FlxG.sound.music.stop();
-		playMusic(true);
+		if (FlxG.save.data.cacheMusic)
+		{
+			FlxG.sound.music.stop();
+			playMusic(true);
+		}
 		#end
 		
 

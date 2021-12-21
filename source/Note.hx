@@ -29,6 +29,8 @@ class Note extends FlxSprite
 	public var noteType:String = "hopeEngine/normal";
 	public var canScore:Null<Bool> = true; // if false, no score will be added :(
 	public var canMiss:Null<Bool> = false; // if true, you can miss it without penalty
+	public var noHolds:Null<Bool> = false; // if true, it has no sus notes
+	public var setScale:Null<Float> = 1;
 	public var upSpriteOnly:Null<Bool> = false;
 
 	public var wasEnemyNote = false;
@@ -46,6 +48,7 @@ class Note extends FlxSprite
 	public var rating:String = "shit";
 
 	var offsetMultiplier:Array<Float> = [1, 1];
+	var animOffset:Array<Int> = [0, 0];
 
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal", ?skin:FlxAtlasFrames)
 	{
@@ -153,9 +156,6 @@ class Note extends FlxSprite
 		if (pissShit == "-pixel")
 			antialiasing = false;
 
-		// we make sure its downscroll and its a SUSTAIN NOTE (aka a trail, not a note)
-		// and flip it so it doesn't look weird.
-		// THIS DOESN'T FUCKING FLIP THE NOTE, CONTRIBUTERS DON'T JUST COMMENT THIS OUT JESUS
 		if (FlxG.save.data.downscroll && sustainNote) 
 			flipY = true;
 
@@ -224,12 +224,15 @@ class Note extends FlxSprite
 		var noteJSON = Json.parse(openfl.utils.Assets.getText(Paths.noteJSON(a[1], a[0])));
 		#end
 
+		if (a[0] != "hopeEngine") Paths.setCurrentMod(a[0]);
 		frames = Paths.getSparrowAtlas("styles/" + noteJSON.assetName + (PlayState.SONG.noteStyle == "pixel" ? "-pixel" : ""));
+		Paths.setCurrentMod(null);
 
 		this.upSpriteOnly = (noteJSON.upSpriteOnly != null ? noteJSON.upSpriteOnly : false);
 		this.canScore = (noteJSON.canScore != null ? noteJSON.canScore : true);
 		this.canMiss = (noteJSON.canMiss != null ? noteJSON.canMiss : false);
 		this.offsetMultiplier = (noteJSON.offsetMultipler != null ? noteJSON.offsetMultipler : [1, 1]);
+		this.setScale = (noteJSON.scale != null ? noteJSON.scale : 1);
 
 		if (this.upSpriteOnly)
 		{
@@ -354,8 +357,47 @@ class Note extends FlxSprite
 												
 				animation.play(dirs[this.noteData] + 'Scroll');
 			}
+
+			// Set animoffset (awesome)
+			if (isSustainNote)
+			{
+				if (animation.curAnim.name.endsWith("end"))
+				{
+					switch (noteData)
+					{
+						case 0: animOffset = noteJSON.sprites.left.holdEnd.offset;
+						case 1: animOffset = noteJSON.sprites.down.holdEnd.offset;
+						case 2: animOffset = noteJSON.sprites.up.holdEnd.offset;
+						case 3: animOffset = noteJSON.sprites.right.holdEnd.offset;
+					}
+				}
+				else if (animation.curAnim.name.endsWith("hold"))
+				{
+					switch (noteData)
+					{
+						case 0: animOffset = noteJSON.sprites.left.holdPiece.offset;
+						case 1: animOffset = noteJSON.sprites.down.holdPiece.offset;
+						case 2: animOffset = noteJSON.sprites.up.holdPiece.offset;
+						case 3: animOffset = noteJSON.sprites.right.holdPiece.offset;
+					}
+				}
+			}
+			else
+			{
+				switch (noteData)
+				{
+					case 0: animOffset = noteJSON.sprites.left.note.offset;
+					case 1: animOffset = noteJSON.sprites.down.note.offset;
+					case 2: animOffset = noteJSON.sprites.up.note.offset;
+					case 3: animOffset = noteJSON.sprites.right.note.offset;
+				}
+			}
 		}
 
+		setGraphicSize(Std.int(width * 0.7));
+
+		if (animOffset == null)
+			animOffset = [0, 0];
 		
 		if (this.upSpriteOnly)
 			unblandNote('direction');
@@ -364,6 +406,11 @@ class Note extends FlxSprite
 			unblandNote(noteJSON.unblandWhat);
 
 		updateHitbox();
+		
+		setGraphicSize(Std.int(width * this.setScale));
+
+		if (noteType != "hopeEngine/normal") // huh, normal notes have an offset of their own...
+			offset.set(offset.x + animOffset[0], offset.y + animOffset[1]);
 	}
 
 	public static var noteColors:Array<FlxColor> = [0xc24b99, 0x00ffff, 0x12fa05, 0xf9393f];
@@ -382,8 +429,6 @@ class Note extends FlxSprite
 				this.color = noteColors[this.noteData];
 				if (!isSustainNote)
 					this.angle = noteAngles[this.noteData];
-			default:
-				trace('Yo shit ain\'t a note property goddamn');
 		}
 	}
 
@@ -404,23 +449,11 @@ class Note extends FlxSprite
 			}
 			else
 			{
-				// if (offsetMultipliers[noteType] != null)
-				// {
-				// 	if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset * (offsetMultipliers[noteType][0])
-				// 		&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset * (offsetMultipliers[noteType][1]))
-				// 		canBeHit = true;
-				// 	else
-				// 		canBeHit = false;
-				// }
-				// else
-				// {
-					if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset * offsetMultiplier[0]
-						&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset * offsetMultiplier[1])
-						canBeHit = true;
-					else
-						canBeHit = false;					
-				// }
-				
+				if (strumTime > Conductor.songPosition - Conductor.safeZoneOffset * offsetMultiplier[0]
+					&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset * offsetMultiplier[1])
+					canBeHit = true;
+				else
+					canBeHit = false;		
 			}
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset * Conductor.timeScale && !wasGoodHit)

@@ -78,7 +78,8 @@ class OptionsMenu extends MusicBeatState
 			new FPSOption("Toggle the FPS Counter"),
 			new Watermarks("Toggle the Watermark at the top left"),
 			#if sys
-			new CacheImages("Preloads the characters for a smoother experience. (HIGH MEMORY)"),
+			new CacheMusic("Preloads the songs for a smoother freeplay menu experience. (HIGH MEMORY!)"),
+			new CacheImages("Preloads the characters for a smoother experience. (HIGH MEMORY!)"),
 			#end
 			new SkipResultsScreen("Skips the results screen."),
 			new FamilyFriendly("Recording a video? In a no-swearing stream? Enable this!"),

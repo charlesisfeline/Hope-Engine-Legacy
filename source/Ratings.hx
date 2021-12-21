@@ -114,7 +114,6 @@ class Ratings
         return 'Score: ${(Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score)} -'               // Score
         + ' Misses: ${PlayState.misses} -'                                                                           // Misses
         + ' Accuracy: ${(FlxG.save.data.botplay ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + "%")} -'      // Accuracy
-        + ' ${GenerateLetterRank(accuracy)}'                                                                         // Letter Rank
-        + (FlxG.save.data.flashNotes != 0 ? " - Flashes: " + PlayState.flashes : "");                                // Flashes
+        + ' ${GenerateLetterRank(accuracy)}';                                                                        // Letter Rank
     }
 }

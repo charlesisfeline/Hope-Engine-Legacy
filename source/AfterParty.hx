@@ -6,7 +6,6 @@ class AfterParty
 {
     public function new()
     {
-        trace("Ok I pull up");
         Conductor.changeBPM(163);
         FlxG.sound.playMusic(Paths.music('ok I pull up'), 0.5);
 

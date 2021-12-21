@@ -1,0 +1,229 @@
+{
+	"animations": [
+		{
+			"prefix": "GF Cheer",
+			"offset": [
+				0,
+				9
+			],
+			"name": "cheer",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "GF left note",
+			"offset": [
+				0,
+				-10
+			],
+			"name": "singLEFT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "GF Right Note",
+			"offset": [
+				0,
+				-11
+			],
+			"name": "singRIGHT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "GF Up Note",
+			"offset": [
+				0,
+				13
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "GF Down Note",
+			"offset": [
+				0,
+				-11
+			],
+			"name": "singDOWN",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "gf sad",
+			"offset": [
+				-2,
+				-12
+			],
+			"name": "sad",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			]
+		},
+		{
+			"prefix": "GF Dancing Beat",
+			"offset": [
+				0,
+				0
+			],
+			"name": "danceLeft",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				30,
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11,
+				12
+			]
+		},
+		{
+			"prefix": "GF Dancing Beat",
+			"offset": [
+				0,
+				0
+			],
+			"name": "danceRight",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				15,
+				16,
+				17,
+				18,
+				19,
+				20,
+				21,
+				22,
+				23,
+				24,
+				25,
+				26,
+				27,
+				28,
+				29
+			]
+		},
+		{
+			"prefix": "GF Dancing Beat Hair blowing",
+			"offset": [
+				45,
+				1
+			],
+			"name": "hairBlow",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				0,
+				1,
+				2,
+				3
+			]
+		},
+		{
+			"prefix": "GF Dancing Beat Hair Landing",
+			"offset": [
+				0,
+				0
+			],
+			"name": "hairFall",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				0,
+				1,
+				2,
+				3,
+				4,
+				5,
+				6,
+				7,
+				8,
+				9,
+				10,
+				11
+			]
+		},
+		{
+			"prefix": "GF FEAR",
+			"offset": [
+				-2,
+				-8
+			],
+			"name": "scared",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		}
+	],
+	"healthColor": "A5004D",
+	"facesLeft": false,
+	"image": "characters/GF_assets",
+	"singDuration": 4,
+	"initialAnimation": "danceLeft",
+	"antialiasing": true,
+	"name": "gf",
+	"isDeath": false
+}

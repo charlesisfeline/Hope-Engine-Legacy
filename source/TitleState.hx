@@ -122,29 +122,16 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			// I, have no clue where to put this.
-			// If you know where, please tell me.
-			if (Reflect.fields(Character.colors).length == 0)
-			{
-				var colorsText = CoolUtil.coolTextFile(Paths.txt('characterColors'));
-	
-				for (color in colorsText)
-				{
-					var split:Array<String> = color.split(":");
-					Reflect.setField(Character.colors, split[0], split[1]);
-				}
-			}
-
 			// this as well
 			#if sys
 			for (mod in FileSystem.readDirectory('mods'))
 			{
-				Paths.currentMod = mod;
-				if (FileSystem.exists(Sys.getCwd() + Paths.dotLoadModFile(mod)))
+				Paths.setCurrentMod(mod);
+				if (FileSystem.exists(Sys.getCwd() + Paths.loadModFile(mod)))
 					CoolUtil.loadCustomDifficulties();
 			}
 
-			Paths.currentMod = null;
+			Paths.setCurrentMod(null);
 			#end
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)

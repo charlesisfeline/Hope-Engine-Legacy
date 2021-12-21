@@ -4,7 +4,6 @@
     "canMiss" : true,
     "canScore" : false,
     "upSpriteOnly" : true,
-    "unblandWhat" : "direction",
     "offsetMultiplier" : [0.5, 0.5],
     "sprites" : {
         "up" : {

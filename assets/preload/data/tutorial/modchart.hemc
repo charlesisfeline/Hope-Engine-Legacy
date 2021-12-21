@@ -16,9 +16,6 @@ function beatHit(curBeat)
 function onUpdate(elapsed)
 {
     var currentBeat = (songPosition / 1000) * (bpm/60);
-    
-    for (note in strumLineNotes.members)
-        note.alpha = 0.5;
 
     if (originalYs.length > 0 && difficulty == 2 && curStep > 400)
     {
@@ -28,7 +25,6 @@ function onUpdate(elapsed)
             var i = strumLineNotes.members.indexOf(note);
             note.x = originalXs[i] + 32 * Math.sin((currentBeat + i*0.25) * Math.PI);
             note.y = originalYs[i] + 32 * Math.cos((currentBeat + i*0.25) * Math.PI);
-            note.alpha = 0.5;
         }
     }
 }

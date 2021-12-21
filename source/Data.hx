@@ -92,6 +92,9 @@ class Data
 		if (FlxG.save.data.cacheImages == null)
 			FlxG.save.data.cacheImages = false;
 
+		if (FlxG.save.data.cacheMusic == null)
+			FlxG.save.data.cacheMusic = false;
+
 		if (FlxG.save.data.ratingColor == null)
 			FlxG.save.data.ratingColor = false;
 

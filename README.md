@@ -4,14 +4,14 @@
 
 # <p align="center">Hope Engine</p>
 
-Hope Engine is an "engine" built from Kade Engine 1.5.2.
+Hope Engine is an engine built from Kade Engine 1.5.2.
 
-**100% in beta, expect bugs lmaoo**
+**100% in beta, expect bugs!**
 
 ---
 ## Building
 
-Follow a compiling tutorial for Funkin (like [funkin-master](https://github.com/ninjamuffin99/Funkin)'s tutorial, etc..).
+Follow a compiling tutorial for Funkin (like [funkin-master](https://github.com/ninjamuffin99/Funkin)'s tutorial, etc..). Just a note though, **be sure to install the latest version of Haxe**.
 
 Then just `lime test windows` in your folder away!
 
@@ -35,6 +35,7 @@ Next, replace everything in the address bar with `cmd` (or `powershell` if you p
 
 Then, press Enter! It should launch `cmd` (or powershell if you put `powershell` instead) with the correct directory set. Then build by typng `lime test windows` and press enter.
 
+---
 ### (for Visual Studio Code) Weird HScript Errors
 I really have 0 clue why these errors happen, and these fixes are probably shitty fixes. These are some solutions I bruteforced on trying.
 <br><br>
@@ -59,6 +60,8 @@ haxelib git hscript https://github.com/HaxeFoundation/hscript
 ---
 
 ## Credits
-Built from Kade Engine by [KadeDev](https://github.com/KadeDev) with their [contributors](https://github.com/KadeDev/Kade-Engine/graphs/contributors).
+Built from [Kade Engine](https://github.com/KadeDev/Kade-Engine) by [KadeDev](https://github.com/KadeDev) with their [contributors](https://github.com/KadeDev/Kade-Engine/graphs/contributors).
+
+Learned things from [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngine) by [ShadowMario](https://github.com/ShadowMario) with their [contributors](https://github.com/ShadowMario/FNF-PsychEngine/graphs/contributors).
 
 Friday Night Funkin' by [ninjamuffin99](https://twitter.com/ninja_muffin99), [kawaisprite](https://twitter.com/kawaisprite), [PhantomArcade](https://twitter.com/phantomarcade3k), and [evilsk8r](https://twitter.com/evilsk8r).

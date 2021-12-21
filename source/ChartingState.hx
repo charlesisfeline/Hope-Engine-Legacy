@@ -563,10 +563,7 @@ class ChartingState extends MusicBeatState
 				if (FileSystem.exists(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
 				{
 					for (noteType in FileSystem.readDirectory(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
-					{
 						noteTypeArray.push('$mod/$noteType');
-						trace('$mod/$noteType');
-					}
 				}
 			}
 		}
@@ -851,7 +848,6 @@ class ChartingState extends MusicBeatState
 				{
 					deleteNote(note, pressArray.indexOf(true));
 					delete = true;
-					trace('deelte note');
 				}
 			});
 		for (p in 0...pressArray.length)
@@ -982,7 +978,6 @@ class ChartingState extends MusicBeatState
 			{
 				if (FlxG.keys.justPressed.Z && lastNote != null)
 				{
-					trace(curRenderedNotes.members.contains(lastNote) ? "delete note" : "add note");
 					if (curRenderedNotes.members.contains(lastNote))
 						deleteNote(lastNote);
 					else 
@@ -1296,7 +1291,6 @@ class ChartingState extends MusicBeatState
 		}
 
 		var sectionInfo:Array<Dynamic> = _song.notes[curSection].sectionNotes;
-		trace(sectionInfo);
 
 		if (_song.notes[curSection].changeBPM && _song.notes[curSection].bpm > 0)
 		{
@@ -1313,20 +1307,6 @@ class ChartingState extends MusicBeatState
 			Conductor.changeBPM(daBPM);
 		}
 
-		/* // PORT BULLSHIT, INCASE THERE'S NO SUSTAIN DATA FOR A NOTE
-			for (sec in 0..._song.notes.length)
-			{
-				for (notesse in 0..._song.notes[sec].sectionNotes.length)
-				{
-					if (_song.notes[sec].sectionNotes[notesse][2] == null)
-					{
-						trace('SUS NULL');
-						_song.notes[sec].sectionNotes[notesse][2] = 0;
-					}
-				}
-			}
-		 */
-
 		for (i in sectionInfo)
 		{
 			var daNoteInfo = i[1];
@@ -1336,7 +1316,7 @@ class ChartingState extends MusicBeatState
 
 			var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, daType, theSex);
 			note.sustainLength = daSus;
-			note.setGraphicSize(GRID_SIZE, GRID_SIZE);
+			note.setGraphicSize(GRID_SIZE);
 			note.updateHitbox();
 			note.x = Math.floor(daNoteInfo * GRID_SIZE);
 			note.y = Math.floor(getYfromStrum((daStrumTime - sectionStartTime()) % (Conductor.stepCrochet * _song.notes[curSection].lengthInSteps)));
@@ -1497,7 +1477,6 @@ class ChartingState extends MusicBeatState
 				if(aimtosetsection<0) aimtosetsection = 0;
 				newSong[aimtosetsection].mustHitSection = _song.notes[daSection].mustHitSection;
 				newSong[aimtosetsection].altAnim = _song.notes[daSection].altAnim;
-				//trace("section "+daSection);
 				for(daNote in 0...(_song.notes[daSection].sectionNotes.length))
 					{	
 						var newtiming = _song.notes[daSection].sectionNotes[daNote][0]+millisecadd;
@@ -1508,12 +1487,10 @@ class ChartingState extends MusicBeatState
 						var futureSection = Math.floor(newtiming/4/(60000/_song.bpm));
 						_song.notes[daSection].sectionNotes[daNote][0] = newtiming;
 						newSong[futureSection].sectionNotes.push(_song.notes[daSection].sectionNotes[daNote]);
-	
-						//newSong.notes[daSection].sectionNotes.remove(_song.notes[daSection].sectionNotes[daNote]);
 					}
 	
 			}
-			//trace("DONE BITCH");
+
 			_song.notes = newSong;
 			updateGrid();
 			updateSectionUI();

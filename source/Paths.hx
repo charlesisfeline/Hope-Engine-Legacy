@@ -4,6 +4,7 @@ import flash.media.Sound;
 import flixel.FlxG;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
+import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
@@ -28,17 +29,31 @@ class Paths
 	public static var customSongs:Map<String, Sound> = new Map<String, Sound>();
 	#end
 
+	/**
+	 * Set current level. Things like "tutorial", "week1", "week2", etc...
+	 * @param name Name of the to-be current level.
+	 */
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
 	}
 
+	/**
+	 * Set current mod. Kind of like setCurrentLevel but for mods.
+	 * @param name Name of the to-be current mod.
+	 */
 	static public function setCurrentMod(name:String)
 	{
 		currentMod = (name == null ? null : name);
 	}
 
-	static function getPath(file:String, type:AssetType, library:Null<String>)
+	/**
+	 * Get paths easily.
+	 * @param file Name of the file.
+	 * @param type Well, what kinda file is it?
+	 * @param library "week1", "week2", "preload", etc...
+	 */
+	public static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -57,6 +72,26 @@ class Paths
 		return getPreloadPath(file);
 	}
 
+	/**
+	 * Search for a file without having the hassle of shittons of compiler conditionals.
+	 * @param path The path to the file. 
+	 */
+	static public function exists(path:String):Bool
+	{
+		var doesIt:Bool = false;
+
+		#if sys
+		doesIt = FileSystem.exists(path);
+		#else
+		doesIt = Assets.exists(path);
+		#end
+
+		return doesIt;
+	}
+
+	/**
+	 * Free up memory.
+	 */
 	static public function destroyCustomImages() 
 	{
 		#if sys
@@ -92,6 +127,11 @@ class Paths
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
+		#if sys
+		if (currentMod != null)
+			return modFile(file, type, library);
+		#end
+
 		return getPath(file, type, library);
 	}
 
@@ -292,14 +332,14 @@ class Paths
 	}
 
 	#if sys
-	inline static public function dotLoadModFile(mod:String) // the ".loadMod" file
+	inline static public function loadModFile(mod:String) // the "loadMod" file
 	{
-		return 'mods/$mod/.loadMod';
+		return 'mods/$mod/loadMod';
 	}
 
 	inline static public function modInfoFile(mod:String) // mod-info.json
 	{
-		return 'mods/$mod/mod-info.json';
+		return 'mods/$mod/mod.info';
 	}
 
 	inline static public function modInst(song:String)
@@ -355,6 +395,11 @@ class Paths
 	inline static public function modJson(key:String, ?library:String)
 	{
 		return 'mods/$currentMod/' + getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function modFile(file:String, type:AssetType = TEXT, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath(file, type, library);
 	}
 	#end
 }

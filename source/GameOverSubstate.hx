@@ -22,7 +22,6 @@ class GameOverSubstate extends MusicBeatSubstate
 	var deathReasonClone:FlxText;
 
 	var stageSuffix:String = "";
-	var daCause:String = "";
 
 	var wellRip:FlxText;
 
@@ -40,13 +39,11 @@ class GameOverSubstate extends MusicBeatSubstate
 				daBf = 'mic';
 		}
 
-		daCause = cause;
-
 		super();
 
 		Conductor.songPosition = 0;
 
-		bf = new Boyfriend(x, y, daBf, !FlxG.save.data.enemySide);
+		bf = new Boyfriend(x, y, daBf);
 		add(bf);
 
 		camFollow = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y - 100, 1, 1);
@@ -121,14 +118,7 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
 		{
-			switch (daCause)
-			{
-				// case 'deathNote':
-					// FlxG.sound.playMusic(Paths.music('gameOverDeathNote'), 0);
-					// FlxG.sound.music.fadeIn(1, 0, 0.7);
-				default:
-					FlxG.sound.playMusic(Paths.music((stageSuffix == "-pixel" ? "pixel/" : "") + 'gameOver' + stageSuffix));
-			}
+			FlxG.sound.playMusic(Paths.music((stageSuffix == "-pixel" ? "pixel/" : "") + 'gameOver' + stageSuffix));
 		}
 
 		if (FlxG.sound.music.playing)
@@ -153,14 +143,7 @@ class GameOverSubstate extends MusicBeatSubstate
 			
 			bf.playAnim('deathConfirm', true);
 			FlxG.sound.music.stop();
-			switch (daCause)
-			{
-				// case 'deathNote':
-				// 	FlxG.sound.playMusic(Paths.music('gameOverDeathNoteEnd'), 0);
-				// 	FlxG.sound.music.fadeIn(1, 0, 0.7);
-				default:
-					FlxG.sound.play(Paths.music((stageSuffix == "-pixel" ? "pixel/" : "") + 'gameOverEnd' + stageSuffix));
-			}
+			FlxG.sound.play(Paths.music((stageSuffix == "-pixel" ? "pixel/" : "") + 'gameOverEnd' + stageSuffix));
 			
 			FlxTween.tween(restartImage, {"scale.x": 0}, 0.5, {ease: FlxEase.backIn, onComplete: function(twn:FlxTween) 
 			{

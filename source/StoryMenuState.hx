@@ -98,7 +98,7 @@ class StoryMenuState extends MusicBeatState
 		#if sys
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
-			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && FileSystem.exists(Sys.getCwd() + Paths.dotLoadModFile(i)))
+			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && FileSystem.exists(Sys.getCwd() + Paths.loadModFile(i)))
 			{
 				for (jsonName in CoolUtil.coolStringFile(File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt")))
 				{
@@ -379,7 +379,7 @@ class StoryMenuState extends MusicBeatState
 			scoreText.text = "WEEK SCORE:" + Math.floor(v);
 		});
 
-		Paths.currentMod = previousMod;
+		Paths.setCurrentMod(previousMod);
 	}
 
 	function changeWeek(change:Int = 0):Void
@@ -391,7 +391,7 @@ class StoryMenuState extends MusicBeatState
 		if (curWeek < 0)
 			curWeek = weekData.length - 1;
 
-		Paths.currentMod = weekMods[curWeek];
+		Paths.setCurrentMod(weekMods[curWeek]);
 
 		var bullShit:Int = 0;
 

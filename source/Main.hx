@@ -69,6 +69,10 @@ class Main extends Sprite
 		initialState = TitleState;
 		#end
 
+		#if mobile
+		initialState = TitleState;
+		#end
+
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 
 		addChild(game);
@@ -78,15 +82,15 @@ class Main extends Sprite
 		addChild(fpsCounter);
 
 		toggleFPS(FlxG.save.data.fps);
+
+		FlxG.fixedTimestep = false;
+		FlxG.mouse.useSystemCursor = true;
+		FlxG.mouse.visible = false;
 		#end
 
 		#if html5
 		FlxG.autoPause = false;
 		#end
-
-		FlxG.fixedTimestep = false;
-		FlxG.mouse.useSystemCursor = true;
-		FlxG.mouse.visible = false;
 	}
 
 	var game:FlxGame;

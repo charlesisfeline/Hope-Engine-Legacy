@@ -35,15 +35,6 @@ class LoadReplayState extends MusicBeatState
 
         controlsStrings.sort(Reflect.compare);
 
-        addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
-        addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
-        addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
-
-        addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
-        addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
-        
-        addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
-
 
         for(i in 0...controlsStrings.length)
         {
@@ -80,10 +71,8 @@ class LoadReplayState extends MusicBeatState
 				controlLabel.isMenuItem = true;
 				controlLabel.targetY = i;
 				grpControls.add(controlLabel);
-				
-				// var diffBullshit:Count = new Count(controlLabel.x + controlLabel.width, 0, (rep.replay.properties.get("difficulty") == 2 ? "hard" : rep.replay.properties.get("difficulty") == 1 ? "normal" : "easy"));
 	
-				var diffBullshit:Alphabet = new Alphabet(0, 0, (rep.replay.properties.get("difficulty") == 2 ? "HARD" : rep.replay.properties.get("difficulty") == 1 ? "NORMAL" : "EASY"), false);
+				var diffBullshit:Alphabet = new Alphabet(0, 0, CoolUtil.difficultyFromInt(rep.replay.properties.get("difficulty")), false);
 	
 				switch (diffBullshit.text.toLowerCase())
 				{
@@ -209,6 +198,9 @@ class LoadReplayState extends MusicBeatState
 
 			var poop:String = Highscore.formatSong(PlayState.rep.replay.properties.get("name").toLowerCase(), PlayState.rep.replay.properties.get("difficulty"));
 
+			trace("mod set :) " + actualNames[curSelected].split("#")[0]);
+			Paths.setCurrentMod(actualNames[curSelected].split("#")[0]);
+			
 			PlayState.SONG = Song.loadFromJson(poop, PlayState.rep.replay.properties.get("name").toLowerCase());
 			PlayState.isStoryMode = false;
 			PlayState.storyDifficulty = PlayState.rep.replay.properties.get("difficulty");

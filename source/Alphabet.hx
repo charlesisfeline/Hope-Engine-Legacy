@@ -305,6 +305,7 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, 'space', 24);
 				animation.play(letter);
 			case ':':
+				y += 15;
 				animation.addByPrefix(letter, ':', 24);
 				animation.play(letter);
 		}

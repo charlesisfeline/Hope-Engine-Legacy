@@ -100,7 +100,6 @@ class NoteSkinSelection extends MusicBeatSubstate
         // now create the previews
         for (skinName in registeredSkins)
         {
-            trace('creating skin preview for $skinName');
 
             var theSex:FlxAtlasFrames = null;
             if (skinName != "default")
@@ -322,7 +321,6 @@ class NoteSkinSelection extends MusicBeatSubstate
                 FlxG.sound.play(Paths.sound('confirmMenu'));
                 FlxG.save.data.currentNoteSkin = registeredSkins[curSelected];
                 FlxG.save.flush();
-                trace('YOOOO they selected a note skin: ${FlxG.save.data.currentNoteSkin}');
                 OptionsMenu.instance.acceptInput = true;
     
                 forEachOfType(FlxSprite, function(spr:FlxSprite) 

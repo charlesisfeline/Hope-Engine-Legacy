@@ -70,7 +70,7 @@ class Replay
         var data:String = Json.stringify(json, null, "\t");
 
         #if sys
-        File.saveContent("assets/replays/" + PlayState.SONG.song.toLowerCase() + "-" + Std.int(Date.now().getTime() / 1000) + ".funkinReplay", data);
+        File.saveContent("assets/replays/" + (Paths.currentMod != null ? Paths.currentMod + "#" : "") + PlayState.SONG.song.toLowerCase() + "-" + Std.int(Date.now().getTime() / 1000) + ".funkinReplay", data);
         #end
     }
 

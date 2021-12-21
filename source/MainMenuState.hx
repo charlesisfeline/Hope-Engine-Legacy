@@ -135,11 +135,6 @@ class MainMenuState extends MusicBeatState
 
 		FlxG.camera.follow(camFollow, LOCKON, 9 / lime.app.Application.current.window.frameRate);
 
-		if (FlxG.save.data.dfjk)
-			controls.setKeyboardScheme(KeyboardScheme.Solo, true);
-		else
-			controls.setKeyboardScheme(KeyboardScheme.Duo(true), true);
-
 		changeItem(0);
 
 		super.create();
@@ -152,9 +147,7 @@ class MainMenuState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		if (FlxG.sound.music.volume < 0.8)
-		{
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
-		}
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
@@ -180,6 +173,7 @@ class MainMenuState extends MusicBeatState
 				FlxG.switchState(new EditorCharacter());
 		}
 
+		// fix offset
 		menuItems.forEach(function(spr:FlxSprite)
 		{
 			spr.screenCenter(X);
@@ -193,55 +187,42 @@ class MainMenuState extends MusicBeatState
 
 	function acceptItem()
 	{
-		if (optionShit[curSelected] == 'donate')
-		{
-			fancyOpenURL("https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game");
-		}
-		/*
-		else if (optionShit[curSelected] == 'extras' || optionShit[curSelected] == 'freeplay' && !FlxG.save.data.completedDaWeek)
-		{
-			FlxG.sound.play(Paths.sound('dialogueNoises/vineThud'));
-		}
-		*/
-		else
-		{
-			selectedSomethin = true;
-			FlxG.sound.play(Paths.sound('confirmMenu'));
-			
-			if (FlxG.save.data.flashing)
-				FlxFlicker.flicker(magenta, 1.1, 0.15, false);
+		selectedSomethin = true;
+		FlxG.sound.play(Paths.sound('confirmMenu'));
+		
+		if (FlxG.save.data.flashing)
+			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
-			menuItems.forEach(function(spr:FlxSprite)
+		menuItems.forEach(function(spr:FlxSprite)
+		{
+			if (curSelected != spr.ID)
 			{
-				if (curSelected != spr.ID)
+				FlxTween.tween(spr, {alpha: 0}, 1.3, {
+					ease: FlxEase.quadOut,
+					onComplete: function(twn:FlxTween)
+					{
+						spr.kill();
+					}
+				});
+			}
+			else
+			{
+				if (FlxG.save.data.flashing)
 				{
-					FlxTween.tween(spr, {alpha: 0}, 1.3, {
-						ease: FlxEase.quadOut,
-						onComplete: function(twn:FlxTween)
-						{
-							spr.kill();
-						}
+					FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
+					{
+						goToState();
 					});
 				}
 				else
 				{
-					if (FlxG.save.data.flashing)
+					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
-						FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
-						{
-							goToState();
-						});
-					}
-					else
-					{
-						new FlxTimer().start(1, function(tmr:FlxTimer)
-						{
-							goToState();
-						});
-					}
+						goToState();
+					});
 				}
-			});
-		}
+			}
+		});
 	}
 	
 	function goToState()
@@ -252,16 +233,12 @@ class MainMenuState extends MusicBeatState
 		{
 			case 'story mode':
 				FlxG.switchState(new StoryMenuState());
-				trace("Story Menu Selected");
 			case 'freeplay':
 				FlxG.switchState(new FreeplayState());
-				trace("Freeplay Menu Selected");
 			case 'credits':
 				FlxG.switchState(new CreditsState());
-				trace("Credits Menu Selected");
 			case 'options':
 				FlxG.switchState(new OptionsMenu());
-				trace("Options Menu Selected");
 		}
 	}
 

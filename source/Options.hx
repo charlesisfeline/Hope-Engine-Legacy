@@ -575,7 +575,6 @@ class OffsetMenu extends Option
 
 	public override function press():Bool
 	{
-		trace("switch");
 		var poop:String = Highscore.formatSong("Tutorial", 1);
 
 		PlayState.SONG = Song.loadFromJson(poop, "Tutorial");
@@ -606,7 +605,6 @@ class BotPlay extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.botplay = !FlxG.save.data.botplay;
-		trace('BotPlay : ' + FlxG.save.data.botplay);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.botplay;
 		return true;
@@ -719,7 +717,6 @@ class FamilyFriendly extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.familyFriendly = !FlxG.save.data.familyFriendly;
-		trace('Family Friendly : ' + FlxG.save.data.familyFriendly);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.familyFriendly;
 		return true;
@@ -741,7 +738,6 @@ class SkipResultsScreen extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.skipResultsScreen = !FlxG.save.data.skipResultsScreen;
-		trace('Skip Results Screen : ' + FlxG.save.data.skipResultsScreen);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.skipResultsScreen;
 		return true;
@@ -833,7 +829,6 @@ class FancyHealthBar extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.fancyHealthBar = !FlxG.save.data.fancyHealthBar;
-		trace('Fancy Health Bar : ' + FlxG.save.data.fancyHealthBar);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.fancyHealthBar;
 		return true;
@@ -855,7 +850,6 @@ class HealthBarColors extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.healthBarColors = !FlxG.save.data.healthBarColors;
-		trace('Health Bar Colors : ' + FlxG.save.data.healthBarColors);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.healthBarColors;
 		return true;
@@ -877,7 +871,6 @@ class HideHealthIcons extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.hideHealthIcons = !FlxG.save.data.hideHealthIcons;
-		trace('Hide Health Icons : ' + FlxG.save.data.hideHealthIcons);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.hideHealthIcons;
 		return true;
@@ -887,6 +880,7 @@ class HideHealthIcons extends Option
 		return "Hide Health Icons";
 }
 
+#if sys
 class CacheImages extends Option
 {
 	public function new(desc:String)
@@ -899,7 +893,6 @@ class CacheImages extends Option
 	public override function press():Bool
 	{
 		FlxG.save.data.cacheImages = !FlxG.save.data.cacheImages;
-		trace('Cache Images : ' + FlxG.save.data.cacheImages);
 		display = updateDisplay();
 		dependantOption = FlxG.save.data.cacheImages;
 		return true;
@@ -909,7 +902,29 @@ class CacheImages extends Option
 		return "Preload Characters";
 }
 
-#if sys
+class CacheMusic extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		dependantOption = FlxG.save.data.cacheMusic;
+	}
+
+	public override function press():Bool
+	{
+		FlxG.save.data.cacheMusic = !FlxG.save.data.cacheMusic;
+		display = updateDisplay();
+		dependantOption = FlxG.save.data.cacheMusic;
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Preload Songs";
+	}
+}
+
 class NoteSkins extends Option
 {
 	private var controls:Controls;

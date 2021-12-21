@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
@@ -24,6 +25,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 	var confirmText:Alphabet;
 	var denyText:Alphabet;
 
+	var prevCamZoom:Float;
+
 	/**
 	 * Create a new prompt.
      * Be sure to set its' values before instancing a new one!
@@ -35,6 +38,9 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		persistentDraw = true;
 		persistentUpdate = false;
 		FlxG.mouse.visible = true;
+
+		prevCamZoom = FlxG.camera.zoom;
+		FlxTween.tween(FlxG.camera, {zoom: 1}, 0.5, {ease: FlxEase.expoInOut});
 
 		if (denyThing == null)
 			denyThing = close;
@@ -87,6 +93,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 		forEachOfType(FlxSprite, function(spr:FlxSprite) 
 		{
+			spr.scrollFactor.set();
+			
 			var desiredAlpha:Float = 1;
 			if (spr.alpha == 1)
 				spr.alpha = 0;
@@ -113,7 +121,6 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 	function confirm() 
 	{
-		confirmThing();
 		forEachOfType(FlxSprite, function(spr:FlxSprite) 
 		{
 			FlxTween.tween(spr, {alpha : 0}, 0.5, {onComplete: function(twn:FlxTween) 
@@ -123,11 +130,12 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		});
 
 		FlxG.mouse.visible = false;
+		FlxTween.tween(FlxG.camera, {zoom: prevCamZoom}, 0.5, {ease: FlxEase.expoInOut});
+		confirmThing();
 	}
 
 	function deny() 
 	{
-		denyThing();
 		forEachOfType(FlxSprite, function(spr:FlxSprite) 
 		{
 			FlxTween.tween(spr, {alpha : 0}, 0.5, {onComplete: function(twn:FlxTween) 
@@ -137,5 +145,7 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		});
 
 		FlxG.mouse.visible = false;
+		FlxTween.tween(FlxG.camera, {zoom: prevCamZoom}, 0.5, {ease: FlxEase.expoInOut});
+		denyThing();
 	}
 }

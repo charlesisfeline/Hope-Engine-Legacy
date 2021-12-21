@@ -89,62 +89,14 @@
 				-11,
 				-19
 			]
-		},
-		{
-			"loopedAnim": false,
-			"frameRate": 24,
-			"prefix": "BF HEY",
-			"name": "hey",
-			"offset": [
-				7,
-				4
-			]
-		},
-		{
-			"loopedAnim": false,
-			"frameRate": 24,
-			"prefix": "boyfriend dodge0",
-			"name": "dodge",
-			"offset": [
-				10,
-				-16
-			]
-		},
-		{
-			"prefix": "BF idle shaking",
-			"offset": [
-				-4,
-				0
-			],
-			"name": "scared",
-			"flipX": false,
-			"loopedAnim": false,
-			"flipY": false,
-			"postfix": "",
-			"frameRate": 24,
-			"indices": []
-		},
-		{
-			"prefix": "BF hit0",
-			"offset": [
-				19,
-				20
-			],
-			"name": "hit",
-			"flipX": false,
-			"loopedAnim": false,
-			"flipY": false,
-			"postfix": "",
-			"frameRate": 24,
-			"indices": []
 		}
 	],
 	"healthColor": "31B0D1",
 	"facesLeft": true,
-	"image": "characters/BOYFRIEND",
+	"image": "characters/bfCar",
 	"singDuration": 4,
 	"initialAnimation": "idle",
 	"antialiasing": true,
-	"name": "bf",
+	"name": "bf-car",
 	"isDeath": false
 }

@@ -90,7 +90,7 @@ class Caching extends MusicBeatState
 
         tip.text = tips[FlxG.random.int(0, tips.length - 1)];
 
-        FlxGraphic.defaultPersist = FlxG.save.data.cacheImage;
+        FlxGraphic.defaultPersist = FlxG.save.data.cacheImages;
 
         #if cpp
         if (FlxG.save.data.cacheImages)
@@ -105,12 +105,13 @@ class Caching extends MusicBeatState
             }
         }
 
-        trace("Getting songs...");
-
-		for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/songs")))
-		{
-			music.push(i);
-		}
+        if (FlxG.save.data.cacheMusic)
+        {
+            trace("Getting songs...");
+            
+            for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/songs")))
+                music.push(i);
+        }
         #end
 
         toBeDone = Lambda.count(images) + Lambda.count(music);
@@ -157,6 +158,9 @@ class Caching extends MusicBeatState
             loadingText.text = "LOADING MUSIC";
             done++;
         }
+
+        if (!FlxG.save.data.cacheImages && !FlxG.save.data.cacheMusic)
+            loadingText.text = "SKIPPING CACHING PHASE";
 
         trace("Finished caching...");
 
