@@ -25,19 +25,14 @@ class GameOverSubstate extends MusicBeatSubstate
 
 	var wellRip:FlxText;
 
-	public function new(x:Float, y:Float, ?cause:String)
+	public function new(x:Float, y:Float)
 	{
-		var daBf:String = '';
-		switch ((FlxG.save.data.enemySide ? PlayState.SONG.player2 : PlayState.SONG.player1))
-		{
-			case 'bf-pixel':
-				stageSuffix = '-pixel';
-				daBf = 'bf-pixel-dead';
-			case 'bf' | 'bf-christmas' | 'bf-car':
-				daBf = 'bf';
-			default:
-				daBf = 'mic';
-		}
+		stageSuffix = (PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "");
+		
+		var daBf:String = 'mic';
+		
+		if (Paths.exists(Paths.characterJson(PlayState.SONG.player1 + "-dead")))
+			daBf = PlayState.SONG.player1 + "-dead";
 
 		super();
 
@@ -101,9 +96,7 @@ class GameOverSubstate extends MusicBeatSubstate
 		super.update(elapsed);
 
 		if (controls.ACCEPT)
-		{
 			endBullshit();
-		}
 
 		if (controls.BACK && !stopQuitting)
 		{

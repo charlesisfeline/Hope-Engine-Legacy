@@ -29,7 +29,7 @@ using StringTools;
 import Discord.DiscordClient;
 #end
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 import sys.thread.Thread;
@@ -42,14 +42,13 @@ class TitleState extends MusicBeatState
 	var blackScreen:FlxSprite;
 	var credGroup:FlxGroup = new FlxGroup();
 	var credTextShit:Alphabet;
-
 	var curWacky:Array<String> = [];
-
 	var wackyImage:FlxSprite;
-
+	var ifuseethis:FlxText;
+	
 	override public function create():Void
 	{	
-		#if sys
+		#if FILESYSTEM
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/replays"))
 			FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
 		
@@ -63,11 +62,6 @@ class TitleState extends MusicBeatState
         PlayerSettings.init();
 		Data.initSave();
 		#end
-
-		@:privateAccess
-		{
-			trace("Loaded " + openfl.Assets.getLibrary("default").assetsLoaded + " assets (DEFAULT)");
-		}
 		
 		#if windows
 		DiscordClient.initialize();
@@ -88,12 +82,14 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
+		#if mobile
+		ifuseethis = new FlxText(0, FlxG.height - 16, 0, "if u see this ur dumb LMAO", 16);
+		add(ifuseethis);
+		#end
+
 		super.create();
 
-		// new FlxTimer().start(0, function(tmr:FlxTimer)
-		// {
-			startIntro();
-		// });
+		startIntro();
 	}
 
 	var logoBl:FlxSprite;
@@ -103,7 +99,7 @@ class TitleState extends MusicBeatState
 	var ngLogo:FlxSprite;
 
 	function startIntro()
-	{
+	{		
 		if (!initialized)
 		{
 			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
@@ -122,8 +118,7 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			// this as well
-			#if sys
+			#if FILESYSTEM
 			for (mod in FileSystem.readDirectory('mods'))
 			{
 				Paths.setCurrentMod(mod);
@@ -134,11 +129,17 @@ class TitleState extends MusicBeatState
 			Paths.setCurrentMod(null);
 			#end
 
+			MainMenuState.hopeEngineVer = Assets.getText('version.awesome');
+
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 				Conductor.changeBPM(102);
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
+
+				#if mobile
+				remove(ifuseethis);
+				#end
 			});
 		}
 		

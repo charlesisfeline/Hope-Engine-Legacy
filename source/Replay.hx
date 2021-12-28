@@ -1,7 +1,7 @@
 // revamped
 // also may look odd because i suck at haxe
 
-#if sys
+#if FILESYSTEM
 import sys.io.File;
 #end
 import flixel.FlxG;
@@ -69,14 +69,14 @@ class Replay
         
         var data:String = Json.stringify(json, null, "\t");
 
-        #if sys
+        #if FILESYSTEM
         File.saveContent("assets/replays/" + (Paths.currentMod != null ? Paths.currentMod + "#" : "") + PlayState.SONG.song.toLowerCase() + "-" + Std.int(Date.now().getTime() / 1000) + ".funkinReplay", data);
         #end
     }
 
     public function LoadFromJSON()
     {
-        #if sys
+        #if FILESYSTEM
         trace('loading ' + Sys.getCwd() + 'assets/replays/' + path + ' replay...');
         try
         {

@@ -11,7 +11,7 @@ import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import lime.app.Application;
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end

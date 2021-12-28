@@ -15,7 +15,7 @@ import lime.utils.Assets;
 
 using StringTools;
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -81,7 +81,7 @@ class DialogueSubstate extends MusicBeatSubstate
         // set the setting shit
         var settingsJSON = null;
 
-        #if sys
+        #if FILESYSTEM
         if (FileSystem.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
             settingsJSON = Json.parse(File.getContent(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
         #else
@@ -91,15 +91,20 @@ class DialogueSubstate extends MusicBeatSubstate
 
         if (settingsJSON != null)
         {
-            desiredBgAlpha = settingsJSON.bg.alpha != null ? settingsJSON.bg.alpha : 0.5;
-
-            desiredMusic = settingsJSON.bgMusic.name != null ? settingsJSON.bgMusic.name : "breakfast";
-            desiredFadeTo = settingsJSON.bgMusic.fadeIn.to != null ? settingsJSON.bgMusic.fadeIn.to : 0.8;
-            desiredFadeFrom = settingsJSON.bgMusic.fadeIn.from != null ? settingsJSON.bgMusic.fadeIn.from : 0;
-            desiredFadeDuration = settingsJSON.bgMusic.fadeIn.duration != null ? settingsJSON.bgMusic.fadeIn.duration : 1;
+            if (settingsJSON.bgMusic != null)
+            {
+                desiredMusic = settingsJSON.bgMusic.name != null ? settingsJSON.bgMusic.name : "breakfast";
+                desiredFadeTo = settingsJSON.bgMusic.fadeIn.to != null ? settingsJSON.bgMusic.fadeIn.to : 0.8;
+                desiredFadeFrom = settingsJSON.bgMusic.fadeIn.from != null ? settingsJSON.bgMusic.fadeIn.from : 0;
+                desiredFadeDuration = settingsJSON.bgMusic.fadeIn.duration != null ? settingsJSON.bgMusic.fadeIn.duration : 1;   
+            }
             
-            desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
-            desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
+            if (settingsJSON.bg != null)
+            {
+                desiredBgAlpha = settingsJSON.bg.alpha != null ? settingsJSON.bg.alpha : 0.5;
+                desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
+                desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
+            }
         }
 
         bg.color = desiredBgColor;
@@ -109,8 +114,11 @@ class DialogueSubstate extends MusicBeatSubstate
         else
             FlxTween.tween(bg, {alpha: desiredBgAlpha}, desiredBgDuration, {ease: FlxEase.linear});
 
-        FlxG.sound.playMusic(Paths.music(desiredMusic));
-        FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
+        if (desiredMusic != "")
+        {
+            FlxG.sound.playMusic(Paths.music(desiredMusic));
+            FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
+        }
 
         dialogueBox = new FlxSprite();
 
@@ -394,6 +402,8 @@ class DialogueSubstate extends MusicBeatSubstate
 
     function cleanUpDialogue():Void
     {
+        typedText.visible = false;
+        
         splitName = dialogueList[0].split(":");
 		whosSpeaking = splitName[1];
         speakerEmotion = splitName[2];
@@ -418,9 +428,12 @@ class DialogueSubstate extends MusicBeatSubstate
                     dialogueBox.flipX = false;
             }
 
-            typedText.visible = false;
             dialogueBox.animation.play(dialogueType + " open", true);
         }
+
+        if (!dialogueBox.animation.curAnim.name.startsWith(dialogueType))
+            dialogueBox.animation.play(dialogueType + " open", true);
+
         speakerPosition = splitName[3];
 		dialogueList[0] = splitName[5].replace("\\n", "\n");
     }

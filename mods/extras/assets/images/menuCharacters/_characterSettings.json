@@ -1,0 +1,11 @@
+[
+    {
+        "character" : "extras",
+        "animations" : {
+            "idle" : {
+                "prefix" : "extras",
+                "fps" : 12
+            }
+        }
+    }
+]

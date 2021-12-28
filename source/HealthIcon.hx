@@ -55,7 +55,7 @@ class HealthIcon extends FlxSprite
 
 		loadGraphic(Paths.image('icons/face'), true, 150, 150);
 		
-		if (Paths.image('icons/' + char) != null)
+		if (Paths.exists(Paths.image('icons/' + char)))
 			loadGraphic(Paths.image('icons/' + char), true, 150, 150);
 
 		if (char.endsWith('-pixel') || char.startsWith('senpai') || char.startsWith('spirit'))

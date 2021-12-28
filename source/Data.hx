@@ -101,6 +101,9 @@ class Data
 		if (FlxG.save.data.watermarks == null)
 			FlxG.save.data.watermarks = true;
 
+		if (FlxG.save.data.noteSplashes == null)
+			FlxG.save.data.noteSplashes = true;
+
 		if (FlxG.save.data.pfBGTransparency == null)
 			FlxG.save.data.pfBGTransparency = 0;
 

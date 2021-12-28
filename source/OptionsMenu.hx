@@ -39,7 +39,7 @@ class OptionsMenu extends MusicBeatState
 			new GhostTapOption("If this is on, pressing while there's no\nnotes to hit won't give you a penalty."),
 			new OffsetMenu("Not sure what offset you need? Play this!"),
 			new Judgement("Customize your Hit Timings\n(Lower safe frames = tighter/harder gameplay)"),
-			#if desktop
+			#if FILESYSTEM
 			new FPSCapOption("Cap your FPS"),
 			#end
 			new ScrollSpeedOption("Change your scroll speed (1 = Chart dependent)"),
@@ -47,7 +47,7 @@ class OptionsMenu extends MusicBeatState
 			new ResetButtonOption("Toggle pressing R to gameover."),
 
 			new OptionSubCatTitle("APPEARANCE"),
-			#if sys
+			#if FILESYSTEM
 			new NoteSkins("Change your note skins here"),
 			#end
 			new AccuracyOption("Modify the info text under the health bar."),
@@ -60,7 +60,7 @@ class OptionsMenu extends MusicBeatState
 			new DistractionsAndEffectsOption("Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)")
 		]),
 
-		#if sys
+		#if FILESYSTEM
 		new ModsMenu("Modifications", []),
 		new ReplayMenu("Replays", []),
 		#end
@@ -76,8 +76,8 @@ class OptionsMenu extends MusicBeatState
 		new OptionCategory("Miscellaneous", [
 			new OptionSubCatTitle("MISCELLANEOUS"),
 			new FPSOption("Toggle the FPS Counter"),
-			new Watermarks("Toggle the Watermark at the top left"),
-			#if sys
+			new Watermarks("Toggle the Watermark seen at the Story Menu"),
+			#if FILESYSTEM
 			new CacheMusic("Preloads the songs for a smoother freeplay menu experience. (HIGH MEMORY!)"),
 			new CacheImages("Preloads the characters for a smoother experience. (HIGH MEMORY!)"),
 			#end
@@ -311,7 +311,8 @@ class OptionsMenu extends MusicBeatState
 						if (currentSelectedCat.getOptions()[curSelected].getOption() != null)
 						{
 							ctrl.x = 300;
-							var piss:CheckBox = new CheckBox(ctrl.x - 175, ctrl.y + (ctrl.height / 2) - (150 / 2), currentSelectedCat.getOptions()[curSelected].getOption());
+							var piss:CheckBox = new CheckBox(ctrl.x - 175, 0, currentSelectedCat.getOptions()[curSelected].getOption());
+							piss.y = ctrl.y + (ctrl.height / 2) - (piss.height / 2);
 							ctrl.checkBox = piss;
 							grpCheckBoxes.add(piss);
 						}
@@ -337,7 +338,8 @@ class OptionsMenu extends MusicBeatState
 							if (currentSelectedCat.getOptions()[i].getOption() != null)
 							{
 								controlLabel.x = 300;
-								var piss:CheckBox = new CheckBox(controlLabel.x - 175, controlLabel.y + (controlLabel.height / 2) - (150 / 2), currentSelectedCat.getOptions()[i].getOption());
+								var piss:CheckBox = new CheckBox(controlLabel.x - 175, 0, currentSelectedCat.getOptions()[i].getOption());
+								piss.y = controlLabel.y + (controlLabel.height / 2) - (piss.height / 2);
 								controlLabel.checkBox = piss;
 								grpCheckBoxes.add(piss);
 							}
@@ -427,11 +429,12 @@ class CheckBox extends FlxSprite
 	{
 		super(x, y);
 
-		loadGraphic(Paths.image("checkBox"), true, 150, 150);
+		frames = Paths.getSparrowAtlas('checkboxAwesome');
 		antialiasing = true;
 
-		animation.add('unticked', [0, 2], 12);
-		animation.add('ticked', [1, 3], 12);
+		animation.addByPrefix("ticked", "checkbox checked", 24, false);
+		setGraphicSize(150);
+		updateHitbox();
 		change(toggle);
 	}
 
@@ -440,6 +443,6 @@ class CheckBox extends FlxSprite
 		if (huh)
 			animation.play('ticked', true);
 		else
-			animation.play('unticked', true);
+			animation.play('ticked', true, true);
 	}
 }

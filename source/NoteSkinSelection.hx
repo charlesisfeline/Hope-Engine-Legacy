@@ -3,7 +3,7 @@ package;
 // this shit's just a superior image and file replacer
 
 import flixel.graphics.FlxGraphic;
-#if sys
+#if FILESYSTEM
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -34,6 +34,7 @@ class NoteSkinSelection extends MusicBeatSubstate
     var skinDesc:FlxText;
 
     public static var loadedNoteSkins:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
+    public static var loadedSplashes:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
 
     public function new()
     {
@@ -255,6 +256,16 @@ class NoteSkinSelection extends MusicBeatSubstate
                 shitoffmate.persist = true;
                 shitoffmate.destroyOnNoUse = false;
                 loadedNoteSkins.set(skinName, shitoffmate);
+
+                if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.png") &&
+                    FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.xml"))
+                {
+                    var noteSplashNormal:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.png");
+                    var shitoffmateSplash:FlxGraphic = FlxGraphic.fromBitmapData(noteSplashNormal);
+                    shitoffmateSplash.persist = true;
+                    shitoffmateSplash.destroyOnNoUse = false;
+                    loadedSplashes.set(skinName, shitoffmate);
+                }
 
                 if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/"))
                 {

@@ -1,0 +1,87 @@
+{
+	"animations": [
+		{
+			"prefix": "idle",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "idle",
+			"offset": [
+				-220,
+				-280
+			]
+		},
+		{
+			"prefix": "up",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "singUP",
+			"offset": [
+				-220,
+				-240
+			]
+		},
+		{
+			"prefix": "spirit down",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "singDOWN",
+			"offset": [
+				170,
+				110
+			]
+		},
+		{
+			"prefix": "left",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "singLEFT",
+			"offset": [
+				-200,
+				-280
+			]
+		},
+		{
+			"prefix": "right",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "singRIGHT",
+			"offset": [
+				-220,
+				-280
+			]
+		}
+	],
+	"healthColor": "FF3C6E",
+	"facesLeft": false,
+	"image": "characters/spirit",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": false,
+	"name": "spirit",
+	"isDeath": false,
+	"scale": 6
+}

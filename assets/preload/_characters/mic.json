@@ -1,0 +1,59 @@
+{
+	"animations": [
+		{
+			"prefix": "mic dies",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "firstDeath",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"prefix": "mic dies0055",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "deathConfirm",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"prefix": "mic dies0055",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "deathLoop",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "A1A1A1",
+	"facesLeft": false,
+	"image": "characters/micDrop",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": true,
+	"name": "mic",
+	"isDeath": true,
+	"scale": 1
+}

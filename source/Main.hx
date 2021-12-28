@@ -63,13 +63,9 @@ class Main extends Sprite
 			gameHeight = Math.ceil(stageHeight / zoom);
 		}
 
-		#if sys
+		#if FILESYSTEM
 		initialState = Caching;
 		#else
-		initialState = TitleState;
-		#end
-
-		#if mobile
 		initialState = TitleState;
 		#end
 

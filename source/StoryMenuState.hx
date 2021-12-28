@@ -16,7 +16,7 @@ import openfl.utils.Assets;
 
 using StringTools;
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -63,6 +63,10 @@ class StoryMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Story Mode Menu", null);
 		#end
+
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		#end
 		
 		weekUnlocked = FlxG.save.data.weeksUnlocked == null ? [] : FlxG.save.data.weeksUnlocked;
 
@@ -80,7 +84,7 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in CoolUtil.coolTextFile("assets/_weeks/_weekList.txt"))
 		{
-			#if sys
+			#if FILESYSTEM
 			var path = Sys.getCwd() + "assets/_weeks/" + i + ".json";
 			var week = Json.parse(File.getContent(path));
 			#else
@@ -95,7 +99,7 @@ class StoryMenuState extends MusicBeatState
 			weekMods.push(null);
 		}
 
-		#if sys
+		#if FILESYSTEM
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && FileSystem.exists(Sys.getCwd() + Paths.loadModFile(i)))
@@ -172,6 +176,8 @@ class StoryMenuState extends MusicBeatState
 				lock.antialiasing = true;
 				grpLocks.add(lock);
 			}
+
+			Paths.setCurrentMod(null);
 		}
 
 		grpWeekCharacters.add(new MenuCharacter(0, 100, 0.5, false));
@@ -363,12 +369,12 @@ class StoryMenuState extends MusicBeatState
 
 		var previousMod = Paths.currentMod;
 		Paths.currentMod = CoolUtil.difficultyArray[curDifficulty][2];
-
 		sprDifficulty.alpha = 0;
 		sprDifficulty.loadGraphic(Paths.image("difficulties/" + CoolUtil.difficultyFromInt(curDifficulty)));
 		sprDifficulty.setGraphicSize(Std.int(sprDifficulty.width * 0.93));
 		sprDifficulty.updateHitbox();
-		// sprDifficulty.x = leftArrow.x + rightArrow.width; TO DO: FIX THIS
+		// some long fuckin equation idk mate
+		sprDifficulty.x = leftArrow.x + leftArrow.width + ((rightArrow.x - (leftArrow.x + leftArrow.width)) / 2) - (sprDifficulty.width / 2);
 		sprDifficulty.y = leftArrow.y + (leftArrow.height / 2) - (sprDifficulty.height / 2) - 15;
 		FlxTween.tween(sprDifficulty, {y: sprDifficulty.y + 15, alpha: 1}, 0.07);
 

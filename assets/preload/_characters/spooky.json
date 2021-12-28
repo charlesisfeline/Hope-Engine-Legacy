@@ -55,7 +55,7 @@
 			"prefix": "note sing left",
 			"offset": [
 				130,
-				-10
+				-16
 			],
 			"name": "singLEFT",
 			"flipX": false,
@@ -83,7 +83,7 @@
 			"prefix": "spooky DOWN note",
 			"offset": [
 				-50,
-				-130
+				-141
 			],
 			"name": "singDOWN",
 			"flipX": false,
@@ -94,12 +94,13 @@
 			"indices": []
 		}
 	],
-	"healthColor": "7F5210",
+	"healthColor": "FFA420",
 	"facesLeft": false,
 	"image": "characters/spooky_kids_assets",
 	"singDuration": 4,
 	"initialAnimation": "danceLeft",
 	"antialiasing": true,
 	"name": "spooky",
-	"isDeath": false
+	"isDeath": false,
+	"scale": 1
 }

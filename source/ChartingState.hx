@@ -44,7 +44,7 @@ import openfl.net.FileReference;
 import openfl.utils.ByteArray;
 
 using StringTools;
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -121,6 +121,10 @@ class ChartingState extends MusicBeatState
 
 	override function create()
 	{
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		#end
+
 		curSection = lastSection;
 
 		if (PlayState.SONG != null)
@@ -147,7 +151,7 @@ class ChartingState extends MusicBeatState
 		bg.scrollFactor.set();
 		add(bg);
 
-		#if sys
+		#if FILESYSTEM
 		if (FlxG.save.data.currentNoteSkin != "default")
 			theSex = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/normal/NOTE_assets.xml"));
 		#end
@@ -376,10 +380,22 @@ class ChartingState extends MusicBeatState
 
 	function addAssetsUI():Void
 	{
+		var pastMod = Paths.currentMod;
+		Paths.setCurrentMod(null);
+		
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
 		var gfVersions:Array<String> = CoolUtil.coolTextFile(Paths.txt('gfVersionList'));
 		var stages:Array<String> = CoolUtil.coolTextFile(Paths.txt('stageList'));
 		var noteStyles:Array<String> = CoolUtil.coolTextFile(Paths.txt('noteStyleList'));
+
+		// append (cool)
+		#if FILESYSTEM
+		Paths.setCurrentMod(pastMod);
+
+		characters = characters.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('characterList'))));
+		gfVersions = gfVersions.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('gfVersionList'))));
+		stages = stages.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('stageList'))));
+		#end
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 10, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
 		{
@@ -554,8 +570,8 @@ class ChartingState extends MusicBeatState
 			"hopeEngine/randomize-position"
 		];
 
-		// do a reading if sys epic
-		#if sys
+		// do a reading if FILESYSTEM epic
+		#if FILESYSTEM
 		if (FileSystem.exists(Sys.getCwd() + "mods"))
 		{
 			for (mod in FileSystem.readDirectory(Sys.getCwd() + "mods"))
@@ -1574,7 +1590,7 @@ class ChartingState extends MusicBeatState
 	{
 		var songPath = 'assets/data/' + song.toLowerCase() + '/' + song.toLowerCase() + ".json";
 		
-		#if sys
+		#if FILESYSTEM
 		if (FileSystem.exists(Sys.getCwd() + songPath))
 		#else
 		if (Assets.exists(songPath))

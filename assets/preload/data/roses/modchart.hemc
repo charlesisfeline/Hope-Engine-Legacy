@@ -1,0 +1,14 @@
+function onStart()
+{
+    if (isStoryMode)
+        FlxG.sound.play(Paths.sound('ANGRY_TEXT_BOX'));
+}
+
+function onSongEnd()
+{
+    if (isStoryMode)
+    {
+        camHUD.visible = false;
+        camGame.fade(0xFF000000, 0.2);
+    }
+}

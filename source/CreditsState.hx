@@ -27,6 +27,10 @@ class CreditsState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Credits", null);
 		#end
+
+        #if FILESYSTEM
+		Paths.destroyCustomImages();
+		#end
         
         var bg = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
         bg.screenCenter();

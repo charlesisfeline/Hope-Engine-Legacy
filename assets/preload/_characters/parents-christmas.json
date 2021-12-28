@@ -17,7 +17,7 @@
 		{
 			"prefix": "Parent Up Note Dad",
 			"offset": [
-				-47,
+				-42,
 				24
 			],
 			"name": "singUP",
@@ -31,8 +31,8 @@
 		{
 			"prefix": "Parent Down Note Dad",
 			"offset": [
-				-31,
-				-29
+				-41,
+				-23
 			],
 			"name": "singDOWN",
 			"flipX": false,
@@ -45,8 +45,8 @@
 		{
 			"prefix": "Parent Left Note Dad",
 			"offset": [
-				-30,
-				16
+				-27,
+				20
 			],
 			"name": "singLEFT",
 			"flipX": false,
@@ -59,8 +59,8 @@
 		{
 			"prefix": "Parent Right Note Dad",
 			"offset": [
-				-1,
-				-23
+				1,
+				-19
 			],
 			"name": "singRIGHT",
 			"flipX": false,
@@ -73,8 +73,8 @@
 		{
 			"prefix": "Parent Up Note Mom",
 			"offset": [
-				-47,
-				24
+				-41,
+				28
 			],
 			"name": "singUP-alt",
 			"flipX": false,
@@ -87,8 +87,8 @@
 		{
 			"prefix": "Parent Down Note Mom",
 			"offset": [
-				-30,
-				-27
+				-40,
+				-25
 			],
 			"name": "singDOWN-alt",
 			"flipX": false,
@@ -100,35 +100,37 @@
 		},
 		{
 			"prefix": "Parent Left Note Mom",
-			"loopedAnim": false,
-			"indices": [],
+			"offset": [
+				-28,
+				19
+			],
+			"name": "singLEFT-alt",
 			"flipX": false,
+			"loopedAnim": false,
 			"flipY": false,
 			"postfix": "",
 			"frameRate": 24,
-			"name": "singLEFT-alt",
-			"offset": [
-				-30,
-				15
-			]
+			"indices": []
 		},
 		{
 			"prefix": "Parent Right Note Mom",
-			"loopedAnim": false,
-			"indices": [],
-			"flipX": false,
-			"flipY": false,
-			"postfix": "",
-			"frameRate": 24,
-			"name": "singRIGHT-alt",
 			"offset": [
 				-1,
 				-21
-			]
+			],
+			"name": "singRIGHT-alt",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
 		}
 	],
+	"healthColor": "FFC6EF",
 	"facesLeft": false,
 	"image": "characters/mom_dad_christmas_assets",
+	"singDuration": 4,
 	"initialAnimation": "idle",
 	"antialiasing": true,
 	"name": "parents-christmas",

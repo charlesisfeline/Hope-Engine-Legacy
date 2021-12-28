@@ -10,7 +10,7 @@ import flixel.util.FlxColor;
 import haxe.Json;
 
 using StringTools;
-#if sys
+#if FILESYSTEM
 import sys.io.File;
 #end
 
@@ -77,7 +77,7 @@ class Note extends FlxSprite
 			case 'pixel':
 				loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
-				#if sys
+				#if FILESYSTEM
 				if (FlxG.save.data.currentNoteSkin != "default" && 
 					NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
 					loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
@@ -92,7 +92,7 @@ class Note extends FlxSprite
 				{
 					loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
 
-					#if sys
+					#if FILESYSTEM
 					if (FlxG.save.data.currentNoteSkin != "default" && 
 						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds") != null)
 						loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds"), true, 7, 6);
@@ -218,7 +218,7 @@ class Note extends FlxSprite
 	public function changeType(type:String)
 	{
 		var a = type.split("/");
-		#if sys
+		#if FILESYSTEM
 		var noteJSON = Json.parse(File.getContent(Sys.getCwd() + Paths.noteJSON(a[1], a[0])));
 		#else
 		var noteJSON = Json.parse(openfl.utils.Assets.getText(Paths.noteJSON(a[1], a[0])));

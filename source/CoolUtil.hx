@@ -1,6 +1,6 @@
 package;
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -36,7 +36,7 @@ class CoolUtil
 		return difficultyArray[PlayState.storyDifficulty][1];
 	}
 
-	#if sys
+	#if FILESYSTEM
 	public static function loadCustomDifficulties():Void
 	{
 		if (FileSystem.exists(Paths.txt('customDifficulties')))

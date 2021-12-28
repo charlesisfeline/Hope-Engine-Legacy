@@ -7,7 +7,7 @@ import haxe.Json;
 import openfl.Assets;
 
 using StringTools;
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -59,20 +59,12 @@ class Character extends FlxSprite
 	public var initAnim:String = 'idle';
 	public var cameraOffset:Array<Float> = [0, 0];
 	public var singDuration:Float = 4;
-	public var healthColor(default, set):String; // i actually dont get how getters and setters work
+	public var healthColor:String;
 
 	public var animationsArray:Array<Animation> = [];
 
 	public var holdTimer:Float = 0;
 	public var debugMode:Bool = false;
-
-	public static var colors = {};
-
-	function set_healthColor(newHealth:String):String
-	{
-		Reflect.setField(colors, curCharacter, newHealth);
-		return newHealth;
-	}
 
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
@@ -82,7 +74,6 @@ class Character extends FlxSprite
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 
-		var tex:FlxAtlasFrames;
 		antialiasing = true;
 		
 		switch (curCharacter)
@@ -92,7 +83,7 @@ class Character extends FlxSprite
 
 				if (Paths.exists(Paths.characterJson(curCharacter)))
 				{
-					#if sys
+					#if FILESYSTEM
 					rawJSON = File.getContent(Paths.characterJson(curCharacter));
 					#else
 					rawJSON = Assets.getText(Paths.characterJson(curCharacter));
@@ -101,8 +92,6 @@ class Character extends FlxSprite
 
 				var charFile:CharacterJSON = cast Json.parse(rawJSON);
 
-				// not sure if this is okay to implement
-				// but here we are
 				image = charFile.image != null ? charFile.image : '';
 				setAntialiasing = charFile.antialiasing != null ? charFile.antialiasing : true;
 				setScale = charFile.scale != null ? charFile.scale : 1;
@@ -114,7 +103,7 @@ class Character extends FlxSprite
 				animationsArray = charFile.animations != null ? charFile.animations : [];
 				healthColor = charFile.healthColor != null ? charFile.healthColor : "a1a1a1";
 
-				if (Paths.exists(Paths.getPath('images/' + charFile.image + '.txt', TEXT, null)))
+				if (Paths.exists(Paths.getPath('shared/images/' + charFile.image + '.txt', TEXT, null)))
 					frames = Paths.getPackerAtlas(charFile.image, 'shared');
 				else
 					frames = Paths.getSparrowAtlas(charFile.image, 'shared');
@@ -127,7 +116,6 @@ class Character extends FlxSprite
 
 				antialiasing = setAntialiasing;
 				flipX = !!facesLeft;
-				Reflect.setField(colors, curCharacter, charFile.healthColor);
 
 				if (animationsArray != null && animationsArray.length > 0)
 				{
@@ -140,6 +128,8 @@ class Character extends FlxSprite
 
 						if (anim.offset != null)
 							addOffset(anim.name, anim.offset[0], anim.offset[1]);
+						else
+							addOffset(anim.name, 0, 0);
 					}
 				}
 
@@ -162,58 +152,12 @@ class Character extends FlxSprite
 		{
 			if (isPlayer)
 				flipX = !flipX;
-	
-				// Doesn't flip for BF, since his are already in the right place???
-				/*
-				if (!curCharacter.startsWith('bf'))
-				{ 
-					// var animArray
-					var oldRight = animation.getByName('singRIGHT').frames;
-					animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-					animation.getByName('singLEFT').frames = oldRight;
-	
-					// IF THEY HAVE MISS ANIMATIONS??
-					if (animation.getByName('singRIGHTmiss') != null)
-					{
-						var oldMiss = animation.getByName('singRIGHTmiss').frames;
-						animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-						animation.getByName('singLEFTmiss').frames = oldMiss;
-					}
-				}
-			}
-			else
-			{
-				if (curCharacter.startsWith('bf'))
-				{ 
-					// var animArray
-					var oldRight = animation.getByName('singRIGHT').frames;
-					animation.getByName('singRIGHT').frames = animation.getByName('singLEFT').frames;
-					animation.getByName('singLEFT').frames = oldRight;
-	
-					// IF THEY HAVE MISS ANIMATIONS??
-					if (animation.getByName('singRIGHTmiss') != null)
-					{
-						var oldMiss = animation.getByName('singRIGHTmiss').frames;
-						animation.getByName('singRIGHTmiss').frames = animation.getByName('singLEFTmiss').frames;
-						animation.getByName('singLEFTmiss').frames = oldMiss;
-					}
-				}
-			}
-			*/
 		}
 	}
 
-	public final function getColor() // get character color inline
+	public final function getColor():FlxColor
 	{
-		var daColor:String = "a1a1a1";
-
-		for (key in Reflect.fields(colors))
-		{
-			if (curCharacter.startsWith(key))
-				daColor = Reflect.field(colors, key);
-		}
-
-		return FlxColor.fromString("#" + daColor);
+		return FlxColor.fromString("#" + healthColor);
 	}
 
 	public function reloadAnimations():Void

@@ -6,7 +6,7 @@ import haxe.format.JsonParser;
 import lime.utils.Assets;
 
 using StringTools;
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -52,13 +52,14 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:String, ?mod:String = ""):SwagSong
 	{
 		trace(jsonInput);
+		trace("MOD IN LOAD FROM JSON: " + mod);
 
 		// pre lowercasing the song name (update)
 		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
 		
 		trace('loading ' + folderLowercase + '/' + jsonInput.toLowerCase());
 
-		#if sys
+		#if FILESYSTEM
 		var rawJson = File.getContent(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/' + jsonInput.toLowerCase() + ".json").trim();
 		#else
 		var rawJson = Assets.getText(Paths.json(folderLowercase + '/' + jsonInput.toLowerCase())).trim();

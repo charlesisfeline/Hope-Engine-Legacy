@@ -15,7 +15,7 @@ import openfl.Lib;
 
 using StringTools;
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -196,7 +196,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	var originalOffset:Null<Float>;
 
-	#if sys
+	#if FILESYSTEM
 	function changeOffset(huh:Float = 0)
 	{
 		if (originalOffset == null)

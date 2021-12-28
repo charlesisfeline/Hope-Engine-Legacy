@@ -7,7 +7,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -29,7 +29,7 @@ class LoadReplayState extends MusicBeatState
 	override function create()
 	{
 		var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
-        #if sys
+        #if FILESYSTEM
 		controlsStrings = FileSystem.readDirectory(Sys.getCwd() + "/assets/replays/");
         #end
 
@@ -128,27 +128,6 @@ class LoadReplayState extends MusicBeatState
         return week;
     }
 
-	public function addSong(songName:String, weekNum:Int, songCharacter:String, bpm:Float = 102)
-	{
-		songs.push(new FreeplayState.SongMetadata(songName, weekNum, songCharacter, bpm));
-	}
-
-	public function addWeek(songs:Array<String>, weekNum:Int, ?songCharacters:Array<String>)
-	{
-		if (songCharacters == null)
-			songCharacters = ['bf'];
-
-		var num:Int = 0;
-		for (song in songs)
-		{
-			addSong(song, weekNum, songCharacters[num]);
-
-			if (songCharacters.length != 1)
-				num++;
-		}
-	}
-    
-
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -230,7 +209,7 @@ class LoadReplayState extends MusicBeatState
 
 	function deleteReplay()
 	{
-		#if sys
+		#if FILESYSTEM
 		FileSystem.deleteFile(Sys.getCwd() + "/assets/replays/" + actualNames[curSelected]);
         #end
 		FlxG.switchState(new LoadReplayState());
@@ -238,7 +217,7 @@ class LoadReplayState extends MusicBeatState
 
 	function deleteAllReplays()
 	{
-		#if sys
+		#if FILESYSTEM
 		for (name in actualNames)
 		{
 			FileSystem.deleteFile(Sys.getCwd() + "/assets/replays/" + name);

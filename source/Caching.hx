@@ -1,4 +1,4 @@
-#if sys
+#if FILESYSTEM
 package;
 
 import flixel.FlxG;
@@ -13,7 +13,7 @@ import openfl.utils.Assets;
 
 using StringTools;
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -38,6 +38,8 @@ class Caching extends MusicBeatState
     var images = [];
     var music = [];
     var charts = [];
+    var sounds = [];
+    var sharedSounds = [];
 
     public static var bitmapData:Map<String,FlxGraphic>;
 
@@ -46,8 +48,7 @@ class Caching extends MusicBeatState
         "Note Skins are available!\nGo follow how the \"Swag\" skin does it!",
         "Hate the results screen?\nTurn it off in the options!",
         "Wanna see how you did in a song?\nGo to Options > Misc > Replays!",
-        "Wanna work on my fnf mod?\nIts gonna have 300 weeks i need 500 artists 200 charters 400 composers no pay though im a minor",
-        ""
+        "Wanna work on my fnf mod?\nIts gonna have 300 weeks i need 500 artists 200 charters 400 composers no pay though im a minor"
     ];
 
     override function create() 
@@ -112,9 +113,19 @@ class Caching extends MusicBeatState
             for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/songs")))
                 music.push(i);
         }
+
+        trace("Getting sounds (mandatory!)...");
+
+        for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/sounds")))
+            if (i.endsWith("." + Paths.SOUND_EXT))
+                sounds.push(i.replace("." + Paths.SOUND_EXT, ""));
+
+        for (i in FileSystem.readDirectory(FileSystem.absolutePath("assets/shared/sounds")))
+            if (i.endsWith("." + Paths.SOUND_EXT))
+                sharedSounds.push(i.replace("." + Paths.SOUND_EXT, ""));
         #end
 
-        toBeDone = Lambda.count(images) + Lambda.count(music);
+        toBeDone = Lambda.count(images) + Lambda.count(music) + Lambda.count(sounds) + Lambda.count(sharedSounds);
 
         #if cpp
 		sys.thread.Thread.create(() -> {
@@ -156,6 +167,24 @@ class Caching extends MusicBeatState
             
             trace("Cached " + i);
             loadingText.text = "LOADING MUSIC";
+            done++;
+        }
+
+        for (i in sounds)
+        {
+            FlxG.sound.cache(Paths.sound(i));
+
+            trace("Cached " + i);
+            loadingText.text = "LOADING SOUNDS IN ASSETS";
+            done++;
+        }
+
+        for (i in sharedSounds)
+        {
+            FlxG.sound.cache(Paths.sound(i, 'shared'));
+
+            trace("Cached in shared " + i);
+            loadingText.text = "LOADING SOUNDS IN SHARED";
             done++;
         }
 

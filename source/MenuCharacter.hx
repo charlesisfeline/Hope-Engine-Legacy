@@ -1,11 +1,20 @@
 package;
 
+#if FILESYSTEM
+import sys.io.File;
+#end
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import haxe.Json;
 import lime.tools.AssetType;
 import lime.utils.AssetType;
 import openfl.Assets;
+
+typedef MenuCharacterJSON = {
+	var character:String;
+	var animations:Array<Dynamic>;
+	var settings:Array<Dynamic>;
+}
 
 class CharacterSetting
 {
@@ -26,7 +35,7 @@ class CharacterSetting
 class MenuCharacter extends FlxSprite
 {
 	static var settings:Map<String, CharacterSetting> = new Map<String, CharacterSetting>();
-	static var characterSettingsJSON:Array<Dynamic>;
+	static var characterSettingsJSON:Array<Dynamic> = [];
 	public var danced:Bool = false;
 	public var curCharacter:String = '';
 	
@@ -37,12 +46,33 @@ class MenuCharacter extends FlxSprite
 	{
 		super(x, y);
 		
-		if (characterSettingsJSON == null)
-			characterSettingsJSON = Json.parse(Assets.getText('assets/images/menuCharacters/_characterSettings.json'));
+		if (Paths.currentMod == null)
+		{
+			var pain:Array<MenuCharacterJSON> = Json.parse(Assets.getText('assets/images/menuCharacters/_characterSettings.json'));
+			
+			for (a in pain)
+			{
+				if (!characterSettingsJSON.contains(a))
+					characterSettingsJSON.push(a);
+			}
+		}
+		else
+		{
+			var pain:Array<MenuCharacterJSON> = Json.parse(File.getContent('mods/${Paths.currentMod}/assets/images/menuCharacters/_characterSettings.json'));
+
+			for (a in pain)
+			{
+				if (!characterSettingsJSON.contains(a))
+					characterSettingsJSON.push(a);
+			}
+		}
 
 		for (fuck in characterSettingsJSON)
-			settings.set(fuck.character, new CharacterSetting(fuck.settings.x, fuck.settings.y, fuck.settings.scale, fuck.settings.flipped));
-
+		{
+			if (fuck.settings != null)
+				settings.set(fuck.character, new CharacterSetting(fuck.settings.x, fuck.settings.y, fuck.settings.scale, fuck.settings.flipped));
+		}
+		
 		this.flipped = flipped;
 		this.scaleDeezNuts = scale;
 		antialiasing = true;
@@ -53,6 +83,16 @@ class MenuCharacter extends FlxSprite
 
 	public function setCharacter(character:String):Void
 	{
+		if (Paths.currentMod != null)
+		{
+			var pain:Array<MenuCharacterJSON> = Json.parse(File.getContent('mods/${Paths.currentMod}/assets/images/menuCharacters/_characterSettings.json'));
+
+			for (a in pain)
+			{
+				if (!characterSettingsJSON.contains(a))
+					characterSettingsJSON.push(a);
+			}
+		}
 		if (character == '')
 		{
 			visible = false;
@@ -91,9 +131,13 @@ class MenuCharacter extends FlxSprite
 		}
 
 		var setting:CharacterSetting = settings[character];
-		offset.set(setting.x, setting.y);
-		setGraphicSize(Std.int(width * setting.scale));
-		flipX = setting.flipped != flipped;
+		
+		if (setting != null)
+		{
+			setGraphicSize(Std.int(width * setting.scale));
+			flipX = setting.flipped != flipped;
+			offset.set(setting.x, setting.y);
+		}
 
 
 		setGraphicSize(Std.int(width * scaleDeezNuts));

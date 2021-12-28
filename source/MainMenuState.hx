@@ -43,6 +43,7 @@ class MainMenuState extends MusicBeatState
 	
 	public static var firstStart:Bool = true;
 
+	public static var hopeEngineVer:String = "0.1.1";
 	public static var kadeEngineVer:String = "1.5.2";
 	public static var gameVer:String = "0.2.7.1";
 
@@ -55,6 +56,8 @@ class MainMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+
+		Paths.setCurrentMod(null); // this menu is unmoddable
 
 		if (!FlxG.sound.music.playing)
 		{
@@ -87,6 +90,20 @@ class MainMenuState extends MusicBeatState
 		magenta.color = 0xFFfd719b;
 		add(magenta);
 		// magenta.scrollFactor.set();
+
+		var whatTheMarkSay:String = "Hope Engine v" + hopeEngineVer
+								  + "\nKade Engine v" + kadeEngineVer
+								  + "\nFunkin' v" + gameVer;
+
+		if (!FlxG.save.data.watermarks)
+			whatTheMarkSay = "v" + hopeEngineVer;
+		
+		var watermark = new FlxText(0, 0, 500, whatTheMarkSay, 72);
+		watermark.scrollFactor.set();
+		watermark.setFormat("VCR OSD Mono", 24, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+        watermark.borderSize = 2;
+		watermark.setPosition(10, FlxG.height - watermark.height - 10);
+		add(watermark);
 
 		menuItems = new FlxTypedGroup<FlxSprite>();
 		add(menuItems);
@@ -141,7 +158,6 @@ class MainMenuState extends MusicBeatState
 	}
 
 	var selectedSomethin:Bool = false;
-
 	var fuckingStupid:Array<Float> = [];
 
 	override function update(elapsed:Float)

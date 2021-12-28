@@ -8,7 +8,7 @@ import lime.system.DisplayMode;
 import openfl.Lib;
 import openfl.display.FPS;
 
-#if sys
+#if FILESYSTEM
 import Sys;
 import sys.FileSystem;
 #end
@@ -880,7 +880,7 @@ class HideHealthIcons extends Option
 		return "Hide Health Icons";
 }
 
-#if sys
+#if FILESYSTEM
 class CacheImages extends Option
 {
 	public function new(desc:String)

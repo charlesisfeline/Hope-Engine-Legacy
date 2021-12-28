@@ -47,6 +47,8 @@
 	<define name="PRELOAD_ALL" unless="web" />
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 
+	<define name="FILESYSTEM" if="desktop"/>
+
 	<define name="UNLOCK_ALL_WEEKS" />
 	
 	<section if="PRELOAD_ALL">
@@ -94,6 +96,7 @@
 
 	<assets path='art/readme.txt' rename='README.txt' />
 	<assets path='art/sound effects credit.txt' rename='SFX CREDIT.txt' />
+	<assets path='version.awesome' />
 	<assets path='mods' rename='mods' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	

@@ -9,7 +9,7 @@ import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
 
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -80,7 +80,7 @@ class Paths
 	{
 		var doesIt:Bool = false;
 
-		#if sys
+		#if FILESYSTEM
 		doesIt = FileSystem.exists(path);
 		#else
 		doesIt = Assets.exists(path);
@@ -94,7 +94,7 @@ class Paths
 	 */
 	static public function destroyCustomImages() 
 	{
-		#if sys
+		#if FILESYSTEM
 		for (key in customImages.keys())	
 		{
 			var piss:FlxGraphic = customImages.get(key);
@@ -127,8 +127,8 @@ class Paths
 
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modFile(file, type, library)))
 			return modFile(file, type, library);
 		#end
 
@@ -142,8 +142,8 @@ class Paths
 
 	inline static public function dialogueStartFile(key:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modDialogueStartFile(key)))
 			return modDialogueStartFile(key);
 		#end
 
@@ -152,8 +152,8 @@ class Paths
 
 	inline static public function dialogueEndFile(key:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modDialogueEndFile(key)))
 			return modDialogueEndFile(key);
 		#end
 
@@ -162,8 +162,8 @@ class Paths
 
 	inline static public function dialogueSettingsFile(key:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modDialogueSettingsFile(key)))
 			return modDialogueSettingsFile(key);
 		#end
 
@@ -172,8 +172,8 @@ class Paths
 
 	inline static public function txt(key:String, ?library:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modTxt(key, library)))
 			return modTxt(key, library);
 		#end
 		
@@ -187,8 +187,8 @@ class Paths
 
 	inline static public function json(key:String, ?library:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modJson(key, library)))
 			return modJson(key, library);
 		#end
 		
@@ -197,8 +197,8 @@ class Paths
 
 	inline static public function characterJson(key:String)
 	{
-		#if sys
-		if (currentMod != null)
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists('mods/$currentMod/assets/_characters/$key.json'))
 			return 'mods/$currentMod/assets/_characters/$key.json';
 		#end
 		
@@ -207,7 +207,7 @@ class Paths
 
 	inline static public function noteJSON(key:String, mod:String)
 	{
-		#if sys
+		#if FILESYSTEM
 		if (mod != "hopeEngine")
 			return 'mods/$mod/assets/_noteTypes/$key/note.json';
 		#end
@@ -217,7 +217,7 @@ class Paths
 
 	inline static public function noteHENT(key:String, mod:String) // you know, I had a crisis between "hent" and "heNT" when naming the files
 	{
-		#if sys
+		#if FILESYSTEM
 		if (mod != "hopeEngine")
 			return 'mods/$mod/assets/_noteTypes/$key/note.hent';
 		#end
@@ -227,7 +227,7 @@ class Paths
 
 	static public function sound(key:String, ?library:String):Dynamic
 	{
-		#if sys
+		#if FILESYSTEM
 		var pissOff = modSound(key, library);
 		if (FileSystem.exists(pissOff))
 		{
@@ -247,7 +247,7 @@ class Paths
 
 	inline static public function music(key:String, ?library:String):Dynamic
 	{
-		#if sys
+		#if FILESYSTEM
 		var pissOff = modMusic(key, library);
 		if (FileSystem.exists(pissOff))
 		{
@@ -264,7 +264,7 @@ class Paths
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 
-		#if sys
+		#if FILESYSTEM
 		var pissOff = modVoices(songLowercase);
 		if (FileSystem.exists(pissOff))
 		{
@@ -281,7 +281,7 @@ class Paths
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
 		
-		#if sys
+		#if FILESYSTEM
 		var pissOff = modInst(songLowercase);
 		if (FileSystem.exists(pissOff))
 		{
@@ -296,7 +296,7 @@ class Paths
 
 	inline static public function image(key:String, ?library:String):Dynamic
 	{
-		#if sys
+		#if FILESYSTEM
 		var pissOff = modImage(key, library);
 		if (FileSystem.exists(pissOff))
 		{
@@ -331,7 +331,7 @@ class Paths
 		return FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library));
 	}
 
-	#if sys
+	#if FILESYSTEM
 	inline static public function loadModFile(mod:String) // the "loadMod" file
 	{
 		return 'mods/$mod/loadMod';

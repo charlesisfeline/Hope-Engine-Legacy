@@ -30,16 +30,19 @@ import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
+import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import haxe.Json;
+import lime.app.Application;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
+import openfl.geom.Rectangle;
 import openfl.net.FileReference;
 
 using StringTools;
-#if sys
+#if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -54,6 +57,7 @@ class EditorCharacter extends MusicBeatState
     var dumbTexts:FlxTypedGroup<FlxText>;
 
     var character:Character;
+    var ghostCharacter:FlxSprite;
 
     var camEdit:FlxCamera;
     var camHUD:FlxCamera;
@@ -64,6 +68,8 @@ class EditorCharacter extends MusicBeatState
 
     var instructions:FlxText;
     var curAnimName:FlxText;
+
+    var camFollowDisplay:FlxSprite;
 
     var gridBG:FlxSprite;
 
@@ -89,7 +95,7 @@ class EditorCharacter extends MusicBeatState
 
     override function create()
     {
-        #if sys
+        #if FILESYSTEM
 		Paths.destroyCustomImages();
 		#end
         
@@ -106,6 +112,10 @@ class EditorCharacter extends MusicBeatState
         camFollow = new FlxObject(0, 0, 2, 2);
 		camFollow.screenCenter();
 		add(camFollow);
+
+        ghostCharacter = new FlxSprite();
+        ghostCharacter.antialiasing = true;
+        ghostCharacter.alpha = 0.5;
 
 		FlxG.camera.follow(camFollow);
 
@@ -161,6 +171,7 @@ class EditorCharacter extends MusicBeatState
         curAnimName.cameras = [camHUD];
         instructions.cameras = [camHUD];
 
+        add(ghostCharacter);
         loadChar(isDad, initChar);
         genBoyOffsets();
         addHealthBarStuff();
@@ -169,13 +180,22 @@ class EditorCharacter extends MusicBeatState
         addMiscStuff();
         addCharacterStuff();
         addGhostStuff();
+
+        var pointer:FlxGraphic = FlxGraphic.fromClass(GraphicCursorCross);
+        camFollowDisplay = new FlxSprite().loadGraphic(pointer);
+        camFollowDisplay.setGraphicSize(50, 50);
+        camFollowDisplay.updateHitbox();
+        camFollowDisplay.color = FlxColor.WHITE;
+        add(camFollowDisplay);
+
+        updateCamFollowDisplay();
         
         super.create();
     }
 
     var healthBarColor:FlxSprite;
-    var iconHealthy:FlxSprite;
-    var iconDeath:FlxSprite;
+    var iconHealthy:HealthIcon;
+    var iconDeath:HealthIcon;
 
     function addHealthBarStuff():Void
     {
@@ -220,6 +240,8 @@ class EditorCharacter extends MusicBeatState
         characterName.callback = function(a:String, b:String)
         {
             character.curCharacter = a;
+            iconHealthy.changeIcon(a);
+            iconDeath.changeIcon(a);
         };
 
         var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
@@ -238,7 +260,7 @@ class EditorCharacter extends MusicBeatState
         scaleStepper = new FlxUINumericStepper(10, scaleStepperLabel.y + scaleStepperLabel.height, 0.1, character.setScale, 0, 999, 2);
         scaleStepper.name = 'scaleChanger';
 
-        defaultWidth = character.width;
+        defaultWidth = character.width / character.setScale;
 
         antialiasingTick = new FlxUICheckBox(scaleStepper.x + scaleStepper.width + 10, scaleStepperLabel.y + scaleStepperLabel.height, null, null, "Smoothen?");
         antialiasingTick.checked = character.antialiasing;
@@ -413,6 +435,8 @@ class EditorCharacter extends MusicBeatState
             
             reloadAnimationDropdown();
             genBoyOffsets();
+
+            ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
         });
 
         var removeAnimButton = new FlxButton(0, 0, "Remove", function()
@@ -436,6 +460,8 @@ class EditorCharacter extends MusicBeatState
 
                     reloadAnimationDropdown();
                     genBoyOffsets();
+
+                    ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
                     break;
                 }
             }
@@ -477,6 +503,8 @@ class EditorCharacter extends MusicBeatState
     var charFlipX:FlxButton;
     var color:FlxInputText;
     var singDurationStepper:FlxUINumericStepper;
+    var camFollowX:FlxUINumericStepper;
+    var camFollowY:FlxUINumericStepper;
 
     function addMiscStuff():Void
     {
@@ -495,6 +523,7 @@ class EditorCharacter extends MusicBeatState
         charFlipX = new FlxButton(0, 10, "Flip char X", function()
         {
             character.flipX = !character.flipX;
+            ghostCharacter.flipX = !ghostCharacter.flipX;
         });
 
         charFlipX.x = UI_box.width - charFlipX.width - 10;
@@ -511,6 +540,18 @@ class EditorCharacter extends MusicBeatState
             isEyedropping = true;    
         });
         eyedroppingButton.resize(150, 20);
+
+        var singDurationStepperLabel = new FlxText(color.x + color.width + 10, 80, 0, "Sing Duration");
+        singDurationStepper = new FlxUINumericStepper(color.x + color.width + 10, singDurationStepperLabel.y + singDurationStepperLabel.height, 0.1, character.singDuration, 0, 999, 2);
+        singDurationStepper.name = 'singDurStepper';
+
+        var camFollowXTitle = new FlxText(10, 140, 0, "Camera X Pos");
+        camFollowX = new FlxUINumericStepper(10, camFollowXTitle.y + camFollowXTitle.height, 10, character.cameraOffset[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2);
+        camFollowX.name = 'camFollowXStepper';
+
+        var camFollowYTitle = new FlxText(camFollowX.x + camFollowX.width + 10, 140, 0, "Camera Y Pos");
+        camFollowY = new FlxUINumericStepper(camFollowX.x + camFollowX.width + 10, camFollowYTitle.y + camFollowYTitle.height, 10, character.cameraOffset[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2);
+        camFollowY.name = 'camFollowYStepper';
         
         var tab_group_misc = new FlxUI(null, UI_box);
         tab_group_misc.name = "3";
@@ -522,6 +563,12 @@ class EditorCharacter extends MusicBeatState
         tab_group_misc.add(colorLabel);
         tab_group_misc.add(color);
         tab_group_misc.add(eyedroppingButton);
+        tab_group_misc.add(singDurationStepperLabel);
+        tab_group_misc.add(singDurationStepper);
+        tab_group_misc.add(camFollowXTitle);
+        tab_group_misc.add(camFollowX);
+        tab_group_misc.add(camFollowYTitle);
+        tab_group_misc.add(camFollowY);
 
         UI_box.addGroup(tab_group_misc);
     }
@@ -557,10 +604,30 @@ class EditorCharacter extends MusicBeatState
         EXTRAS_box.addGroup(tab_group_char);
     }
 
+    var availableGhostAnims:FlxUIDropDownMenu;
+    
     function addGhostStuff():Void
     {
+        var holypiss = [];
+        for (anim in character.animationsArray)
+            holypiss.push(anim.name);
+
+        if (holypiss.length < 1) holypiss.push('NO ANIMATIONS');
+        var availableGhostAnimsTitle = new FlxText(10, 10, 0, "Available Animations");
+        availableGhostAnims = new FlxUIDropDownMenu(10, availableGhostAnimsTitle.y + availableGhostAnimsTitle.height, FlxUIDropDownMenu.makeStrIdLabelArray(holypiss, true));
+        availableGhostAnims.callback = function(a:String) 
+            {
+                var animOffset = character.animOffsets.get(availableGhostAnims.selectedLabel);
+                ghostCharacter.offset.set(animOffset[0], animOffset[1]);
+                ghostCharacter.animation.play(availableGhostAnims.selectedLabel, true);
+            };
+        
+        availableGhostAnims.callback(''); // huh never knew I could do this
+
         var tab_group_ghost = new FlxUI(null, EXTRAS_box);
         tab_group_ghost.name = "ghostTab";
+        tab_group_ghost.add(availableGhostAnimsTitle);
+        tab_group_ghost.add(availableGhostAnims);
 
         EXTRAS_box.addGroup(tab_group_ghost);
     }
@@ -575,8 +642,13 @@ class EditorCharacter extends MusicBeatState
         }
 
         character = new Character(0, 0, char, !isDad);
+        character.debugMode = true;
         character.screenCenter();
         add(character);
+
+        ghostCharacter.flipX = character.flipX;
+        ghostCharacter.frames = character.frames;
+        ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
     }
 
     /*
@@ -643,12 +715,8 @@ class EditorCharacter extends MusicBeatState
         var lastAnim:String = '';
 		if(character.animation.curAnim != null)
 			lastAnim = character.animation.curAnim.name;
-
-        #if sys
-        if (FileSystem.exists(Paths.getPath('images/' + character.image + '.txt', TEXT, null)))
-        #else
-        if (Assets.exists(Paths.getPath('images/' + character.image + '.txt', TEXT, null)))
-        #end
+        
+        if (Paths.exists(Paths.getPath('shared/images/' + character.image + '.txt', TEXT, null)))
             character.frames = Paths.getPackerAtlas(character.image, 'shared');
         else
             character.frames = Paths.getSparrowAtlas(character.image, 'shared');
@@ -677,6 +745,9 @@ class EditorCharacter extends MusicBeatState
         character.updateHitbox();
         character.screenCenter();
         defaultWidth = character.width;
+
+        ghostCharacter.frames = character.frames;
+        ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
     }
 
     function reloadAnimationDropdown()
@@ -687,6 +758,7 @@ class EditorCharacter extends MusicBeatState
 
         if (piss.length < 1) piss.push('NO ANIMATIONS');
         animationDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(piss, true));
+        availableGhostAnims.setData(FlxUIDropDownMenu.makeStrIdLabelArray(piss, true));
     }
 
     function genBoyOffsets():Void
@@ -712,6 +784,20 @@ class EditorCharacter extends MusicBeatState
         }
     }
 
+    function updateCamFollowDisplay()
+    {
+        if (this.isDad)
+        {
+            camFollowDisplay.x = character.getMidpoint().x + 150 + character.cameraOffset[0] - (camFollowDisplay.width / 2);
+            camFollowDisplay.y = character.getMidpoint().y - 100 + character.cameraOffset[1] - (camFollowDisplay.height / 2);
+        }
+        else
+        {
+            camFollowDisplay.x = character.getMidpoint().x - 100 + character.cameraOffset[0] - (camFollowDisplay.width / 2);
+            camFollowDisplay.y = character.getMidpoint().y - 100 + character.cameraOffset[1] - (camFollowDisplay.height / 2);
+        }
+    }
+
     var speed:Float = 180;
     var instructionsEnabled:Bool = true;
     var pastCameraPos:Array<Float> = []; // right click movement
@@ -719,6 +805,7 @@ class EditorCharacter extends MusicBeatState
     var mousePastPos:Array<Float> = [];
     var isTyping:Bool = false;
     var isEyedropping:Bool = false;
+    var multiplier:Float = 1; // makin this global
 
     override function update(elapsed:Float) 
     {
@@ -733,15 +820,23 @@ class EditorCharacter extends MusicBeatState
             curAnimName.text = curAnimNameLiteral;
         }
 
+        // the Eyedropper is so inconsistent, like fr
         if (FlxG.mouse.justPressed && isEyedropping)
         {
-            var color:Int = FlxScreenGrab.grab(null, false, true).bitmapData.getPixel(Std.int(FlxG.mouse.getScreenPosition(camHUD).x), Std.int(FlxG.mouse.getScreenPosition(camHUD).y));
+            var window = Application.current.window;
+            var posX = FlxG.mouse.getScreenPosition(camHUD).x * (window.width / FlxG.width);
+            var posY = FlxG.mouse.getScreenPosition(camHUD).y * (window.height / FlxG.height);
+
+            var color:Int = FlxScreenGrab.grab(new flash.geom.Rectangle(0,0 , window.width, window.height), false, true).bitmapData.getPixel(Std.int(posX), Std.int(posY));
             this.color.text = color.hex(6).toLowerCase();
             character.healthColor = this.color.text;
 
             isEyedropping = false;
         }
 
+        ghostCharacter.screenCenter();
+        if (ghostCharacter.antialiasing != character.antialiasing)
+            ghostCharacter.antialiasing = character.antialiasing;
         healthBarColor.color = character.getColor();
 
         if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
@@ -760,7 +855,6 @@ class EditorCharacter extends MusicBeatState
         isTyping = a.contains(true);
 
         // non-keyboard movement
-        var multiplier = 1;
         if (FlxG.keys.pressed.SHIFT)
             multiplier = 3;
 
@@ -896,11 +990,26 @@ class EditorCharacter extends MusicBeatState
         {
             var nums:FlxUINumericStepper = cast sender;
             var wname = nums.name;
-            if (wname == 'scaleChanger')
+            switch (wname)
             {
-                character.setGraphicSize(Std.int(defaultWidth * nums.value));
-                character.updateHitbox();
-                character.screenCenter();
+                case 'scaleChanger':
+                    character.setGraphicSize(Std.int(defaultWidth * nums.value));
+                    character.updateHitbox();
+                    character.screenCenter();
+
+                    ghostCharacter.setGraphicSize(Std.int(defaultWidth * nums.value));
+                    ghostCharacter.updateHitbox();
+                    ghostCharacter.screenCenter();
+
+                    character.setScale = nums.value;
+                case 'singDurStepper':
+                    character.singDuration = nums.value;
+                case 'camFollowXStepper':
+                    character.cameraOffset[0] = nums.value;
+                    updateCamFollowDisplay();
+                case 'camFollowYStepper':
+                    character.cameraOffset[1] = nums.value;
+                    updateCamFollowDisplay();
             }
         }
     }
@@ -911,12 +1020,14 @@ class EditorCharacter extends MusicBeatState
             name: character.curCharacter,
             image: character.image,
             antialiasing: character.antialiasing,
+            scale: character.setScale,
             facesLeft: character.facesLeft,
             isDeath: character.isDeath,
             initialAnimation: character.initAnim,
             animations: character.animationsArray,
             healthColor: character.getColor().toWebString().replace("#", ""),
-            singDuration: character.singDuration
+            singDuration: character.singDuration,
+            cameraOffset: [character.cameraOffset[0], character.cameraOffset[1]]
         };
 
         var data:String = Json.stringify(json, null, "\t");

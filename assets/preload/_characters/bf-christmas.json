@@ -4,107 +4,114 @@
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF idle dance",
+			"name": "idle",
 			"offset": [
 				-5,
 				0
-			],
-			"name": "idle"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE UP0",
+			"name": "singUP",
 			"offset": [
 				-29,
 				27
-			],
-			"name": "singUP"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE LEFT0",
+			"name": "singLEFT",
 			"offset": [
 				12,
 				-6
-			],
-			"name": "singLEFT"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE RIGHT0",
+			"name": "singRIGHT",
 			"offset": [
 				-38,
 				-7
-			],
-			"name": "singRIGHT"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE DOWN0",
+			"name": "singDOWN",
 			"offset": [
 				-10,
 				-50
-			],
-			"name": "singDOWN"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE UP MISS",
+			"name": "singUPmiss",
 			"offset": [
 				-29,
 				27
-			],
-			"name": "singUPmiss"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE LEFT MISS",
+			"name": "singLEFTmiss",
 			"offset": [
 				12,
 				24
-			],
-			"name": "singLEFTmiss"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE RIGHT MISS",
+			"name": "singRIGHTmiss",
 			"offset": [
 				-30,
 				21
-			],
-			"name": "singRIGHTmiss"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE DOWN MISS",
+			"name": "singDOWNmiss",
 			"offset": [
 				-11,
 				-19
-			],
-			"name": "singDOWNmiss"
+			]
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF HEY",
+			"name": "hey",
 			"offset": [
 				7,
 				4
-			],
-			"name": "hey"
+			]
 		}
 	],
+	"healthColor": "31B0D1",
 	"facesLeft": true,
 	"image": "characters/bfChristmas",
+	"singDuration": 4,
 	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		-100
+	],
 	"antialiasing": true,
 	"name": "bf-christmas",
-	"isDeath": false
+	"isDeath": false,
+	"scale": 1
 }

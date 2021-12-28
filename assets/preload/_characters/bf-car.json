@@ -96,7 +96,12 @@
 	"image": "characters/bfCar",
 	"singDuration": 4,
 	"initialAnimation": "idle",
+	"cameraOffset": [
+		-200,
+		0
+	],
 	"antialiasing": true,
 	"name": "bf-car",
-	"isDeath": false
+	"isDeath": false,
+	"scale": 1
 }

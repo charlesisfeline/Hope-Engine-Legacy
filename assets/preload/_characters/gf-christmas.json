@@ -74,7 +74,7 @@
 			"prefix": "gf sad",
 			"offset": [
 				0,
-				-20
+				-21
 			],
 			"name": "sad",
 			"flipX": false,
@@ -199,8 +199,10 @@
 			"indices": []
 		}
 	],
+	"healthColor": "A5004D",
 	"facesLeft": false,
 	"image": "characters/gfChristmas",
+	"singDuration": 4,
 	"initialAnimation": "danceLeft",
 	"antialiasing": true,
 	"name": "gf-christmas",
