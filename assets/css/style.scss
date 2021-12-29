@@ -20,5 +20,10 @@ a {
 
 a:hover, a:focus {
   color: #7300ff;
-  font-weight: initial;
+  font-weight: normal;
+}
+
+a h1, a h2, a h3, a h4, a h5, a h6 {
+  color: #7300ff;
+  font-weight: bold;
 }
