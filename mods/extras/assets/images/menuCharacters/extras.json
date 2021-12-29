@@ -1,9 +1,9 @@
-    {
-        "character" : "extras",
-        "animations" : {
-            "idle" : {
-                "prefix" : "extras",
-                "fps" : 12
-            }
+{
+    "character" : "extras",
+    "animations" : {
+        "idle" : {
+            "prefix" : "extras",
+            "fps" : 12
         }
     }
+}
