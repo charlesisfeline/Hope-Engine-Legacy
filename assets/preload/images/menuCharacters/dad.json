@@ -1,0 +1,12 @@
+{
+    "character" : "dad",
+    "animations" : {
+        "idle" : {
+            "prefix" : "idle0"
+        }
+    },
+    "settings" : {
+        "x" : -15,
+        "y" : 130
+    }
+}

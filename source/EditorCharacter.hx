@@ -821,6 +821,7 @@ class EditorCharacter extends MusicBeatState
         }
 
         // the Eyedropper is so inconsistent, like fr
+        #if desktop
         if (FlxG.mouse.justPressed && isEyedropping)
         {
             var window = Application.current.window;
@@ -833,6 +834,7 @@ class EditorCharacter extends MusicBeatState
 
             isEyedropping = false;
         }
+        #end
 
         ghostCharacter.screenCenter();
         if (ghostCharacter.antialiasing != character.antialiasing)

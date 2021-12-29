@@ -1,0 +1,11 @@
+{
+    "character" : "pico",
+    "animations" : {
+        "idle" : {
+            "prefix" : "idle0"
+        }
+    },
+    "settings" : {
+        "flipped" : true
+    }
+}

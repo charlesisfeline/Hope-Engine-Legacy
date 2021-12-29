@@ -1,0 +1,13 @@
+{
+    "character" : "parents-christmas",
+    "animations" : {
+        "idle" : {
+            "prefix" : "idle0"
+        }
+    },
+    "settings" : {
+        "x" : 100,
+        "y" : 130,
+        "scale" : 1.8
+    }
+}

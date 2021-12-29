@@ -36,6 +36,17 @@ class CoolUtil
 		return difficultyArray[PlayState.storyDifficulty][1];
 	}
 
+	public static function difficultyIntFromString(difficulty:String):Int
+	{
+		for (item in difficultyArray)
+		{
+			if (item[0] == difficulty)
+				return difficultyArray.indexOf(item);
+		}
+
+		return 1;
+	}
+
 	#if FILESYSTEM
 	public static function loadCustomDifficulties():Void
 	{

@@ -1,5 +1,6 @@
 {
     "weekName" : "Hope Engine - The Extras!",
     "characters" : ["extras", "gf", "bf"],
-    "tracks" : ["Test", "Tutorial Demo"]
+    "tracks" : ["Test", "Tutorial Demo"],
+    "difficultyLock" : "NORMAL"
 }

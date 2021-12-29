@@ -283,6 +283,11 @@ class FreeplayState extends MusicBeatState
 		if (curSelected >= songs.length)
 			curSelected = 0;
 
+		#if FILESYSTEM
+		if (songs[curSelected].mod != null)
+			Paths.setCurrentMod(songs[curSelected].mod.split('/')[1]);
+		#end
+
 		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
 
 		var prevScore = intendedScore;
@@ -305,11 +310,6 @@ class FreeplayState extends MusicBeatState
 			FlxTween.cancelTweensOf(bg, ["color"]);
 			FlxTween.color(bg, 0.5, bg.color, songs[curSelected].color);
 		}
-
-		#if FILESYSTEM
-		if (songs[curSelected].mod != null)
-			Paths.setCurrentMod(songs[curSelected].mod.split('/')[1]);
-		#end
 
 		#if PRELOAD_ALL
 		if (FlxG.save.data.cacheMusic)
