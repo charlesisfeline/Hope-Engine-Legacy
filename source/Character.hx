@@ -104,7 +104,11 @@ class Character extends FlxSprite
 				animationsArray = charFile.animations != null ? charFile.animations : [];
 				healthColor = charFile.healthColor != null ? charFile.healthColor : "a1a1a1";
 
+				#if html5
+				if (Paths.exists(Paths.getPath('images/' + charFile.image + '.txt', TEXT, null)))
+				#else
 				if (Paths.exists('assets/shared/images/' + charFile.image + '.txt'))
+				#end
 					frames = Paths.getPackerAtlas(charFile.image, 'shared');
 				else
 					frames = Paths.getSparrowAtlas(charFile.image, 'shared');
