@@ -1,3 +1,6 @@
 remote_theme: "godalming123/minimal"
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
+title: "Hope Engine"
+description: "An FNF engine made from Kade Engine 1.5.2 with a few quality of life changes, modding capabilities, and more."
+color-scheme: "dark"
