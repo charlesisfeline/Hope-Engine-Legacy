@@ -3,11 +3,22 @@
 
 @import "{{ site.theme }}";
 
+/* custom shit, i'm new to this */
+
 body {
   background-color: #0f0d17;
-  color: #ffffff;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: #9700f5;
+  color: #ffffff;
+}
+
+a {
+  color: #ad34ff;
+  text-decoration: none;
+}
+
+a:hover, a:focus {
+  color: #7300ff;
+  font-weight: normal;
 }
