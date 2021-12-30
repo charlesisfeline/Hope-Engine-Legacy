@@ -1,7 +1,7 @@
 {
     "song": {
         "player1": "bf",
-        "player2": "bf-pixel",
+        "player2": "bf-pixel-enemy",
         "song": "Test",
         "validScore": true,
         "stage": "stage",
