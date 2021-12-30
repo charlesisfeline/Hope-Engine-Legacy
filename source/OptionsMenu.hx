@@ -50,6 +50,7 @@ class OptionsMenu extends MusicBeatState
 			#if FILESYSTEM
 			new NoteSkins("Change your note skins here"),
 			#end
+			new NoteSplashes("Toggle the splash effect when you hit a \"Sick!\""),
 			new AccuracyOption("Modify the info text under the health bar."),
 			new NPSDisplayOption("Shows your current Notes Per Second.\n(\"Extensive\" info text is needed for this!)"),
 			new RatingColors("Toggle rating colors\n(e.g. Good is colored green)"),

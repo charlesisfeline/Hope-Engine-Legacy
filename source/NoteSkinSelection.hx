@@ -33,6 +33,8 @@ class NoteSkinSelection extends MusicBeatSubstate
     var skinName:FlxText;
     var skinDesc:FlxText;
 
+    var splashSparrow:FlxAtlasFrames;
+
     public static var loadedNoteSkins:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
     public static var loadedSplashes:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
 
@@ -260,11 +262,13 @@ class NoteSkinSelection extends MusicBeatSubstate
                 if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.png") &&
                     FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.xml"))
                 {
+                    trace("The skin also has a normal splash!");
+
                     var noteSplashNormal:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.png");
                     var shitoffmateSplash:FlxGraphic = FlxGraphic.fromBitmapData(noteSplashNormal);
                     shitoffmateSplash.persist = true;
                     shitoffmateSplash.destroyOnNoUse = false;
-                    loadedSplashes.set(skinName, shitoffmate);
+                    loadedSplashes.set(skinName, shitoffmateSplash);
                 }
 
                 if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/"))
@@ -302,7 +306,23 @@ class NoteSkinSelection extends MusicBeatSubstate
         if (isPressedPlaying)
             registeredPreviews[curSelected].members[curBeat % 4].animation.play('piss pressed');
         else
+        {
             registeredPreviews[curSelected].members[curBeat % 4].animation.play('piss confirm');
+
+            if (splashSparrow != null)
+            {
+                if (FlxG.save.data.noteSplashes)
+                {
+                    var splash = new NoteSplash(curBeat % 4, "hopeEngine/normal", splashSparrow);
+                    var strumNote = registeredPreviews[curSelected].members[curBeat % 4];
+    
+                    splash.x =  strumNote.x + (strumNote.width / 2) - (splash.width / 2);
+                    splash.y =  strumNote.y + (strumNote.height / 2) - (splash.height / 2);
+    
+                    add(splash);
+                }
+            }
+        }
 
     }
 
@@ -390,6 +410,16 @@ class NoteSkinSelection extends MusicBeatSubstate
         skinName.text = registeredSkins[curSelected].toUpperCase();
         previousOptionText.text = registeredSkins[previousOption].toUpperCase();
         nextOptionText.text = registeredSkins[nextOption].toUpperCase();
+
+        if (registeredSkins[curSelected] != "default")
+        {
+            if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + registeredSkins[curSelected] + "/normal/note_splashes.xml"))
+                splashSparrow = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedSplashes.get(registeredSkins[curSelected]), File.getContent(Sys.getCwd() + "assets/skins/" + registeredSkins[curSelected] + "/normal/note_splashes.xml"));
+            else
+                splashSparrow = null;
+        }
+        else
+            splashSparrow = Paths.getSparrowAtlas('note_splashes', 'shared');
 
         for (preview in registeredPreviews)
         {

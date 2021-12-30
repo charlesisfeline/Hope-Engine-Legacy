@@ -364,8 +364,9 @@ class PlayState extends MusicBeatState
 
 		noteSplashAtlas = Paths.getSparrowAtlas('note_splashes', 'shared');
 		
+		// THIS SHIT AINT ENOUGH FOR A NULL CHECK
 		#if FILESYSTEM
-		if (FlxG.save.data.currentNoteSkin != "default" && NoteSkinSelection.loadedSplashes.get(FlxG.save.data.currentNoteSkin) != null)
+		if (FlxG.save.data.currentNoteSkin != "default" && NoteSkinSelection.loadedSplashes.get(FlxG.save.data.currentNoteSkin) != null && FileSystem.exists(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/normal/note_splashes.xml"))
 			noteSplashAtlas = FlxAtlasFrames.fromSparrow(NoteSkinSelection.loadedSplashes.get(FlxG.save.data.currentNoteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + FlxG.save.data.currentNoteSkin + "/normal/note_splashes.xml"));
 		#end
 		
@@ -1805,7 +1806,6 @@ class PlayState extends MusicBeatState
 						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
 					{
 						babyArrow.loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
-						trace("yo this shit has a pixel skin :flushed:");
 					}
 					#end
 
@@ -3482,6 +3482,9 @@ class PlayState extends MusicBeatState
 		{
 			var splash = new NoteSplash(note.noteData, note.noteType, noteSplashAtlas);
 			var strumNote = playerStrums.members[note.noteData];
+
+			if (SONG.noteStyle != "pixel")
+				splash.antialiasing = true;
 
 			splash.x =  strumNote.x + (strumNote.width / 2) - (splash.width / 2);
 			splash.y =  strumNote.y + (strumNote.height / 2) - (splash.height / 2);

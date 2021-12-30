@@ -1026,6 +1026,28 @@ class Watermarks extends Option
 	}
 }
 
+class NoteSplashes extends Option
+{
+	public function new(desc:String)
+	{
+		super();
+		description = desc;
+		dependantOption = FlxG.save.data.noteSplashes;
+	}
+	public override function press():Bool
+	{
+		FlxG.save.data.noteSplashes = !FlxG.save.data.noteSplashes;
+		display = updateDisplay();
+		dependantOption = FlxG.save.data.noteSplashes;
+		return true;
+	}
+
+	private override function updateDisplay():String
+	{
+		return "Note Splashes";
+	}
+}
+
 class ModsMenu extends OptionCategory
 {
 	public override function press():Bool

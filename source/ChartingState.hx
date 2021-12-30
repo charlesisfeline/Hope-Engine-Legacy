@@ -117,7 +117,7 @@ class ChartingState extends MusicBeatState
 
 	var sectionToCopy:Int = 0;
 	var notesCopied:Array<Dynamic>;
-	var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets');
+	var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets', 'shared');
 
 	override function create()
 	{
@@ -150,6 +150,8 @@ class ChartingState extends MusicBeatState
 		bg.color = 0x2e2e2e;
 		bg.scrollFactor.set();
 		add(bg);
+
+		theSex = Paths.getSparrowAtlas('NOTE_assets', 'shared');
 
 		#if FILESYSTEM
 		if (FlxG.save.data.currentNoteSkin != "default")

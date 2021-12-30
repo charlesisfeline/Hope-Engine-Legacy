@@ -37,11 +37,9 @@ class NoteSplash extends FlxSprite
 		this.noteType = noteType;
 		frames = skin;
 
-		if (PlayState.SONG.noteStyle != "pixel")
-			antialiasing = true;
+		alpha = 0.6;
 		
-		var frameRate:Int = Std.int(24 * (FlxG.save.data.scrollSpeed != 1 ? FlxG.save.data.scrollSpeed : PlayState.SONG.speed));
-		animation.addByPrefix("splash", dirs[noteData] + " splash", frameRate, false);
+		animation.addByPrefix("splash", dirs[noteData] + " splash", 24, false);
 		animation.play("splash");
 	}
 
