@@ -4,12 +4,12 @@
 >
 > IF YOU WANT TO JUST DOWNLOAD AND INSTALL AND PLAY THE GAME NORMALLY, GO TO ITCH.IO TO DOWNLOAD THE GAME FOR PC, MAC, AND LINUX!!
 >
-> https://ninja-muffin24.itch.io/funkin
+> <https://ninja-muffin24.itch.io/funkin>
 >
 > IF YOU WANT TO COMPILE THE GAME YOURSELF, CONTINUE READING!!!
 
 ### Notes
-- **You need to be familiar with the command line!** Check this guide out by ninjamuffin99 if you're not familiar: https://ninjamuffin99.newgrounds.com/news/post/1090480
+- **You need to be familiar with the command line!** Check this guide out by ninjamuffin99 if you're not familiar: <https://ninjamuffin99.newgrounds.com/news/post/1090480>
 - **To build in one platform, one must be in that platform.** Like your computer must be Windows in order to build for Windows. _For HTML5, you can use any platform._
 
 ### Getting the needed stuff
@@ -42,7 +42,7 @@ You'll need to install [Xcode](https://developer.apple.com/xcode/).
 If you get an error saying that you need a newer macOS version, you'll need to download an older version of Xcode from the [More Software Downloads](https://developer.apple.com/download/more/) section.
 
 (for Old versions) Not sure what version? Check this Wikipedia page out: <br>
-https://en.wikipedia.org/wiki/Xcode#Version_comparison_table
+<https://en.wikipedia.org/wiki/Xcode#Version_comparison_table>
 
 ### Building
 After you've set all the needed things, installed all the needed stuff -- time to get building.
