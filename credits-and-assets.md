@@ -2,9 +2,7 @@
 - Built from [Kade Engine](https://github.com/KadeDev/Kade-Engine) by [KadeDev](https://github.com/KadeDev) with their [contributors](https://github.com/KadeDev/Kade-Engine/graphs/contributors).
 - Learned things from [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngine) by [ShadowMario](https://github.com/ShadowMario) with their [contributors](https://github.com/ShadowMario/FNF-PsychEngine/graphs/contributors).
 - Friday Night Funkin' by [ninjamuffin99](https://twitter.com/ninja_muffin99), [kawaisprite](https://twitter.com/kawaisprite), [PhantomArcade](https://twitter.com/phantomarcade3k), and [evilsk8r](https://twitter.com/evilsk8r).
-- Uses shader code from the Tabi Mod (specifically the chromatic aberration shader)
-[GWebDev's Twitter](https://twitter.com/GWebDevFNF) <br>
-<https://github.com/GrowtopiaFli/tabi-mod-source>
+- [GWebDev](https://twitter.com/GWebDevFNF) for the shader code from the [Tabi Mod](https://github.com/GrowtopiaFli/tabi-mod-source) (specifically the chromatic aberration shader)
 
 # Sound effect credit
 - Flash Note sound effect: <https://freesound.org/people/montclairguy/sounds/353044/>
