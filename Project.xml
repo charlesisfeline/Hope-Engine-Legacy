@@ -95,7 +95,7 @@
 	<assets path="assets/week6"    library="week6"    exclude="*.mp3" unless="web"/>
 
 	<assets path='art/readme.txt' rename='README.txt' />
-	<assets path='art/sound effects credit.txt' rename='SFX CREDIT.txt' />
+	<!-- <assets path='art/sound effects credit.txt' rename='SFX CREDIT.txt' /> -->
 	<assets path='version.awesome' />
 	<assets path='mods' rename='mods' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
