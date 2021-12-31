@@ -313,7 +313,7 @@ class NoteSkinSelection extends MusicBeatSubstate
             {
                 if (FlxG.save.data.noteSplashes)
                 {
-                    var splash = new NoteSplash(curBeat % 4, "hopeEngine/normal", splashSparrow);
+                    var splash = new NoteSplash(curBeat % 4, splashSparrow);
                     var strumNote = registeredPreviews[curSelected].members[curBeat % 4];
     
                     splash.x =  strumNote.x + (strumNote.width / 2) - (splash.width / 2);

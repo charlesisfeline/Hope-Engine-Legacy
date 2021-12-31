@@ -2549,7 +2549,7 @@ class PlayState extends MusicBeatState
 				{
 					if (daNote.canBeHit)
 					{
-						if (daNote.strumTime <= Conductor.songPosition)
+						if (daNote.strumTime <= Conductor.songPosition && !daNote.canMiss)
 							goodNoteHit(daNote);
 					}
 				}
@@ -2574,9 +2574,9 @@ class PlayState extends MusicBeatState
 
 
 					if (!daNote.wasEnemyNote)
-						sing(boyfriend, daNote, altAnim);
+						sing(boyfriend, daNote.noteData, altAnim);
 					else
-						sing(dad, daNote, altAnim);
+						sing(dad, daNote.noteData, altAnim);
 
 					lightStrumNote(cpuStrums, daNote.noteData);
 
@@ -2584,6 +2584,15 @@ class PlayState extends MusicBeatState
 					{
 						if (interp.variables.get("dadSing") != null)
 							interp.variables.get("dadSing")(daNote);
+					}
+
+					if (daNote.noteType != "hopeEngine/normal")
+					{
+						if (loadedNoteTypeInterps.exists(daNote.noteType))
+						{
+							if (loadedNoteTypeInterps.get(daNote.noteType).variables.get("dadNoteHit") != null)
+								loadedNoteTypeInterps.get(daNote.noteType).variables.get("dadNoteHit")(daNote);
+						}
 					}
 
 					daNote.wasGoodHit = true;
@@ -3478,9 +3487,11 @@ class PlayState extends MusicBeatState
 		var noteDiff = (repDiff != null ? repDiff : (note.strumTime - Conductor.songPosition));
 		note.rating = Ratings.CalculateRating(noteDiff);
 
+		var splash:NoteSplash = null;
+
 		if (note.rating == "sick" && FlxG.save.data.noteSplashes && !note.isSustainNote)
 		{
-			var splash = new NoteSplash(note.noteData, note.noteType, noteSplashAtlas);
+			splash = new NoteSplash(note.noteData, noteSplashAtlas);
 			var strumNote = playerStrums.members[note.noteData];
 
 			if (SONG.noteStyle != "pixel")
@@ -3511,7 +3522,7 @@ class PlayState extends MusicBeatState
 				if (loadedNoteTypeInterps.exists(note.noteType))
 				{
 					if (loadedNoteTypeInterps.get(note.noteType).variables.get("onNoteHit") != null)
-						loadedNoteTypeInterps.get(note.noteType).variables.get("onNoteHit")(note);
+						loadedNoteTypeInterps.get(note.noteType).variables.get("onNoteHit")(note, splash);
 				}
 			}
 
@@ -3533,9 +3544,9 @@ class PlayState extends MusicBeatState
 			}
 
 			if (note.wasEnemyNote)
-				sing(dad, note, altAnim);
+				sing(dad, note.noteData, altAnim);
 			else
-				sing(boyfriend, note, altAnim);
+				sing(boyfriend, note.noteData, altAnim);
 			
 			lightStrumNote(playerStrums, note.noteData);
 
@@ -3573,13 +3584,13 @@ class PlayState extends MusicBeatState
 	
 	var DIRECTIONS:Array<String> = ["LEFT", "DOWN", "UP", "RIGHT"];
 	
-	function sing(character:Character, note:Note, ?isAlt:Bool = false)
+	function sing(character:Character, direction:Int, ?isAlt:Bool = false)
 	{
-		var canAlt = character.animation.getByName('sing' + DIRECTIONS[note.noteData] + "-alt") != null;
+		var canAlt = character.animation.getByName('sing' + DIRECTIONS[direction] + "-alt") != null;
 		var alt:String = (isAlt && canAlt ? "-alt" : "");
 		
 		character.holdTimer = 0;
-		character.playAnim('sing' + DIRECTIONS[note.noteData] + alt, true);
+		character.playAnim('sing' + DIRECTIONS[direction] + alt, true);
 	}
 
 	function miss(character:Character, direction:Int)
@@ -3616,6 +3627,7 @@ class PlayState extends MusicBeatState
 	{
 		// imports
 		funnyInterp.variables.set("FlxTypedGroup", FlxTypedGroup);
+		funnyInterp.variables.set("FlxAtlasFrames", FlxAtlasFrames);
 		funnyInterp.variables.set("FlxSprite", FlxSprite);
 		funnyInterp.variables.set("Character", Character);
 		funnyInterp.variables.set("FlxRandom", FlxRandom);
@@ -3676,7 +3688,7 @@ class PlayState extends MusicBeatState
 		funnyInterp.variables.set("camHUD", camHUD);
 		funnyInterp.variables.set("camGame", camGame);
 		funnyInterp.variables.set("camFollow", camFollow);
-
+		
 		// song
 		funnyInterp.variables.set("songPosition", Conductor.songPosition);
 		funnyInterp.variables.set("bpm", Conductor.bpm);

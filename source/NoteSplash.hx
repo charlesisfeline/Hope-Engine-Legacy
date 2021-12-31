@@ -19,7 +19,6 @@ class NoteSplash extends FlxSprite
 {
 	
 	public var noteData:Int = 0;
-	public var noteType:String = "hopeEngine/normal";
 
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
@@ -29,12 +28,11 @@ class NoteSplash extends FlxSprite
 
 	var dirs = ["purple", "blue", "green", "red"];
 
-	public function new(noteData:Int, ?noteType:String = "hopeEngine/normal", ?skin:FlxAtlasFrames)
+	public function new(noteData:Int, ?skin:FlxAtlasFrames)
 	{
 		super();
 
 		this.noteData = noteData;
-		this.noteType = noteType;
 		frames = skin;
 
 		alpha = 0.6;

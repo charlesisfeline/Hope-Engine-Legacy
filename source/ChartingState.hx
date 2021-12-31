@@ -578,7 +578,7 @@ class ChartingState extends MusicBeatState
 		{
 			for (mod in FileSystem.readDirectory(Sys.getCwd() + "mods"))
 			{
-				if (FileSystem.exists(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
+				if (Paths.currentMod == mod && FileSystem.exists(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
 				{
 					for (noteType in FileSystem.readDirectory(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
 						noteTypeArray.push('$mod/$noteType');

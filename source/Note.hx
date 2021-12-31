@@ -224,9 +224,10 @@ class Note extends FlxSprite
 		var noteJSON = Json.parse(openfl.utils.Assets.getText(Paths.noteJSON(a[1], a[0])));
 		#end
 
+		var previousMod = Paths.currentMod;
 		if (a[0] != "hopeEngine") Paths.setCurrentMod(a[0]);
 		frames = Paths.getSparrowAtlas("styles/" + noteJSON.assetName + (PlayState.SONG.noteStyle == "pixel" ? "-pixel" : ""));
-		Paths.setCurrentMod(null);
+		Paths.setCurrentMod(previousMod);
 
 		this.upSpriteOnly = (noteJSON.upSpriteOnly != null ? noteJSON.upSpriteOnly : false);
 		this.canScore = (noteJSON.canScore != null ? noteJSON.canScore : true);
@@ -394,7 +395,10 @@ class Note extends FlxSprite
 			}
 		}
 
-		setGraphicSize(Std.int(width * 0.7));
+		// if (PlayState.SONG.noteStyle == "pixel")
+		// 	setGraphicSize(Std.int(width * PlayState.daPixelZoom));
+		// else
+		// 	setGraphicSize(Std.int(width * 0.7));
 
 		if (animOffset == null)
 			animOffset = [0, 0];
