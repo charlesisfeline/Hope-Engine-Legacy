@@ -15,5 +15,7 @@ This engine uses assets from other mods. (If you disapprove of me using ANY of t
     - Alphabet.png and Alphabet.xml
 - [**Funkin' Modding Plus**](https://github.com/FunkinModdingPlus/ModdingPlus)
     - I modified the "funkin alphabet" font they had so that it overflows glyphs properly. When exporting, it had [Rozebud](https://twitter.com/helpme_thebigt) on the credits. Just confused on who to credit tbh.
+- [**The Tricky Mod**](https://github.com/KadeDev/trickster)
+    - For the "extras" mod I tried to implement the Fire Note fully to Hope Engine.
 
 Think I forgot something? Tell me or smn lmao
