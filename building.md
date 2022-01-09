@@ -34,9 +34,9 @@ While installing, here's what's actually needed:
 <details>
     <summary>Don't understand? Click me!</summary>
     <ul>
-        <li>Tick "Desktop Development with C++" first, look to the sidebar.</li>
-        <li>Keep MSVC v142 - VS 2019 C++ x64/x86 build tools ticked. (ANY version, can be latest!)</li>
-        <li>Keep Windows 10 SDK ticked. (ANY version!)</li>
+        <li>Tick <code>Desktop Development with C++</code> first, then look to the sidebar (The installation details thing).</li>
+        <li>Keep <code>MSVC v142 - VS 2019 C++ x64/x86 build tools</code> ticked. (ANY version, can be latest!)</li>
+        <li>Keep <code>Windows 10 SDK</code> ticked. (ANY version!)</li>
     </ul>    
 </details>
 
