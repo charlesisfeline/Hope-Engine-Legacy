@@ -28,12 +28,19 @@
 ### Windows only dependencies (building _to_ Windows. HTML5 doesn't require these.)
 If you are planning to build for Windows, you may have to install [**Visual Studio 2019**](https://docs.microsoft.com/en-us/visualstudio/releases/2019/release-notes). Be sure to get the Community version. 
 
-While installing, don't click on any of the options to install workloads. Instead, go to the **individual components** tab and choose the following:
+While installing, here's what's actually needed:
+![](https://github.com/skuqre/Hope-Engine/blob/site/images/windowsdependencies.png?raw=true)
 
-- MSVC v142 - VS 2019 C++ x64/x86 build tools
-- Windows SDK (10.0.17763.0)
+<details>
+    <summary>Don't understand? Click me!</summary>
+    <ul>
+        <li>Tick "Desktop Development with C++" first, look to the sidebar.</li>
+        <li>Keep MSVC v142 - VS 2019 C++ x64/x86 build tools ticked. (ANY version, can be latest!)</li>
+        <li>Keep Windows 10 SDK ticked. (ANY version!)</li>
+    <ul>    
+</details>
 
-4 gigabytes is needed for this crap, but hell it's necessary.
+About 6 GB is needed for this crap, but hell it is necessary.
 
 ### (from Kade Engine) MacOS only dependencies (building _on_ macOS at all)
 
