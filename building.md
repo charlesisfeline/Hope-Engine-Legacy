@@ -37,7 +37,7 @@ While installing, here's what's actually needed:
         <li>Tick "Desktop Development with C++" first, look to the sidebar.</li>
         <li>Keep MSVC v142 - VS 2019 C++ x64/x86 build tools ticked. (ANY version, can be latest!)</li>
         <li>Keep Windows 10 SDK ticked. (ANY version!)</li>
-    <ul>    
+    </ul>    
 </details>
 
 About 6 GB is needed for this crap, but hell it is necessary.
