@@ -72,7 +72,7 @@ class FreeplayState extends MusicBeatState
 			Paths.setCurrentMod(i);
 			var frepla = Paths.txt('freeplaySonglist');
 			
-			if (FileSystem.exists(frepla) && FileSystem.exists(Sys.getCwd() + Paths.loadModFile(i)))
+			if (FileSystem.exists(frepla) && Paths.checkModLoad(i))
 			{
 				var songlist = CoolUtil.coolStringFile(File.getContent(frepla));
 				
@@ -104,6 +104,8 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...songs.length)
 		{
+			Paths.setCurrentMod(songs[i].mod.split('/')[1]);
+			
 			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, songs[i].songName.replace("-", " "), true, false);
 			songText.isMenuItem = true;
 			songText.targetY = i;
@@ -114,6 +116,8 @@ class FreeplayState extends MusicBeatState
 			icon.sprTracker = songText;
 			grpIcons.add(icon);
 		}
+
+		Paths.setCurrentMod(null);
 
 		scoreBG = new FlxSprite(0, 0).makeGraphic(Std.int(FlxG.width * 0.4), 76, 0xFF000000);
 		scoreBG.alpha = 0.6;

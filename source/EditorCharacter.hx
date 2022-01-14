@@ -367,6 +367,19 @@ class EditorCharacter extends MusicBeatState
                 piss.push(anim.name);
 
             if (piss.length < 1) piss.push('NO ANIMATIONS');
+
+            piss.sort(function(a:String, b:String):Int {
+                a = a.toUpperCase();
+                b = b.toUpperCase();
+              
+                if (a < b)
+                    return -1;
+                else if (a > b)
+                    return 1;
+                else
+                    return 0;
+            });
+            
             animationDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(piss, true));
         });
 
@@ -386,6 +399,15 @@ class EditorCharacter extends MusicBeatState
 						indices.push(index);
 				}
 			}
+            
+            if (character.animation.curAnim != null)
+            {
+                if (character.animation.curAnim.frames.length > 0)
+                {
+                    if (animationName.text == character.animation.curAnim.name) 
+                        character.animation.stop();
+                }
+            }
 
 
             var lastAnim:String = '';
@@ -396,7 +418,7 @@ class EditorCharacter extends MusicBeatState
             var lastOffsets:Array<Int> = [0, 0];
             for (anim in character.animationsArray) 
             {
-				if  (animationName.text == anim.name) 
+				if (animationName.text == anim.name) 
                 {
 					lastOffsets = anim.offset;
                     
@@ -771,13 +793,29 @@ class EditorCharacter extends MusicBeatState
         dumbTexts.clear();
             
         var daLoop:Int = 0;
+        var sortThisArray:Array<String> = [];
 
         for (anim => offsets in character.animOffsets)
+            sortThisArray.push(anim);
+
+        sortThisArray.sort(function(a:String, b:String):Int {
+            a = a.toUpperCase();
+            b = b.toUpperCase();
+          
+            if (a < b)
+                return -1;
+            else if (a > b)
+                return 1;
+            else
+                return 0;
+        });
+
+        for (anim in sortThisArray)
         {
-            var text:FlxText = new FlxText(20, 20 + (20 * daLoop), 0, anim + ": " + offsets, 15);
+            var text:FlxText = new FlxText(20, 20 + (20 * daLoop), 0, anim + ": " + character.animOffsets.get(anim), 15);
             text.scrollFactor.set();
             text.setFormat(null, 16, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
-		    text.borderSize = 2;
+            text.borderSize = 2;
             dumbTexts.add(text);
 
             daLoop++;

@@ -4,90 +4,203 @@
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF idle dance",
-			"name": "idle",
 			"offset": [
 				-5,
 				0
-			]
-		},
-		{
-			"loopedAnim": false,
-			"frameRate": 24,
-			"prefix": "BF NOTE UP0",
-			"name": "singUP",
-			"offset": [
-				-29,
-				27
-			]
+			],
+			"name": "idle"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE LEFT0",
-			"name": "singLEFT",
 			"offset": [
 				12,
 				-6
-			]
+			],
+			"name": "singLEFT"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE RIGHT0",
-			"name": "singRIGHT",
 			"offset": [
 				-38,
 				-7
-			]
+			],
+			"name": "singRIGHT"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE DOWN0",
-			"name": "singDOWN",
 			"offset": [
 				-10,
 				-50
-			]
+			],
+			"name": "singDOWN"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE UP MISS",
-			"name": "singUPmiss",
 			"offset": [
 				-29,
 				27
-			]
+			],
+			"name": "singUPmiss"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE LEFT MISS",
-			"name": "singLEFTmiss",
 			"offset": [
 				12,
 				24
-			]
+			],
+			"name": "singLEFTmiss"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE RIGHT MISS",
-			"name": "singRIGHTmiss",
 			"offset": [
 				-30,
 				21
-			]
+			],
+			"name": "singRIGHTmiss"
 		},
 		{
 			"loopedAnim": false,
 			"frameRate": 24,
 			"prefix": "BF NOTE DOWN MISS",
-			"name": "singDOWNmiss",
 			"offset": [
 				-11,
 				-19
+			],
+			"name": "singDOWNmiss"
+		},
+		{
+			"prefix": "BF idle dance",
+			"offset": [
+				-5,
+				0
+			],
+			"name": "idle-loop",
+			"flipX": false,
+			"loopedAnim": true,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				10,
+				11,
+				12,
+				13
+			]
+		},
+		{
+			"prefix": "BF NOTE LEFT0",
+			"offset": [
+				12,
+				-6
+			],
+			"name": "singLEFT-loop",
+			"flipX": false,
+			"loopedAnim": true,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				10,
+				11,
+				12,
+				13
+			]
+		},
+		{
+			"prefix": "BF NOTE RIGHT0",
+			"offset": [
+				-38,
+				-7
+			],
+			"name": "singRIGHT-loop",
+			"flipX": false,
+			"loopedAnim": true,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				10,
+				11,
+				12,
+				13
+			]
+		},
+		{
+			"prefix": "BF NOTE DOWN0",
+			"offset": [
+				-10,
+				-50
+			],
+			"name": "singDOWN-loop",
+			"flipX": false,
+			"loopedAnim": true,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				10,
+				11,
+				12,
+				13
+			]
+		},
+		{
+			"prefix": "BF NOTE UP0",
+			"offset": [
+				-29,
+				27
+			],
+			"name": "singUP-loop",
+			"flipX": false,
+			"loopedAnim": true,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": [
+				10,
+				11,
+				12,
+				13
+			]
+		},
+		{
+			"prefix": "BF NOTE UP0",
+			"offset": [
+				-29,
+				27
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF HEY",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "hey",
+			"offset": [
+				-3,
+				6
 			]
 		}
 	],

@@ -211,6 +211,9 @@ class Character extends FlxSprite
 					if (animation.curAnim.name == 'hairFall' && animation.curAnim.finished)
 						playAnim('danceRight');
 			}
+
+			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
+				playAnim(animation.curAnim.name + '-loop');
 		}
 
 		super.update(elapsed);

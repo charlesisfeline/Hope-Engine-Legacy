@@ -1,0 +1,15 @@
+function onUpdate(elapsed)
+{
+    for (spr in strumLineNotes.members)
+    {
+        var i = strumLineNotes.members.indexOf(spr);
+        var currentBeat = (songPosition / 1000) * (bpm / 60);
+
+        if (!downscroll)
+            spr.y = strumLine.y + 20 * Math.cos((currentBeat + i*0.25) * Math.PI);
+        else
+            spr.y = strumLine.y - spr.height + 20 * Math.cos((currentBeat + i*0.25) * Math.PI);
+
+        spr.angle = 180 * Math.sin(currentBeat * Math.PI * 0.1);
+    }
+}

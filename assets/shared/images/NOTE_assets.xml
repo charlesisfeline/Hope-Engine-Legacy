@@ -9,10 +9,12 @@
 	<SubTexture name="blue0000" x="1452" y="244" width="157" height="154"/>
 	<SubTexture name="blue hold end0000" x="972" y="244" width="50" height="64"/>
 	<SubTexture name="blue hold piece0000" x="1212" y="244" width="50" height="44"/>
-	<SubTexture name="down confirm0000" x="0" y="0" width="238" height="234"/>
-	<SubTexture name="down confirm0001" x="248" y="0" width="238" height="234"/>
-	<SubTexture name="down confirm0002" x="496" y="0" width="238" height="234"/>
-	<SubTexture name="down confirm0003" x="496" y="0" width="238" height="234"/>
+	<!-- Manually modify this thing -->
+	<SubTexture name="down confirm0000" x="0" y="0" width="238" height="234" frameX="-4" frameY="0" frameWidth="238" frameHeight="234"/>
+	<SubTexture name="down confirm0001" x="248" y="0" width="238" height="234" frameX="-4" frameY="0" frameWidth="238" frameHeight="234"/>
+	<SubTexture name="down confirm0002" x="496" y="0" width="238" height="234" frameX="-4" frameY="0" frameWidth="238" frameHeight="234"/>
+	<SubTexture name="down confirm0003" x="496" y="0" width="238" height="234" frameX="-4" frameY="0" frameWidth="238" frameHeight="234"/>
+
 	<SubTexture name="down press0000" x="164" y="486" width="149" height="146"/>
 	<SubTexture name="down press0001" x="164" y="486" width="149" height="146"/>
 	<SubTexture name="down press0002" x="323" y="486" width="149" height="146"/>

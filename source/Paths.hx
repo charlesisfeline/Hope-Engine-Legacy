@@ -12,6 +12,7 @@ import openfl.utils.Assets as OpenFlAssets;
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
+import yaml.Yaml;
 #end
 
 class Paths
@@ -129,7 +130,12 @@ class Paths
 	{
 		#if FILESYSTEM
 		if (currentMod != null && FileSystem.exists(modFile(file, type, library)))
-			return modFile(file, type, library);
+		{
+			if (OpenFlAssets.exists(modFile(file, type, library)))
+				return modFile(file, type, library);
+			
+			return File.getContent(modFile(file, type, library));
+		}
 		#end
 
 		return getPath(file, type, library);
@@ -339,7 +345,18 @@ class Paths
 
 	inline static public function modInfoFile(mod:String) // mod-info.json
 	{
-		return 'mods/$mod/mod.info';
+		return 'mods/$mod/modInfo';
+	}
+
+	inline static public function checkModLoad(mod:String):Bool // mod-info.json
+	{
+		if (FileSystem.exists(loadModFile(mod)))
+		{
+			var yaml = Yaml.parse(File.getContent(loadModFile(mod)));
+			return yaml.get("load");
+		}
+
+		return false;
 	}
 
 	inline static public function modInst(song:String)

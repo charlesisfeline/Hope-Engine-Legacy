@@ -105,7 +105,7 @@ class StoryMenuState extends MusicBeatState
 		#if FILESYSTEM
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
-			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && FileSystem.exists(Sys.getCwd() + Paths.loadModFile(i)))
+			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && Paths.checkModLoad(i))
 			{
 				for (jsonName in CoolUtil.coolStringFile(File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt")))
 				{

@@ -237,7 +237,6 @@ class NoteSkinSelection extends MusicBeatSubstate
 
         new FlxTimer().start(0.5, function(tmr:FlxTimer)
         {
-            OptionsMenu.instance.acceptInput = false;
             changeItem((registeredSkins.indexOf(FlxG.save.data.currentNoteSkin) == -1 ? 0 : registeredSkins.indexOf(FlxG.save.data.currentNoteSkin)));
         });
     }
@@ -330,6 +329,9 @@ class NoteSkinSelection extends MusicBeatSubstate
     {
         super.update(elapsed);
 
+        if (FlxG.sound.music != null)
+			Conductor.songPosition = FlxG.sound.music.time;
+
         registeredPreviews[curSelected].forEach(function(spr:FlxSprite) 
         {
             if (spr.animation.curAnim.name.startsWith('piss') && spr.animation.curAnim.finished)
@@ -345,14 +347,14 @@ class NoteSkinSelection extends MusicBeatSubstate
                 spr.centerOffsets();
         });
 
-        if (!OptionsMenu.instance.acceptInput)
+        if (!OptionsState.acceptInput)
         {
             if (FlxG.keys.justPressed.ESCAPE)
             {
                 FlxG.sound.play(Paths.sound('confirmMenu'));
                 FlxG.save.data.currentNoteSkin = registeredSkins[curSelected];
                 FlxG.save.flush();
-                OptionsMenu.instance.acceptInput = true;
+                OptionsState.acceptInput = true;
     
                 forEachOfType(FlxSprite, function(spr:FlxSprite) 
                 {
@@ -366,7 +368,7 @@ class NoteSkinSelection extends MusicBeatSubstate
             if (FlxG.keys.justPressed.BACKSPACE)
             {
                 FlxG.sound.play(Paths.sound('cancelMenu'));
-                OptionsMenu.instance.acceptInput = true;
+                OptionsState.acceptInput = true;
                 
                 forEachOfType(FlxSprite, function(spr:FlxSprite) 
                 {

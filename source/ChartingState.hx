@@ -394,9 +394,17 @@ class ChartingState extends MusicBeatState
 		#if FILESYSTEM
 		Paths.setCurrentMod(pastMod);
 
-		characters = characters.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('characterList'))));
-		gfVersions = gfVersions.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('gfVersionList'))));
-		stages = stages.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('stageList'))));
+		if (Paths.currentMod != null)
+		{
+			if (FileSystem.exists(Paths.txt('characterList')))
+				characters = characters.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('characterList'))));
+
+			if (FileSystem.exists(Paths.txt('gfVersionList')))
+				gfVersions = gfVersions.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('gfVersionList'))));
+
+			if (FileSystem.exists(Paths.txt('stageList')))
+				stages = stages.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('stageList'))));
+		}
 		#end
 
 		var player1DropDown = new FlxUIDropDownMenu(10, 10, FlxUIDropDownMenu.makeStrIdLabelArray(characters, true), function(character:String)
@@ -448,7 +456,12 @@ class ChartingState extends MusicBeatState
 		tab_group_assets.add(gfVersionDropDown);
 		tab_group_assets.add(player2DropDown);
 		tab_group_assets.add(player1DropDown);
-		
+
+		noteStyleDropDown.dropDirection = FlxUIDropDownMenuDropDirection.Down;
+		stageDropDown.dropDirection = FlxUIDropDownMenuDropDirection.Down;
+		gfVersionDropDown.dropDirection = FlxUIDropDownMenuDropDirection.Down;
+		player2DropDown.dropDirection = FlxUIDropDownMenuDropDirection.Down;
+		player1DropDown.dropDirection = FlxUIDropDownMenuDropDirection.Down;
 		
 		tab_group_assets.add(noteStyleLabel);
 		tab_group_assets.add(gfVersionLabel);

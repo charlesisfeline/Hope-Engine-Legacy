@@ -48,6 +48,7 @@
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 
 	<define name="FILESYSTEM" if="desktop"/>
+	<define name="CHECK_LATEST"/>
 
 	<define name="UNLOCK_ALL_WEEKS" />
 	
@@ -97,7 +98,7 @@
 	<assets path='art/readme.txt' rename='README.txt' />
 	<!-- <assets path='art/sound effects credit.txt' rename='SFX CREDIT.txt' /> -->
 	<assets path='version.awesome' />
-	<assets path='mods' rename='mods' if="desktop" embed="false"/>
+	<assets path='mods' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	
 	<!-- <assets path="CHANGELOG.md" rename='changelog.txt'/> -->
@@ -122,6 +123,7 @@
 	<haxelib name="flixel-ui" />
 	<!-- <haxelib name="newgrounds"/> -->
 	<!-- <haxelib name="faxe" if='switch'/> -->
+	<haxelib name="yaml"/>
 	<haxelib name="discord_rpc" if="windows"/>
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
@@ -163,6 +165,10 @@
 
 	<!--Enable this for Nape release builds for a serious peformance improvement-->
 	<haxedef name="NAPE_RELEASE_BUILD" unless="debug" />
+
+	<!-- oh hey no deprecations -->
+	<haxedef name="no-deprecation-warnings" />
+	<!-- huge note: COMMENT THIS TAG OUT IF YOU HAVE PROBLEMS WITH DEPRECATIONS -->
 
 	<!-- _________________________________ Custom _______________________________ -->
 

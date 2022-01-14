@@ -62,11 +62,45 @@ class DialogueSubstate extends MusicBeatSubstate
 
     var bg:FlxSprite;
 
+    var customColorRegEx:EReg = new EReg("<#(?:[a-f\\d]{3}){1,2}\\b>", "g");
+    var customColorFormatMarkers:Array<FlxTextFormatMarkerPair> = [];
+
     public function new(dialogues:Array<String>, style:DialogueStyle = NORMAL, ?onComplete:Void->Void)
     {
         super();
 
         persistentUpdate = false;
+
+        var addedtags:Array<String> = [];
+
+        for (color in FlxColor.colorLookup.keys()) 
+        {
+            var fuck = "<" + color.toLowerCase() + ">";
+            var a = new FlxTextFormat(FlxColor.colorLookup.get(color));
+            var b = new FlxTextFormatMarkerPair(a, fuck);
+            
+            addedtags.push(fuck);
+            customColorFormatMarkers.push(b);
+        }
+
+        for (dia in dialogues)
+        {
+            customColorRegEx.match(dia);
+            var matches:Array<String> = HelperFunctions.getERegMatches(customColorRegEx, dia, true);
+
+            for (tag in matches)
+            {
+                if (!addedtags.contains(tag))
+                {
+                    var trimmed:String = tag.replace("<", "").replace(">", "");
+                    var a = new FlxTextFormat(FlxColor.fromString(trimmed));
+                    var b = new FlxTextFormatMarkerPair(a, tag);
+                    
+                    addedtags.push(tag);
+                    customColorFormatMarkers.push(b);
+                }
+            }
+        }
 
         pissCamera = new FlxCamera();
         pissCamera.bgColor.alphaFloat = 0;
@@ -189,6 +223,8 @@ class DialogueSubstate extends MusicBeatSubstate
         
         add(typedText);
 
+        
+
         skipText = new FlxText(0, 0, 0, "Press BACKSPACE to skip dialogue.");
         skipText.setFormat(null, 24, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
         skipText.borderSize = 3;
@@ -221,6 +257,10 @@ class DialogueSubstate extends MusicBeatSubstate
 
                     typedText.visible = true;
                     typedText.resetText(dialogueList[0]);
+
+                    if (customColorFormatMarkers.length > 0)
+                        typedText.applyMarkup(dialogueList[0], customColorFormatMarkers);
+                    
                     typedText.start(0.05);
                 }
             }
@@ -241,7 +281,7 @@ class DialogueSubstate extends MusicBeatSubstate
                 if (!useAlphabet)
                     FlxG.sound.play(Paths.sound('clickText'), 0.8);
                 
-                if (typedText.text.length >= dialogueList[0].length)
+                if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length)
                 {
                     if (dialogueList[1] == null && dialogueList[0] != null)
                     {
@@ -435,6 +475,7 @@ class DialogueSubstate extends MusicBeatSubstate
             dialogueBox.animation.play(dialogueType + " open", true);
 
         speakerPosition = splitName[3];
-		dialogueList[0] = splitName[5].replace("\\n", "\n");
+        var thing = splitName[1].length + splitName[2].length + splitName[3].length + splitName[4].length + 5;
+		dialogueList[0] = dialogueList[0].substr(thing).replace("\\n", "\n");
     }
 }

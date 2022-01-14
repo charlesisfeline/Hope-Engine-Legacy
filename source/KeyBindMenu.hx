@@ -15,7 +15,7 @@ import flixel.util.FlxColor;
 using StringTools;
 
 
-class KeyBindMenu extends FlxSubState
+class KeybindMenu extends MusicBeatSubstate
 {
 
     var keyTextDisplay:FlxText;
@@ -77,8 +77,6 @@ class KeyBindMenu extends FlxSubState
         FlxTween.tween(keyTextDisplay, {alpha: 1}, 1, {ease: FlxEase.expoInOut});
         FlxTween.tween(infoText, {alpha: 1}, 1.4, {ease: FlxEase.expoInOut});
         FlxTween.tween(blackBox, {alpha: 0.7}, 1, {ease: FlxEase.expoInOut});
-
-        OptionsMenu.instance.acceptInput = false;
 
         textUpdate();
 
@@ -196,10 +194,8 @@ class KeyBindMenu extends FlxSubState
 
         save();
 
-        OptionsMenu.instance.acceptInput = true;
-
         FlxTween.tween(keyTextDisplay, {alpha: 0}, 1, {ease: FlxEase.expoInOut});
-        FlxTween.tween(blackBox, {alpha: 0}, 1.1, {ease: FlxEase.expoInOut, onComplete: function(flx:FlxTween){close();}});
+        FlxTween.tween(blackBox, {alpha: 0}, 1.1, {ease: FlxEase.expoInOut, onComplete: function(flx:FlxTween){close(); OptionsState.acceptInput = true;}});
         FlxTween.tween(infoText, {alpha: 0}, 1, {ease: FlxEase.expoInOut});
     }
 

@@ -4,6 +4,7 @@ import Character.Animation;
 import PlayState;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxSliceSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
@@ -38,6 +39,12 @@ class Note extends FlxSprite
 	public var sustainLength:Float = 0;
 	public var isSustainNote:Bool = false;
 	public var sectionNumber:Int = 0;
+
+	public var positionLockX:Null<Bool> = true;
+	public var positionLockY:Null<Bool> = true;
+	public var angleLock:Null<Bool> = true;
+	public var alphaLock:Null<Bool> = true;
+	public var visibleLock:Null<Bool> = true;
 
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
@@ -137,18 +144,10 @@ class Note extends FlxSprite
 
 		switch (noteData)
 		{
-			case 0:
-				x += swagWidth * 0;
-				animation.play('purpleScroll');
-			case 1:
-				x += swagWidth * 1;
-				animation.play('blueScroll');
-			case 2:
-				x += swagWidth * 2;
-				animation.play('greenScroll');
-			case 3:
-				x += swagWidth * 3;
-				animation.play('redScroll');
+			case 0: animation.play('purpleScroll');
+			case 1: animation.play('blueScroll');
+			case 2: animation.play('greenScroll');
+			case 3: animation.play('redScroll');
 		}
 
 		var pissShit = PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "";
@@ -162,8 +161,6 @@ class Note extends FlxSprite
 		if (isSustainNote && prevNote != null)
 		{
 			alpha = 0.6;
-
-			x += width / 2;
 
 			switch (noteData)
 			{
@@ -179,24 +176,15 @@ class Note extends FlxSprite
 
 			updateHitbox();
 
-			x -= width / 2;
-
-			if (PlayState.curStage.startsWith('school'))
-				x += 30;
-
 			if (prevNote.isSustainNote)
 			{
 
 				switch (prevNote.noteData)
 				{
-					case 0:
-						prevNote.animation.play('purplehold');
-					case 1:
-						prevNote.animation.play('bluehold');
-					case 2:
-						prevNote.animation.play('greenhold');
-					case 3:
-						prevNote.animation.play('redhold');
+					case 0: prevNote.animation.play('purplehold');
+					case 1: prevNote.animation.play('bluehold');
+					case 2: prevNote.animation.play('greenhold');
+					case 3: prevNote.animation.play('redhold');
 				}
 				
 				if (FlxG.save.data.scrollSpeed != 1)
@@ -205,7 +193,6 @@ class Note extends FlxSprite
 					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.SONG.speed;
 
 				prevNote.updateHitbox();
-				// prevNote.setGraphicSize();
 			}
 		}
 
@@ -234,6 +221,12 @@ class Note extends FlxSprite
 		this.canMiss = (noteJSON.canMiss != null ? noteJSON.canMiss : false);
 		this.offsetMultiplier = (noteJSON.offsetMultipler != null ? noteJSON.offsetMultipler : [1, 1]);
 		this.setScale = (noteJSON.scale != null ? noteJSON.scale : 1);
+		
+		this.positionLockX = (noteJSON.positionLockX != null ? noteJSON.positionLockX : true);
+		this.positionLockY = (noteJSON.positionLockY != null ? noteJSON.positionLockY : true);
+		this.angleLock = (noteJSON.angleLock != null ? noteJSON.angleLock : true);
+		this.alphaLock = (noteJSON.alphaLock != null ? noteJSON.alphaLock : true);
+		this.visibleLock = (noteJSON.visibleLock != null ? noteJSON.visibleLock : true);
 
 		if (this.upSpriteOnly)
 		{
@@ -471,6 +464,8 @@ class Note extends FlxSprite
 			if (alpha > 0.3)
 				alpha = 0.3;
 		}
+
+		// sus note consistency bullshit
 
 		if (animation.curAnim != null && animation.curAnim.name.endsWith('hold'))
 		{

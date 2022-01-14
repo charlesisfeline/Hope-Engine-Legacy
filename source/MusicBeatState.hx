@@ -1,8 +1,11 @@
 package;
 
 import Conductor.BPMChangeEvent;
+import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUIState;
+import lime.app.Application;
+import lime.system.System;
 import openfl.Lib;
 
 class MusicBeatState extends FlxUIState
@@ -20,12 +23,33 @@ class MusicBeatState extends FlxUIState
 	public function setChrome(daChrome:Float):Void
 		ShadersHandler.setChrome(daChrome / 100);
 
+	private static var assets:Array<FlxBasic> = [];
+	
+	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
+	{
+		assets.push(Object);
+		var result = super.add(Object);
+		return result;
+	}
+
+	public function clean()
+	{
+		for (i in assets)
+		{
+			assets.remove(i);
+			remove(i, true);
+		}
+	}
+
+	public function new()
+	{
+		super();
+		clean();
+	}
+
 	override function create()
 	{
 		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
-
-		if (transIn != null)
-			trace('reg ' + transIn.region);
 
 		super.create();
 	}

@@ -1,28 +1,29 @@
 package;
 
-import DialogueSubstate.DialogueStyle;
-import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxSliceSprite;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
-import flixel.effects.particles.FlxEmitter;
-import flixel.effects.particles.FlxParticle;
+import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
+import flixel.input.actions.FlxAction.FlxActionAnalog;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
+import flixel.system.FlxAssets.FlxShader;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
-import flixel.util.FlxGradient;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
+import openfl.display.BitmapData;
+import openfl.filters.ShaderFilter;
 
 using StringTools;
 #if windows
@@ -31,8 +32,6 @@ import Discord.DiscordClient;
 
 #if FILESYSTEM
 import sys.FileSystem;
-import sys.io.File;
-import sys.thread.Thread;
 #end
 
 
@@ -44,7 +43,11 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var curWacky:Array<String> = [];
 	var wackyImage:FlxSprite;
-	var ifuseethis:FlxText;
+	var slice9test:FlxSliceSprite;
+	var logoWH:Array<Float> = [];
+
+	// version
+	var requestedVersion:Null<String> = null;
 	
 	override public function create():Void
 	{	
@@ -64,12 +67,16 @@ class TitleState extends MusicBeatState
 		#end
 		
 		#if windows
-		DiscordClient.initialize();
-
-		Application.current.onExit.add(function(exitCode)
+		// only 1 thread
+		if (!initialized)
 		{
-			DiscordClient.shutdown();
-		});
+			DiscordClient.initialize();
+
+			Application.current.onExit.add(function(exitCode)
+			{
+				DiscordClient.shutdown();
+			});
+		}
 		#end
 
 		Highscore.load();
@@ -82,10 +89,12 @@ class TitleState extends MusicBeatState
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
 
-		#if mobile
-		ifuseethis = new FlxText(0, FlxG.height - 16, 0, "if u see this ur dumb LMAO", 16);
-		add(ifuseethis);
-		#end
+		// this worked better than expected :o
+		// slice9test = new FlxSliceSprite(Paths.image('9slice test', 'shared'), new FlxRect(0,0,50,43), 50, 200);
+		// slice9test.antialiasing = true;
+		// add(slice9test);
+
+		// FlxTween.tween(slice9test, {height: slice9test.height * 3}, 1, {type: PINGPONG, ease: FlxEase.expoInOut});
 
 		super.create();
 
@@ -122,7 +131,7 @@ class TitleState extends MusicBeatState
 			for (mod in FileSystem.readDirectory('mods'))
 			{
 				Paths.setCurrentMod(mod);
-				if (FileSystem.exists(Sys.getCwd() + Paths.loadModFile(mod)))
+				if (Paths.checkModLoad(mod))
 					CoolUtil.loadCustomDifficulties();
 			}
 
@@ -136,11 +145,21 @@ class TitleState extends MusicBeatState
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0);
 				Conductor.changeBPM(102);
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
-
-				#if mobile
-				remove(ifuseethis);
-				#end
 			});
+
+			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/master/version.awesome');
+
+			http.onData = function (data:String) {
+				requestedVersion = data.trim();
+			}
+
+			http.onError = function (data:String) {
+				requestedVersion = null;
+			}
+
+			http.request();
+
+			trace("latest ver get: v" + requestedVersion);
 		}
 		
 		persistentUpdate = true;
@@ -150,6 +169,7 @@ class TitleState extends MusicBeatState
 		logoBl.antialiasing = true;
 		logoBl.visible = false;
 		logoBl.updateHitbox();
+		logoWH = [logoBl.scale.x, logoBl.scale.y];
 
 		gfDance = new FlxSprite();
 		gfDance.frames = Paths.getSparrowAtlas('gfDanceTitle');
@@ -210,6 +230,7 @@ class TitleState extends MusicBeatState
 	}
 
 	var transitioning:Bool = false;
+	var pain:FlxShader;
 
 	override function update(elapsed:Float)
 	{
@@ -218,6 +239,15 @@ class TitleState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
+
+		if (FlxG.keys.justPressed.SPACE)
+		{
+			pain = new Shaders.CRTCurve();
+			FlxG.camera.setFilters([new ShaderFilter(pain)]);
+		}
+
+		logoBl.scale.x = FlxMath.lerp(logoBl.scale.x, logoWH[0], 9 / lime.app.Application.current.window.frameRate);
+		logoBl.scale.y = FlxMath.lerp(logoBl.scale.y, logoWH[1], 9 / lime.app.Application.current.window.frameRate);
 
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
 
@@ -251,7 +281,7 @@ class TitleState extends MusicBeatState
 			if (FlxG.save.data.flashing)
 			{
 				titleText.animation.play('press');
-				titleText.centerOffsets;
+				titleText.centerOffsets();
 			}
 
 			transitioning = true;
@@ -261,7 +291,23 @@ class TitleState extends MusicBeatState
 
 			new FlxTimer().start(2, function(tmr:FlxTimer)
 			{
-				FlxG.switchState(new MainMenuState());
+				#if CHECK_LATEST
+				if (requestedVersion != null)
+				{
+					// what (number strings)
+					if (MainMenuState.hopeEngineVer.trim() < requestedVersion.trim())
+					{
+						trace("\noutdated lmao! currently at: " + MainMenuState.hopeEngineVer.trim() + "\nlatest: " + requestedVersion.trim());
+						FlxG.switchState(new OutdatedState());
+					}
+					else
+						FlxG.switchState(new MainMenuState());
+				}
+				else
+				#end
+					FlxG.switchState(new MainMenuState());
+
+				
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
@@ -279,6 +325,7 @@ class TitleState extends MusicBeatState
 			var money:Alphabet = new Alphabet(0, 0, textArray[i], true, false);
 			money.screenCenter(X);
 			money.y += (i * 60) + 200;
+
 			credGroup.add(money);
 		}
 	}
@@ -288,6 +335,7 @@ class TitleState extends MusicBeatState
 		var coolText:Alphabet = new Alphabet(0, 0, text, true, false);
 		coolText.screenCenter(X);
 		coolText.y += (credGroup.length * 60) + 200;
+		
 		credGroup.add(coolText);
 	}
 
@@ -355,10 +403,7 @@ class TitleState extends MusicBeatState
 		}
 
 		if (canBop)
-		{
 			logoBl.scale.set(logoBl.scale.x + 0.02, logoBl.scale.y + 0.02);
-			FlxTween.tween(logoBl, {"scale.x": logoBl.scale.x - 0.02, "scale.y": logoBl.scale.y - 0.02}, Conductor.crochet / 1500, {ease: FlxEase.quadOut});
-		}
 	}
 
 	var skippedIntro:Bool = false;

@@ -1,20 +1,6 @@
 {
 	"animations": [
 		{
-			"prefix": "Mom Idle",
-			"offset": [
-				0,
-				0
-			],
-			"name": "idle",
-			"flipX": false,
-			"loopedAnim": false,
-			"flipY": false,
-			"postfix": "",
-			"frameRate": 24,
-			"indices": []
-		},
-		{
 			"prefix": "Mom Up Pose",
 			"offset": [
 				14,
@@ -57,18 +43,124 @@
 			"indices": []
 		},
 		{
-			"prefix": "MOM DOWN POSE",
-			"offset": [
-				20,
-				-160
+			"prefix": "Mom Up Pose",
+			"loopedAnim": true,
+			"indices": [
+				10,
+				11,
+				12,
+				13
 			],
-			"name": "singDOWN",
 			"flipX": false,
-			"loopedAnim": false,
 			"flipY": false,
 			"postfix": "",
 			"frameRate": 24,
-			"indices": []
+			"name": "singUP-loop",
+			"offset": [
+				14,
+				71
+			]
+		},
+		{
+			"prefix": "Mom Left Pose",
+			"loopedAnim": true,
+			"indices": [
+				8,
+				9,
+				10
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singLEFT-loop",
+			"offset": [
+				250,
+				-23
+			]
+		},
+		{
+			"prefix": "Mom Pose Left",
+			"loopedAnim": true,
+			"indices": [
+				8,
+				9,
+				10
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singRIGHT-loop",
+			"offset": [
+				10,
+				-60
+			]
+		},
+		{
+			"prefix": "Mom Idle",
+			"loopedAnim": true,
+			"indices": [
+				10,
+				11,
+				12,
+				13
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "idle-loop",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"prefix": "Mom Idle",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "idle",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"prefix": "MOM DOWN POSE",
+			"loopedAnim": true,
+			"indices": [
+				8,
+				9,
+				10
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singDOWN-loop",
+			"offset": [
+				20,
+				-160
+			]
+		},
+		{
+			"prefix": "MOM DOWN POSE",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singDOWN",
+			"offset": [
+				20,
+				-160
+			]
 		}
 	],
 	"healthColor": "D8558E",
@@ -76,7 +168,12 @@
 	"image": "characters/momCar",
 	"singDuration": 4,
 	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
 	"antialiasing": true,
 	"name": "mom-car",
-	"isDeath": false
+	"isDeath": false,
+	"scale": 1
 }

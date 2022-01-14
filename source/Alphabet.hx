@@ -17,7 +17,6 @@ class Alphabet extends FlxSpriteGroup
 	// for menu shit
 	public var targetY:Float = 0;
 	public var isMenuItem:Bool = false;
-	public var checkBox:OptionsMenu.CheckBox;
 	public var additive:Float = FlxG.height * 0.48;
 
 	public var typeDelay:Float = 0.05;
@@ -144,9 +143,6 @@ class Alphabet extends FlxSpriteGroup
 			var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
 			y = FlxMath.lerp(y, (scaledY * 120) + additive, 9 / lime.app.Application.current.window.frameRate);
 		}
-
-		if (checkBox != null)
-			checkBox.y = y + (height / 2) - (checkBox.height / 2);
 
 		super.update(elapsed);
 	}
@@ -303,6 +299,12 @@ class AlphaCharacter extends FlxSprite
 				animation.play(letter);
 			case ' ':
 				animation.addByPrefix(letter, 'space', 24);
+				animation.play(letter);
+			case '<':
+				animation.addByPrefix(letter, 'LESS THAN', 24);
+				animation.play(letter);
+			case '>':
+				animation.addByPrefix(letter, 'MORE THAN', 24);
 				animation.play(letter);
 			case ':':
 				y += 15;

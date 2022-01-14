@@ -124,6 +124,7 @@ class MenuCharacter extends FlxSprite
 		if (pain.settings != null)
 			settings.set(pain.character, new CharacterSetting(pain.settings.x, pain.settings.y, pain.settings.scale, pain.settings.flipped));
 
+		trace(Paths.currentMod);
 		frames = Paths.getSparrowAtlas('menuCharacters/' + character);
 
 		// so many ifs....

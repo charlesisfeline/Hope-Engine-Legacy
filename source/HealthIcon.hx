@@ -1,6 +1,7 @@
 package;
 
 import flixel.FlxSprite;
+import flixel.graphics.FlxGraphic;
 import lime.utils.Assets;
 
 using StringTools;
@@ -56,6 +57,8 @@ class HealthIcon extends FlxSprite
 		loadGraphic(Paths.image('icons/face'), true, 150, 150);
 		
 		if (Paths.exists(Paths.image('icons/' + char)))
+			loadGraphic(Paths.image('icons/' + char), true, 150, 150);
+		else if (Paths.image('icons/' + char) != null && Paths.image('icons/' + char) is FlxGraphic)
 			loadGraphic(Paths.image('icons/' + char), true, 150, 150);
 
 		if (char.endsWith('-pixel') || char.startsWith('senpai') || char.startsWith('spirit'))
