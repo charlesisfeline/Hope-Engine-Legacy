@@ -41,7 +41,7 @@ class OptionsState extends MusicBeatState
         new OptionCategory("Preferences", [
             new OptionSubCategoryTitle("Gameplay"),
             new PressOption("Keybinds", "Change how YOU play.", function() {
-                FlxG.state.openSubState(new KeybindMenu());
+                FlxG.state.openSubState(new KeybindSubstate());
                 acceptInput = false;
             }),
             new ToggleOption("Downscroll", "Change the scroll direction from up to down (and vice versa)", "downscroll"),

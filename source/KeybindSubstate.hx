@@ -15,7 +15,7 @@ import flixel.util.FlxColor;
 using StringTools;
 
 
-class KeybindMenu extends MusicBeatSubstate
+class KeybindSubstate extends MusicBeatSubstate
 {
 
     var keyTextDisplay:FlxText;
