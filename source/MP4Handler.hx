@@ -1,7 +1,8 @@
+#if VIDEOS_ALLOWED
 package;
 
-import openfl.events.Event;
 import flixel.FlxG;
+import openfl.events.Event;
 
 /**
  * Play a video using cpp.
@@ -116,3 +117,4 @@ class MP4Handler extends vlc.VlcBitmap
 		#end
 	}
 }
+#end

@@ -2669,6 +2669,7 @@ class PlayState extends MusicBeatState
 
 	/// mp4 bullshit starts here
 
+	#if VIDEOS_ALLOWED
 	var video:MP4Handler;
 
 	function playVideo(name:String)
@@ -2685,6 +2686,7 @@ class PlayState extends MusicBeatState
 		}
 		video.playVideo(Paths.video(name));
 	}
+	#end
 
 	/// mp4 bullshit ends here
 	
@@ -2826,7 +2828,9 @@ class PlayState extends MusicBeatState
 		funnyInterp.variables.set("goodNoteHit", goodNoteHit);
 
 		// mp4 videos!!!!
+		#if VIDEOS_ALLOWED
 		funnyInterp.variables.set("playVideo", playVideo);
+		#end
 		
 		// cameras
 		funnyInterp.variables.set("camHUD", camHUD);

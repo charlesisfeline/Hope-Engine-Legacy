@@ -45,6 +45,8 @@
 	<assets path="plugins/" rename='' if="web || windows"/>
 	<assets path="dlls/" rename='' if="web || windows"/>
 
+	<define name="VIDEOS_ALLOWED" if="web || windows" />
+
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 	
