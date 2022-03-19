@@ -5,23 +5,17 @@ class Data
 {
     public static function initSave()
     {
-        if (FlxG.save.data.newInput == null)
-			FlxG.save.data.newInput = true;
-
 		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = false;
-
-		if (FlxG.save.data.dfjk == null)
-			FlxG.save.data.dfjk = false;
 			
-		if (FlxG.save.data.accuracyDisplay == null)
-			FlxG.save.data.accuracyDisplay = false;
+		if (FlxG.save.data.extensiveDisplay == null)
+			FlxG.save.data.extensiveDisplay = false;
 
 		if (FlxG.save.data.offset == null)
 			FlxG.save.data.offset = 0;
 
-		if (FlxG.save.data.songPosition == null)
-			FlxG.save.data.songPosition = false;
+		if (FlxG.save.data.posBarType == null)
+			FlxG.save.data.posBarType = 0;
 
 		if (FlxG.save.data.fps == null)
 			FlxG.save.data.fps = false;
@@ -73,15 +67,9 @@ class Data
 		
 		if (FlxG.save.data.customStrumLine == null)
 			FlxG.save.data.customStrumLine = 0;
-
-		if (FlxG.save.data.familyFriendly == null)
-			FlxG.save.data.familyFriendly = false;
 		
 		if (FlxG.save.data.skipResultsScreen == null)
 			FlxG.save.data.skipResultsScreen = false;
-		
-		if (FlxG.save.data.fancyHealthBar == null)
-			FlxG.save.data.fancyHealthBar = false;
 
 		if (FlxG.save.data.healthBarColors == null)
 			FlxG.save.data.healthBarColors = true;
@@ -95,20 +83,29 @@ class Data
 		if (FlxG.save.data.cacheMusic == null)
 			FlxG.save.data.cacheMusic = false;
 
-		if (FlxG.save.data.ratingColor == null)
-			FlxG.save.data.ratingColor = false;
-
 		if (FlxG.save.data.watermarks == null)
 			FlxG.save.data.watermarks = true;
 
 		if (FlxG.save.data.noteSplashes == null)
 			FlxG.save.data.noteSplashes = true;
 
-		if (FlxG.save.data.pfBGTransparency == null)
-			FlxG.save.data.pfBGTransparency = 0;
+		if (FlxG.save.data.resumeCountdown == null)
+			FlxG.save.data.resumeCountdown = true;
 
-		if (FlxG.save.data.currentNoteSkin == null)
-			FlxG.save.data.currentNoteSkin = "default";
+		if (FlxG.save.data.underlayAlpha == null)
+			FlxG.save.data.underlayAlpha = 0;
+
+		if (FlxG.save.data.noteSkin == null)
+			FlxG.save.data.noteSkin = "default";
+
+		if (FlxG.save.data.ratingPos == null)
+			FlxG.save.data.ratingPos = [(FlxG.width / 3 + 5), (FlxG.height / 2 + 5)];
+
+		if (FlxG.save.data.comboPos == null)
+			FlxG.save.data.comboPos = [(FlxG.width / 3 + 5), (FlxG.height / 2 + 155)];
+
+		if (FlxG.save.data.stationaryRating == null)
+			FlxG.save.data.stationaryRating = true;
 
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();

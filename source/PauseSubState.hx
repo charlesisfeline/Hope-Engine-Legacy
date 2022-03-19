@@ -1,6 +1,5 @@
 package;
 
-import Controls.Control;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -40,9 +39,6 @@ class PauseSubState extends MusicBeatSubstate
 		persistentDraw = true;
 		persistentUpdate = false; 
 
-		if (PlayState.loadRep)
-			menuItems = ['Resume', 'Exit to menu'];
-
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
 		pauseMusic.play(false, FlxG.random.int(0, Std.int(pauseMusic.length / 2)));
@@ -68,22 +64,6 @@ class PauseSubState extends MusicBeatSubstate
 		levelDifficulty.updateHitbox();
 		add(levelDifficulty);
 
-		var modLoops:Int = 0;
-		var currentMod:Int = 0;
-
-		if (modLoops == 1) 
-		{
-			var ahYes:FlxText = new FlxText(0, 143, FlxG.width - 20, "None, go activate\nsome in the\noptions menu!", 32);
-			ahYes.scrollFactor.set();
-			ahYes.alignment = RIGHT;
-			ahYes.setFormat(Paths.font('vcr.ttf'), 32);
-			ahYes.updateHitbox();
-			add(ahYes);
-
-			ahYes.alpha = 0;
-			FlxTween.tween(ahYes, {alpha: 1, y: ahYes.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 1.1});
-		}
-
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
 
@@ -97,14 +77,29 @@ class PauseSubState extends MusicBeatSubstate
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
 		
-		perSongOffset = new FlxText(5, FlxG.height - 5, FlxG.width - 10, "Song Offset: " + PlayState.songOffset + "\n(SHIFT + LEFT or RIGHT to change)", 12);
+		perSongOffset = new FlxText(0, 0, FlxG.width - 20, "Song Offset: < " + PlayState.songOffset + " >\n(Hold CTRL to change!)", 12);
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
-		perSongOffset.setPosition(5, FlxG.height - perSongOffset.height - 5);
+		perSongOffset.setPosition(0, FlxG.height - perSongOffset.height - 15);
+		perSongOffset.alpha = 0;
 		
-		#if cpp
+		#if FILESYSTEM
 		add(perSongOffset);
+		perSongOffset.y += 5;
+		FlxTween.tween(perSongOffset, {alpha: 1, y: perSongOffset.y - 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		#end
+
+		if (PlayState.openedCharting)
+		{
+			var chartingText = new FlxText(0, 15 + 64, FlxG.width - 20, "CHARTING", 12);
+			chartingText.scrollFactor.set();
+			chartingText.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
+			chartingText.alpha = 0;
+
+			add(chartingText);
+			chartingText.y -= 5;
+			FlxTween.tween(chartingText, {alpha: 1, y: chartingText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		}
 
 		for (i in 0...menuItems.length)
 		{
@@ -122,6 +117,8 @@ class PauseSubState extends MusicBeatSubstate
 
 	var resuming:Bool = false;
 
+	var holdTimer:Float = 0;
+
 	override function update(elapsed:Float)
 	{
 		if (pauseMusic.volume < 0.5)
@@ -137,17 +134,45 @@ class PauseSubState extends MusicBeatSubstate
 		var accepted = controls.ACCEPT;
 
 		if (upP)
-			changeSelection(-1);
-		else if (downP)
-			changeSelection(1);
-
-		#if cpp
-		if (FlxG.keys.pressed.SHIFT)
 		{
+			FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
+			changeSelection(-1);
+		}
+		else if (downP)
+		{
+			FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
+			changeSelection(1);
+		}
+
+		#if FILESYSTEM
+		var multi:Float = 0.1;
+		if (FlxG.keys.pressed.CONTROL)
+		{
+			if (FlxG.keys.pressed.SHIFT)
+				multi = 1;
+			
 			if (controls.LEFT_P)
-				changeOffset(-1);
+				changeOffset(-1 * multi);
 			else if (controls.RIGHT_P)
-				changeOffset(1);
+				changeOffset(1 * multi);
+
+			if (controls.LEFT || controls.RIGHT)
+			{
+				if (holdTimer > 0.5)
+				{
+					if (controls.LEFT)
+						changeOffset(-1 * multi);
+					else if (controls.RIGHT)
+						changeOffset(1 * multi);
+				}
+				else
+					holdTimer += elapsed;
+			}
+			else
+				holdTimer = 0;
+
+			if (controls.RESET)
+				changeOffset(PlayState.songOffset * -1);
 		}
 		#end
 
@@ -158,37 +183,29 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
-					resuming = true;
-					var swagCounter:Int = 0;
-
-					forEachOfType(FlxSprite, function(spr:FlxSprite) {
-						spr.visible = false;
-					}, true);
-
-					new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+					if (Settings.resumeCountdown)
 					{
-						PlayState.instance.countdownThing(swagCounter);
-						swagCounter += 1;
+						resuming = true;
+						var swagCounter:Int = 0;
 
-						if (swagCounter > 4)
-							close();
-					}, 5);
+						forEachOfType(FlxSprite, function(spr:FlxSprite) {
+							spr.visible = false;
+						}, true);
 
+						new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+						{
+							PlayState.instance.countdownThing(swagCounter);
+							swagCounter += 1;
+
+							if (swagCounter > 4)
+								close();
+						}, 5);
+					}
+					else
+						close();
 				case "Restart Song":
 					FlxG.resetState();
-					
 				case "Exit to menu":
-					if(PlayState.loadRep)
-					{
-						FlxG.save.data.botplay = false;
-						FlxG.save.data.scrollSpeed = 1;
-						FlxG.save.data.downscroll = false;
-					}
-					PlayState.loadRep = false;
-					
-					if (FlxG.save.data.fpsCap > 290)
-						(cast (Lib.current.getChildAt(0), Main)).setFPSCap(290);
-					
 					FlxG.switchState(new MainMenuState());
 			}
 		}
@@ -207,12 +224,13 @@ class PauseSubState extends MusicBeatSubstate
 		if (Paths.currentMod != null && FileSystem.exists(Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath))
 			songPath = Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath;
 
-		if(FileSystem.exists(songPath))
+		if (FileSystem.exists(songPath))
 		{
 			PlayState.songOffset += huh;
+			PlayState.songOffset = FlxMath.roundDecimal(PlayState.songOffset, 2);
 			File.saveContent(songPath, PlayState.songOffset + '');
-			perSongOffset.text = "Song Offset: " + PlayState.songOffset + "\n(SHIFT + LEFT or RIGHT to change)";
-			perSongOffset.setPosition(5, FlxG.height - perSongOffset.height - 5);
+			perSongOffset.text = "Song Offset: < " + PlayState.songOffset + " >\n(Hold CTRL to change!)";
+			perSongOffset.setPosition(0, FlxG.height - perSongOffset.height - 15);
 		}
 
 		var oldMenuItemsLength = menuItems.length;
@@ -243,7 +261,6 @@ class PauseSubState extends MusicBeatSubstate
 	override function destroy()
 	{
 		pauseMusic.destroy();
-
 		super.destroy();
 	}
 
@@ -264,13 +281,9 @@ class PauseSubState extends MusicBeatSubstate
 			bullShit++;
 
 			item.alpha = 0.6;
-			// item.setGraphicSize(Std.int(item.width * 0.8));
 
 			if (item.targetY == 0)
-			{
 				item.alpha = 1;
-				// item.setGraphicSize(Std.int(item.width));
-			}
 		}
 	}
 }

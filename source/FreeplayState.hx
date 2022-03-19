@@ -18,7 +18,7 @@ import sys.io.File;
 #end
 
 
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 
@@ -87,9 +87,8 @@ class FreeplayState extends MusicBeatState
 		Paths.setCurrentMod(null);
 		#end
 
-		#if windows
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Freeplay Menu", null);
+		#if desktop
+		DiscordClient.changePresence("Freeplay Menu", null);
 		#end
 
 		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
@@ -206,7 +205,7 @@ class FreeplayState extends MusicBeatState
 		if (downP)
 			changeSelection(1);
 
-		if (FlxG.keys.justPressed.V && FlxG.save.data.cacheMusic)
+		if (FlxG.keys.justPressed.V && Settings.cacheMusic)
 			playMusic(false);
 
 		if (controls.LEFT_P)
@@ -309,14 +308,14 @@ class FreeplayState extends MusicBeatState
 		rankImage.scale.set(0.35, 0.35);
 		rankImage.updateHitbox();
 
-		if (FlxG.save.data.flashing)
+		if (Settings.flashing)
 		{
 			FlxTween.cancelTweensOf(bg, ["color"]);
 			FlxTween.color(bg, 0.5, bg.color, songs[curSelected].color);
 		}
 
 		#if PRELOAD_ALL
-		if (FlxG.save.data.cacheMusic)
+		if (Settings.cacheMusic)
 		{
 			FlxG.sound.music.stop();
 			playMusic(true);

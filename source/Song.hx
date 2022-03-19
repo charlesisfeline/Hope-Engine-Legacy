@@ -51,9 +51,6 @@ class Song
 
 	public static function loadFromJson(jsonInput:String, ?folder:String, ?mod:String = ""):SwagSong
 	{
-		trace(jsonInput);
-		trace("MOD IN LOAD FROM JSON: " + mod);
-
 		// pre lowercasing the song name (update)
 		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
 		

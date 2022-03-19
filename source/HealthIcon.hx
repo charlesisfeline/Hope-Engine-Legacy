@@ -16,13 +16,9 @@ class HealthIcon extends FlxSprite
 
 	public static var splitWhitelist:Array<String> = [];
 
-	/**
-	 * Used for FreeplayState! If you use it elsewhere, prob gonna be annoying
-	 */
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
-		// implementing new way of handling icons from kade 1.6+ or smth
 
 		this.char = char;
 		this.isPlayer = isPlayer;
@@ -32,18 +28,11 @@ class HealthIcon extends FlxSprite
 		scrollFactor.set();
 	}
 
-	/**
-	 * Y'know, the thing that happens 
-	 * when you press 9 while playing a song?
-	 */
 	public function swapOldIcon()
 	{
 		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
 	}
 
-	/**
-	 * Change the current `HealthIcon`. Use this instead of creating new ones.
-	 */
 	public final function changeIcon(char:String)
 	{
 		var pissOffMate:Array<String> = CoolUtil.coolTextFile('assets/images/icons/_dontSplitThese.txt');

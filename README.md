@@ -6,7 +6,9 @@
 
 Hope Engine is an engine built from Kade Engine 1.5.2.
 
-**100% in beta, expect bugs!**
+**100% in ALPHA (actually, lmao), expect bugs!**
+
+HTML5 builds are *really* buggy, so it's not recommended to build for HTML5.
 
 ---
 
@@ -18,3 +20,8 @@ Learned things from [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngin
 Friday Night Funkin' by [ninjamuffin99](https://twitter.com/ninja_muffin99), [kawaisprite](https://twitter.com/kawaisprite), [PhantomArcade](https://twitter.com/phantomarcade3k), and [evilsk8r](https://twitter.com/evilsk8r).
 
 More credits on the [site](https://skuqre.github.io/Hope-Engine/credits-and-assets).
+
+---
+
+For building, see this: <https://skuqre.github.io/Hope-Engine/building><br>
+Do note that this will change overtime. Everything is not final.

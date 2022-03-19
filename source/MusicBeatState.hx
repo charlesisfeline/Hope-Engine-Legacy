@@ -3,6 +3,7 @@ package;
 import Conductor.BPMChangeEvent;
 import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
 import lime.app.Application;
 import lime.system.System;
@@ -20,14 +21,21 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	public function setChrome(daChrome:Float):Void
-		ShadersHandler.setChrome(daChrome / 100);
-
-	private static var assets:Array<FlxBasic> = [];
+	private static var assets:Array<FlxSprite> = [];
+	private static var toDestroy:Array<FlxSprite> = [];
 	
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
 	{
-		assets.push(Object);
+		if (Std.isOfType(Object, FlxSprite))
+		{
+			var spr:FlxSprite = cast(Object, FlxSprite);
+			
+			if (spr.graphic != null)
+			{
+				assets.push(spr);
+			}
+		}
+
 		var result = super.add(Object);
 		return result;
 	}
@@ -38,20 +46,43 @@ class MusicBeatState extends FlxUIState
 		{
 			assets.remove(i);
 			remove(i, true);
+			toDestroy.push(i);
 		}
 	}
 
 	public function new()
-	{
+	{	
 		super();
 		clean();
 	}
 
 	override function create()
 	{
-		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(Settings.fpsCap);
+
+		if (!Settings.cacheImages)
+		{
+			openfl.Assets.cache.clear("shared/images");
+			openfl.Assets.cache.clear("assets/images");
+		}
 
 		super.create();
+
+		for (i in toDestroy)
+		{
+			i.destroy();
+			toDestroy.remove(i);
+		}
+
+		#if !html5
+		if (!Settings.cacheMusic)
+		{
+			openfl.Assets.cache.clear("songs");
+			openfl.Assets.cache.clear("music");
+		}
+		#end
+
+		openfl.system.System.gc();
 	}
 
 	override function update(elapsed:Float)
@@ -65,8 +96,8 @@ class MusicBeatState extends FlxUIState
 		if (oldStep != curStep && curStep > 0)
 			stepHit();
 
-		if ((cast (Lib.current.getChildAt(0), Main)).getFPSCap != FlxG.save.data.fpsCap && FlxG.save.data.fpsCap <= 290)
-			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
+		if ((cast (Lib.current.getChildAt(0), Main)).getFPSCap() != Settings.fpsCap && Settings.fpsCap <= 290)
+			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(Settings.fpsCap);
 
 		super.update(elapsed);
 	}

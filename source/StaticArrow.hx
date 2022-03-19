@@ -30,9 +30,9 @@ class StaticArrow extends FlxSprite
 		super.update(elapsed);
 	}
 
-	public function playAnim(AnimName:String, ?force:Bool = false):Void
+	public function playAnim(AnimName:String, ?force:Bool = false, ?backwards:Bool = false):Void
 	{
-		animation.play(AnimName, force);
+		animation.play(AnimName, force, backwards);
 
 		centerOrigin();
 		updateHitbox();

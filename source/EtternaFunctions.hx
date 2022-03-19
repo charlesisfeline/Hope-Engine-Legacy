@@ -39,21 +39,19 @@ class EtternaFunctions
     }
 
     public static function getHolds():Int
+    {
+        var notes:Int = 0;
+        for (i in 0...PlayState.SONG.notes.length) 
         {
-            var notes:Int = 0;
-            for (i in 0...PlayState.SONG.notes.length) 
+            for (ii in 0...PlayState.SONG.notes[i].sectionNotes.length)
             {
-                trace(PlayState.SONG.notes[i]);
-                for (ii in 0...PlayState.SONG.notes[i].sectionNotes.length)
-                {
-                    var n = PlayState.SONG.notes[i].sectionNotes[ii];
-                    trace(n);
-                    if (n[1] > 0)
-                        notes++;
-                }
+                var n = PlayState.SONG.notes[i].sectionNotes[ii];
+                if (n[1] > 0)
+                    notes++;
             }
-            return notes;
         }
+        return notes;
+    }
 
     public static function getMapMaxScore():Int
     {

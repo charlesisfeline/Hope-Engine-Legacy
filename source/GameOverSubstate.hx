@@ -186,6 +186,5 @@ class GameOverSubstate extends MusicBeatSubstate
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
 			});
 		});
-		PlayState.loadRep = false;
 	}
 }

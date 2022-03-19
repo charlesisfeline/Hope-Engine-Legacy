@@ -47,12 +47,8 @@ class ModLoadingState extends MusicBeatState
 	{
 		FlxG.mouse.visible = true;
 		
-		// var menuBG:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		var menuBG:FlxBackdrop = new FlxBackdrop(Paths.image('menuDesat'), 1, 1, false);
 		menuBG.color = 0xFFea71fd;
-		// menuBG.setGraphicSize(Std.int(menuBG.width * 1.1));
-		// menuBG.updateHitbox();
-		// menuBG.screenCenter();
 		menuBG.scrollFactor.set(0, 0.2);
 		menuBG.antialiasing = true;
 		add(menuBG);
@@ -67,7 +63,7 @@ class ModLoadingState extends MusicBeatState
 		{
 			var modInfo = Yaml.parse(File.getContent(Paths.modInfoFile(mod)));
 
-			var pain = new ModWidget(0, 0, mod, modInfo.get("name"), modInfo.get("description"), modInfo.get("version"), HelperFunctions.toBool(modInfo.get("icon-antialiasing")));
+			var pain = new ModWidget(0, 0, mod, modInfo.get("name"), modInfo.get("description"), modInfo.get("version"), Helper.toBool(modInfo.get("icon-antialiasing")));
 			pain.screenCenter();
 			pain.scrollFactor.set(1, 1);
 			pain.y += modGroup.length * 225;
@@ -106,7 +102,7 @@ class ModLoadingState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.switchState(new OptionsState());
+			FlxG.switchState(new options.OptionsState());
 			FlxG.mouse.visible = false;
 		}
 
@@ -117,7 +113,7 @@ class ModLoadingState extends MusicBeatState
 			changeItem(1);
 
 		if (FlxG.mouse.wheel != 0)
-			changeItem(FlxG.mouse.wheel);
+			changeItem(-FlxG.mouse.wheel);
 	}
 }
 

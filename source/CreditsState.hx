@@ -2,13 +2,15 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.display.FlxBackdrop;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import haxe.Json;
 import lime.utils.Assets;
 
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 
@@ -20,22 +22,22 @@ class CreditsState extends MusicBeatState
 
     var descBackground:FlxSprite;
     var descriptionShit:FlxText;
+    var menuBG:FlxBackdrop;
 
     override function create()
     {
-        #if windows
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Credits", null);
+        #if desktop
+		DiscordClient.changePresence("Credits", null);
 		#end
 
         #if FILESYSTEM
 		Paths.destroyCustomImages();
 		#end
         
-        var bg = new FlxSprite().loadGraphic(Paths.image('menuBGMagenta'));
-        bg.screenCenter();
-        bg.antialiasing = true;
-        add(bg);
+		menuBG = new FlxBackdrop(Paths.image('credBG'), 1, 1, false);
+        menuBG.screenCenter(X);
+		menuBG.antialiasing = true;
+		add(menuBG);
 
         alphabets = new FlxTypedGroup<Alphabet>();
         add(alphabets);
@@ -92,9 +94,13 @@ class CreditsState extends MusicBeatState
         super.create();
     }
 
+    var bgTargetY:Float = 0;
+
     override function update(elapsed:Float) 
     {
         super.update(elapsed);
+
+        menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, 9 / lime.app.Application.current.window.frameRate);
         
         if (controls.UP_P)
         {
@@ -132,6 +138,8 @@ class CreditsState extends MusicBeatState
             curSelected = alphabets.length - 1;
         if (curSelected >= alphabets.length)
             curSelected = 0;
+
+        bgTargetY = -120 * 0.2 * curSelected;
 
         if (allTheShit[curSelected][1] != "")
         {

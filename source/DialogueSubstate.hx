@@ -86,7 +86,7 @@ class DialogueSubstate extends MusicBeatSubstate
         for (dia in dialogues)
         {
             customColorRegEx.match(dia);
-            var matches:Array<String> = HelperFunctions.getERegMatches(customColorRegEx, dia, true);
+            var matches:Array<String> = Helper.getERegMatches(customColorRegEx, dia, true);
 
             for (tag in matches)
             {
@@ -340,12 +340,6 @@ class DialogueSubstate extends MusicBeatSubstate
 
     var started:Bool = false;
 
-    var spritesFacingLeft:Array<String> = [
-        "bf",
-        "bf-pixel",
-        "bf-christmas"
-    ];
-
     // I am making them unnecessarily long
     var pixelSpritesWithoutPixelSuffix:Array<String> = [
         "senpai",
@@ -366,9 +360,6 @@ class DialogueSubstate extends MusicBeatSubstate
         if (speakerPosition == "left")
         {
             thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
-            if (spritesFacingLeft.contains(whosSpeaking))
-                thatFuckerOnTheLeft.flipX = true;
-
             thatFuckerOnTheRight = new FlxSprite();
 
             thatFuckerOnTheLeft.antialiasing = true;
@@ -398,11 +389,11 @@ class DialogueSubstate extends MusicBeatSubstate
         else if (speakerPosition == "right")
         {
             thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
-            if (!spritesFacingLeft.contains(whosSpeaking))
-                thatFuckerOnTheRight.flipX = true;
-
             thatFuckerOnTheLeft = new FlxSprite();
 
+            // since all sprites look to the right,
+            thatFuckerOnTheRight.flipX = true;
+            
             thatFuckerOnTheLeft.antialiasing = true;
             thatFuckerOnTheRight.antialiasing = true;
 

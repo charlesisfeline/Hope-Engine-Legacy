@@ -154,7 +154,7 @@ class AlphaCharacter extends FlxSprite
 
 	public static var numbers:String = "1234567890";
 
-	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!?";
+	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!&?";
 
 	public var row:Int = 0;
 
@@ -178,6 +178,8 @@ class AlphaCharacter extends FlxSprite
 		{
 			case "'" | ",":
 				theActualLetter = "apostraphie";
+			case "&":
+				theActualLetter = "AMPERSAND";
 			case ".":
 				theActualLetter = "period";
 			case "!":
@@ -273,7 +275,7 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, '%', 24);
 				animation.play(letter);
 			case "&":
-				animation.addByPrefix(letter, '&', 24);
+				animation.addByPrefix(letter, 'AMPERSAND', 24);
 				animation.play(letter);
 			case "(":
 				animation.addByPrefix(letter, '(', 24);

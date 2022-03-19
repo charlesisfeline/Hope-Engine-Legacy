@@ -45,6 +45,8 @@ class Note extends FlxSprite
 	public var angleLock:Null<Bool> = true;
 	public var alphaLock:Null<Bool> = true;
 	public var visibleLock:Null<Bool> = true;
+	// public var scaleLockX:Null<Bool> = true;
+	// public var scaleLockY:Null<Bool> = true;
 
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
@@ -57,12 +59,17 @@ class Note extends FlxSprite
 	var offsetMultiplier:Array<Float> = [1, 1];
 	var animOffset:Array<Int> = [0, 0];
 
+	var noteStyle:String = "normal";
+
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal", ?skin:FlxAtlasFrames)
 	{
 		super();
 
 		if (prevNote == null)
 			prevNote = this;
+
+		if (skin == null)
+			skin = Paths.getSparrowAtlas("NOTE_assets", "shared");
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
@@ -79,15 +86,17 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-		switch (PlayState.SONG.noteStyle)
+		noteStyle = PlayState.SONG != null ? PlayState.SONG.noteStyle : "normal";
+
+		switch (noteStyle)
 		{
 			case 'pixel':
 				loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
 				#if FILESYSTEM
-				if (FlxG.save.data.currentNoteSkin != "default" && 
-					NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel") != null)
-					loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixel"), true, 17, 17);
+				if (Settings.noteSkin != "default" && 
+					options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel") != null)
+					loadGraphic(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel"), true, 17, 17);
 				#end
 
 				animation.add('greenScroll', [6]);
@@ -100,9 +109,9 @@ class Note extends FlxSprite
 					loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
 
 					#if FILESYSTEM
-					if (FlxG.save.data.currentNoteSkin != "default" && 
-						NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds") != null)
-						loadGraphic(NoteSkinSelection.loadedNoteSkins.get(FlxG.save.data.currentNoteSkin + "-pixelEnds"), true, 7, 6);
+					if (Settings.noteSkin != "default" && 
+						options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixelEnds") != null)
+						loadGraphic(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixelEnds"), true, 7, 6);
 					#end
 
 					animation.add('purpleholdend', [4]);
@@ -150,12 +159,12 @@ class Note extends FlxSprite
 			case 3: animation.play('redScroll');
 		}
 
-		var pissShit = PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "";
+		var pissShit = noteStyle == "pixel" ? "-pixel" : "";
 		
 		if (pissShit == "-pixel")
 			antialiasing = false;
 
-		if (FlxG.save.data.downscroll && sustainNote) 
+		if (Settings.downscroll && sustainNote) 
 			flipY = true;
 
 		if (isSustainNote && prevNote != null)
@@ -187,11 +196,7 @@ class Note extends FlxSprite
 					case 3: prevNote.animation.play('redhold');
 				}
 				
-				if (FlxG.save.data.scrollSpeed != 1)
-					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * FlxG.save.data.scrollSpeed;
-				else
-					prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * PlayState.SONG.speed;
-
+				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * Math.abs(PlayState.instance.globalScrollSpeed);
 				prevNote.updateHitbox();
 			}
 		}
@@ -205,6 +210,9 @@ class Note extends FlxSprite
 	public function changeType(type:String)
 	{
 		var a = type.split("/");
+
+		if (a.length != 2) return;
+
 		#if FILESYSTEM
 		var noteJSON = Json.parse(File.getContent(Sys.getCwd() + Paths.noteJSON(a[1], a[0])));
 		#else
@@ -213,7 +221,7 @@ class Note extends FlxSprite
 
 		var previousMod = Paths.currentMod;
 		if (a[0] != "hopeEngine") Paths.setCurrentMod(a[0]);
-		frames = Paths.getSparrowAtlas("styles/" + noteJSON.assetName + (PlayState.SONG.noteStyle == "pixel" ? "-pixel" : ""));
+		frames = Paths.getSparrowAtlas("styles/" + noteJSON.assetName + (noteStyle == "pixel" ? "-pixel" : ""));
 		Paths.setCurrentMod(previousMod);
 
 		this.upSpriteOnly = (noteJSON.upSpriteOnly != null ? noteJSON.upSpriteOnly : false);
@@ -227,6 +235,8 @@ class Note extends FlxSprite
 		this.angleLock = (noteJSON.angleLock != null ? noteJSON.angleLock : true);
 		this.alphaLock = (noteJSON.alphaLock != null ? noteJSON.alphaLock : true);
 		this.visibleLock = (noteJSON.visibleLock != null ? noteJSON.visibleLock : true);
+		// this.scaleLockX = (noteJSON.scaleLockX != null ? noteJSON.scaleLockX : true);
+		// this.scaleLockY = (noteJSON.scaleLockY != null ? noteJSON.scaleLockY : true);
 
 		if (this.upSpriteOnly)
 		{
@@ -469,15 +479,11 @@ class Note extends FlxSprite
 
 		if (animation.curAnim != null && animation.curAnim.name.endsWith('hold'))
 		{
-			if (FlxG.save.data.scrollSpeed != 1)
-				scale.y = Conductor.stepCrochet / 100 * (PlayState.SONG.noteStyle != "pixel" ? 1.045 : 7.6) * FlxG.save.data.scrollSpeed;
-			else
-				scale.y = Conductor.stepCrochet / 100 * (PlayState.SONG.noteStyle != "pixel" ? 1.045 : 7.6) * Math.abs(PlayState.SONG.speed);
-
+			scale.y = Conductor.stepCrochet / 100 * (noteStyle != "pixel" ? 1.045 : 7.6) * Math.abs(PlayState.instance.globalScrollSpeed);
 			updateHitbox();
 		}
 
 		if (isSustainNote)
-			this.strumTime = strumTimeSus + Math.abs(Conductor.stepCrochet / FlxMath.roundDecimal(FlxG.save.data.scrollSpeed == 1 ? PlayState.SONG.speed : FlxG.save.data.scrollSpeed, 2));
+			this.strumTime = strumTimeSus + Math.abs(Conductor.stepCrochet / FlxMath.roundDecimal(Math.abs(PlayState.instance.globalScrollSpeed), 2));
 	}
 }

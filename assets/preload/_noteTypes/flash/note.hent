@@ -7,7 +7,7 @@ function onNoteHit(note)
     PlayState.health -= 0.05;
     FlxG.sound.play(Paths.sound('note sounds/flash'), 0.5);
 
-    if (FlxG.save.data.flashing)
+    if (Settings.flashing)
         FlxG.cameras.flash(0xFFFFFFFF, 1.5, null, true);
 
     boyfriend.stunned = true;

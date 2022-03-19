@@ -3,13 +3,18 @@ package;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import flixel.util.FlxColor;
+import flixel.graphics.FlxGraphic;
+import haxe.Http;
+import haxe.Timer;
 import openfl.Lib;
 import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import openfl.filters.GlowFilter;
+import openfl.system.System;
 import openfl.text.TextField;
 import openfl.text.TextFormat;
+import openfl.utils.Assets;
 
 class Main extends Sprite
 {
@@ -71,17 +76,27 @@ class Main extends Sprite
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 
+		// FlxGraphic.defaultPersist = true;
 		addChild(game);
 
 		#if !mobile
 		fpsCounter = new FPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 
-		toggleFPS(FlxG.save.data.fps);
+		#if debug
+		var ramCount = new MEM(10, 16, 0xffffff);
+		addChild(ramCount);
+		#end
+
+		toggleFPS(Settings.fps);
 
 		FlxG.fixedTimestep = false;
 		FlxG.mouse.useSystemCursor = true;
 		FlxG.mouse.visible = false;
+
+		FlxG.save.bind('save', 'hopeEngine');
+        PlayerSettings.init();
+		Settings.init();
 		#end
 
 		#if html5
@@ -103,4 +118,38 @@ class Main extends Sprite
 
 	public function getFPS():Float
 		return fpsCounter.currentFPS;
+}
+
+class MEM extends TextField
+{
+	private var memPeak:Float = 0;
+
+	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000) 
+	{
+		super();
+
+		x = inX;
+		y = inY;
+
+		selectable = false;
+
+		defaultTextFormat = new TextFormat("_sans", 12, inCol);
+
+		text = "";
+
+		addEventListener(Event.ENTER_FRAME, onEnter);
+
+		width = 150;
+		height = 70;
+	}
+
+	private function onEnter(_)
+	{
+		var mem:Float = Math.round(System.totalMemory / 1024 / 1024 * 100) / 100;
+
+		if (mem > memPeak) memPeak = mem;
+
+		if (visible)
+			text = "MEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";	
+	}
 }

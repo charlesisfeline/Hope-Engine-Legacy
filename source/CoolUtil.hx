@@ -59,7 +59,6 @@ class CoolUtil
 				var a = diff.split(':');
 
 				difficultyArray.push([a[0], a[1], Paths.currentMod]);
-				trace("difficulty loaded lmao: " + a[0], a[1], Paths.currentMod);
 			}
 		}
 	}

@@ -21,10 +21,9 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
-
 
 class StoryMenuState extends MusicBeatState
 {
@@ -34,7 +33,6 @@ class StoryMenuState extends MusicBeatState
 
 	public static var weekUnlocked:Array<Bool> = [];
 
-	// what the FUCK
 	var weekData:Array<Dynamic> = [];
 	var weekCharacters:Array<Dynamic> = [];
 	var weekNames:Array<String> = [];
@@ -61,9 +59,8 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if windows
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Story Mode Menu", null);
+		#if desktop
+		DiscordClient.changePresence("Story Menu");
 		#end
 
 		#if FILESYSTEM
@@ -231,7 +228,6 @@ class StoryMenuState extends MusicBeatState
 		tracksText.x = FlxG.width * 0.055;
 		tracksText.y = txtTracklist.y;
 		add(tracksText);
-
 		
 		changeDifficulty();
 		updateText();
@@ -246,10 +242,15 @@ class StoryMenuState extends MusicBeatState
 			if (char.animation.getByName("danceLeft") != null)
 			{
 				char.danced = !char.danced;
-				char.animation.play("dance" + (char.danced ? "Right" : "Left"));
+				
+				if (!char.animation.curAnim.name.startsWith("hey"))
+					char.animation.play("dance" + (char.danced ? "Right" : "Left"));
 			}
 			else if (char.animation.getByName("idle") != null)
-				char.animation.play('idle', true);
+			{
+				if (!char.animation.curAnim.name.startsWith("hey"))
+					char.animation.play('idle', true);
+			}
 		});
 	}
 

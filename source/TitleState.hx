@@ -3,30 +3,23 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxSliceSprite;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
+import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
-import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
-import flixel.input.actions.FlxAction.FlxActionAnalog;
 import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
-import flixel.system.FlxAssets.FlxShader;
-import flixel.text.FlxText;
-import flixel.tweens.FlxEase;
-import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
-import openfl.display.BitmapData;
 import openfl.filters.ShaderFilter;
 
 using StringTools;
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 
@@ -52,21 +45,16 @@ class TitleState extends MusicBeatState
 	override public function create():Void
 	{	
 		#if FILESYSTEM
-		if (!FileSystem.exists(Sys.getCwd() + "/assets/replays"))
-			FileSystem.createDirectory(Sys.getCwd() + "/assets/replays");
-		
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
 			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
 
-		NoteSkinSelection.refreshSkins();
-		#else
-		FlxG.save.bind('save', 'hopeEngine');
+		if (!FileSystem.exists(Sys.getCwd() + "/mods"))
+			FileSystem.createDirectory(Sys.getCwd() + "/mods");
 
-        PlayerSettings.init();
-		Data.initSave();
+		options.NoteSkinSelection.refreshSkins();
 		#end
 		
-		#if windows
+		#if desktop
 		// only 1 thread
 		if (!initialized)
 		{
@@ -84,17 +72,11 @@ class TitleState extends MusicBeatState
 		// Feeling dumb today
 		Application.current.onExit.add(function(exitCode)
 		{
+			Settings.save();
 			FlxG.save.flush();
 		});
 
 		curWacky = FlxG.random.getObject(getIntroTextShit());
-
-		// this worked better than expected :o
-		// slice9test = new FlxSliceSprite(Paths.image('9slice test', 'shared'), new FlxRect(0,0,50,43), 50, 200);
-		// slice9test.antialiasing = true;
-		// add(slice9test);
-
-		// FlxTween.tween(slice9test, {height: slice9test.height * 3}, 1, {type: PINGPONG, ease: FlxEase.expoInOut});
 
 		super.create();
 
@@ -111,7 +93,7 @@ class TitleState extends MusicBeatState
 	{		
 		if (!initialized)
 		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
+			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileDiamond);
 			diamond.persist = true;
 			diamond.destroyOnNoUse = false;
 			
@@ -230,7 +212,6 @@ class TitleState extends MusicBeatState
 	}
 
 	var transitioning:Bool = false;
-	var pain:FlxShader;
 
 	override function update(elapsed:Float)
 	{
@@ -242,8 +223,10 @@ class TitleState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.SPACE)
 		{
-			pain = new Shaders.CRTCurve();
-			FlxG.camera.setFilters([new ShaderFilter(pain)]);
+			FlxG.camera.setFilters([
+				new ShaderFilter(new shaders.CRTCurve()),
+				// new ShaderFilter(new shaders.ChromaticAberration())
+			]);
 		}
 
 		logoBl.scale.x = FlxMath.lerp(logoBl.scale.x, logoWH[0], 9 / lime.app.Application.current.window.frameRate);
@@ -272,13 +255,19 @@ class TitleState extends MusicBeatState
 			#end
 		}
 
+		if (FlxG.keys.justPressed.R)
+		{
+			if (FlxG.keys.pressed.CONTROL)
+				FlxG.resetGame();
+		}
+
 		if (pressedEnter && !transitioning && skippedIntro)
 		{
 
 			FlxG.camera.flash(FlxColor.WHITE, 1);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
-			if (FlxG.save.data.flashing)
+			if (Settings.flashing)
 			{
 				titleText.animation.play('press');
 				titleText.centerOffsets();

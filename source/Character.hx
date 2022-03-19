@@ -67,6 +67,8 @@ class Character extends FlxSprite
 	public var holdTimer:Float = 0;
 	public var debugMode:Bool = false;
 
+	public var specialAnim:Bool = false;
+
 	public function new(x:Float, y:Float, ?character:String = "bf", ?isPlayer:Bool = false)
 	{
 		super(x, y);
@@ -214,6 +216,9 @@ class Character extends FlxSprite
 
 			if (animation.curAnim.finished && animation.getByName(animation.curAnim.name + '-loop') != null)
 				playAnim(animation.curAnim.name + '-loop');
+
+			if (specialAnim && animation.finished)
+				specialAnim = false;
 		}
 
 		super.update(elapsed);
@@ -252,7 +257,7 @@ class Character extends FlxSprite
 		else
 			offset.set(0, 0);
 
-		if (curCharacter.startsWith("gf"))
+		if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)
 		{
 			if (AnimName == 'singLEFT')
 				danced = true;

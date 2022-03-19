@@ -23,7 +23,7 @@ import openfl.display.Sprite;
 
 using StringTools;
 
-#if windows
+#if desktop
 import Discord.DiscordClient;
 #end
 
@@ -52,9 +52,8 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
-		#if windows
-		// Updating Discord Rich Presence
-		DiscordClient.changePresence("In the Menus", null);
+		#if desktop
+		DiscordClient.changePresence("Main Menu", null);
 		#end
 
 		Paths.setCurrentMod(null); // this menu is unmoddable
@@ -95,7 +94,7 @@ class MainMenuState extends MusicBeatState
 								  + "\nKade Engine v" + kadeEngineVer
 								  + "\nFunkin' v" + gameVer;
 
-		if (!FlxG.save.data.watermarks)
+		if (!Settings.watermarks)
 			whatTheMarkSay = "v" + hopeEngineVer;
 		
 		var watermark = new FlxText(0, 0, 500, whatTheMarkSay, 72);
@@ -186,7 +185,7 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT)
 		{
 			if (FlxG.keys.pressed.SHIFT)
-				FlxG.switchState(new EditorCharacter());
+				FlxG.switchState(new EditorsState());
 		}
 
 		// fix offset
@@ -206,7 +205,7 @@ class MainMenuState extends MusicBeatState
 		selectedSomethin = true;
 		FlxG.sound.play(Paths.sound('confirmMenu'));
 		
-		if (FlxG.save.data.flashing)
+		if (Settings.flashing)
 			FlxFlicker.flicker(magenta, 1.1, 0.15, false);
 
 		menuItems.forEach(function(spr:FlxSprite)
@@ -223,7 +222,7 @@ class MainMenuState extends MusicBeatState
 			}
 			else
 			{
-				if (FlxG.save.data.flashing)
+				if (Settings.flashing)
 				{
 					FlxFlicker.flicker(spr, 1, 0.06, false, false, function(flick:FlxFlicker)
 					{
@@ -254,7 +253,7 @@ class MainMenuState extends MusicBeatState
 			case 'credits':
 				FlxG.switchState(new CreditsState());
 			case 'options':
-				FlxG.switchState(new OptionsState());
+				FlxG.switchState(new options.OptionsState());
 		}
 
 		

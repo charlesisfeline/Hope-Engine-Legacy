@@ -9,7 +9,7 @@ function onNoteHit(note)
 
     PlayState.health = 0; // just fucking kill them
     FlxG.sound.play(Paths.sound('note sounds/death'), 0.5);
-    FlxG.cameras.flash((!FlxG.save.data.flashing ? 0xFF000000 : 0xFFFF0000), 0.5, null, true);
+    FlxG.cameras.flash((!Settings.flashing ? 0xFF000000 : 0xFFFF0000), 0.5, null, true);
 }
 
 function onNoteMiss(note)

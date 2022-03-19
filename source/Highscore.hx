@@ -18,7 +18,7 @@ class Highscore
 	{
 		var daSong:String = formatSong(song, diff);
 		
-		if (!FlxG.save.data.botplay)
+		if (!Settings.botplay && !PlayState.openedCharting)
 		{
 			if (songScores.exists(daSong))
 			{
@@ -28,13 +28,11 @@ class Highscore
 			else
 				setScore(daSong, score);
 		}
-		else 
-			trace('Botplay\'s on, no score saved');
 	}
 
 	public static function saveWeekScore(week:Int = 1, score:Int = 0, ?diff:Int = 0):Void
 	{
-		if (!FlxG.save.data.botplay)
+		if (!Settings.botplay && !PlayState.openedCharting)
 		{
 			var daWeek:String = formatSong('week' + week, diff);
 
@@ -46,15 +44,13 @@ class Highscore
 			else
 				setScore(daWeek, score);
 		}
-		else 
-			trace('Botplay\'s on, no score saved');
 	}
 
 	public static function saveRank(song:String, rank:Int = 0, ?diff:Int = 0):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
-		if (!FlxG.save.data.botplay)
+		if (!Settings.botplay && !PlayState.openedCharting)
 		{
 			if (songRanks.exists(daSong))
 			{
@@ -64,8 +60,6 @@ class Highscore
 			else
 				setRank(daSong, rank);
 		}
-		else 
-			trace('Botplay\'s on, no score saved');
 	}
 
 	/**

@@ -40,6 +40,11 @@
 
 	<classpath name="source" />
 
+	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
+
+	<assets path="plugins/" rename='' if="windows"/>
+	<assets path="dlls/" rename='' if="windows"/>
+
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
 	
@@ -48,7 +53,12 @@
 	<define name="NO_PRELOAD_ALL" unless="PRELOAD_ALL"/>
 
 	<define name="FILESYSTEM" if="desktop"/>
+
+	<!-- COMMENT OUT IF YOU DON'T WANT UPDATE CHECKS TO THE GITHUB REPOSITORY -->
 	<define name="CHECK_LATEST"/>
+
+	<!-- COMMENT OUT IF YOU DON'T WANT TO HEAR THE AGONY THAT IS THE HAXEFLIXEL JINGLE -->
+	<define name="CUSTOM_SPLASH_SCREEN" />
 
 	<define name="UNLOCK_ALL_WEEKS" />
 	
@@ -97,7 +107,9 @@
 
 	<assets path='art/readme.txt' rename='README.txt' />
 	<!-- <assets path='art/sound effects credit.txt' rename='SFX CREDIT.txt' /> -->
-	<assets path='version.awesome' />
+	
+	<assets path='version.awesome' embed="true" />
+
 	<assets path='mods' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	
@@ -119,12 +131,14 @@
 	<haxelib name="flixel-addons" />
 	<haxelib name="hscript" />
 
+	<haxelib name="actuate" />
+
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
 	<!-- <haxelib name="newgrounds"/> -->
 	<!-- <haxelib name="faxe" if='switch'/> -->
 	<haxelib name="yaml"/>
-	<haxelib name="discord_rpc" if="windows"/>
+	<haxelib name="discord_rpc" if="desktop"/>
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->
 
@@ -169,6 +183,9 @@
 	<!-- oh hey no deprecations -->
 	<haxedef name="no-deprecation-warnings" />
 	<!-- huge note: COMMENT THIS TAG OUT IF YOU HAVE PROBLEMS WITH DEPRECATIONS -->
+
+	<!-- hscript error parsing -->
+	<haxedef name="hscriptPos" />
 
 	<!-- _________________________________ Custom _______________________________ -->
 

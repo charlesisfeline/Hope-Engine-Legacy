@@ -32,6 +32,7 @@ typedef MenuCharAnimations = {
 
 typedef MenuCharAnimation = {
 	var prefix:Null<String>;
+	var offset:Null<Array<Float>>;
 	var indices:Null<Array<Int>>;
 	var fps:Null<Int>;
 	var looped:Null<Bool>;
@@ -124,7 +125,6 @@ class MenuCharacter extends FlxSprite
 		if (pain.settings != null)
 			settings.set(pain.character, new CharacterSetting(pain.settings.x, pain.settings.y, pain.settings.scale, pain.settings.flipped));
 
-		trace(Paths.currentMod);
 		frames = Paths.getSparrowAtlas('menuCharacters/' + character);
 
 		// so many ifs....
@@ -154,6 +154,10 @@ class MenuCharacter extends FlxSprite
 			offset.set(setting.x, setting.y);
 		}
 
+		if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)
+			animation.play("danceLeft");
+		else
+			animation.play("idle");
 
 		setGraphicSize(Std.int(width * scaleDeezNuts));
 		updateHitbox();

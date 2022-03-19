@@ -30,30 +30,16 @@ class Paths
 	public static var customSongs:Map<String, Sound> = new Map<String, Sound>();
 	#end
 
-	/**
-	 * Set current level. Things like "tutorial", "week1", "week2", etc...
-	 * @param name Name of the to-be current level.
-	 */
 	static public function setCurrentLevel(name:String)
 	{
 		currentLevel = name.toLowerCase();
 	}
 
-	/**
-	 * Set current mod. Kind of like setCurrentLevel but for mods.
-	 * @param name Name of the to-be current mod.
-	 */
 	static public function setCurrentMod(name:String)
 	{
 		currentMod = (name == null ? null : name);
 	}
 
-	/**
-	 * Get paths easily.
-	 * @param file Name of the file.
-	 * @param type Well, what kinda file is it?
-	 * @param library "week1", "week2", "preload", etc...
-	 */
 	public static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		if (library != null)
@@ -73,10 +59,6 @@ class Paths
 		return getPreloadPath(file);
 	}
 
-	/**
-	 * Search for a file without having the hassle of shittons of compiler conditionals.
-	 * @param path The path to the file. 
-	 */
 	static public function exists(path:String):Bool
 	{
 		var doesIt:Bool = false;
@@ -90,9 +72,6 @@ class Paths
 		return doesIt;
 	}
 
-	/**
-	 * Free up memory.
-	 */
 	static public function destroyCustomImages() 
 	{
 		#if FILESYSTEM
@@ -153,7 +132,7 @@ class Paths
 			return modDialogueStartFile(key);
 		#end
 
-		return 'assets/data/${key}/dialogueStart.txt';
+		return 'assets/data/$key/dialogueStart.txt';
 	}
 
 	inline static public function dialogueEndFile(key:String)
@@ -163,7 +142,7 @@ class Paths
 			return modDialogueEndFile(key);
 		#end
 
-		return 'assets/data/${key}/dialogueEnd.txt';
+		return 'assets/data/$key/dialogueEnd.txt';
 	}
 
 	inline static public function dialogueSettingsFile(key:String)
@@ -173,7 +152,7 @@ class Paths
 			return modDialogueSettingsFile(key);
 		#end
 
-		return 'assets/data/${key}/dialogueSettings.json';
+		return 'assets/data/$key/dialogueSettings.json';
 	}
 
 	inline static public function txt(key:String, ?library:String)
@@ -321,9 +300,39 @@ class Paths
 		return getPath('images/$key.png', IMAGE, library);
 	}
 
+	inline static public function stageScript(key:String)
+	{
+		#if FILESYSTEM
+		if (FileSystem.exists(modStageScript(key)))
+			return modStageScript(key);
+		#end
+
+		return 'assets/_stages/$key/stage.hes';
+	}
+
+	inline static public function stageData(key:String)
+	{
+		#if FILESYSTEM
+		if (FileSystem.exists(modStageData(key)))
+			return modStageData(key);
+		#end
+
+		return 'assets/_stages/$key/data.json';
+	}
+
 	inline static public function font(key:String)
 	{
 		return 'assets/fonts/$key';
+	}
+	
+	inline static public function video(key:String, ?library:String)
+	{
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modVideo(key, library)))
+			return modVideo(key, library);
+		#end
+
+		return getPath('videos/$key.mp4', BINARY, library);
 	}
 	
 
@@ -384,6 +393,16 @@ class Paths
 		return 'mods/$currentMod/' + getPath('images/$image.png', IMAGE, library);
 	}
 
+	inline static public function modStageScript(key:String)
+	{
+		return 'mods/$currentMod/assets/_stages/$key/stage.hes';
+	}
+
+	inline static public function modStageData(key:String)
+	{
+		return 'mods/$currentMod/assets/_stages/$key/data.json';
+	}
+
 	inline static public function modModchart(key:String, ?library:String) // I am so fucking terrified
 	{
 		return 'mods/$currentMod/' + getPath('data/$key.hemc', TEXT, library);
@@ -391,17 +410,17 @@ class Paths
 
 	inline static public function modDialogueStartFile(key:String)
 	{
-		return 'mods/$currentMod/assets/data/${key}/dialogueStart.txt';
+		return 'mods/$currentMod/assets/data/$key/dialogueStart.txt';
 	}
 
 	inline static public function modDialogueEndFile(key:String)
 	{
-		return 'mods/$currentMod/assets/data/${key}/dialogueEnd.txt';
+		return 'mods/$currentMod/assets/data/$key/dialogueEnd.txt';
 	}
 
 	inline static public function modDialogueSettingsFile(key:String)
 	{
-		return 'mods/$currentMod/assets/data/${key}/dialogueSettings.json';
+		return 'mods/$currentMod/assets/data/$key/dialogueSettings.json';
 	}
 
 	inline static public function modTxt(key:String, ?library:String)
@@ -412,6 +431,11 @@ class Paths
 	inline static public function modJson(key:String, ?library:String)
 	{
 		return 'mods/$currentMod/' + getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function modVideo(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('videos/$key.mp4', BINARY, library);
 	}
 
 	inline static public function modFile(file:String, type:AssetType = TEXT, ?library:String)

@@ -2,18 +2,11 @@ package;
 
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
-import flixel.math.FlxMath;
-import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
-import flixel.util.FlxTimer;
 
 using StringTools;
 
-/**
- * Ok so, you know the combo count? Yeah that.
- */
 class Count extends FlxSpriteGroup
 {
     var yMultiplier:Int = 0;
@@ -26,16 +19,13 @@ class Count extends FlxSpriteGroup
 
     public var currentNumber:Float = 0;
 
-    /**
-     * Create a new `Count` object.
-     * 
-     * @param x You know what this does.
-     * @param y This as well.
-     * @param text The number/text to be displayed.
-     */
-    public function new(x:Null<Float> = 0, y:Null<Float> = 0, text:String = "")
+    public var uniform:Bool = true;
+
+    public function new(x:Null<Float> = 0, y:Null<Float> = 0, text:String = "", ?uniform:Bool = true)
     {
         super(x, y);
+
+        this.uniform = uniform;
 
         if (PlayState.SONG != null)
         {
@@ -113,6 +103,17 @@ class Count extends FlxSpriteGroup
                     createCharacterFromSpriteSheet((special == "" ? theNumber.toUpperCase() : special), huh);
                 }
             }
+        }
+
+        if (!uniform && pixelShitPart2 != '-pixel')
+        {
+            var a = 0;
+            forEachOfType(FlxSprite, function(spr:FlxSprite)
+            {
+                spr.x += 2.5 * a;
+                spr.offset.set(spr.offset.x + FlxG.random.float(-3, 3), spr.offset.y + FlxG.random.float(-3, 3));
+                a++;
+            });
         }
     }
 

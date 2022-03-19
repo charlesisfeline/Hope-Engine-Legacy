@@ -2,9 +2,6 @@ package;
 
 import flixel.FlxSprite;
 
-/**
- * Basic checkbox sprite. For visual purposes only.
- */
  class CheckBox extends FlxSprite 
  {
      public function new(x:Float, y:Float, ?toggle:Bool = false)

@@ -29,7 +29,7 @@ class Ratings
         var numberRank:Int = 17;
         var letterRanking:String = "";
 
-		if(FlxG.save.data.botplay)
+		if(Settings.botplay)
 			ranking = "BotPlay";
 
         if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods == 0) // Marvelous Full Combo
@@ -84,7 +84,6 @@ class Ratings
 
     public static function CalculateRating(noteDiff:Float, ?customSafeZone:Float):String // Generate a judgement through some timing shit
     {
-
         var customTimeScale = Conductor.timeScale;
 
         if (customSafeZone != null)
@@ -111,9 +110,9 @@ class Ratings
 
     public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float):String
     {
-        return 'Score: ${(Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score)} -'               // Score
-        + ' Misses: ${PlayState.misses} -'                                                                           // Misses
-        + ' Accuracy: ${(FlxG.save.data.botplay ? "N/A" : HelperFunctions.truncateFloat(accuracy, 2) + "%")} -'      // Accuracy
+        return 'Score: ${(Conductor.safeFrames != 10 ? score + " (" + scoreDef + ")" : "" + score)} |'               // Score
+        + ' Misses: ${PlayState.misses} |'                                                                           // Misses
+        + ' Accuracy: ${(Settings.botplay ? "N/A" : Helper.truncateFloat(accuracy, 2) + "%")} |'      // Accuracy
         + ' ${GenerateLetterRank(accuracy)}';                                                                        // Letter Rank
     }
 }

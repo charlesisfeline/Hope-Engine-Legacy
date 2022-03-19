@@ -1,6 +1,6 @@
 package;
 
-#if windows
+#if desktop
 import Sys.sleep;
 import discord_rpc.DiscordRpc;
 import openfl.Assets;
@@ -38,10 +38,10 @@ class DiscordClient
 	static function onReady()
 	{
 		DiscordRpc.presence({
-			details: "In the Menus",
+			details: "Title Screen",
 			state: null,
 			largeImageKey: 'piss', // Piss
-			largeImageText: "Friday Night Funkin'"
+			largeImageText: "Friday Night Funkin' | Hope Engine"
 		});
 	}
 
