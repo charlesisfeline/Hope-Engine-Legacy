@@ -26,7 +26,6 @@ jobs:
           sudo add-apt-repository ppa:haxe/releases -y
           sudo apt-get update
           sudo apt-get install gcc-multilib g++-multilib haxe -y
-          sudo apt install build-essential
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
           haxelib install lime 7.9.0
@@ -43,7 +42,7 @@ jobs:
           haxelib install actuate
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib list
-          haxelib run lime build linux
+          haxelib run lime build Project.xml linux 
           
       - uses: actions/upload-artifact@v2
         with:
