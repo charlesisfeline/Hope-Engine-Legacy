@@ -2,7 +2,7 @@
 <img src="https://github.com/skuqre/Hope-Engine/blob/master/art/Awesome  new funkin logo.png?raw=true" style="max-width: 85%;" />
 </p>
 
-# <p align="center">Hope Engine</p>
+<h1 align="center">Hope Engine</h1>
 <p align="center">Another dumb fucking engine that does shit idk</p>
 
 ### Some changes
