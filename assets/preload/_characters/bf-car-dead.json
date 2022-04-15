@@ -15,20 +15,6 @@
 			"indices": []
 		},
 		{
-			"prefix": "BF Dead Loop",
-			"offset": [
-				-479,
-				-22
-			],
-			"name": "deathLoop",
-			"flipX": false,
-			"loopedAnim": true,
-			"flipY": false,
-			"postfix": "",
-			"frameRate": 24,
-			"indices": []
-		},
-		{
 			"prefix": "BF Dead confirm",
 			"offset": [
 				-479,
@@ -41,6 +27,20 @@
 			"postfix": "",
 			"frameRate": 24,
 			"indices": []
+		},
+		{
+			"prefix": "BF Dead Loop",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "deathLoop",
+			"offset": [
+				-479,
+				-22
+			]
 		}
 	],
 	"healthColor": "31B0D1",

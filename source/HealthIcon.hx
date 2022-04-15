@@ -23,7 +23,7 @@ class HealthIcon extends FlxSprite
 		this.char = char;
 		this.isPlayer = isPlayer;
 		isPlayer = isOldIcon = false;
-		
+
 		changeIcon(char);
 		scrollFactor.set();
 	}
@@ -39,12 +39,12 @@ class HealthIcon extends FlxSprite
 
 		if (splitWhitelist != pissOffMate)
 			splitWhitelist = pissOffMate;
-			
+
 		if (!splitWhitelist.contains(char))
 			char = char.split("-")[0];
 
 		loadGraphic(Paths.image('icons/face'), true, 150, 150);
-		
+
 		if (Paths.exists(Paths.image('icons/' + char)))
 			loadGraphic(Paths.image('icons/' + char), true, 150, 150);
 		else if (Paths.image('icons/' + char) != null && Paths.image('icons/' + char) is FlxGraphic)

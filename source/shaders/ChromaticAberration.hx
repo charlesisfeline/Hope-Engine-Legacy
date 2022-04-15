@@ -22,17 +22,16 @@ class ChromaticAberration extends flixel.system.FlxAssets.FlxShader
 
 			gl_FragColor = toUse;
 		}')
-		
 	public function new(?rOffset:Float = -0.25, ?gOffset:Float = 0, ?bOffset:Float = 0.25)
 	{
 		super();
 		set(rOffset, gOffset, bOffset);
 	}
 
-    public function set(rOffset:Float, gOffset:Float, bOffset:Float)
-    {
-        this.data.rOffset.value = [rOffset / 100];
+	public function set(rOffset:Float, gOffset:Float, bOffset:Float)
+	{
+		this.data.rOffset.value = [rOffset / 100];
 		this.data.gOffset.value = [gOffset / 100];
 		this.data.bOffset.value = [bOffset / 100];
-    }
+	}
 }

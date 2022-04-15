@@ -4,17 +4,11 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
-import haxe.Http;
-import haxe.Timer;
 import openfl.Lib;
-import openfl.display.FPS;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import openfl.filters.GlowFilter;
-import openfl.system.System;
-import openfl.text.TextField;
-import openfl.text.TextFormat;
-import openfl.utils.Assets;
+import stats.CustomFPS;
+import stats.CustomMEM;
 
 class Main extends Sprite
 {
@@ -22,16 +16,20 @@ class Main extends Sprite
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
 	var zoom:Float = -1; // If -1, zoom is automatically calculated to fit the window dimensions.
-	var framerate:Int = 120; // How many frames per second the game should run at.
+	var framerate:Int = 60; // How many frames per second the game should run at.
 	var skipSplash:Bool = true; // Whether to skip the flixel splash screen that appears in release mode.
 	var startFullscreen:Bool = false; // Whether to start the game in fullscreen on desktop targets
+
+	/**
+	 * Global max hold time for most "left-right" option stuff
+	 */
+	public static var globalMaxHoldTime:Float = 0.5;
 
 	// You can pretty much ignore everything from here on - your code should go in your states.
 
 	public static function main():Void
 	{
-
-		// quick checks 
+		// quick checks
 
 		Lib.current.addChild(new Main());
 	}
@@ -76,15 +74,15 @@ class Main extends Sprite
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 
-		// FlxGraphic.defaultPersist = true;
+		FlxGraphic.defaultPersist = true;
 		addChild(game);
 
 		#if !mobile
-		fpsCounter = new FPS(10, 3, 0xFFFFFF);
+		fpsCounter = new CustomFPS(10, 3, 0xFFFFFF);
 		addChild(fpsCounter);
 
 		#if debug
-		var ramCount = new MEM(10, 16, 0xffffff);
+		var ramCount = new CustomMEM(10, 16, 0xffffff);
 		addChild(ramCount);
 		#end
 
@@ -95,61 +93,22 @@ class Main extends Sprite
 		FlxG.mouse.visible = false;
 
 		FlxG.save.bind('save', 'hopeEngine');
-        PlayerSettings.init();
+		PlayerSettings.init();
 		Settings.init();
+		Achievements.init();
 		#end
 
 		#if html5
 		FlxG.autoPause = false;
 		#end
+
+		// WHAT????
+		openfl.Assets.cache.enabled = !Settings.cacheImages && !Settings.cacheMusic;
 	}
 
 	var game:FlxGame;
-	var fpsCounter:FPS;
+	var fpsCounter:CustomFPS;
 
 	public function toggleFPS(fpsEnabled:Bool):Void
 		fpsCounter.visible = fpsEnabled;
-
-	public function setFPSCap(cap:Float)
-		openfl.Lib.current.stage.frameRate = cap;
-
-	public function getFPSCap():Float
-		return openfl.Lib.current.stage.frameRate;
-
-	public function getFPS():Float
-		return fpsCounter.currentFPS;
-}
-
-class MEM extends TextField
-{
-	private var memPeak:Float = 0;
-
-	public function new(inX:Float = 10.0, inY:Float = 10.0, inCol:Int = 0x000000) 
-	{
-		super();
-
-		x = inX;
-		y = inY;
-
-		selectable = false;
-
-		defaultTextFormat = new TextFormat("_sans", 12, inCol);
-
-		text = "";
-
-		addEventListener(Event.ENTER_FRAME, onEnter);
-
-		width = 150;
-		height = 70;
-	}
-
-	private function onEnter(_)
-	{
-		var mem:Float = Math.round(System.totalMemory / 1024 / 1024 * 100) / 100;
-
-		if (mem > memPeak) memPeak = mem;
-
-		if (visible)
-			text = "MEM: " + mem + " MB\nMEM peak: " + memPeak + " MB";	
-	}
 }

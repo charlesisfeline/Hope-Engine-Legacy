@@ -11,13 +11,13 @@ import flixel.util.FlxColor;
 import haxe.Json;
 
 using StringTools;
+
 #if FILESYSTEM
 import sys.io.File;
 #end
 
 class NoteSplash extends FlxSprite
 {
-	
 	public var noteData:Int = 0;
 
 	public static var swagWidth:Float = 160 * 0.7;
@@ -28,15 +28,17 @@ class NoteSplash extends FlxSprite
 
 	var dirs = ["purple", "blue", "green", "red"];
 
-	public function new(noteData:Int, ?skin:FlxAtlasFrames)
+	public var onFinish:Void->Void;
+
+	public function new(noteData:Int, ?skin:FlxAtlasFrames, ?onFinish:Void->Void)
 	{
 		super();
+
+		this.onFinish = onFinish;
 
 		this.noteData = noteData;
 		frames = skin;
 
-		alpha = 0.6;
-		
 		animation.addByPrefix("splash", dirs[noteData] + " splash", 24, false);
 		animation.play("splash");
 	}
@@ -44,11 +46,15 @@ class NoteSplash extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		
+
 		if (animation.curAnim != null)
 		{
 			if (animation.curAnim.finished)
+			{
 				kill();
+				if (onFinish != null)
+					onFinish();
+			}
 		}
 	}
 }

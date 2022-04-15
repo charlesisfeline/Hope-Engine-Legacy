@@ -5,22 +5,26 @@
             {
                 "name" : "ninjamuffin99",
                 "desc" : "Programmer for the Funk",
-                "link" : "https://twitter.com/ninja_muffin99"
+                "link" : "https://twitter.com/ninja_muffin99",
+                "tint" : "ff0000"
             },
             {
                 "name" : "Kawai Sprite",
                 "desc" : "Musician for the Funk",
-                "link" : "https://twitter.com/kawaisprite"
+                "link" : "https://twitter.com/kawaisprite",
+                "tint" : "0aade6"
             },
             {
                 "name" : "PhantomArcade",
                 "desc" : "Artist for the Funk",
-                "link" : "https://twitter.com/phantomarcade3k"
+                "link" : "https://twitter.com/phantomarcade3k",
+                "tint" : "7EED56"
             },
             {
                 "name" : "EvilSk8r",
                 "desc" : "Artist for the Funk",
-                "link" : "https://twitter.com/evilsk8r"
+                "link" : "https://twitter.com/evilsk8r",
+                "tint" : "dedede"
             },
             {
                 "name" : "THE ORIGINAL GAME",
@@ -45,7 +49,8 @@
             {
                 "name" : "KadeDev",
                 "desc" : "Main Developer and Maintainer of Kade Engine\n(you should wishlist Average4k on steam)",
-                "link" : "https://twitter.com/kade0912"
+                "link" : "https://twitter.com/kade0912",
+                "tint" : "00A368"
             },
             {
                 "name" : "The contributors",
@@ -70,7 +75,8 @@
             {
                 "name" : "skuqre",
                 "desc" : "Maintainer of whatever the hell this is",
-                "link" : "https://twitter.com/skuqre"
+                "link" : "https://twitter.com/skuqre",
+                "tint" : "ad34ff"
             }
         ]
     }

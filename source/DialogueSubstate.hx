@@ -1,6 +1,5 @@
 package;
 
-import flash.display.BitmapData;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -11,7 +10,6 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import haxe.Json;
-import lime.utils.Assets;
 
 using StringTools;
 
@@ -20,453 +18,485 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-
 // remade it into a substate cuz substates are awesome
 
-enum DialogueStyle {
-    NORMAL;
-    PIXEL_NORMAL;
-    PIXEL_SPIRIT;
+enum DialogueStyle
+{
+	NORMAL;
+	PIXEL_NORMAL;
+	PIXEL_SPIRIT;
 }
+
+// ... what the fuck?
+typedef DialogueSettings =
+{
+	var bgMusic:BGMusic;
+	var bg:BG;
+}
+
+typedef BGMusic =
+{
+	var name:String;
+	var fadeIn:MusicFadeIn;
+}
+
+typedef BG =
+{
+	var color:String;
+	var alpha:Null<Float>;
+	var duration:Null<Float>;
+}
+
+typedef MusicFadeIn =
+{
+	var from:Null<Float>;
+	var to:Null<Float>;
+	var duration:Null<Float>;
+}
+
 class DialogueSubstate extends MusicBeatSubstate
 {
-    var pissCamera:FlxCamera;
+	var pissCamera:FlxCamera;
 
-    var splitName:Array<String>;
-    var dialogueList:Array<String> = [];
-    var whosSpeaking:String = '';
-    var speakerEmotion:String = '';
-    var speakerPosition:String = 'right';
-    var dialogueType:String = 'normal';
-    var dialogueBox:FlxSprite;
-    var thatFuckerOnTheLeft:FlxSprite;
-    var thatFuckerOnTheRight:FlxSprite;
-    var onComplete:Void->Void;
-    
-    var typedText:FlxTypeText;
-    var useAlphabet:Bool = false;
-    var style:DialogueStyle = NORMAL;
+	var splitName:Array<String>;
+	var dialogueList:Array<String> = [];
+	var whosSpeaking:String = '';
+	var speakerEmotion:String = '';
+	var speakerPosition:String = 'right';
+	var dialogueType:String = 'normal';
+	var dialogueBox:FlxSprite;
+	var thatFuckerOnTheLeft:FlxSprite;
+	var thatFuckerOnTheRight:FlxSprite;
+	var onComplete:Void->Void;
 
-    var skipText:FlxText;
+	var typedText:FlxTypeText;
+	var useAlphabet:Bool = false;
+	var style:DialogueStyle = NORMAL;
 
-    var portraitGroup:FlxTypedGroup<FlxSprite>;
+	var skipText:FlxText;
 
-    var desiredBgAlpha:Null<Float> = 0.5;
-    var desiredBgColor:FlxColor = FlxColor.fromString("#000000");
-    var desiredBgDuration:Null<Float> = 0;
+	var portraitGroup:FlxTypedGroup<FlxSprite>;
 
-    var desiredMusic:Null<String> = "breakfast";
-    var desiredFadeTo:Null<Float> = 0.8;
-    var desiredFadeFrom:Null<Float> = 0;
-    var desiredFadeDuration:Null<Float> = 1;
+	var desiredBgAlpha:Null<Float> = 0.5;
+	var desiredBgColor:FlxColor = FlxColor.fromString("#000000");
+	var desiredBgDuration:Null<Float> = 0;
 
-    var bg:FlxSprite;
+	var desiredMusic:Null<String> = "breakfast";
+	var desiredFadeTo:Null<Float> = 0.8;
+	var desiredFadeFrom:Null<Float> = 0;
+	var desiredFadeDuration:Null<Float> = 1;
 
-    var customColorRegEx:EReg = new EReg("<#(?:[a-f\\d]{3}){1,2}\\b>", "g");
-    var customColorFormatMarkers:Array<FlxTextFormatMarkerPair> = [];
+	var bg:FlxSprite;
 
-    public function new(dialogues:Array<String>, style:DialogueStyle = NORMAL, ?onComplete:Void->Void)
-    {
-        super();
+	var customColorRegEx:EReg = new EReg("<#(?:[a-f\\d]{3}){1,2}\\b>", "g");
+	var customColorFormatMarkers:Array<FlxTextFormatMarkerPair> = [];
 
-        persistentUpdate = false;
+	public function new(dialogues:Array<String>, style:DialogueStyle = NORMAL, ?onComplete:Void->Void, ?dialogueSettings:DialogueSettings = null)
+	{
+		super();
 
-        var addedtags:Array<String> = [];
+		persistentUpdate = false;
 
-        for (color in FlxColor.colorLookup.keys()) 
-        {
-            var fuck = "<" + color.toLowerCase() + ">";
-            var a = new FlxTextFormat(FlxColor.colorLookup.get(color));
-            var b = new FlxTextFormatMarkerPair(a, fuck);
-            
-            addedtags.push(fuck);
-            customColorFormatMarkers.push(b);
-        }
+		var addedtags:Array<String> = [];
 
-        for (dia in dialogues)
-        {
-            customColorRegEx.match(dia);
-            var matches:Array<String> = Helper.getERegMatches(customColorRegEx, dia, true);
+		for (color in FlxColor.colorLookup.keys())
+		{
+			var fuck = "<" + color.toLowerCase() + ">";
+			var a = new FlxTextFormat(FlxColor.colorLookup.get(color));
+			var b = new FlxTextFormatMarkerPair(a, fuck);
 
-            for (tag in matches)
-            {
-                if (!addedtags.contains(tag))
-                {
-                    var trimmed:String = tag.replace("<", "").replace(">", "");
-                    var a = new FlxTextFormat(FlxColor.fromString(trimmed));
-                    var b = new FlxTextFormatMarkerPair(a, tag);
-                    
-                    addedtags.push(tag);
-                    customColorFormatMarkers.push(b);
-                }
-            }
-        }
+			addedtags.push(fuck);
+			customColorFormatMarkers.push(b);
+		}
 
-        pissCamera = new FlxCamera();
-        pissCamera.bgColor.alphaFloat = 0;
-        FlxG.cameras.add(pissCamera);
+		for (dia in dialogues)
+		{
+			customColorRegEx.match(dia);
+			var matches:Array<String> = Helper.getERegMatches(customColorRegEx, dia, true);
 
-        bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5));
-        bg.cameras = [pissCamera];
-        bg.alpha = 0;
-        bg.screenCenter();
-        add(bg);
+			for (tag in matches)
+			{
+				if (!addedtags.contains(tag))
+				{
+					var trimmed:String = tag.replace("<", "").replace(">", "");
+					var a = new FlxTextFormat(FlxColor.fromString(trimmed));
+					var b = new FlxTextFormatMarkerPair(a, tag);
 
-        // set the setting shit
-        var settingsJSON = null;
+					addedtags.push(tag);
+					customColorFormatMarkers.push(b);
+				}
+			}
+		}
 
-        #if FILESYSTEM
-        if (FileSystem.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
-            settingsJSON = Json.parse(File.getContent(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
-        #else
-        if (Assets.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
-            settingsJSON = Json.parse(Assets.getText(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
-        #end
+		pissCamera = new FlxCamera();
+		pissCamera.bgColor.alphaFloat = 0;
+		FlxG.cameras.add(pissCamera);
 
-        if (settingsJSON != null)
-        {
-            if (settingsJSON.bgMusic != null)
-            {
-                desiredMusic = settingsJSON.bgMusic.name != null ? settingsJSON.bgMusic.name : "breakfast";
-                desiredFadeTo = settingsJSON.bgMusic.fadeIn.to != null ? settingsJSON.bgMusic.fadeIn.to : 0.8;
-                desiredFadeFrom = settingsJSON.bgMusic.fadeIn.from != null ? settingsJSON.bgMusic.fadeIn.from : 0;
-                desiredFadeDuration = settingsJSON.bgMusic.fadeIn.duration != null ? settingsJSON.bgMusic.fadeIn.duration : 1;   
-            }
-            
-            if (settingsJSON.bg != null)
-            {
-                desiredBgAlpha = settingsJSON.bg.alpha != null ? settingsJSON.bg.alpha : 0.5;
-                desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
-                desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
-            }
-        }
+		bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5));
+		bg.cameras = [pissCamera];
+		bg.alpha = 0;
+		bg.screenCenter();
+		add(bg);
 
-        bg.color = desiredBgColor;
-        
-        if (desiredBgDuration == 0)
-            bg.alpha = desiredBgAlpha;
-        else
-            FlxTween.tween(bg, {alpha: desiredBgAlpha}, desiredBgDuration, {ease: FlxEase.linear});
+		// set the setting shit
+		var settingsJSON:DialogueSettings = dialogueSettings;
 
-        if (desiredMusic != "")
-        {
-            FlxG.sound.playMusic(Paths.music(desiredMusic));
-            FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
-        }
+		if (settingsJSON == null)
+		{
+			#if FILESYSTEM
+			if (FileSystem.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
+				settingsJSON = cast Json.parse(File.getContent(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
+			#else
+			if (Assets.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
+				settingsJSON = cast Json.parse(Assets.getText(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
+			#end
+		}
 
-        dialogueBox = new FlxSprite();
+		if (settingsJSON != null)
+		{
+			if (settingsJSON.bgMusic != null)
+			{
+				desiredMusic = settingsJSON.bgMusic.name != null ? settingsJSON.bgMusic.name : "breakfast";
+				desiredFadeTo = settingsJSON.bgMusic.fadeIn.to != null ? settingsJSON.bgMusic.fadeIn.to : 0.8;
+				desiredFadeFrom = settingsJSON.bgMusic.fadeIn.from != null ? settingsJSON.bgMusic.fadeIn.from : 0;
+				desiredFadeDuration = settingsJSON.bgMusic.fadeIn.duration != null ? settingsJSON.bgMusic.fadeIn.duration : 1;
+			}
 
-        this.dialogueList = dialogues;
-        this.onComplete = onComplete;
-        this.style = style;
+			if (settingsJSON.bg != null)
+			{
+				desiredBgAlpha = settingsJSON.bg.alpha != null ? settingsJSON.bg.alpha : 0.5;
+				desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
+				desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
+			}
+		}
 
-        thatFuckerOnTheLeft = new FlxSprite();
-        thatFuckerOnTheRight = new FlxSprite();
+		bg.color = desiredBgColor;
 
-        portraitGroup = new FlxTypedGroup<FlxSprite>();
-        add(portraitGroup);
+		if (desiredBgDuration == 0)
+			bg.alpha = desiredBgAlpha;
+		else
+			FlxTween.tween(bg, {alpha: desiredBgAlpha}, desiredBgDuration, {ease: FlxEase.linear});
 
-        typedText = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
+		if (desiredMusic != "")
+		{
+			FlxG.sound.playMusic(Paths.music(desiredMusic));
+			FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
+		}
+
+		dialogueBox = new FlxSprite();
+
+		this.dialogueList = dialogues;
+		this.onComplete = onComplete;
+		this.style = style;
+
+		thatFuckerOnTheLeft = new FlxSprite();
+		thatFuckerOnTheRight = new FlxSprite();
+
+		portraitGroup = new FlxTypedGroup<FlxSprite>();
+		add(portraitGroup);
+
+		typedText = new FlxTypeText(240, 500, Std.int(FlxG.width * 0.6), "", 32);
 		typedText.font = 'Pixel Arial 11 Bold';
-        typedText.visible = false;
+		typedText.visible = false;
 		typedText.color = 0xFF3F2021;
-        typedText.setBorderStyle(FlxTextBorderStyle.SHADOW, 0xFFD89494, 2);
-        typedText.shadowOffset.set(1, 1);
+		typedText.setBorderStyle(FlxTextBorderStyle.SHADOW, 0xFFD89494, 2);
+		typedText.shadowOffset.set(1, 1);
 
-        if (style == NORMAL)
-        {
-            dialogueBox.frames = Paths.getSparrowAtlas('speech_bubble_talking', 'shared');
-            dialogueBox.animation.addByPrefix('normal open', 'Speech Bubble Normal Open0', 24, false);
-            dialogueBox.animation.addByPrefix('loud open', 'speech bubble loud open0', 24, false);
-            dialogueBox.animation.addByPrefix('normal', 'speech bubble normal', 24);
-            dialogueBox.animation.addByPrefix('loud', 'AHH speech bubble', 24);
+		if (style == NORMAL)
+		{
+			dialogueBox.frames = Paths.getSparrowAtlas('speech_bubble_talking', 'shared');
+			dialogueBox.animation.addByPrefix('normal open', 'Speech Bubble Normal Open0', 24, false);
+			dialogueBox.animation.addByPrefix('loud open', 'speech bubble loud open0', 24, false);
+			dialogueBox.animation.addByPrefix('normal', 'speech bubble normal', 24);
+			dialogueBox.animation.addByPrefix('loud', 'AHH speech bubble', 24);
 
-            dialogueBox.antialiasing = true;
-            dialogueBox.setGraphicSize(Std.int(dialogueBox.width * 0.9));
-            useAlphabet = true;
+			dialogueBox.antialiasing = true;
+			dialogueBox.setGraphicSize(Std.int(dialogueBox.width * 0.9));
+			useAlphabet = true;
 
-            typedText.font = 'Funkerin Regular';
-            typedText.size = 72;
-            typedText.y -= 15;
-            typedText.color = 0xFF000000;
-            typedText.antialiasing = true;
-            typedText.borderColor = FlxColor.TRANSPARENT;
-        }
-        else if (style == PIXEL_NORMAL)
-        {
-            dialogueBox.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-pixel', 'shared');
-            dialogueBox.animation.addByPrefix('normal open', 'Text Box Appear instance', 24, false);
-            dialogueBox.animation.addByPrefix('normal', 'Text Box Appear instance 10004', 24);
-            dialogueBox.setGraphicSize(Std.int(dialogueBox.width * PlayState.daPixelZoom * 0.9));
-            typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-        }
-        else if (style == PIXEL_SPIRIT)
-        {
-            dialogueBox.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-evil', 'shared');
-            dialogueBox.animation.addByPrefix('normal open', 'Spirit Textbox spawn instance', 24, false);
-            dialogueBox.animation.addByPrefix('normal', 'Spirit Textbox spawn instance 10011', 24);
-            dialogueBox.setGraphicSize(Std.int(dialogueBox.width * PlayState.daPixelZoom * 0.9));
+			typedText.font = 'Funkerin Regular';
+			typedText.size = 72;
+			typedText.y -= 15;
+			typedText.color = 0xFF000000;
+			typedText.antialiasing = true;
+			typedText.borderColor = FlxColor.TRANSPARENT;
+		}
+		else if (style == PIXEL_NORMAL)
+		{
+			dialogueBox.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-pixel', 'shared');
+			dialogueBox.animation.addByPrefix('normal open', 'Text Box Appear instance', 24, false);
+			dialogueBox.animation.addByPrefix('normal', 'Text Box Appear instance 10004', 24);
+			dialogueBox.setGraphicSize(Std.int(dialogueBox.width * PlayState.daPixelZoom * 0.9));
+			typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+		}
+		else if (style == PIXEL_SPIRIT)
+		{
+			dialogueBox.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-evil', 'shared');
+			dialogueBox.animation.addByPrefix('normal open', 'Spirit Textbox spawn instance', 24, false);
+			dialogueBox.animation.addByPrefix('normal', 'Spirit Textbox spawn instance 10011', 24);
+			dialogueBox.setGraphicSize(Std.int(dialogueBox.width * PlayState.daPixelZoom * 0.9));
 
-            typedText.color = 0xFFFFFFFF;
-            typedText.borderColor = 0xFF000000;
-            typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
-        }
+			typedText.color = 0xFFFFFFFF;
+			typedText.borderColor = 0xFF000000;
+			typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
+		}
 
-        typedText.cameras = [pissCamera];
+		typedText.cameras = [pissCamera];
 
-        dialogueBox.scrollFactor.set();
-        dialogueBox.y = FlxG.height * 0.5;
-        dialogueBox.animation.play("normal open");
-        dialogueBox.screenCenter(X);
-        add(dialogueBox);
-        dialogueBox.cameras = [pissCamera];
-        
-        add(typedText);
+		dialogueBox.scrollFactor.set();
+		dialogueBox.y = FlxG.height * 0.5;
+		dialogueBox.animation.play("normal open");
+		dialogueBox.screenCenter(X);
+		add(dialogueBox);
+		dialogueBox.cameras = [pissCamera];
 
-        
+		add(typedText);
 
-        skipText = new FlxText(0, 0, 0, "Press BACKSPACE to skip dialogue.");
-        skipText.setFormat(null, 24, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
-        skipText.borderSize = 3;
-        skipText.x = 5;
-        skipText.y = FlxG.height - skipText.height - 5;
-        add(skipText);
+		skipText = new FlxText(0, 0, 0, "Press BACKSPACE to skip dialogue.");
+		skipText.setFormat(null, 24, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
+		skipText.borderSize = 3;
+		skipText.x = 5;
+		skipText.y = FlxG.height - skipText.height - 5;
+		add(skipText);
 
-        skipText.cameras = [pissCamera];
+		skipText.cameras = [pissCamera];
 
-        if (PlayState.instance != null)
-            FlxTween.tween(PlayState.instance.camHUD, {alpha: 0}, 0.5);
+		if (PlayState.instance != null)
+			FlxTween.tween(PlayState.instance.camHUD, {alpha: 0}, 0.5);
 
-        started = true;
-        start();
-    }
+		started = true;
+		start();
+	}
 
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
 
-        if (dialogueBox != null)
-        {
-            dialogueBox.y = FlxG.height * 0.5;
+		if (dialogueBox != null)
+		{
+			dialogueBox.y = FlxG.height * 0.5;
 
-            if (!dialogueBox.animation.curAnim.reversed)
-            {
-                if (dialogueBox.animation.finished && dialogueBox.animation.curAnim.name.endsWith("open"))
-                {
-                    dialogueBox.animation.play(dialogueType);
+			if (!dialogueBox.animation.curAnim.reversed)
+			{
+				if (dialogueBox.animation.finished && dialogueBox.animation.curAnim.name.endsWith("open"))
+				{
+					dialogueBox.animation.play(dialogueType);
 
-                    typedText.visible = true;
-                    typedText.resetText(dialogueList[0]);
+					typedText.visible = true;
+					typedText.resetText(dialogueList[0]);
 
-                    if (customColorFormatMarkers.length > 0)
-                        typedText.applyMarkup(dialogueList[0], customColorFormatMarkers);
-                    
-                    typedText.start(0.05);
-                }
-            }
+					if (customColorFormatMarkers.length > 0)
+						typedText.applyMarkup(dialogueList[0], customColorFormatMarkers);
 
-            if (useAlphabet)
-            {
-                if (dialogueBox.animation.curAnim.name.startsWith("normal"))
-                    dialogueBox.offset.set(-30, 0);
-                else if (dialogueBox.animation.curAnim.name.startsWith("loud"))
-                    dialogueBox.offset.set(0, 50);
-            }
-        }
+					typedText.start(0.05);
+				}
+			}
 
-        if (FlxG.keys.justPressed.ANY && started)
-        {
-            if (started)
-            {
-                if (!useAlphabet)
-                    FlxG.sound.play(Paths.sound('clickText'), 0.8);
-                
-                if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length)
-                {
-                    if (dialogueList[1] == null && dialogueList[0] != null)
-                    {
-                        if (!ending)
-                        {
-                            ending = true;
-                            if (onComplete != null)
-                                onComplete();
-                            
-                            if (PlayState.instance != null)
-                                FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, 0.25);
+			if (useAlphabet)
+			{
+				if (dialogueBox.animation.curAnim.name.startsWith("normal"))
+					dialogueBox.offset.set(-30, 0);
+				else if (dialogueBox.animation.curAnim.name.startsWith("loud"))
+					dialogueBox.offset.set(0, 50);
+			}
+		}
 
-                            FlxTween.tween(pissCamera, {alpha: 0}, 1, {onComplete: function(twn:FlxTween) {
-                                FlxG.cameras.remove(pissCamera, true);
-                                close();
-                            }});
-                        }
-                    }
-                    else
-                    {
-                        dialogueList.remove(dialogueList[0]);
-                        start();
-                    }
-                }
-                else
-                {
-                    typedText.skip();
-                }
-            }
-            
-            if (!started)
-            {
-                started = true;
-                start();
-            }
-        }
+		if (FlxG.keys.justPressed.ANY && started)
+		{
+			if (started)
+			{
+				if (!useAlphabet)
+					FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
-        if (FlxG.keys.justPressed.BACKSPACE && started)
-        {
-            if (!ending)
-            {
-                ending = true;
-                if (onComplete != null)
-                    onComplete();
-                
-                if (PlayState.instance != null)
-                    FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, 0.25);
+				if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length)
+				{
+					if (dialogueList[1] == null && dialogueList[0] != null)
+					{
+						if (!ending)
+						{
+							ending = true;
+							if (onComplete != null)
+								onComplete();
 
-                FlxTween.tween(pissCamera, {alpha: 0}, 1, {onComplete: function(twn:FlxTween) {
-                    FlxG.cameras.remove(pissCamera, true);
-                    close();
-                }});
-            }
-        }
-    }
+							if (PlayState.instance != null)
+								FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, 0.25);
 
-    var started:Bool = false;
+							FlxTween.tween(pissCamera, {alpha: 0}, 1, {
+								onComplete: function(twn:FlxTween)
+								{
+									FlxG.cameras.remove(pissCamera, true);
+									close();
+								}
+							});
+						}
+					}
+					else
+					{
+						dialogueList.remove(dialogueList[0]);
+						start();
+					}
+				}
+				else
+				{
+					typedText.skip();
+				}
+			}
 
-    // I am making them unnecessarily long
-    var pixelSpritesWithoutPixelSuffix:Array<String> = [
-        "senpai",
-        "spirit"
-    ];
+			if (!started)
+			{
+				started = true;
+				start();
+			}
+		}
 
-    function start():Void
-    {
-        cleanUpDialogue();
+		if (FlxG.keys.justPressed.BACKSPACE && started)
+		{
+			if (!ending)
+			{
+				ending = true;
+				if (onComplete != null)
+					onComplete();
 
-        // portrait bullshit
+				if (PlayState.instance != null)
+					FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, 0.25);
 
-        portraitGroup.remove(thatFuckerOnTheLeft);
-        portraitGroup.remove(thatFuckerOnTheRight);
-        thatFuckerOnTheLeft.destroy();
-        thatFuckerOnTheRight.destroy();
+				FlxTween.tween(pissCamera, {alpha: 0}, 1, {
+					onComplete: function(twn:FlxTween)
+					{
+						FlxG.cameras.remove(pissCamera, true);
+						close();
+					}
+				});
+			}
+		}
+	}
 
-        if (speakerPosition == "left")
-        {
-            thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
-            thatFuckerOnTheRight = new FlxSprite();
+	var started:Bool = false;
 
-            thatFuckerOnTheLeft.antialiasing = true;
-            thatFuckerOnTheRight.antialiasing = true;
+	// I am making them unnecessarily long
+	var pixelSpritesWithoutPixelSuffix:Array<String> = ["senpai", "spirit"];
 
-            if (whosSpeaking.endsWith("-pixel") || pixelSpritesWithoutPixelSuffix.contains(whosSpeaking))
-            {
-                thatFuckerOnTheLeft.antialiasing = false;
-                thatFuckerOnTheLeft.setGraphicSize(Std.int(thatFuckerOnTheLeft.width * PlayState.daPixelZoom * 0.9));
-                thatFuckerOnTheLeft.updateHitbox();
-            }
+	function start():Void
+	{
+		cleanUpDialogue();
 
-            thatFuckerOnTheLeft.x = dialogueBox.x;
-            thatFuckerOnTheLeft.y = dialogueBox.y - thatFuckerOnTheLeft.height + 100;
+		// portrait bullshit
 
-            if (useAlphabet)
-                thatFuckerOnTheLeft.x += (FlxG.width * 0.125);
-            else
-            {
-                thatFuckerOnTheLeft.x = (FlxG.width * 0.15);
-                thatFuckerOnTheLeft.y = dialogueBox.y - thatFuckerOnTheLeft.height + 80;
-            }
+		portraitGroup.remove(thatFuckerOnTheLeft);
+		portraitGroup.remove(thatFuckerOnTheRight);
+		thatFuckerOnTheLeft.destroy();
+		thatFuckerOnTheRight.destroy();
 
-            thatFuckerOnTheLeft.cameras = [pissCamera];
-            portraitGroup.add(thatFuckerOnTheLeft);
-        }
-        else if (speakerPosition == "right")
-        {
-            thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
-            thatFuckerOnTheLeft = new FlxSprite();
+		if (speakerPosition == "left")
+		{
+			thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
+			thatFuckerOnTheRight = new FlxSprite();
 
-            // since all sprites look to the right,
-            thatFuckerOnTheRight.flipX = true;
-            
-            thatFuckerOnTheLeft.antialiasing = true;
-            thatFuckerOnTheRight.antialiasing = true;
+			thatFuckerOnTheLeft.antialiasing = true;
+			thatFuckerOnTheRight.antialiasing = true;
 
-            if (whosSpeaking.endsWith("-pixel") || pixelSpritesWithoutPixelSuffix.contains(whosSpeaking))
-            {
-                thatFuckerOnTheRight.antialiasing = false;
-                thatFuckerOnTheRight.setGraphicSize(Std.int(thatFuckerOnTheRight.width * PlayState.daPixelZoom * 0.9));
-                thatFuckerOnTheRight.updateHitbox();
-            }
+			if (whosSpeaking.endsWith("-pixel") || pixelSpritesWithoutPixelSuffix.contains(whosSpeaking))
+			{
+				thatFuckerOnTheLeft.antialiasing = false;
+				thatFuckerOnTheLeft.setGraphicSize(Std.int(thatFuckerOnTheLeft.width * PlayState.daPixelZoom * 0.9));
+				thatFuckerOnTheLeft.updateHitbox();
+			}
 
-            thatFuckerOnTheRight.x = dialogueBox.x + dialogueBox.width - thatFuckerOnTheRight.width;
-            thatFuckerOnTheRight.y = dialogueBox.y - thatFuckerOnTheRight.height + 100;
+			thatFuckerOnTheLeft.x = dialogueBox.x;
+			thatFuckerOnTheLeft.y = dialogueBox.y - thatFuckerOnTheLeft.height + 100;
 
-            if (useAlphabet)
-                thatFuckerOnTheRight.x -= (FlxG.width * 0.125);
-            else
-            {
-                thatFuckerOnTheRight.x = FlxG.width - thatFuckerOnTheRight.width - (FlxG.width * 0.15);
-                thatFuckerOnTheRight.y = dialogueBox.y - thatFuckerOnTheRight.height + 80;
-            }
+			if (useAlphabet)
+				thatFuckerOnTheLeft.x += (FlxG.width * 0.125);
+			else
+			{
+				thatFuckerOnTheLeft.x = (FlxG.width * 0.15);
+				thatFuckerOnTheLeft.y = dialogueBox.y - thatFuckerOnTheLeft.height + 80;
+			}
 
-            thatFuckerOnTheRight.cameras = [pissCamera];
-            portraitGroup.add(thatFuckerOnTheRight);
-        }
+			thatFuckerOnTheLeft.cameras = [pissCamera];
+			portraitGroup.add(thatFuckerOnTheLeft);
+		}
+		else if (speakerPosition == "right")
+		{
+			thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
+			thatFuckerOnTheLeft = new FlxSprite();
 
-        if (dialogueBox.animation.curAnim.name != dialogueType + " open")
-        {
-            typedText.visible = true;
-            typedText.resetText(dialogueList[0]);
-            typedText.start(0.05, true);
-        }
-        else
-            dialogueBox.animation.play(dialogueType + " open");
-    }
+			// since all sprites look to the right,
+			thatFuckerOnTheRight.flipX = true;
 
-    var ending = false;
+			thatFuckerOnTheLeft.antialiasing = true;
+			thatFuckerOnTheRight.antialiasing = true;
 
-    function cleanUpDialogue():Void
-    {
-        typedText.visible = false;
-        
-        splitName = dialogueList[0].split(":");
+			if (whosSpeaking.endsWith("-pixel") || pixelSpritesWithoutPixelSuffix.contains(whosSpeaking))
+			{
+				thatFuckerOnTheRight.antialiasing = false;
+				thatFuckerOnTheRight.setGraphicSize(Std.int(thatFuckerOnTheRight.width * PlayState.daPixelZoom * 0.9));
+				thatFuckerOnTheRight.updateHitbox();
+			}
+
+			thatFuckerOnTheRight.x = dialogueBox.x + dialogueBox.width - thatFuckerOnTheRight.width;
+			thatFuckerOnTheRight.y = dialogueBox.y - thatFuckerOnTheRight.height + 100;
+
+			if (useAlphabet)
+				thatFuckerOnTheRight.x -= (FlxG.width * 0.125);
+			else
+			{
+				thatFuckerOnTheRight.x = FlxG.width - thatFuckerOnTheRight.width - (FlxG.width * 0.15);
+				thatFuckerOnTheRight.y = dialogueBox.y - thatFuckerOnTheRight.height + 80;
+			}
+
+			thatFuckerOnTheRight.cameras = [pissCamera];
+			portraitGroup.add(thatFuckerOnTheRight);
+		}
+
+		if (dialogueBox.animation.curAnim.name != dialogueType + " open")
+		{
+			typedText.visible = true;
+			typedText.resetText(dialogueList[0]);
+			typedText.start(0.05, true);
+		}
+		else
+			dialogueBox.animation.play(dialogueType + " open");
+	}
+
+	var ending = false;
+
+	function cleanUpDialogue():Void
+	{
+		typedText.visible = false;
+
+		splitName = dialogueList[0].split(":");
 		whosSpeaking = splitName[1];
-        speakerEmotion = splitName[2];
+		speakerEmotion = splitName[2];
 
-        if (dialogueBox.animation.getByName(splitName[4]) != null && dialogueBox.animation.getByName(splitName[4] + " open") != null)
-            dialogueType = splitName[4];
+		if (dialogueBox.animation.getByName(splitName[4]) != null && dialogueBox.animation.getByName(splitName[4] + " open") != null)
+			dialogueType = splitName[4];
 
-        if (speakerPosition != splitName[3])
-        {
-            if (!useAlphabet)
-            {
-                if (splitName[3] == "left")
-                    dialogueBox.flipX = false;
-                else if (splitName[3] == "right")
-                    dialogueBox.flipX = true;
-            }
-            else
-            {
-                if (splitName[3] == "left")
-                    dialogueBox.flipX = true;
-                else if (splitName[3] == "right")
-                    dialogueBox.flipX = false;
-            }
+		if (speakerPosition != splitName[3])
+		{
+			if (!useAlphabet)
+			{
+				if (splitName[3] == "left")
+					dialogueBox.flipX = false;
+				else if (splitName[3] == "right")
+					dialogueBox.flipX = true;
+			}
+			else
+			{
+				if (splitName[3] == "left")
+					dialogueBox.flipX = true;
+				else if (splitName[3] == "right")
+					dialogueBox.flipX = false;
+			}
 
-            dialogueBox.animation.play(dialogueType + " open", true);
-        }
+			dialogueBox.animation.play(dialogueType + " open", true);
+		}
 
-        if (!dialogueBox.animation.curAnim.name.startsWith(dialogueType))
-            dialogueBox.animation.play(dialogueType + " open", true);
+		if (!dialogueBox.animation.curAnim.name.startsWith(dialogueType))
+			dialogueBox.animation.play(dialogueType + " open", true);
 
-        speakerPosition = splitName[3];
-        var thing = splitName[1].length + splitName[2].length + splitName[3].length + splitName[4].length + 5;
+		speakerPosition = splitName[3];
+		var thing = splitName[1].length + splitName[2].length + splitName[3].length + splitName[4].length + 5;
 		dialogueList[0] = dialogueList[0].substr(thing).replace("\\n", "\n");
-    }
+	}
 }

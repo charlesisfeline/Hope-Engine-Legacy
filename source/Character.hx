@@ -1,19 +1,18 @@
 package;
 
-import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.util.FlxColor;
 import haxe.Json;
-import openfl.Assets;
 
 using StringTools;
+
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
 
-typedef CharacterJSON = {
+typedef CharacterJSON =
+{
 	var name:String;
 	var image:String;
 	var healthColor:String;
@@ -21,26 +20,23 @@ typedef CharacterJSON = {
 	var antialiasing:Null<Bool>;
 	var scale:Null<Float>;
 	var facesLeft:Null<Bool>;
-	
 	var isDeath:Null<Bool>;
 	var initialAnimation:String;
 	var cameraOffset:Array<Float>;
 	var singDuration:Null<Float>;
-
 	var animations:Array<Animation>;
 }
 
-typedef Animation = {
+typedef Animation =
+{
 	var name:String;
 	var prefix:String;
 
 	var frameRate:Null<Int>;
 	var loopedAnim:Null<Bool>;
 	var offset:Array<Int>;
-
 	var indices:Array<Int>;
 	var postfix:String;
-
 	var flipX:Null<Bool>;
 	var flipY:Null<Bool>;
 }
@@ -50,8 +46,8 @@ class Character extends FlxSprite
 	public var animOffsets:Map<String, Array<Dynamic>>;
 
 	public var isPlayer:Bool = false; // if they are a player
-	public var isDeath:Bool = false;  // if they are a character that shows up on the gameover screen
-	
+	public var isDeath:Bool = false; // if they are a character that shows up on the gameover screen
+
 	public var curCharacter:String = 'bf';
 	public var image:String = '';
 	public var setAntialiasing:Bool = true;
@@ -78,7 +74,7 @@ class Character extends FlxSprite
 		this.isPlayer = isPlayer;
 
 		antialiasing = true;
-		
+
 		switch (curCharacter)
 		{
 			default:
@@ -111,9 +107,9 @@ class Character extends FlxSprite
 				#else
 				if (Paths.exists('assets/shared/images/' + charFile.image + '.txt'))
 				#end
-					frames = Paths.getPackerAtlas(charFile.image, 'shared');
+				frames = Paths.getPackerAtlas(charFile.image);
 				else
-					frames = Paths.getSparrowAtlas(charFile.image, 'shared');
+					frames = Paths.getSparrowAtlas(charFile.image);
 
 				if (setScale != 1)
 				{
@@ -129,7 +125,8 @@ class Character extends FlxSprite
 					for (anim in animationsArray)
 					{
 						if (anim.indices != null && anim.indices.length > 0)
-							animation.addByIndices(anim.name, anim.prefix, anim.indices, anim.postfix, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
+							animation.addByIndices(anim.name, anim.prefix, anim.indices, anim.postfix, anim.frameRate, anim.loopedAnim, anim.flipX,
+								anim.flipY);
 						else
 							animation.addByPrefix(anim.name, anim.prefix, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
 
@@ -142,8 +139,7 @@ class Character extends FlxSprite
 
 				if (animation.getByName(initAnim) == null)
 				{
-					if (animation.getByName("danceLeft") != null &&
-						animation.getByName("danceRight") != null)
+					if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)
 						initAnim = "danceLeft";
 
 					if (animation.getByName("idle") != null)
@@ -194,19 +190,19 @@ class Character extends FlxSprite
 					holdTimer += elapsed;
 				else
 					holdTimer = 0;
-	
+
 				// var dadVar:Float = 4;
-	
+
 				// if (curCharacter == 'dad')
 				// 	dadVar = 6.1;
-	
+
 				if (holdTimer >= Conductor.stepCrochet * singDuration * 0.001)
 				{
 					dance();
 					holdTimer = 0;
 				}
 			}
-	
+
 			switch (curCharacter)
 			{
 				case 'gf':

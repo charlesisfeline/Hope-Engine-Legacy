@@ -5,45 +5,52 @@ import openfl.Lib;
 
 class Settings
 {
-    // Default values for ALL settings
+	// Default values for ALL settings
 	// They get set upon initialization
-    public static var downscroll:Bool = false;
-    public static var ghostTapping:Bool = true;
-    public static var middleScroll:Bool = false;
-    public static var underlayAlpha:Float = 0;
-    public static var offset:Float = 0;
-    public static var safeFrames:Int = 10;
-    public static var fpsCap:Float = 60;
-    public static var scrollSpeed:Float = 1;
-    public static var accuracyMode:Int = 0;
-    public static var resetButton:Bool = false;
-    public static var noteSkin:String = "default";
-    public static var strumlineMargin:Int = 100;
-    public static var stationaryRatings:Bool = false;
-    public static var ratingPos:Array<Float> = [431.667, 365];
-    public static var comboPos:Array<Float> = [431.667, 515];
-    public static var noteSplashes:Bool = true;
-    public static var extensiveDisplay:Bool = false;
-    public static var npsDisplay:Bool = false;
-    public static var healthBarColors:Bool = true;
-    public static var hideHealthIcons:Bool = false;
-    public static var posBarType:Int = 0;
-    
-    public static var flashing:Bool = true;
-    public static var distractions:Bool = true;
-    public static var fps:Bool = true;
-    public static var watermarks:Bool = true;
-    public static var cacheMusic:Bool = false;
-    public static var cacheImages:Bool = false;
-    public static var resumeCountdown:Bool = true;
-    public static var botplay:Bool = false;
+	public static var downscroll:Bool = false;
+	public static var ghostTapping:Bool = true;
+	public static var middleScroll:Bool = false;
+	public static var underlayAlpha:Float = 0;
+	public static var offset:Float = 0;
+	public static var safeFrames:Int = 10;
+	public static var fpsCap:Int = 60;
+	public static var scrollSpeed:Float = 1;
+	public static var accuracyMode:Int = 0;
+	public static var resetButton:Bool = false;
+	public static var noteSkin:String = "default";
+	public static var strumlineMargin:Int = 100;
+	public static var stationaryRatings:Bool = false;
+	public static var ratingPos:Array<Float> = [431.667, 365];
+	public static var comboPos:Array<Float> = [431.667, 515];
+	public static var noteSplashes:Bool = true;
+	public static var extensiveDisplay:Bool = false;
+	public static var npsDisplay:Bool = false;
+	public static var healthBarColors:Bool = true;
+	public static var hideHealthIcons:Bool = false;
+	public static var posBarType:Int = 0;
+
+	public static var flashing:Bool = true;
+	public static var distractions:Bool = true;
+	public static var fps:Bool = true;
+	public static var watermarks:Bool = true;
+	public static var cacheMusic:Bool = false;
+	public static var cacheImages:Bool = false;
+	public static var resumeCountdown:Bool = true;
+	public static var botplay:Bool = false;
 	public static var dynamicCamera:Float = 0;
 
-    /**
-     * Set all `Settings` values with its' specific `FlxG.save.data` slot.
-     */
-    public static function load():Void
-    {
+	public static var persistentVolume:Bool = true;
+	public static var lastVolume:Float = 1;
+	public static var lastMuted:Bool = false;
+
+	// experimental
+	public static var difficultyVocals:Bool = false;
+
+	/**
+	 * Set all `Settings` values with its' specific `FlxG.save.data` slot.
+	 */
+	public static function load():Void
+	{
 		downscroll = FlxG.save.data.downscroll;
 		ghostTapping = FlxG.save.data.ghost;
 		middleScroll = FlxG.save.data.middleScroll;
@@ -77,9 +84,16 @@ class Settings
 		resumeCountdown = FlxG.save.data.resumeCountdown;
 		botplay = FlxG.save.data.botplay;
 		dynamicCamera = FlxG.save.data.dynamicCamera;
+		persistentVolume = FlxG.save.data.persistentVolume;
+		lastVolume = FlxG.save.data.lastVolume;
+		lastMuted = FlxG.save.data.lastMuted;
+
+		///////////////////////////////////
+
+		difficultyVocals = FlxG.save.data.difficultyVocals;
 
 		FlxG.log.add("Settings loaded!");
-    }
+	}
 
 	/**
 	 * Set all `FlxG.save.data` slots with the values from `Settings.`
@@ -121,15 +135,22 @@ class Settings
 		FlxG.save.data.resumeCountdown = resumeCountdown;
 		FlxG.save.data.botplay = botplay;
 		FlxG.save.data.dynamicCamera = dynamicCamera;
-		
+		FlxG.save.data.persistentVolume = persistentVolume;
+		FlxG.save.data.lastVolume = lastVolume;
+		FlxG.save.data.lastMuted = lastMuted;
+
+		///////////////////////////////////
+
+		FlxG.save.data.difficultyVocals = difficultyVocals;
+
 		FlxG.save.flush();
 
 		FlxG.log.add("Settings saved!");
 	}
 
-    public static function init():Void
-    {
-        if (FlxG.save.data.downscroll == null)
+	public static function init():Void
+	{
+		if (FlxG.save.data.downscroll == null)
 			FlxG.save.data.downscroll = downscroll;
 
 		if (FlxG.save.data.ghost == null)
@@ -148,9 +169,6 @@ class Settings
 			FlxG.save.data.safeFrames = safeFrames;
 
 		if (FlxG.save.data.fpsCap == null)
-			FlxG.save.data.fpsCap = fpsCap;
-
-		if (FlxG.save.data.fpsCap > 285 || FlxG.save.data.fpsCap < 60)
 			FlxG.save.data.fpsCap = fpsCap;
 
 		if (FlxG.save.data.scrollSpeed == null)
@@ -179,7 +197,7 @@ class Settings
 
 		if (FlxG.save.data.noteSplashes == null)
 			FlxG.save.data.noteSplashes = noteSplashes;
-			
+
 		if (FlxG.save.data.extensiveDisplay == null)
 			FlxG.save.data.extensiveDisplay = extensiveDisplay;
 
@@ -217,25 +235,55 @@ class Settings
 
 		if (FlxG.save.data.resumeCountdown == null)
 			FlxG.save.data.resumeCountdown = resumeCountdown;
-		
+
 		if (FlxG.save.data.botplay == null)
 			FlxG.save.data.botplay = botplay;
 
 		if (FlxG.save.data.dynamicCamera == null)
 			FlxG.save.data.dynamicCamera = dynamicCamera;
-        
-        Conductor.recalculateTimings();
+
+		if (FlxG.save.data.persistentVolume == null)
+			FlxG.save.data.persistentVolume = persistentVolume;
+
+		///////////////////////////////////
+
+		if (FlxG.save.data.difficultyVocals == null)
+			FlxG.save.data.difficultyVocals = difficultyVocals;
+
+		if (FlxG.save.data.lastVolume == null)
+			FlxG.save.data.lastVolume = lastVolume;
+
+		if (FlxG.save.data.lastMuted == null)
+			FlxG.save.data.lastMuted = lastMuted;
+
+		// this is NULL?!?!?
+		if (FlxG.save.data.windowSettings == null)
+			FlxG.save.data.windowSettings = new Map<Dynamic, Dynamic>();
+
+		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
-
-		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(FlxG.save.data.fpsCap);
 
 		FlxG.log.add("Settings initialized!");
 
 		initDefaults();
-        load();
+		load();
 		save();
-    }
+
+		FlxG.drawFramerate = fpsCap;
+		FlxG.updateFramerate = fpsCap;
+
+		if (Settings.persistentVolume)
+		{
+			FlxG.sound.volume = Settings.lastVolume;
+
+			if (Settings.lastMuted)
+			{
+				FlxG.sound.muted = false;
+				FlxG.sound.toggleMuted();
+			}
+		}
+	}
 
 	static var defaultSettings:Map<String, Dynamic> = new Map<String, Dynamic>();
 
@@ -244,11 +292,11 @@ class Settings
 		var settings:Array<String> = Type.getClassFields(Settings);
 
 		var cl = Type.resolveClass("Settings");
-		
+
 		for (setting in settings)
 		{
 			var shit = Reflect.field(cl, setting);
-			
+
 			if ((shit is Int || shit is Float || shit is Bool || shit is Array || shit is String) && setting != "defaultSettings")
 				defaultSettings.set(setting, shit);
 		}
@@ -261,7 +309,7 @@ class Settings
 			var cl = Type.resolveClass("Settings");
 			Reflect.setField(cl, setting, value);
 		}
-		
+
 		save();
 		load();
 	}

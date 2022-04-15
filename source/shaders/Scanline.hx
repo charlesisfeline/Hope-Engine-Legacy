@@ -13,7 +13,6 @@ class Scanline extends flixel.system.FlxAssets.FlxShader
 			else
 				gl_FragColor = texture2D(bitmap, openfl_TextureCoordv);
 		}')
-		
 	public function new(scale:Float = 1.0)
 	{
 		super();

@@ -10,11 +10,7 @@ using StringTools;
 
 class CoolUtil
 {
-	public static var difficultyArray:Array<Array<String>> = [
-		['EASY'		, '-easy', 		null],
-		['NORMAL'	, '', 			null],
-		['HARD'		, '-hard', 		null]
-	];
+	public static var difficultyArray:Array<Array<String>> = [['EASY', '-easy', null], ['NORMAL', '', null], ['HARD', '-hard', null]];
 
 	public static function difficultyFromInt(difficulty:Int):String
 	{
@@ -50,6 +46,8 @@ class CoolUtil
 	#if FILESYSTEM
 	public static function loadCustomDifficulties():Void
 	{
+		difficultyArray = [['EASY', '-easy', null], ['NORMAL', '', null], ['HARD', '-hard', null]];
+
 		if (FileSystem.exists(Paths.txt('customDifficulties')))
 		{
 			var difficultyFile:Array<String> = coolStringFile(File.getContent(Paths.txt('customDifficulties')));
@@ -87,7 +85,7 @@ class CoolUtil
 
 		return daList;
 	}
-	
+
 	public static function coolStringFile(path:String):Array<String>
 	{
 		var daList:Array<String> = path.trim().split('\n');

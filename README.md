@@ -8,7 +8,8 @@ Hope Engine is an engine built from Kade Engine 1.5.2.
 
 **100% in ALPHA (actually, lmao), expect bugs!**
 
-HTML5 builds are *really* buggy, so it's not recommended to build for HTML5.
+HTML5 builds are *really* buggy, so it's not recommended to build for HTML5.<br>
+\+ engine contains questionable methods of optimization
 
 ---
 

@@ -4,101 +4,163 @@ import editors.*;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+
+using StringTools;
 
 #if desktop
 import Discord.DiscordClient;
 #end
+#if FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
 
 class EditorsState extends MusicBeatState
 {
-    var options:Array<String> = ["Chart Editor", "Character Editor", "Week Editor"];
-    var grpOptions:FlxTypedGroup<Alphabet>;
+	var options:Array<String> = ["Chart Editor", "Character Editor", "Week Editor"];
+	var grpOptions:FlxTypedGroup<Alphabet>;
 
-    var mods:Array<String> = [];
+	var mods:Array<String> = ["none"];
 
-    var curSelected:Int = 0;
+	var curSelected:Int = 0;
+	var curMod:Int = 0;
 
-    override function create() 
-    {
-        #if desktop
-        DiscordClient.changePresence("Editors Menu");
-        #end
-        
-        super.create();
-        
-        var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat_gradient"));
-        bg.screenCenter();
-        bg.color = 0xffad34ff;
-        add(bg);
+	var modTxt:FlxText;
+	var modTxtBG:FlxSprite;
 
-        grpOptions = new FlxTypedGroup<Alphabet>();
-        add(grpOptions);
+	override function create()
+	{
+		Paths.setCurrentMod(null);
 
-        for (i in 0...options.length)
-        {
-            var option:Alphabet = new Alphabet(25, (70 * i) + 30, options[i], true);
-            option.isMenuItem = true;
-            option.targetY = i;
-            grpOptions.add(option);
-        }
+		#if desktop
+		DiscordClient.changePresence("Editors Menu");
+		#end
 
-        changeSelection();
-    }
+		super.create();
 
-    function changeSelection(change:Int = 0)
-    {
-        FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat_gradient"));
+		bg.screenCenter();
+		bg.color = 0xffad34ff;
+		add(bg);
 
-        curSelected += change;
+		grpOptions = new FlxTypedGroup<Alphabet>();
+		add(grpOptions);
 
-        if (curSelected < 0)
-            curSelected = grpOptions.length - 1;
-        if (curSelected >= grpOptions.length)
-            curSelected = 0;
+		for (i in 0...options.length)
+		{
+			var option:Alphabet = new Alphabet(25, (70 * i) + 30, options[i], true);
+			option.isMenuItem = true;
+			option.targetY = i;
+			grpOptions.add(option);
+		}
 
-        var bullShit:Int = 0;
+		modTxtBG = new FlxSprite(0, FlxG.height).makeGraphic(FlxG.width, 64, FlxColor.BLACK);
+		modTxtBG.alpha = 0.6;
+		add(modTxtBG);
 
-        for (item in grpOptions.members)
-        {
-            item.targetY = bullShit - curSelected;
-            bullShit++;
+		modTxt = new FlxText(0, modTxtBG.y, FlxG.width, "");
+		modTxt.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		modTxt.borderSize = 3;
+		add(modTxt);
 
-            item.x = 25;
-            item.alpha = 0.6;
+		FlxTween.tween(modTxtBG, {y: FlxG.height - modTxtBG.height}, 1, {ease: FlxEase.sineInOut, startDelay: 0.5});
 
-            if (item.targetY == 0)
-                item.alpha = 1;
-        }
-    }
+		for (mod in FileSystem.readDirectory(Sys.getCwd() + "/mods"))
+			mods.push(mod.trim());
 
-    function select():Void
-    {
-        var state:MusicBeatState = null;
-        switch (options[curSelected])
-        {
-            case "Chart Editor": 
-                ChartingState.fromEditors = true;
-                state = new ChartingState();
-            case "Character Editor": 
-                state = new CharacterEditor();
-            case "Week Editor": 
-                state = new WeekEditor();
-        }
+		changeMod();
+		changeSelection();
+	}
 
-        FlxG.switchState(state);
-    }
+	function changeSelection(change:Int = 0)
+	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 
-    override function update(elapsed:Float)
-    {
-        super.update(elapsed);
+		curSelected += change;
 
-        if (controls.BACK)
+		if (curSelected < 0)
+			curSelected = grpOptions.length - 1;
+		if (curSelected >= grpOptions.length)
+			curSelected = 0;
+
+		var bullShit:Int = 0;
+
+		for (item in grpOptions.members)
+		{
+			item.targetY = bullShit - curSelected;
+			bullShit++;
+
+			item.x = 25;
+			item.alpha = 0.6;
+
+			if (item.targetY == 0)
+				item.alpha = 1;
+		}
+	}
+
+	function changeMod(huh:Int = 0)
+	{
+		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+		curMod += huh;
+
+		if (curMod < 0)
+			curMod = mods.length - 1;
+		if (curMod >= mods.length)
+			curMod = 0;
+
+		var mod = mods[curMod];
+
+		modTxt.text = 'CURRENT MOD: < $mod >';
+
+		if (mod == 'none')
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(mod);
+	}
+
+	function select():Void
+	{
+		var state:MusicBeatState = null;
+		switch (options[curSelected])
+		{
+			case "Chart Editor":
+				ChartingState.fromEditors = true;
+				state = new ChartingState();
+			case "Character Editor":
+				CharacterEditor.fromEditors = true;
+				state = new CharacterEditor();
+			case "Week Editor":
+				WeekEditor.fromEditors = true;
+				state = new WeekEditor();
+		}
+
+		FlxG.switchState(state);
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (controls.BACK)
 			FlxG.switchState(new MainMenuState());
-        if (controls.ACCEPT)
-            select();
+		if (controls.ACCEPT)
+			select();
+
 		if (controls.UP_P)
 			changeSelection(-1);
 		if (controls.DOWN_P)
 			changeSelection(1);
-    }
+
+		if (controls.LEFT_P)
+			changeMod(-1);
+		if (controls.RIGHT_P)
+			changeMod(1);
+
+		modTxt.y = modTxtBG.y + (modTxtBG.height / 2) - (modTxt.height / 2);
+	}
 }

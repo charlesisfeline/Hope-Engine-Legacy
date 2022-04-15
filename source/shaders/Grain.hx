@@ -143,7 +143,6 @@ class Grain extends flixel.system.FlxAssets.FlxShader
 
 			gl_FragColor =  vec4(col,1.0);
 		}')
-
 	public function new(grainAmount:Float)
 	{
 		super();
@@ -151,7 +150,7 @@ class Grain extends flixel.system.FlxAssets.FlxShader
 		data.grainamount.value = [grainAmount];
 	}
 
-	override function __update() 
+	override function __update()
 	{
 		super.__update();
 		data.uTime.value[0] += FlxG.elapsed;

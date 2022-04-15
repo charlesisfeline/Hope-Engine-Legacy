@@ -26,11 +26,11 @@ import yaml.Parser.ParserOptions;
 import yaml.Yaml;
 
 using StringTools;
+
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
-
 
 class ModLoadingState extends MusicBeatState
 {
@@ -42,11 +42,12 @@ class ModLoadingState extends MusicBeatState
 
 	var modGroup:FlxTypedGroup<ModWidget>;
 	var camFollow:FlxObject;
-	
+
 	override function create()
 	{
 		FlxG.mouse.visible = true;
-		
+		usesMouse = true;
+
 		var menuBG:FlxBackdrop = new FlxBackdrop(Paths.image('menuDesat'), 1, 1, false);
 		menuBG.color = 0xFFea71fd;
 		menuBG.scrollFactor.set(0, 0.2);
@@ -63,7 +64,8 @@ class ModLoadingState extends MusicBeatState
 		{
 			var modInfo = Yaml.parse(File.getContent(Paths.modInfoFile(mod)));
 
-			var pain = new ModWidget(0, 0, mod, modInfo.get("name"), modInfo.get("description"), modInfo.get("version"), Helper.toBool(modInfo.get("icon-antialiasing")));
+			var pain = new ModWidget(0, 0, mod, modInfo.get("name"), modInfo.get("description"), modInfo.get("version"),
+				Helper.toBool(modInfo.get("icon-antialiasing")));
 			pain.screenCenter();
 			pain.scrollFactor.set(1, 1);
 			pain.y += modGroup.length * 225;
@@ -80,7 +82,7 @@ class ModLoadingState extends MusicBeatState
 	function changeItem(huh:Int = 0)
 	{
 		FlxG.sound.play(Paths.sound('scrollMenu'));
-		
+
 		curSelected += huh;
 
 		if (curSelected >= modGroup.length)
@@ -88,7 +90,8 @@ class ModLoadingState extends MusicBeatState
 		if (curSelected < 0)
 			curSelected = modGroup.length - 1;
 
-		modGroup.forEach(function(spr:ModWidget) {
+		modGroup.forEach(function(spr:ModWidget)
+		{
 			if (spr.ID == curSelected)
 			{
 				camFollow.setPosition(spr.x + spr.width / 2, spr.y + spr.height / 2);
@@ -102,7 +105,20 @@ class ModLoadingState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.switchState(new options.OptionsState());
+			#if FILESYSTEM
+			var prevMod = Paths.currentMod;
+
+			for (mod in FileSystem.readDirectory('mods'))
+			{
+				Paths.setCurrentMod(mod);
+				if (Paths.checkModLoad(mod))
+					CoolUtil.loadCustomDifficulties();
+			}
+
+			Paths.setCurrentMod(prevMod);
+			#end
+
+			FlxG.switchState(new MainMenuState());
 			FlxG.mouse.visible = false;
 		}
 
@@ -134,13 +150,13 @@ class ModWidget extends FlxSpriteGroup
 	public var modRepping:String;
 
 	public var versionText:FlxText;
-	
+
 	public function new(x:Float, y:Float, modFolder:String, ?name:String, ?description:String, ?version:String, ?iconAntialiasing:Bool)
 	{
 		super(x, y);
 
 		modRepping = modFolder;
-		
+
 		name = name != null ? name : "Mod name not found.";
 		description = description != null ? description : "Mod description not found.";
 		version = version != null ? version : "";
@@ -172,7 +188,7 @@ class ModWidget extends FlxSpriteGroup
 			icon.loadGraphic(loadedBitmap, true, 150, 150);
 
 			var totalFrames = Math.floor(loadedBitmap.width / 150) * Math.floor(loadedBitmap.height / 150);
-			icon.animation.add("icon", [for (i in 0...totalFrames) i],10);
+			icon.animation.add("icon", [for (i in 0...totalFrames) i], 10);
 			icon.animation.play("icon");
 		}
 		else
@@ -207,14 +223,14 @@ class ModWidget extends FlxSpriteGroup
 		add(iconBG);
 		add(modNameBG);
 		add(modDescBG);
-		
+
 		add(icon);
 		add(modName);
 		add(modDesc);
 		add(versionText);
 
 		daSwitch = new FlxUIButton(0, 0, '');
-		daSwitch.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4,4,16,16]], false, 20, 20);
+		daSwitch.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		daSwitch.resize(50, 30);
 		daSwitch.updateHitbox();
 		daSwitch.label.resize(50, 24);
@@ -225,7 +241,7 @@ class ModWidget extends FlxSpriteGroup
 		add(daSwitch);
 
 		prioritySwitch = new FlxUIButton(0, 0, '');
-		prioritySwitch.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4,4,16,16]], false, 20, 20);
+		prioritySwitch.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		prioritySwitch.resize(50, 30);
 		prioritySwitch.updateHitbox();
 		prioritySwitch.label.resize(50, 24);
@@ -237,7 +253,7 @@ class ModWidget extends FlxSpriteGroup
 		buttonToggle(true);
 	}
 
-	override function update(elapsed:Float) 
+	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
@@ -278,7 +294,6 @@ class ModWidget extends FlxSpriteGroup
 			});
 		}
 
-
 		if (!Paths.checkModLoad(modRepping))
 		{
 			if (!init)
@@ -297,10 +312,6 @@ class ModWidget extends FlxSpriteGroup
 		}
 	}
 
-	function priorityToggle(init:Bool = false):Void
-	{
-		
-	}
+	function priorityToggle(init:Bool = false):Void {}
 }
-
 #end

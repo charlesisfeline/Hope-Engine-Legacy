@@ -19,7 +19,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-
 class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
@@ -29,7 +28,7 @@ class PauseSubState extends MusicBeatSubstate
 
 	var pauseMusic:FlxSound;
 	var perSongOffset:FlxText;
-	
+
 	var offsetChanged:Bool = false;
 
 	public function new()
@@ -37,7 +36,10 @@ class PauseSubState extends MusicBeatSubstate
 		super();
 
 		persistentDraw = true;
-		persistentUpdate = false; 
+		persistentUpdate = false;
+
+		if (PlayState.openedCharting)
+			menuItems = ['Resume', 'Restart Song', 'Toggle Botplay', 'Exit to menu'];
 
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
@@ -76,13 +78,13 @@ class PauseSubState extends MusicBeatSubstate
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
-		
+
 		perSongOffset = new FlxText(0, 0, FlxG.width - 20, "Song Offset: < " + PlayState.songOffset + " >\n(Hold CTRL to change!)", 12);
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
 		perSongOffset.setPosition(0, FlxG.height - perSongOffset.height - 15);
 		perSongOffset.alpha = 0;
-		
+
 		#if FILESYSTEM
 		add(perSongOffset);
 		perSongOffset.y += 5;
@@ -113,6 +115,22 @@ class PauseSubState extends MusicBeatSubstate
 		changeSelection();
 
 		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+
+		if (FlxG.random.bool(0.001))
+		{
+			var ooohhhHeFunkin:FlxSprite = new FlxSprite();
+			ooohhhHeFunkin.frames = Paths.getSparrowAtlas("he funkin", "preload");
+			ooohhhHeFunkin.animation.addByPrefix("funk", "boyfried dooodle boiled", 24);
+			ooohhhHeFunkin.animation.play("funk");
+			ooohhhHeFunkin.scale.set(0.75, 0.75);
+			ooohhhHeFunkin.updateHitbox();
+			ooohhhHeFunkin.antialiasing = true;
+			ooohhhHeFunkin.x = FlxG.width - ooohhhHeFunkin.width - 20;
+			ooohhhHeFunkin.y = perSongOffset.y - ooohhhHeFunkin.height - 20;
+			ooohhhHeFunkin.alpha = 0;
+			FlxTween.tween(ooohhhHeFunkin, {alpha: 1}, 5, {ease: FlxEase.expoInOut, startDelay: 0.5});
+			add(ooohhhHeFunkin);
+		}
 	}
 
 	var resuming:Bool = false;
@@ -150,7 +168,7 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			if (FlxG.keys.pressed.SHIFT)
 				multi = 1;
-			
+
 			if (controls.LEFT_P)
 				changeOffset(-1 * multi);
 			else if (controls.RIGHT_P)
@@ -158,7 +176,7 @@ class PauseSubState extends MusicBeatSubstate
 
 			if (controls.LEFT || controls.RIGHT)
 			{
-				if (holdTimer > 0.5)
+				if (holdTimer > Main.globalMaxHoldTime)
 				{
 					if (controls.LEFT)
 						changeOffset(-1 * multi);
@@ -188,7 +206,8 @@ class PauseSubState extends MusicBeatSubstate
 						resuming = true;
 						var swagCounter:Int = 0;
 
-						forEachOfType(FlxSprite, function(spr:FlxSprite) {
+						forEachOfType(FlxSprite, function(spr:FlxSprite)
+						{
 							spr.visible = false;
 						}, true);
 
@@ -207,6 +226,13 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.resetState();
 				case "Exit to menu":
 					FlxG.switchState(new MainMenuState());
+					PlayState.openedCharting = false;
+					Settings.botplay = false;
+				case "Toggle Botplay":
+					Settings.botplay = !Settings.botplay;
+
+					@:privateAccess
+					PlayState.instance.botPlayState.visible = PlayState.instance.scrollSpeedText.visible = Settings.botplay;
 			}
 		}
 	}
@@ -240,10 +266,18 @@ class PauseSubState extends MusicBeatSubstate
 		else
 			menuItems = ["Restart Song", "Exit to menu"];
 
+		if (PlayState.openedCharting)
+		{
+			if (PlayState.songOffset == originalOffset)
+				menuItems = ["Resume", "Restart Song", "Toggle Botplay", "Exit to menu"];
+			else
+				menuItems = ["Restart Song", "Toggle Botplay", "Exit to menu"];
+		}
+
 		if (oldMenuItemsLength != menuItems.length)
 		{
 			grpMenuShit.clear();
-			
+
 			for (i in 0...menuItems.length)
 			{
 				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
@@ -252,7 +286,7 @@ class PauseSubState extends MusicBeatSubstate
 				songText.targetY = i;
 				grpMenuShit.add(songText);
 			}
-	
+
 			changeSelection();
 		}
 	}

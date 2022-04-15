@@ -41,6 +41,7 @@ class Alphabet extends FlxSpriteGroup
 	var splitWords:Array<String> = [];
 
 	public var isBold:Bool = false;
+
 	var rightAligned:Bool = false;
 
 	public var typedTimer:FlxTimer;
@@ -57,7 +58,7 @@ class Alphabet extends FlxSpriteGroup
 
 		if (text != "")
 			addText();
-		
+
 		if (!bold)
 			color = 0xFF000000;
 	}
@@ -70,7 +71,6 @@ class Alphabet extends FlxSpriteGroup
 		var curRow:Int = 0;
 		for (character in splitWords)
 		{
-
 			if (character == " ")
 			{
 				lastWasSpace = true;
@@ -146,6 +146,12 @@ class Alphabet extends FlxSpriteGroup
 
 		super.update(elapsed);
 	}
+
+	public function getTargetY():Float
+	{
+		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
+		return (scaledY * 120) + additive;
+	}
 }
 
 class AlphaCharacter extends FlxSprite
@@ -170,7 +176,7 @@ class AlphaCharacter extends FlxSprite
 	public function createBold(letter:String)
 	{
 		y = (row * 80);
-		
+
 		var theActualLetter = letter;
 		var boldBefore:String = "&()*+-<>1234567890";
 
@@ -220,10 +226,10 @@ class AlphaCharacter extends FlxSprite
 		{
 			letterCase = 'capital';
 		}
-		
+
 		animation.addByPrefix(letter, letter + " " + letterCase, 24);
 		animation.play(letter);
-		
+
 		updateHitbox();
 
 		y = (110 - height);
@@ -235,7 +241,7 @@ class AlphaCharacter extends FlxSprite
 	{
 		animation.addByPrefix(letter, letter, 24);
 		animation.play(letter);
-		
+
 		updateHitbox();
 	}
 
@@ -313,7 +319,7 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, ':', 24);
 				animation.play(letter);
 		}
-		
+
 		updateHitbox();
 	}
 }

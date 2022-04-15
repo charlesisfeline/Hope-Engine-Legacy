@@ -13,11 +13,10 @@ class Highscore
 	public static var songRanks:Map<String, Int> = new Map<String, Int>();
 	#end
 
-
 	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0):Void
 	{
 		var daSong:String = formatSong(song, diff);
-		
+
 		if (!Settings.botplay && !PlayState.openedCharting)
 		{
 			if (songScores.exists(daSong))
@@ -80,7 +79,7 @@ class Highscore
 		FlxG.save.data.songRanks = songRanks;
 		FlxG.save.flush();
 	}
-	
+
 	public static function formatSong(song:String, diff:Int):String
 	{
 		var daSong:String = song;

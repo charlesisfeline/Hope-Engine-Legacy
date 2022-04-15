@@ -9,365 +9,377 @@ import flixel.util.FlxColor;
 
 class Option extends FlxSpriteGroup
 {
-    public var alphaDisplay:Alphabet;
-    public var display:String = '';
-    public var desc:String = '';
-    public var targetY:Float = 0.0;
-    public var additive:Float = FlxG.height * 0.48;
-    
-    public function new(display:String, desc:String)
-    {
-        super();
+	public var alphaDisplay:Alphabet;
+	public var display:String = '';
+	public var desc:String = '';
+	public var targetY:Float = 0.0;
+	public var additive:Float = FlxG.height * 0.48;
 
-        this.display = display;
-        this.desc = desc;
+	public function new(display:String, desc:String)
+	{
+		super();
 
-        alphaDisplay = new Alphabet(0, 0, display, false);
-        this.add(alphaDisplay);
-    }
+		this.display = display;
+		this.desc = desc;
 
-    override function update(elapsed:Float)
-    {
-        var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
-        y = FlxMath.lerp(y, (scaledY * 120) + additive, 9 / lime.app.Application.current.window.frameRate);
+		alphaDisplay = new Alphabet(0, 0, display, false);
+		this.add(alphaDisplay);
+	}
 
-        super.update(elapsed);
-    }    
+	override function update(elapsed:Float)
+	{
+		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
+		y = FlxMath.lerp(y, (scaledY * 120) + additive, 9 / lime.app.Application.current.window.frameRate);
 
-    public function press() {}
-    public function left() {}
-    public function right() {}
-    public function left_H() {}
-    public function right_H() {}
+		super.update(elapsed);
+	}
+
+	public function getTargetY():Float
+	{
+		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
+		return (scaledY * 120) + additive;
+	}
+
+	public function press() {}
+
+	public function left() {}
+
+	public function right() {}
+
+	public function left_H() {}
+
+	public function right_H() {}
 }
 
 class OptionCategory extends FlxSpriteGroup
 {
-    public var name:String;
-    public var options:Array<Option>;
-    public var alphaDisplay:Alphabet;
+	public var name:String;
+	public var options:Array<Option>;
+	public var alphaDisplay:Alphabet;
 
-    public function new(name:String, options:Array<Option>)
-    {
-        super();
+	public function new(name:String, options:Array<Option>)
+	{
+		super();
 
-        this.alphaDisplay = new Alphabet(0, 0, name, true);
-        this.name = name;
-        this.options = options;
+		this.alphaDisplay = new Alphabet(0, 0, name, true);
+		this.name = name;
+		this.options = options;
 
-        add(alphaDisplay);
-    }
+		add(alphaDisplay);
+	}
 
 	public function press() {}
 }
 
 class StateCategory extends OptionCategory
 {
-    public var state:FlxState;
-    
-    public function new(name:String, state:FlxState)
-    {
-        super(name, []);
-        this.state = state;
-    }
+	public var state:FlxState;
 
-    override function press()
-    {
-        FlxG.switchState(state);
-    }
+	public function new(name:String, state:FlxState)
+	{
+		super(name, []);
+		this.state = state;
+	}
+
+	override function press()
+	{
+		FlxG.switchState(state);
+	}
 }
 
 class StateOption extends Option
 {
-    public var state:FlxState;
-    
-    public function new (display:String, desc:String, state:FlxState)
-    {
-        super(display, desc);
-        this.state = state;
-    }
+	public var state:FlxState;
 
-    override function press()
-    {
-        FlxG.switchState(state);
-    }
+	public function new(display:String, desc:String, state:FlxState)
+	{
+		super(display, desc);
+		this.state = state;
+	}
+
+	override function press()
+	{
+		FlxG.switchState(state);
+	}
 }
 
 class OptionSubCategoryTitle extends Option
 {
-    public function new(name:String, ?color:FlxColor = FlxColor.WHITE)
-    {
-        super(name, '');
+	public function new(name:String, ?color:FlxColor = FlxColor.WHITE)
+	{
+		super(name, '');
 
-        remove(alphaDisplay, true);
-        alphaDisplay.kill();
-        alphaDisplay.destroy();
+		remove(alphaDisplay, true);
+		alphaDisplay.kill();
+		alphaDisplay.destroy();
 
-        alphaDisplay = new Alphabet(0, 0, name, true); 
-        add(alphaDisplay);
+		alphaDisplay = new Alphabet(0, 0, name, true);
+		add(alphaDisplay);
 
-        alphaDisplay.color = color;
-    }
+		alphaDisplay.color = color;
+	}
 }
 
 class ToggleOption extends Option
 {
-    var theBool:String;
-    var checkbox:CheckBox;
-    var onChange:Void->Void;
+	var theBool:String;
+	var checkbox:CheckBox;
+	var onChange:Void->Void;
 
-    public function new(display:String, desc:String, boolValueToChange:String, ?onChange:Void->Void)
-    {
-        super(display, desc);
+	public function new(display:String, desc:String, boolValueToChange:String, ?onChange:Void->Void)
+	{
+		super(display, desc);
 
-        this.onChange = onChange;
-        
-        theBool = boolValueToChange;
-        alphaDisplay.x += 200;
+		this.onChange = onChange;
 
-        checkbox = new CheckBox(0, 0, Reflect.field(Settings, theBool));
-        checkbox.setGraphicSize(150);
-        checkbox.y = alphaDisplay.y + (alphaDisplay.height / 2) - (checkbox.height / 2);
-        this.add(checkbox);
-    }
+		theBool = boolValueToChange;
+		alphaDisplay.x += 200;
 
-    override function press() 
-    {
-        Reflect.setField(Settings, theBool, !Reflect.field(Settings, theBool));
-        checkbox.change(Reflect.field(Settings, theBool));
-        
-        if (onChange != null)
-            onChange();
-    }
+		checkbox = new CheckBox(0, 0, Reflect.field(Settings, theBool));
+		checkbox.setGraphicSize(150);
+		checkbox.y = alphaDisplay.y + (alphaDisplay.height / 2) - (checkbox.height / 2);
+		this.add(checkbox);
+	}
+
+	override function press()
+	{
+		Reflect.setField(Settings, theBool, !Reflect.field(Settings, theBool));
+		checkbox.change(Reflect.field(Settings, theBool));
+
+		if (onChange != null)
+			onChange();
+	}
 }
 
 class ValueOptionFloat extends Option
 {
-    var theNumber:String;
-    var min:Float;
-    var max:Float;
-    var increment:Float;
-    var shiftMultiplier:Float;
-    var funneMultiplier:Float = 1;
-    var onChange:Void->Void;
-    var resetValue:Null<Float>;
-    var unit:String;
-    var precision:Int = 0;
+	var theNumber:String;
+	var min:Float;
+	var max:Float;
+	var increment:Float;
+	var shiftMultiplier:Float;
+	var funneMultiplier:Float = 1;
+	var onChange:Void->Void;
+	var resetValue:Null<Float>;
+	var unit:String;
+	var precision:Int = 0;
 
-    public function new(display:String, desc:String, numberValueToChange:String, min:Float, max:Float, ?increment:Float = 1.0, ?shiftMultiplier:Float = 1.0, ?onChange:Void->Void, ?resetValue:Null<Float> = null, ?unit:String = '', ?precision:Int = 0)
-    {
-        super(display, desc);
-        
-        theNumber = numberValueToChange;
-        this.min = min;
-        this.max = max;
-        this.increment = increment;
-        this.shiftMultiplier = shiftMultiplier;
-        this.onChange = onChange;
-        this.resetValue = resetValue;
-        this.unit = unit;
-        this.precision = precision;
+	public function new(display:String, desc:String, numberValueToChange:String, min:Float, max:Float, ?increment:Float = 1.0, ?shiftMultiplier:Float = 1.0,
+			?onChange:Void->Void, ?resetValue:Null<Float> = null, ?unit:String = '', ?precision:Int = 0)
+	{
+		super(display, desc);
 
-        updateDisplay();
-    }
+		theNumber = numberValueToChange;
+		this.min = min;
+		this.max = max;
+		this.increment = increment;
+		this.shiftMultiplier = shiftMultiplier;
+		this.onChange = onChange;
+		this.resetValue = resetValue;
+		this.unit = unit;
+		this.precision = precision;
 
-    override function left_H()
-    {
-        if (Reflect.field(Settings, theNumber) <= min)
-            Reflect.setField(Settings, theNumber, min);
-        else
-            Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) - (increment * funneMultiplier), precision));
+		updateDisplay();
+	}
 
-        updateDisplay();
-    }
+	override function left_H()
+	{
+		if (Reflect.field(Settings, theNumber) <= min)
+			Reflect.setField(Settings, theNumber, min);
+		else
+			Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) - (increment * funneMultiplier), precision));
 
-    override function right_H()
-    {
-        if (Reflect.field(Settings, theNumber) >= max)
-            Reflect.setField(Settings, theNumber, max);
-        else
-            Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) + (increment * funneMultiplier), precision));
+		updateDisplay();
+	}
 
-        updateDisplay();
-    }
+	override function right_H()
+	{
+		if (Reflect.field(Settings, theNumber) >= max)
+			Reflect.setField(Settings, theNumber, max);
+		else
+			Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) + (increment * funneMultiplier), precision));
 
-    override function update(elapsed:Float) 
-    {
-        if (FlxG.keys.pressed.SHIFT)
-            funneMultiplier = shiftMultiplier;
-        else
-            funneMultiplier = 1.0;
+		updateDisplay();
+	}
 
-        if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
-        {
-            Reflect.setField(Settings, theNumber, resetValue);
-            updateDisplay();
-        }
-        
-        super.update(elapsed);
-    }
+	override function update(elapsed:Float)
+	{
+		if (FlxG.keys.pressed.SHIFT)
+			funneMultiplier = shiftMultiplier;
+		else
+			funneMultiplier = 1.0;
 
-    function updateDisplay()
-    {
-        remove(alphaDisplay, true);
-        alphaDisplay.kill();
-        alphaDisplay.destroy();
+		if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
+		{
+			Reflect.setField(Settings, theNumber, resetValue);
+			updateDisplay();
+		}
 
-        alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false); 
-        add(alphaDisplay);
+		super.update(elapsed);
+	}
 
-        if (onChange != null)
-            onChange();
-    }
+	function updateDisplay()
+	{
+		remove(alphaDisplay, true);
+		alphaDisplay.kill();
+		alphaDisplay.destroy();
+
+		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		add(alphaDisplay);
+
+		if (onChange != null)
+			onChange();
+	}
 }
 
 class ValueOptionInt extends Option
 {
-    var theNumber:String;
-    var min:Int;
-    var max:Int;
-    var increment:Int;
-    var shiftMultiplier:Int;
-    var funneMultiplier:Int = 1;
-    var onChange:Void->Void;
-    var resetValue:Null<Int>;
-    var unit:String;
+	var theNumber:String;
+	var min:Int;
+	var max:Int;
+	var increment:Int;
+	var shiftMultiplier:Int;
+	var funneMultiplier:Int = 1;
+	var onChange:Void->Void;
+	var resetValue:Null<Int>;
+	var unit:String;
 
-    public function new(display:String, desc:String, numberValueToChange:String, min:Int, max:Int, ?increment:Int = 1, ?shiftMultiplier:Int = 1, ?onChange:Void->Void, ?resetValue:Null<Int> = null, ?unit:String = '')
-    {
-        super(display, desc);
-        
-        theNumber = numberValueToChange;
-        this.min = min;
-        this.max = max;
-        this.increment = increment;
-        this.shiftMultiplier = shiftMultiplier;
-        this.onChange = onChange;
-        this.resetValue = resetValue;
-        this.unit = unit;
+	public function new(display:String, desc:String, numberValueToChange:String, min:Int, max:Int, ?increment:Int = 1, ?shiftMultiplier:Int = 1,
+			?onChange:Void->Void, ?resetValue:Null<Int> = null, ?unit:String = '')
+	{
+		super(display, desc);
 
-        updateDisplay();
-    }
+		theNumber = numberValueToChange;
+		this.min = min;
+		this.max = max;
+		this.increment = increment;
+		this.shiftMultiplier = shiftMultiplier;
+		this.onChange = onChange;
+		this.resetValue = resetValue;
+		this.unit = unit;
 
-    override function left_H()
-    {
-        if (Reflect.field(Settings, theNumber) <= min)
-            Reflect.setField(Settings, theNumber, min);
-        else
-            Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) - (increment * funneMultiplier));
+		updateDisplay();
+	}
 
-        updateDisplay();
-    }
+	override function left_H()
+	{
+		if (Reflect.field(Settings, theNumber) <= min)
+			Reflect.setField(Settings, theNumber, min);
+		else
+			Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) - (increment * funneMultiplier));
 
-    override function right_H()
-    {
-        if (Reflect.field(Settings, theNumber) >= max)
-            Reflect.setField(Settings, theNumber, max);
-        else
-            Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) + (increment * funneMultiplier));
+		updateDisplay();
+	}
 
-        updateDisplay();
-    }
+	override function right_H()
+	{
+		if (Reflect.field(Settings, theNumber) >= max)
+			Reflect.setField(Settings, theNumber, max);
+		else
+			Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) + (increment * funneMultiplier));
 
-    override function update(elapsed:Float) 
-    {
-        if (FlxG.keys.pressed.SHIFT)
-            funneMultiplier = shiftMultiplier;
-        else
-            funneMultiplier = 1;
+		updateDisplay();
+	}
 
-        if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
-        {
-            Reflect.setField(Settings, theNumber, resetValue);
-            updateDisplay();
-        }
-        
-        super.update(elapsed);
-    }
+	override function update(elapsed:Float)
+	{
+		if (FlxG.keys.pressed.SHIFT)
+			funneMultiplier = shiftMultiplier;
+		else
+			funneMultiplier = 1;
 
-    function updateDisplay()
-    {
-        remove(alphaDisplay, true);
-        alphaDisplay.kill();
-        alphaDisplay.destroy();
+		if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
+		{
+			Reflect.setField(Settings, theNumber, resetValue);
+			updateDisplay();
+		}
 
-        alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false); 
-        add(alphaDisplay);
+		super.update(elapsed);
+	}
 
-        if (onChange != null)
-            onChange();
-    }
+	function updateDisplay()
+	{
+		remove(alphaDisplay, true);
+		alphaDisplay.kill();
+		alphaDisplay.destroy();
+
+		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		add(alphaDisplay);
+
+		if (onChange != null)
+			onChange();
+	}
 }
 
 class SelectionOption extends Option
 {
-    var theType:String;
-    var curSelected:Int;
-    var types:Array<String>;
-    
-    public function new(display:String, desc:String, typeToChange:String, types:Array<String>)
-    {
-        super(display, desc);
-        
-        theType = typeToChange;
-        this.types = types;
+	var theType:String;
+	var curSelected:Int;
+	var types:Array<String>;
 
-        updateDisplay();
+	public function new(display:String, desc:String, typeToChange:String, types:Array<String>)
+	{
+		super(display, desc);
 
-        curSelected = Reflect.field(Settings, theType);
-        changeSelection();
-    }
+		theType = typeToChange;
+		this.types = types;
 
-    override function left()
-    {
-        changeSelection(-1);
-    }
+		updateDisplay();
 
-    override function right()
-    {
-        changeSelection(1);
-    }
+		curSelected = Reflect.field(Settings, theType);
+		changeSelection();
+	}
 
-    function updateDisplay()
-    {
-        remove(alphaDisplay, true);
-        alphaDisplay.kill();
-        alphaDisplay.destroy();
+	override function left()
+	{
+		changeSelection(-1);
+	}
 
-        alphaDisplay = new Alphabet(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false); 
-        add(alphaDisplay);
-    }
+	override function right()
+	{
+		changeSelection(1);
+	}
 
-    function changeSelection(huh:Int = 0)
-    {
-        curSelected += huh;
+	function updateDisplay()
+	{
+		remove(alphaDisplay, true);
+		alphaDisplay.kill();
+		alphaDisplay.destroy();
 
-        if (huh != 0)
-            FlxG.sound.play(Paths.sound('scrollMenu'));
-        
-        if (curSelected < 0)
-            curSelected = types.length - 1;
-        if (curSelected > types.length - 1)
-            curSelected = 0;
+		alphaDisplay = new Alphabet(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
+		add(alphaDisplay);
+	}
 
-        Reflect.setField(Settings, theType, curSelected);
-        updateDisplay();
-    }
+	function changeSelection(huh:Int = 0)
+	{
+		curSelected += huh;
+
+		if (huh != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+
+		if (curSelected < 0)
+			curSelected = types.length - 1;
+		if (curSelected > types.length - 1)
+			curSelected = 0;
+
+		Reflect.setField(Settings, theType, curSelected);
+		updateDisplay();
+	}
 }
 
 class PressOption extends Option
 {
-    var funnePress:Void->Void;
-    
-    public function new(display:String, desc:String, press:Void->Void)
-    {
-        super(display, desc);
+	var funnePress:Void->Void;
 
-        this.funnePress = press;
-    }
+	public function new(display:String, desc:String, press:Void->Void)
+	{
+		super(display, desc);
 
-    override function press() 
-    {
-        funnePress();
-    }
+		this.funnePress = press;
+	}
+
+	override function press()
+	{
+		funnePress();
+	}
 }

@@ -1,13 +1,15 @@
 package shaders;
 
+import flixel.FlxG;
 import flixel.util.FlxColor;
 
 class CRTCurve extends flixel.system.FlxAssets.FlxShader
 {
-    // taken from https://github.com/Geokureli/Advent2020/blob/master/source/vfx/CrtShader.hx
-    
-    @:glFragmentSource('
+	// taken from https://github.com/Geokureli/Advent2020/blob/master/source/vfx/CrtShader.hx
+	@:glFragmentSource('
         #pragma header
+        
+        uniform float power;
         
         const float vignetteStrength = 0.1;
         const float colorOfsset = 1.0;
@@ -15,12 +17,12 @@ class CRTCurve extends flixel.system.FlxAssets.FlxShader
         vec2 curve(vec2 uv)
         {
             uv = (uv - 0.5) * 2.0;
-            uv *= 1.1;	
-            uv.x *= 1.0 + pow((abs(uv.y) / 5.0), 2.0);
-            uv.y *= 1.0 + pow((abs(uv.x) / 4.0), 2.0);
-            uv  = (uv / 2.0) + 0.5;
-            uv =  uv *0.92 + 0.04;
-            return uv;
+			uv *= 1.1;	
+			uv.x *= 1.0 + pow((abs(uv.y) / 5.0), 2.0) * power;
+			uv.y *= 1.0 + pow((abs(uv.x) / 4.0), 2.0) * power;
+			uv  = (uv / 2.0) + 0.5;
+			uv =  uv * 0.92 + 0.04;
+			return uv;
         }
         
         void main()
@@ -29,10 +31,6 @@ class CRTCurve extends flixel.system.FlxAssets.FlxShader
             vec2 uv = curve(openfl_TextureCoordv);
             vec3 col = texture2D(bitmap, uv).rgb;
             vec2 p = vec2(1.0, 1.0) * colorOfsset / openfl_TextureSize;
-        
-            // col.r = texture2D(bitmap, vec2(uv.x-p.x,uv.y    )).r;
-            // col.g = texture2D(bitmap, vec2(uv.x+p.x,uv.y    )).g;
-            // col.b = texture2D(bitmap, vec2(uv.x    ,uv.y-p.y)).b;
             
             // darken edges, vignette
             float vig = (16.0 * uv.x * uv.y * (1.0 - uv.x) * (1.0 - uv.y));
@@ -50,9 +48,10 @@ class CRTCurve extends flixel.system.FlxAssets.FlxShader
             
         }
     ')
-    
-    public function new()
-    {
-        super();
-    }
+	public function new(power:Float = 1.0)
+	{
+		super();
+
+		this.power.value = [power];
+	}
 }

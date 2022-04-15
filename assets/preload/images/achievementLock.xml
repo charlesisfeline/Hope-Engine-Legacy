@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="achievementLock.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="lock0000" x="5" y="5" width="75" height="100" pivotX="3.95" pivotY="3.8"/>
+	<SubTexture name="lock0001" x="5" y="5" width="75" height="100"/>
+	<SubTexture name="lock0002" x="5" y="110" width="74" height="100" frameX="0" frameY="0" frameWidth="75" frameHeight="100"/>
+	<SubTexture name="lock0003" x="5" y="110" width="74" height="100" frameX="0" frameY="0" frameWidth="75" frameHeight="100"/>
+</TextureAtlas>

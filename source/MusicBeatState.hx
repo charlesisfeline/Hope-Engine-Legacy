@@ -7,7 +7,10 @@ import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
 import lime.app.Application;
 import lime.system.System;
+import openfl.Assets as OpenFlAssets;
 import openfl.Lib;
+
+using StringTools;
 
 class MusicBeatState extends FlxUIState
 {
@@ -23,13 +26,15 @@ class MusicBeatState extends FlxUIState
 
 	private static var assets:Array<FlxSprite> = [];
 	private static var toDestroy:Array<FlxSprite> = [];
-	
+
+	var usesMouse:Bool = false;
+
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
 	{
 		if (Std.isOfType(Object, FlxSprite))
 		{
 			var spr:FlxSprite = cast(Object, FlxSprite);
-			
+
 			if (spr.graphic != null)
 			{
 				assets.push(spr);
@@ -51,43 +56,47 @@ class MusicBeatState extends FlxUIState
 	}
 
 	public function new()
-	{	
+	{
+		#if !html5
+		if (!Settings.cacheMusic)
+		{
+			for (sound in Paths.trackedSoundKeys)
+			{
+				OpenFlAssets.cache.clear(sound);
+				Paths.trackedSoundKeys.remove(sound);
+			}
+		}
+		#end
+
+		if (!Settings.cacheImages)
+		{
+			for (image in Paths.trackedImageKeys)
+			{
+				OpenFlAssets.cache.clear(image);
+				Paths.trackedImageKeys.remove(image);
+			}
+		}
+
 		super();
 		clean();
 	}
 
 	override function create()
 	{
-		(cast (Lib.current.getChildAt(0), Main)).setFPSCap(Settings.fpsCap);
-
-		if (!Settings.cacheImages)
-		{
-			openfl.Assets.cache.clear("shared/images");
-			openfl.Assets.cache.clear("assets/images");
-		}
-
-		super.create();
-
 		for (i in toDestroy)
 		{
 			i.destroy();
 			toDestroy.remove(i);
 		}
 
-		#if !html5
-		if (!Settings.cacheMusic)
-		{
-			openfl.Assets.cache.clear("songs");
-			openfl.Assets.cache.clear("music");
-		}
-		#end
+		super.create();
 
 		openfl.system.System.gc();
 	}
 
 	override function update(elapsed:Float)
 	{
-		//everyStep();
+		// everyStep();
 		var oldStep:Int = curStep;
 
 		updateCurStep();
@@ -96,10 +105,13 @@ class MusicBeatState extends FlxUIState
 		if (oldStep != curStep && curStep > 0)
 			stepHit();
 
-		if ((cast (Lib.current.getChildAt(0), Main)).getFPSCap() != Settings.fpsCap && Settings.fpsCap <= 290)
-			(cast (Lib.current.getChildAt(0), Main)).setFPSCap(Settings.fpsCap);
-
 		super.update(elapsed);
+
+		if (usesMouse)
+		{
+			if (FlxG.mouse.justMoved && !FlxG.mouse.visible)
+				FlxG.mouse.visible = true;
+		}
 	}
 
 	private function updateBeat():Void
@@ -132,9 +144,9 @@ class MusicBeatState extends FlxUIState
 
 	public function beatHit():Void
 	{
-		//do literally nothing dumbass
+		// do literally nothing dumbass
 	}
-	
+
 	public function fancyOpenURL(schmancy:String)
 	{
 		#if linux

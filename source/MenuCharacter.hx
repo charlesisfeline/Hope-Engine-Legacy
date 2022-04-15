@@ -10,27 +10,31 @@ import lime.tools.AssetType;
 import lime.utils.AssetType;
 import openfl.Assets;
 
-typedef MenuCharacterJSON = {
+typedef MenuCharacterJSON =
+{
 	var character:String;
 	var animations:MenuCharAnimations;
 	var settings:MenuCharSettings;
 }
 
-typedef MenuCharSettings = {
+typedef MenuCharSettings =
+{
 	var x:Null<Int>;
 	var y:Null<Int>;
 	var flipped:Null<Bool>;
 	var scale:Null<Float>;
 }
 
-typedef MenuCharAnimations = {
+typedef MenuCharAnimations =
+{
 	var idle:MenuCharAnimation;
 	var danceLeft:MenuCharAnimation;
 	var danceRight:MenuCharAnimation;
 	var hey:MenuCharAnimation;
 }
 
-typedef MenuCharAnimation = {
+typedef MenuCharAnimation =
+{
 	var prefix:Null<String>;
 	var offset:Null<Array<Float>>;
 	var indices:Null<Array<Int>>;
@@ -57,9 +61,10 @@ class CharacterSetting
 class MenuCharacter extends FlxSprite
 {
 	static var settings:Map<String, CharacterSetting> = new Map<String, CharacterSetting>();
+
 	public var danced:Bool = false;
 	public var curCharacter:String = '';
-	
+
 	var flipped:Bool = false;
 	var scaleDeezNuts:Float = 1.0;
 
@@ -68,7 +73,7 @@ class MenuCharacter extends FlxSprite
 	public function new(x:Int, y:Int, scale:Float, flipped:Bool)
 	{
 		super(x, y);
-		
+
 		if (Paths.currentMod == null)
 		{
 			if (curCharacter != '')
@@ -84,7 +89,7 @@ class MenuCharacter extends FlxSprite
 
 		if (pain.settings != null)
 			settings.set(pain.character, new CharacterSetting(pain.settings.x, pain.settings.y, pain.settings.scale, pain.settings.flipped));
-		
+
 		this.flipped = flipped;
 		this.scaleDeezNuts = scale;
 		antialiasing = true;
@@ -108,19 +113,8 @@ class MenuCharacter extends FlxSprite
 		else
 			return;
 
-
-		if (Paths.currentMod == null)
-		{
-			if (curCharacter != '')
-				pain = cast Json.parse(Assets.getText('assets/images/menuCharacters/$curCharacter.json'));
-		}
-		#if FILESYSTEM
-		else
-		{
-			if (curCharacter != '')
-				pain = cast Json.parse(File.getContent('mods/${Paths.currentMod}/assets/images/menuCharacters/$curCharacter.json'));
-		}
-		#end
+		if (curCharacter != '')
+			pain = cast Json.parse(File.getContent(Paths.menuCharacterJSON(curCharacter)));
 
 		if (pain.settings != null)
 			settings.set(pain.character, new CharacterSetting(pain.settings.x, pain.settings.y, pain.settings.scale, pain.settings.flipped));
@@ -133,11 +127,13 @@ class MenuCharacter extends FlxSprite
 		if (fuck.animations != null)
 		{
 			if (fuck.animations.danceLeft != null)
-				addAnimation("danceLeft", fuck.animations.danceLeft.prefix, fuck.animations.danceLeft.fps, fuck.animations.danceLeft.indices, fuck.animations.danceLeft.looped);
+				addAnimation("danceLeft", fuck.animations.danceLeft.prefix, fuck.animations.danceLeft.fps, fuck.animations.danceLeft.indices,
+					fuck.animations.danceLeft.looped);
 
 			if (fuck.animations.danceRight != null)
-				addAnimation("danceRight", fuck.animations.danceRight.prefix, fuck.animations.danceRight.fps, fuck.animations.danceRight.indices, fuck.animations.danceRight.looped);
-			
+				addAnimation("danceRight", fuck.animations.danceRight.prefix, fuck.animations.danceRight.fps, fuck.animations.danceRight.indices,
+					fuck.animations.danceRight.looped);
+
 			if (fuck.animations.hey != null)
 				addAnimation("hey", fuck.animations.hey.prefix, fuck.animations.hey.fps, fuck.animations.hey.indices, fuck.animations.hey.looped);
 
@@ -146,7 +142,7 @@ class MenuCharacter extends FlxSprite
 		}
 
 		var setting:CharacterSetting = settings[character];
-		
+
 		if (setting != null)
 		{
 			setGraphicSize(Std.int(width * setting.scale));

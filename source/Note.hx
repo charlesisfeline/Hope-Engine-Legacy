@@ -11,6 +11,7 @@ import flixel.util.FlxColor;
 import haxe.Json;
 
 using StringTools;
+
 #if FILESYSTEM
 import sys.io.File;
 #end
@@ -45,9 +46,9 @@ class Note extends FlxSprite
 	public var angleLock:Null<Bool> = true;
 	public var alphaLock:Null<Bool> = true;
 	public var visibleLock:Null<Bool> = true;
+
 	// public var scaleLockX:Null<Bool> = true;
 	// public var scaleLockY:Null<Bool> = true;
-
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
@@ -61,7 +62,8 @@ class Note extends FlxSprite
 
 	var noteStyle:String = "normal";
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal", ?skin:FlxAtlasFrames)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal",
+			?skin:FlxAtlasFrames)
 	{
 		super();
 
@@ -73,9 +75,9 @@ class Note extends FlxSprite
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
-		
+
 		this.noteType = setNoteType;
-		
+
 		x += 50;
 		// MAKE SURE ITS DEFINITELY OFF SCREEN?
 		y -= 2000;
@@ -94,8 +96,7 @@ class Note extends FlxSprite
 				loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
 				#if FILESYSTEM
-				if (Settings.noteSkin != "default" && 
-					options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel") != null)
+				if (Settings.noteSkin != "default" && options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel") != null)
 					loadGraphic(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel"), true, 17, 17);
 				#end
 
@@ -109,8 +110,8 @@ class Note extends FlxSprite
 					loadGraphic(Paths.image('pixelUI/arrowEnds'), true, 7, 6);
 
 					#if FILESYSTEM
-					if (Settings.noteSkin != "default" && 
-						options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixelEnds") != null)
+					if (Settings.noteSkin != "default"
+						&& options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixelEnds") != null)
 						loadGraphic(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixelEnds"), true, 7, 6);
 					#end
 
@@ -124,7 +125,6 @@ class Note extends FlxSprite
 					animation.add('redhold', [3]);
 					animation.add('bluehold', [1]);
 				}
-			
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
@@ -153,18 +153,22 @@ class Note extends FlxSprite
 
 		switch (noteData)
 		{
-			case 0: animation.play('purpleScroll');
-			case 1: animation.play('blueScroll');
-			case 2: animation.play('greenScroll');
-			case 3: animation.play('redScroll');
+			case 0:
+				animation.play('purpleScroll');
+			case 1:
+				animation.play('blueScroll');
+			case 2:
+				animation.play('greenScroll');
+			case 3:
+				animation.play('redScroll');
 		}
 
 		var pissShit = noteStyle == "pixel" ? "-pixel" : "";
-		
+
 		if (pissShit == "-pixel")
 			antialiasing = false;
 
-		if (Settings.downscroll && sustainNote) 
+		if (Settings.downscroll && sustainNote)
 			flipY = true;
 
 		if (isSustainNote && prevNote != null)
@@ -187,15 +191,18 @@ class Note extends FlxSprite
 
 			if (prevNote.isSustainNote)
 			{
-
 				switch (prevNote.noteData)
 				{
-					case 0: prevNote.animation.play('purplehold');
-					case 1: prevNote.animation.play('bluehold');
-					case 2: prevNote.animation.play('greenhold');
-					case 3: prevNote.animation.play('redhold');
+					case 0:
+						prevNote.animation.play('purplehold');
+					case 1:
+						prevNote.animation.play('bluehold');
+					case 2:
+						prevNote.animation.play('greenhold');
+					case 3:
+						prevNote.animation.play('redhold');
 				}
-				
+
 				prevNote.scale.y *= Conductor.stepCrochet / 100 * 1.5 * Math.abs(PlayState.instance.globalScrollSpeed);
 				prevNote.updateHitbox();
 			}
@@ -211,7 +218,8 @@ class Note extends FlxSprite
 	{
 		var a = type.split("/");
 
-		if (a.length != 2) return;
+		if (a.length != 2)
+			return;
 
 		#if FILESYSTEM
 		var noteJSON = Json.parse(File.getContent(Sys.getCwd() + Paths.noteJSON(a[1], a[0])));
@@ -220,7 +228,8 @@ class Note extends FlxSprite
 		#end
 
 		var previousMod = Paths.currentMod;
-		if (a[0] != "hopeEngine") Paths.setCurrentMod(a[0]);
+		if (a[0] != "hopeEngine")
+			Paths.setCurrentMod(a[0]);
 		frames = Paths.getSparrowAtlas("styles/" + noteJSON.assetName + (noteStyle == "pixel" ? "-pixel" : ""));
 		Paths.setCurrentMod(previousMod);
 
@@ -229,7 +238,7 @@ class Note extends FlxSprite
 		this.canMiss = (noteJSON.canMiss != null ? noteJSON.canMiss : false);
 		this.offsetMultiplier = (noteJSON.offsetMultipler != null ? noteJSON.offsetMultipler : [1, 1]);
 		this.setScale = (noteJSON.scale != null ? noteJSON.scale : 1);
-		
+
 		this.positionLockX = (noteJSON.positionLockX != null ? noteJSON.positionLockX : true);
 		this.positionLockY = (noteJSON.positionLockY != null ? noteJSON.positionLockY : true);
 		this.angleLock = (noteJSON.angleLock != null ? noteJSON.angleLock : true);
@@ -243,32 +252,23 @@ class Note extends FlxSprite
 			if (isSustainNote)
 			{
 				// THIS FORMATTING LOOKS BETTER IN VSCODE I SWEAR
-				animation.addByPrefix('holdend', noteJSON.sprites.up.holdEnd.prefix, 
-											     noteJSON.sprites.up.holdEnd.frameRate, 
-												 noteJSON.sprites.up.holdEnd.looped, 
-												 noteJSON.sprites.up.holdEnd.flipX, 
-												 noteJSON.sprites.up.holdEnd.flipY);
+				animation.addByPrefix('holdend', noteJSON.sprites.up.holdEnd.prefix, noteJSON.sprites.up.holdEnd.frameRate,
+					noteJSON.sprites.up.holdEnd.looped, noteJSON.sprites.up.holdEnd.flipX, noteJSON.sprites.up.holdEnd.flipY);
 				animation.play('holdend');
-	
+
 				if (prevNote.isSustainNote)
 				{
-					prevNote.animation.addByPrefix('hold', noteJSON.sprites.up.holdPiece.prefix,
-														   noteJSON.sprites.up.holdPiece.frameRate,
-														   noteJSON.sprites.up.holdPiece.looped,
-														   noteJSON.sprites.up.holdPiece.flipX,
-														   noteJSON.sprites.up.holdPiece.flipY);
-														   
+					prevNote.animation.addByPrefix('hold', noteJSON.sprites.up.holdPiece.prefix, noteJSON.sprites.up.holdPiece.frameRate,
+						noteJSON.sprites.up.holdPiece.looped, noteJSON.sprites.up.holdPiece.flipX, noteJSON.sprites.up.holdPiece.flipY);
+
 					prevNote.animation.play('hold');
 					prevNote.updateHitbox();
 				}
 			}
 			else
 			{
-				animation.addByPrefix('Scroll', noteJSON.sprites.up.note.prefix,
-												noteJSON.sprites.up.note.frameRate,
-												noteJSON.sprites.up.note.looped,
-												noteJSON.sprites.up.note.flipX,
-												noteJSON.sprites.up.note.flipY);
+				animation.addByPrefix('Scroll', noteJSON.sprites.up.note.prefix, noteJSON.sprites.up.note.frameRate, noteJSON.sprites.up.note.looped,
+					noteJSON.sprites.up.note.flipX, noteJSON.sprites.up.note.flipY);
 				animation.play('Scroll');
 			}
 		}
@@ -277,57 +277,33 @@ class Note extends FlxSprite
 			if (isSustainNote)
 			{
 				// THIS FORMATTING LOOKS BETTER IN VSCODE I SWEAR
-				animation.addByPrefix('purpleholdend', noteJSON.sprites.left.holdEnd.prefix, 
-												 	   noteJSON.sprites.left.holdEnd.frameRate, 
-												 	   noteJSON.sprites.left.holdEnd.looped, 
-												 	   noteJSON.sprites.left.holdEnd.flipX, 
-													   noteJSON.sprites.left.holdEnd.flipY);
+				animation.addByPrefix('purpleholdend', noteJSON.sprites.left.holdEnd.prefix, noteJSON.sprites.left.holdEnd.frameRate,
+					noteJSON.sprites.left.holdEnd.looped, noteJSON.sprites.left.holdEnd.flipX, noteJSON.sprites.left.holdEnd.flipY);
 
-				animation.addByPrefix('blueholdend', noteJSON.sprites.down.holdEnd.prefix, 
-													 noteJSON.sprites.down.holdEnd.frameRate, 
-													 noteJSON.sprites.down.holdEnd.looped, 
-													 noteJSON.sprites.down.holdEnd.flipX, 
-													 noteJSON.sprites.down.holdEnd.flipY);
+				animation.addByPrefix('blueholdend', noteJSON.sprites.down.holdEnd.prefix, noteJSON.sprites.down.holdEnd.frameRate,
+					noteJSON.sprites.down.holdEnd.looped, noteJSON.sprites.down.holdEnd.flipX, noteJSON.sprites.down.holdEnd.flipY);
 
-				animation.addByPrefix('greenholdend', noteJSON.sprites.up.holdEnd.prefix, 
-													  noteJSON.sprites.up.holdEnd.frameRate, 
-													  noteJSON.sprites.up.holdEnd.looped, 
-													  noteJSON.sprites.up.holdEnd.flipX, 
-													  noteJSON.sprites.up.holdEnd.flipY);
-				
-				animation.addByPrefix('redholdend', noteJSON.sprites.right.holdEnd.prefix,
-													noteJSON.sprites.right.holdEnd.frameRate, 
-													noteJSON.sprites.right.holdEnd.looped, 
-													noteJSON.sprites.right.holdEnd.flipX, 
-													noteJSON.sprites.right.holdEnd.flipY);
-													 
+				animation.addByPrefix('greenholdend', noteJSON.sprites.up.holdEnd.prefix, noteJSON.sprites.up.holdEnd.frameRate,
+					noteJSON.sprites.up.holdEnd.looped, noteJSON.sprites.up.holdEnd.flipX, noteJSON.sprites.up.holdEnd.flipY);
+
+				animation.addByPrefix('redholdend', noteJSON.sprites.right.holdEnd.prefix, noteJSON.sprites.right.holdEnd.frameRate,
+					noteJSON.sprites.right.holdEnd.looped, noteJSON.sprites.right.holdEnd.flipX, noteJSON.sprites.right.holdEnd.flipY);
+
 				animation.play(dirs[this.noteData] + 'holdend');
-	
+
 				if (prevNote.isSustainNote)
 				{
-					prevNote.animation.addByPrefix('purplehold', noteJSON.sprites.left.holdPiece.prefix,
-														   		 noteJSON.sprites.left.holdPiece.frameRate,
-														   		 noteJSON.sprites.left.holdPiece.looped,
-														   		 noteJSON.sprites.left.holdPiece.flipX,
-														   	   	 noteJSON.sprites.left.holdPiece.flipY);
+					prevNote.animation.addByPrefix('purplehold', noteJSON.sprites.left.holdPiece.prefix, noteJSON.sprites.left.holdPiece.frameRate,
+						noteJSON.sprites.left.holdPiece.looped, noteJSON.sprites.left.holdPiece.flipX, noteJSON.sprites.left.holdPiece.flipY);
 
-					prevNote.animation.addByPrefix('bluehold', noteJSON.sprites.down.holdPiece.prefix,
-															   noteJSON.sprites.down.holdPiece.frameRate,
-															   noteJSON.sprites.down.holdPiece.looped,
-															   noteJSON.sprites.down.holdPiece.flipX,
-															   noteJSON.sprites.down.holdPiece.flipY);
+					prevNote.animation.addByPrefix('bluehold', noteJSON.sprites.down.holdPiece.prefix, noteJSON.sprites.down.holdPiece.frameRate,
+						noteJSON.sprites.down.holdPiece.looped, noteJSON.sprites.down.holdPiece.flipX, noteJSON.sprites.down.holdPiece.flipY);
 
-					prevNote.animation.addByPrefix('greenhold', noteJSON.sprites.up.holdPiece.prefix,
-																noteJSON.sprites.up.holdPiece.frameRate,
-																noteJSON.sprites.up.holdPiece.looped,
-																noteJSON.sprites.up.holdPiece.flipX,
-																noteJSON.sprites.up.holdPiece.flipY);
+					prevNote.animation.addByPrefix('greenhold', noteJSON.sprites.up.holdPiece.prefix, noteJSON.sprites.up.holdPiece.frameRate,
+						noteJSON.sprites.up.holdPiece.looped, noteJSON.sprites.up.holdPiece.flipX, noteJSON.sprites.up.holdPiece.flipY);
 
-					prevNote.animation.addByPrefix('redhold', noteJSON.sprites.right.holdPiece.prefix,
-															  noteJSON.sprites.right.holdPiece.frameRate,
-															  noteJSON.sprites.right.holdPiece.looped,
-															  noteJSON.sprites.right.holdPiece.flipX,
-															  noteJSON.sprites.right.holdPiece.flipY);
+					prevNote.animation.addByPrefix('redhold', noteJSON.sprites.right.holdPiece.prefix, noteJSON.sprites.right.holdPiece.frameRate,
+						noteJSON.sprites.right.holdPiece.looped, noteJSON.sprites.right.holdPiece.flipX, noteJSON.sprites.right.holdPiece.flipY);
 
 					prevNote.animation.play(dirs[this.noteData] + 'hold');
 					prevNote.updateHitbox();
@@ -335,30 +311,18 @@ class Note extends FlxSprite
 			}
 			else
 			{
-				animation.addByPrefix('purpleScroll', noteJSON.sprites.left.note.prefix,
-													  noteJSON.sprites.left.note.frameRate,
-													  noteJSON.sprites.left.note.looped,
-													  noteJSON.sprites.left.note.flipX,
-													  noteJSON.sprites.left.note.flipY);
-				
-				animation.addByPrefix('blueScroll', noteJSON.sprites.down.note.prefix,
-													noteJSON.sprites.down.note.frameRate,
-													noteJSON.sprites.down.note.looped,
-													noteJSON.sprites.down.note.flipX,
-													noteJSON.sprites.down.note.flipY);
+				animation.addByPrefix('purpleScroll', noteJSON.sprites.left.note.prefix, noteJSON.sprites.left.note.frameRate,
+					noteJSON.sprites.left.note.looped, noteJSON.sprites.left.note.flipX, noteJSON.sprites.left.note.flipY);
 
-				animation.addByPrefix('greenScroll', noteJSON.sprites.up.note.prefix,
-													 noteJSON.sprites.up.note.frameRate,
-													 noteJSON.sprites.up.note.looped,
-													 noteJSON.sprites.up.note.flipX,
-													 noteJSON.sprites.up.note.flipY);
+				animation.addByPrefix('blueScroll', noteJSON.sprites.down.note.prefix, noteJSON.sprites.down.note.frameRate,
+					noteJSON.sprites.down.note.looped, noteJSON.sprites.down.note.flipX, noteJSON.sprites.down.note.flipY);
 
-				animation.addByPrefix('redScroll', noteJSON.sprites.right.note.prefix,
-												   noteJSON.sprites.right.note.frameRate,
-												   noteJSON.sprites.right.note.looped,
-												   noteJSON.sprites.right.note.flipX,
-												   noteJSON.sprites.right.note.flipY);
-												
+				animation.addByPrefix('greenScroll', noteJSON.sprites.up.note.prefix, noteJSON.sprites.up.note.frameRate, noteJSON.sprites.up.note.looped,
+					noteJSON.sprites.up.note.flipX, noteJSON.sprites.up.note.flipY);
+
+				animation.addByPrefix('redScroll', noteJSON.sprites.right.note.prefix, noteJSON.sprites.right.note.frameRate,
+					noteJSON.sprites.right.note.looped, noteJSON.sprites.right.note.flipX, noteJSON.sprites.right.note.flipY);
+
 				animation.play(dirs[this.noteData] + 'Scroll');
 			}
 
@@ -369,20 +333,28 @@ class Note extends FlxSprite
 				{
 					switch (noteData)
 					{
-						case 0: animOffset = noteJSON.sprites.left.holdEnd.offset;
-						case 1: animOffset = noteJSON.sprites.down.holdEnd.offset;
-						case 2: animOffset = noteJSON.sprites.up.holdEnd.offset;
-						case 3: animOffset = noteJSON.sprites.right.holdEnd.offset;
+						case 0:
+							animOffset = noteJSON.sprites.left.holdEnd.offset;
+						case 1:
+							animOffset = noteJSON.sprites.down.holdEnd.offset;
+						case 2:
+							animOffset = noteJSON.sprites.up.holdEnd.offset;
+						case 3:
+							animOffset = noteJSON.sprites.right.holdEnd.offset;
 					}
 				}
 				else if (animation.curAnim.name.endsWith("hold"))
 				{
 					switch (noteData)
 					{
-						case 0: animOffset = noteJSON.sprites.left.holdPiece.offset;
-						case 1: animOffset = noteJSON.sprites.down.holdPiece.offset;
-						case 2: animOffset = noteJSON.sprites.up.holdPiece.offset;
-						case 3: animOffset = noteJSON.sprites.right.holdPiece.offset;
+						case 0:
+							animOffset = noteJSON.sprites.left.holdPiece.offset;
+						case 1:
+							animOffset = noteJSON.sprites.down.holdPiece.offset;
+						case 2:
+							animOffset = noteJSON.sprites.up.holdPiece.offset;
+						case 3:
+							animOffset = noteJSON.sprites.right.holdPiece.offset;
 					}
 				}
 			}
@@ -390,10 +362,14 @@ class Note extends FlxSprite
 			{
 				switch (noteData)
 				{
-					case 0: animOffset = noteJSON.sprites.left.note.offset;
-					case 1: animOffset = noteJSON.sprites.down.note.offset;
-					case 2: animOffset = noteJSON.sprites.up.note.offset;
-					case 3: animOffset = noteJSON.sprites.right.note.offset;
+					case 0:
+						animOffset = noteJSON.sprites.left.note.offset;
+					case 1:
+						animOffset = noteJSON.sprites.down.note.offset;
+					case 2:
+						animOffset = noteJSON.sprites.up.note.offset;
+					case 3:
+						animOffset = noteJSON.sprites.right.note.offset;
 				}
 			}
 		}
@@ -405,7 +381,7 @@ class Note extends FlxSprite
 
 		if (animOffset == null)
 			animOffset = [0, 0];
-		
+
 		if (this.upSpriteOnly)
 			unblandNote('direction');
 
@@ -413,7 +389,7 @@ class Note extends FlxSprite
 			unblandNote(noteJSON.unblandWhat);
 
 		updateHitbox();
-		
+
 		setGraphicSize(Std.int(width * this.setScale));
 
 		if (noteType != "hopeEngine/normal") // huh, normal notes have an offset of their own...
@@ -460,7 +436,7 @@ class Note extends FlxSprite
 					&& strumTime < Conductor.songPosition + Conductor.safeZoneOffset * offsetMultiplier[1])
 					canBeHit = true;
 				else
-					canBeHit = false;		
+					canBeHit = false;
 			}
 
 			if (strumTime < Conductor.songPosition - Conductor.safeZoneOffset * Conductor.timeScale && !wasGoodHit)

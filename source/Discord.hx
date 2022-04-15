@@ -9,7 +9,6 @@ using StringTools;
 
 class DiscordClient
 {
-
 	public function new()
 	{
 		trace("Discord Client starting...");
@@ -38,10 +37,10 @@ class DiscordClient
 	static function onReady()
 	{
 		DiscordRpc.presence({
-			details: "Title Screen",
+			details: "In the Menus",
 			state: null,
 			largeImageKey: 'piss', // Piss
-			largeImageText: "Friday Night Funkin' | Hope Engine"
+			largeImageText: "Hope Engine " + MainMenuState.hopeEngineVer
 		});
 	}
 
@@ -64,9 +63,9 @@ class DiscordClient
 		trace("Discord Client initialized");
 	}
 
-	public static function changePresence(details:String, state:Null<String> = "", ?smallImageKey : String, ?hasStartTimestamp : Bool, ?endTimestamp: Float)
+	public static function changePresence(details:String, state:Null<String> = "", ?smallImageKey:String, ?hasStartTimestamp:Bool, ?endTimestamp:Float)
 	{
-		var startTimestamp:Float = if(hasStartTimestamp) Date.now().getTime() else 0;
+		var startTimestamp:Float = if (hasStartTimestamp) Date.now().getTime() else 0;
 
 		if (endTimestamp > 0)
 			endTimestamp = startTimestamp + endTimestamp;
@@ -75,11 +74,11 @@ class DiscordClient
 			details: details,
 			state: state,
 			largeImageKey: 'piss',
-			largeImageText: "Friday Night Funkin'",
-			smallImageKey : smallImageKey,
+			largeImageText: "Hope Engine " + MainMenuState.hopeEngineVer,
+			smallImageKey: smallImageKey,
 			// Obtained times are in milliseconds so they are divided so Discord can use it
-			startTimestamp : Std.int(startTimestamp / 1000),
-            endTimestamp : Std.int(endTimestamp / 1000)
+			startTimestamp: Std.int(startTimestamp / 1000),
+			endTimestamp: Std.int(endTimestamp / 1000)
 		});
 	}
 }

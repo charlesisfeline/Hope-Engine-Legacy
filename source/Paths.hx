@@ -8,7 +8,6 @@ import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
-
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -22,13 +21,11 @@ class Paths
 	static var currentLevel:String;
 	public static var currentMod:String;
 
-	#if (haxe >= "4.0.0")
 	public static var customImages:Map<String, FlxGraphic> = new Map();
-	public static var customSongs:Map<String, Sound> = new Map();
-	#else
-	public static var customImages:Map<String, FlxGraphic> = new Map<String, FlxGraphic>();
-	public static var customSongs:Map<String, Sound> = new Map<String, Sound>();
-	#end
+	public static var customSounds:Map<String, Sound> = new Map();
+
+	public static var trackedSoundKeys:Array<String> = [];
+	public static var trackedImageKeys:Array<String> = [];
 
 	static public function setCurrentLevel(name:String)
 	{
@@ -50,11 +47,11 @@ class Paths
 			var levelPath = getLibraryPathForce(file, currentLevel);
 			if (OpenFlAssets.exists(levelPath, type))
 				return levelPath;
-
-			levelPath = getLibraryPathForce(file, "shared");
-			if (OpenFlAssets.exists(levelPath, type))
-				return levelPath;
 		}
+
+		var levelPath = getLibraryPathForce(file, "shared");
+		if (OpenFlAssets.exists(levelPath, type))
+			return levelPath;
 
 		return getPreloadPath(file);
 	}
@@ -72,10 +69,10 @@ class Paths
 		return doesIt;
 	}
 
-	static public function destroyCustomImages() 
+	static public function destroyCustomImages()
 	{
 		#if FILESYSTEM
-		for (key in customImages.keys())	
+		for (key in customImages.keys())
 		{
 			var piss:FlxGraphic = customImages.get(key);
 			if (piss != null)
@@ -87,6 +84,18 @@ class Paths
 		}
 
 		customImages.clear();
+		#end
+	}
+
+	static public function clearCustomSoundCache()
+	{
+		#if FILESYSTEM
+		for (key in customSounds.keys())
+		{
+			OpenFlAssets.cache.clear(key);
+		}
+
+		customSounds.clear();
 		#end
 	}
 
@@ -109,18 +118,13 @@ class Paths
 	{
 		#if FILESYSTEM
 		if (currentMod != null && FileSystem.exists(modFile(file, type, library)))
-		{
-			if (OpenFlAssets.exists(modFile(file, type, library)))
-				return modFile(file, type, library);
-			
 			return File.getContent(modFile(file, type, library));
-		}
 		#end
 
 		return getPath(file, type, library);
 	}
 
-	inline static public function modchart(key:String,?library:String)
+	inline static public function modchart(key:String, ?library:String)
 	{
 		return getPath('data/$key.hemc', TEXT, library);
 	}
@@ -155,13 +159,70 @@ class Paths
 		return 'assets/data/$key/dialogueSettings.json';
 	}
 
+	inline static public function cautionFile(key:String)
+	{
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modCautionFile(key)))
+			return modCautionFile(key);
+		#end
+
+		return 'assets/data/$key/caution.txt';
+	}
+
+	inline static public function menuCharacterJSON(key:String)
+	{
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modMenuCharacterJSON(key)))
+			return modMenuCharacterJSON(key);
+		#end
+
+		return 'assets/images/menuCharacters/$key.json';
+	}
+
+	inline static public function menuCharacterPNG(key:String)
+	{
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modMenuCharacterPNG(key)))
+			return modMenuCharacterPNG(key);
+		#end
+
+		return 'assets/images/menuCharacters/$key.png';
+	}
+
+	inline static public function menuCharacterXML(key:String)
+	{
+		#if FILESYSTEM
+		if (currentMod != null && FileSystem.exists(modMenuCharacterXML(key)))
+			return modMenuCharacterXML(key);
+		#end
+
+		return 'assets/images/menuCharacters/$key.xml';
+	}
+
+	inline static public function achievementList()
+	{
+		// moddable achievements soon!
+		// sorry!
+		// #if FILESYSTEM
+		// if (currentMod != null && FileSystem.exists(modAchievementList(key)))
+		// 	return modAchievementList(key);
+		// #end
+
+		return 'assets/_achievements/_achievementList.txt';
+	}
+
+	inline static public function achievement(key:String)
+	{
+		return 'assets/_achievements/$key.json';
+	}
+
 	inline static public function txt(key:String, ?library:String)
 	{
 		#if FILESYSTEM
 		if (currentMod != null && FileSystem.exists(modTxt(key, library)))
 			return modTxt(key, library);
 		#end
-		
+
 		return getPath('data/$key.txt', TEXT, library);
 	}
 
@@ -176,7 +237,7 @@ class Paths
 		if (currentMod != null && FileSystem.exists(modJson(key, library)))
 			return modJson(key, library);
 		#end
-		
+
 		return getPath('data/$key.json', TEXT, library);
 	}
 
@@ -186,7 +247,7 @@ class Paths
 		if (currentMod != null && FileSystem.exists('mods/$currentMod/assets/_characters/$key.json'))
 			return 'mods/$currentMod/assets/_characters/$key.json';
 		#end
-		
+
 		return 'assets/_characters/$key.json';
 	}
 
@@ -212,92 +273,160 @@ class Paths
 
 	static public function sound(key:String, ?library:String):Dynamic
 	{
+		var pissOff:String;
+
 		#if FILESYSTEM
-		var pissOff = modSound(key, library);
+		pissOff = modSound(key, library);
 		if (FileSystem.exists(pissOff))
 		{
-			if (!customSongs.exists(pissOff))
-				customSongs.set(pissOff, Sound.fromFile(pissOff));
-			return customSongs.get(pissOff);
+			if (!customSounds.exists(pissOff))
+			{
+				var piss:Sound = Sound.fromFile(pissOff);
+				customSounds.set(pissOff, piss);
+				OpenFlAssets.cache.setSound(pissOff, piss);
+			}
+
+			if (!trackedSoundKeys.contains(pissOff))
+				trackedSoundKeys.push(pissOff);
+
+			return customSounds.get(pissOff);
 		}
 		#end
-		
-		return getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+
+		pissOff = getPath('sounds/$key.$SOUND_EXT', SOUND, library);
+
+		if (!trackedSoundKeys.contains(pissOff))
+			trackedSoundKeys.push(pissOff);
+
+		return pissOff;
 	}
 
 	inline static public function soundRandom(key:String, min:Int, max:Int, ?library:String)
-	{	
+	{
 		return sound(key + FlxG.random.int(min, max), library);
 	}
 
 	inline static public function music(key:String, ?library:String):Dynamic
 	{
+		var pissOff:String;
+
 		#if FILESYSTEM
-		var pissOff = modMusic(key, library);
+		pissOff = modMusic(key, library);
 		if (FileSystem.exists(pissOff))
 		{
-			if (!customSongs.exists(pissOff))
-				customSongs.set(pissOff, Sound.fromFile(pissOff));
-			return customSongs.get(pissOff);
+			if (!customSounds.exists(pissOff))
+			{
+				var piss:Sound = Sound.fromFile(pissOff);
+				customSounds.set(pissOff, piss);
+				OpenFlAssets.cache.setSound(pissOff, piss);
+			}
+
+			if (!trackedSoundKeys.contains(pissOff))
+				trackedSoundKeys.push(pissOff);
+
+			return customSounds.get(pissOff);
 		}
 		#end
 
-		return getPath('music/$key.$SOUND_EXT', MUSIC, library);
+		pissOff = getPath('music/$key.$SOUND_EXT', MUSIC, library);
+
+		if (!trackedSoundKeys.contains(pissOff))
+			trackedSoundKeys.push(pissOff);
+
+		return pissOff;
 	}
 
 	inline static public function voices(song:String):Dynamic
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var pissOff:String;
 
 		#if FILESYSTEM
-		var pissOff = modVoices(songLowercase);
+		pissOff = modVoices(songLowercase);
 		if (FileSystem.exists(pissOff))
 		{
-			if (!customSongs.exists(pissOff))
-				customSongs.set(pissOff, Sound.fromFile(pissOff));
-			return customSongs.get(pissOff);
+			if (!customSounds.exists(pissOff))
+			{
+				var piss:Sound = Sound.fromFile(pissOff);
+				customSounds.set(pissOff, piss);
+				OpenFlAssets.cache.setSound(pissOff, piss);
+			}
+
+			if (!trackedSoundKeys.contains(pissOff))
+				trackedSoundKeys.push(pissOff);
+
+			return customSounds.get(pissOff);
 		}
 		#end
 
-		return 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+		pissOff = 'songs:assets/songs/${songLowercase}/Voices.$SOUND_EXT';
+
+		if (!trackedSoundKeys.contains(pissOff))
+			trackedSoundKeys.push(pissOff);
+
+		return pissOff;
 	}
 
 	inline static public function inst(song:String):Dynamic
 	{
 		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
-		
+		var pissOff:String;
+
 		#if FILESYSTEM
-		var pissOff = modInst(songLowercase);
+		pissOff = modInst(songLowercase);
 		if (FileSystem.exists(pissOff))
 		{
-			if (!customSongs.exists(pissOff))
-				customSongs.set(pissOff, Sound.fromFile(pissOff));
-			return customSongs.get(pissOff);
+			if (!customSounds.exists(pissOff))
+			{
+				var piss:Sound = Sound.fromFile(pissOff);
+				customSounds.set(pissOff, piss);
+				OpenFlAssets.cache.setSound(pissOff, piss);
+			}
+
+			if (!trackedSoundKeys.contains(pissOff))
+				trackedSoundKeys.push(pissOff);
+
+			return customSounds.get(pissOff);
 		}
 		#end
-		
-		return 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+
+		pissOff = 'songs:assets/songs/${songLowercase}/Inst.$SOUND_EXT';
+
+		if (!trackedSoundKeys.contains(pissOff))
+			trackedSoundKeys.push(pissOff);
+
+		return pissOff;
 	}
 
 	inline static public function image(key:String, ?library:String):Dynamic
 	{
+		var pissOff:String;
+
 		#if FILESYSTEM
-		var pissOff = modImage(key, library);
+		pissOff = modImage(key, library);
 		if (FileSystem.exists(pissOff))
 		{
 			if (!customImages.exists(pissOff))
 			{
 				var a = FlxGraphic.fromBitmapData(BitmapData.fromFile(pissOff));
 				a.persist = true;
-				
+
 				customImages.set(pissOff, a);
 			}
+
+			if (!trackedImageKeys.contains(pissOff))
+				trackedImageKeys.push(pissOff);
 
 			return customImages.get(pissOff);
 		}
 		#end
-		
-		return getPath('images/$key.png', IMAGE, library);
+
+		pissOff = getPath('images/$key.png', IMAGE, library);
+
+		if (!trackedImageKeys.contains(pissOff))
+			trackedImageKeys.push(pissOff);
+
+		return pissOff;
 	}
 
 	inline static public function stageScript(key:String)
@@ -324,7 +453,7 @@ class Paths
 	{
 		return 'assets/fonts/$key';
 	}
-	
+
 	inline static public function video(key:String, ?library:String)
 	{
 		#if FILESYSTEM
@@ -334,7 +463,6 @@ class Paths
 
 		return getPath('videos/$key.mp4', BINARY, library);
 	}
-	
 
 	inline static public function getSparrowAtlas(key:String, ?library:String)
 	{
@@ -421,6 +549,31 @@ class Paths
 	inline static public function modDialogueSettingsFile(key:String)
 	{
 		return 'mods/$currentMod/assets/data/$key/dialogueSettings.json';
+	}
+
+	inline static public function modCautionFile(key:String)
+	{
+		return 'mods/$currentMod/assets/data/$key/caution.txt';
+	}
+
+	inline static public function modMenuCharacterJSON(key:String)
+	{
+		return 'mods/$currentMod/assets/images/menuCharacters/$key.json';
+	}
+
+	inline static public function modMenuCharacterPNG(key:String)
+	{
+		return 'mods/$currentMod/assets/images/menuCharacters/$key.png';
+	}
+
+	inline static public function modMenuCharacterXML(key:String)
+	{
+		return 'mods/$currentMod/assets/images/menuCharacters/$key.xml';
+	}
+
+	inline static public function modAchievementList(key:String)
+	{
+		return 'mods/$currentMod/assets/_achievements/_achievementList.txt';
 	}
 
 	inline static public function modTxt(key:String, ?library:String)
