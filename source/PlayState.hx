@@ -703,12 +703,7 @@ class PlayState extends MusicBeatState
 	
 				#if desktop
 				if (startTimer.finished)
-					DiscordClient.changePresence(SONG.song
-						+ " ("
-						+ CoolUtil.difficultyFromInt(storyDifficulty)
-						+ ") ", null, iconRPC,
-						songLength
-						- Conductor.songPosition);
+					DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC, songLength - Conductor.songPosition);
 				else
 					DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
 				#end
@@ -1427,16 +1422,12 @@ class PlayState extends MusicBeatState
 
 			if (!startTimer.finished)
 				startTimer.active = true;
+
 			paused = false;
 
 			#if desktop
 			if (startTimer.finished)
-				DiscordClient.changePresence(SONG.song
-					+ " ("
-					+ CoolUtil.difficultyFromInt(storyDifficulty)
-					+ ") ", null, iconRPC,
-					songLength
-					- Conductor.songPosition);
+				DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC, songLength - Conductor.songPosition);
 			else
 				DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
 			#end
@@ -3067,12 +3058,7 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		songLength = FlxG.sound.music.length;
-		DiscordClient.changePresence(SONG.song
-			+ " ("
-			+ CoolUtil.difficultyFromInt(storyDifficulty)
-			+ ") ", null, iconRPC, true,
-			songLength
-			- Conductor.songPosition);
+		DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC, true, songLength - Conductor.songPosition);
 		#end
 	}
 

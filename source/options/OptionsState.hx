@@ -62,24 +62,20 @@ class OptionsState extends MusicBeatState
 					FlxG.updateFramerate = Settings.fpsCap;
 				}, 60, " FPS"),
 			#end
-			new ValueOptionFloat("Scroll Speed", "Change your scroll speed.\n(1 = chart-dependent)", "scrollSpeed", 1, Math.POSITIVE_INFINITY, 0.1, 10, null,
-				1, "", 2),
-			new SelectionOption("Accuracy Mode", "Change how accuracy is calculated.\n(Accurate = Simple, Complex = Milisecond Based)", "accuracyMode",
-				["Accurate", "Complex"]),
+			new ValueOptionFloat("Scroll Speed", "Change your scroll speed.\n(1 = chart-dependent)", "scrollSpeed", 1, Math.POSITIVE_INFINITY, 0.1, 10, null, 1, "", 2),
+			new SelectionOption("Accuracy Mode", "Change how accuracy is calculated.\n(Accurate = Simple, Complex = Milisecond Based)", "accuracyMode", ["Accurate", "Complex"]),
 			new ToggleOption("Reset Button", "If activated, pressing R while in a song will cause a game over.", "resetButton"),
 			new OptionSubCategoryTitle("Appearance"),
-			#if FILESYSTEM new PressOption("Note Skins", "Change how your notes look.", function()
+			#if FILESYSTEM 
+			new PressOption("Note Skins", "Change how your notes look.", function()
 			{
 				FlxG.state.openSubState(new options.NoteSkinSelection());
 				acceptInput = false;
 			}),
 			#end
-			new ValueOptionFloat("Lane Underlay", "Change the opacity of the lane underlay.\n(0 = invisible, 100 = visible)", "underlayAlpha", 0, 100, 0.1,
-				100, null, 0, "%", 2),
-			new ValueOptionInt("Strumline Margin", "Change how far the strumline (the 4 grey notes) are from the edges of the screen.", "strumlineMargin",
-				-2147483647, 2147483647, 1, 10, null, 100),
-			new ValueOptionFloat("Dynamic Camera Multiplier", "Change how far the camera moves when a character sings. Set to 0 to disable.", "dynamicCamera",
-				Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 0.1, 10, null, 0, "x", 2),
+			new ValueOptionFloat("Lane Underlay", "Change the opacity of the lane underlay.\n(0 = invisible, 100 = visible)", "underlayAlpha", 0, 100, 0.1, 100, null, 0, "%", 2),
+			new ValueOptionInt("Strumline Margin", "Change how far the strumline (the 4 grey notes) are from the edges of the screen.", "strumlineMargin", -2147483647, 2147483647, 1, 10, null, 100),
+			new ValueOptionFloat("Dynamic Camera Multiplier", "Change how far the camera moves when a character sings. Set to 0 to disable.", "dynamicCamera", Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 0.1, 10, null, 0, "x", 2),
 			new ToggleOption("Stationary Ratings", "Make the ratings and the combo count stationary.", "stationaryRatings"),
 			new PressOption("Change Rating and Combo positions", "Change where YOU see the rating and combo count.",
 				function()
@@ -110,17 +106,9 @@ class OptionsState extends MusicBeatState
 		]),
 		new OptionCategory("Miscellaneous", [
 			new OptionSubCategoryTitle("Miscellaneous"),
-			new ToggleOption("Show FPS", "Display an FPS counter at the top-left of the screen", "fps",
-				function()
-				{
-					(cast(Lib.current.getChildAt(0), Main)).toggleFPS(Settings.fps);
-				}),
+			new ToggleOption("Show FPS", "Display an FPS counter at the top-left of the screen", "fps", function() {(cast(Lib.current.getChildAt(0), Main)).toggleFPS(Settings.fps);}),
 			new ToggleOption("Watermarks", "Show the watermark seen at the Main Menu", "watermarks"),
-			new ToggleOption("Autopause", "If this is ticked, the game will \"pause\" when unfocused.", "autopause", 
-				function()
-				{ 
-					FlxG.autoPause = Settings.autopause;
-				}),
+			new ToggleOption("Autopause", "If this is ticked, the game will \"pause\" when unfocused.", "autopause", function() {FlxG.autoPause = Settings.autopause;}),
 			#if FILESYSTEM 
 			new ToggleOption("Cache Music", "Keeps the music in memory for a smoother experience.\n(HIGH MEMORY!)", "cacheMusic"), 
 			new ToggleOption("Cache Images", "Keeps the images in memory for faster loading times.\n(HIGH MEMORY!)", "cacheImages"),
