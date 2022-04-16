@@ -58,7 +58,8 @@ class AchievementState extends MusicBeatState
 
 			var stringToUse = actualAch.name;
 			var unlocked = true;
-			if (Achievements.achievementsGet.get(Achievements.achievements[i]) != null)
+			
+			if (!Achievements.achievementsGet.exists(Achievements.achievements[i]))
 			{
 				stringToUse = "???";
 				unlocked = false;
@@ -78,7 +79,7 @@ class AchievementState extends MusicBeatState
 			box.setGraphicSize(125);
 			box.updateHitbox();
 			box.antialiasing = true;
-			box.x = -ach.width - 75;
+			box.x = -box.width-75;
 			box.y = (ach.height / 2) - (box.height / 2);
 
 			var lock:FlxSprite = null;

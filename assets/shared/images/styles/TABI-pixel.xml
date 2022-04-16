@@ -1,8 +1,0 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<TextureAtlas imagePath="TABI-pixel.png">
-	<!-- Created with Adobe Animate version 18.0.1.115 -->
-	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="hold end" x="18" y="0" width="7" height="6"/>
-	<SubTexture name="hold piece" x="18" y="7" width="7" height="6"/>
-	<SubTexture name="note" x="0" y="0" width="17" height="17"/>
-</TextureAtlas>

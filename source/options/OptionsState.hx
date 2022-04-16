@@ -136,7 +136,7 @@ class OptionsState extends MusicBeatState
 			new PressOption("Erase Scores", "Remove SONG data.\n(Prompted, be careful!)", function()
 			{
 				FlxG.state.openSubState(new ConfirmationPrompt("HALT!",
-					"Are you sure you want to deleted ALL SCORES?\nThis will reset SCORES and RANKS.\nYou get to keep your settings.\nThis is IRREVERSIBLE!",
+					"Are you sure you want to delete ALL SCORES?\nThis will reset SCORES and RANKS.\nYou get to keep your settings.\nThis is IRREVERSIBLE!",
 					"Yeah!", "Nah.", function()
 				{
 					FlxG.save.data.songScores = null;

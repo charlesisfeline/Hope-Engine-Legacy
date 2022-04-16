@@ -1511,13 +1511,6 @@ class PlayState extends MusicBeatState
 				globalScrollSpeed = 0; // set to zero
 		}
 
-		if (FlxG.keys.justPressed.SPACE && !inCutscene)
-		{
-			FlxG.sound.play(Paths.sound('hey'));
-			boyfriend.specialAnim = true;
-			boyfriend.playAnim('hey', true);
-		}
-
 		if (Settings.underlayAlpha > 0 && startedCountdown)
 		{
 			pfBG1.x = playerStrums.x - 10;

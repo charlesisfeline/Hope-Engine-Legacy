@@ -106,7 +106,9 @@ class ConfirmationPrompt extends MusicBeatSubstate
 			spr.scale.x += 0.2;
 			spr.scale.y += 0.2;
 
-			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2}, 0.3, {ease: FlxEase.backOut});
+			var daAlpha = spr.alpha;
+			spr.alpha = 0;
+			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2, alpha: daAlpha}, 0.3, {ease: FlxEase.backOut});
 		});
 	}
 
@@ -144,8 +146,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 		forEachOfType(FlxSprite, function(spr:FlxSprite)
 		{
-			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2}, 0.3, {
-				ease: FlxEase.backOut,
+			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2, alpha: 0}, 0.3, {
+				ease: FlxEase.backIn,
 				onComplete: function(twn:FlxTween)
 				{
 					close();

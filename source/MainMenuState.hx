@@ -33,6 +33,7 @@ class MainMenuState extends MusicBeatState
 		'story mode',
 		'freeplay',
 		#if FILESYSTEM 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
+		'achievements', // remove this line if you want the Achievements Menu to be inaccessible!
 		'credits',
 		'options'
 	];
@@ -110,6 +111,8 @@ class MainMenuState extends MusicBeatState
 					menuItem.frames = Paths.getSparrowAtlas('credits_assets');
 				case 'mods':
 					menuItem.frames = Paths.getSparrowAtlas('mods_assets');
+				case 'achievements':
+					menuItem.frames = Paths.getSparrowAtlas('wins_assets');
 				default:
 					menuItem.frames = Paths.getSparrowAtlas('FNF_main_menu_assets');
 			}
@@ -233,6 +236,8 @@ class MainMenuState extends MusicBeatState
 				FlxG.switchState(new CreditsState());
 			case 'mods':
 				FlxG.switchState(new ModLoadingState());
+			case 'achievements':
+				FlxG.switchState(new AchievementState());
 			case 'options':
 				FlxG.switchState(new options.OptionsState());
 		}
