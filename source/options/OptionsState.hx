@@ -88,11 +88,9 @@ class OptionsState extends MusicBeatState
 					acceptInput = false;
 				}),
 			new ToggleOption("Note Splashes", "Toggle the splashes that show up when you hit a \"Sick!!\"", "noteSplashes"),
-			new ToggleOption("Extensive Score Display", "Should the score text under the health bar have more info than just Score and Accuracy?",
-				"extensiveDisplay"),
+			new ToggleOption("Extensive Score Display", "Should the score text under the health bar have more info than just Score and Accuracy?", "extensiveDisplay"),
 			new ToggleOption("Show NPS", "Shows your current Notes Per Second.\n(\"Extensive\" info text is needed for this!)", "npsDisplay"),
-			new ToggleOption("Health Bar Colors", "Colors the health bar to fit the character's theme.\nLike boyfriend's bar side (right) will be cyan.",
-				"healthBarColors"),
+			new ToggleOption("Health Bar Colors", "Colors the health bar to fit the character's theme.\nLike boyfriend's bar side (right) will be cyan.", "healthBarColors"),
 			new ToggleOption("Hide Health Icons", "Hide the icons on the health bar.", "hideHealthIcons"),
 			new SelectionOption("Bar Type", "What should the song position bar show?", "posBarType", [
 				"Name & Time Elapsed",
@@ -107,8 +105,7 @@ class OptionsState extends MusicBeatState
 		new OptionCategory("Accessibility", [
 			new OptionSubCategoryTitle("Acessibility"),
 			new ToggleOption("Flashing Lights", "If activated, flashing lights will appear.", "flashing"),
-			new ToggleOption("Distractions", "Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)",
-				"distractions"),
+			new ToggleOption("Distractions", "Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)", "distractions"),
 			new ToggleOption("Persistent Volume", "If activated, the game will save the volume and stay the same everytime you reopen.", "persistentVolume")
 		]),
 		new OptionCategory("Miscellaneous", [
@@ -119,42 +116,58 @@ class OptionsState extends MusicBeatState
 					(cast(Lib.current.getChildAt(0), Main)).toggleFPS(Settings.fps);
 				}),
 			new ToggleOption("Watermarks", "Show the watermark seen at the Main Menu", "watermarks"),
-			#if FILESYSTEM new ToggleOption("Cache Music", "Keeps the music in memory for a smoother experience.\n(HIGH MEMORY!)",
-				"cacheMusic"), new ToggleOption("Cache Images", "Keeps the images in memory for faster loading times.\n(HIGH MEMORY!)", "cacheImages"),
+			new ToggleOption("Autopause", "If this is ticked, the game will \"pause\" when unfocused.", "autopause", 
+				function()
+				{ 
+					FlxG.autoPause = Settings.autopause;
+				}),
+			#if FILESYSTEM 
+			new ToggleOption("Cache Music", "Keeps the music in memory for a smoother experience.\n(HIGH MEMORY!)", "cacheMusic"), 
+			new ToggleOption("Cache Images", "Keeps the images in memory for faster loading times.\n(HIGH MEMORY!)", "cacheImages"),
 			#end
 			new ToggleOption("Resume Countdown", "If checked, there will be a countdown when you resume to gameplay.", "resumeCountdown"),
 			new OptionSubCategoryTitle("Dangerous Stuff", FlxColor.RED),
 			new PressOption("Reset Options", "Reset ALL options.\n(Prompted, be careful!)", function()
 			{
-				FlxG.state.openSubState(new ConfirmationPrompt("HEYYY!",
-					"Are you sure you want to RESET OPTIONS?\nThis will RESET OPTIONS ONLY\nThis is IRREVERSIBLE!", "Yeah!", "Nah.", function()
-				{
-					Settings.setToDefaults();
-					FlxG.state.switchTo(new OptionsState());
-				}, null));
+				FlxG.state.openSubState(new ConfirmationPrompt(
+					"HEYYY!",
+					"Are you sure you want to RESET OPTIONS?\nThis will RESET OPTIONS ONLY\nThis is IRREVERSIBLE!", 
+					"Yeah!", 
+					"Nah.", 
+					function()
+					{
+						Settings.setToDefaults();
+						FlxG.state.switchTo(new OptionsState());
+					}, null));
 			}),
 			new PressOption("Erase Scores", "Remove SONG data.\n(Prompted, be careful!)", function()
 			{
-				FlxG.state.openSubState(new ConfirmationPrompt("HALT!",
+				FlxG.state.openSubState(new ConfirmationPrompt(
+					"HALT!",
 					"Are you sure you want to delete ALL SCORES?\nThis will reset SCORES and RANKS.\nYou get to keep your settings.\nThis is IRREVERSIBLE!",
-					"Yeah!", "Nah.", function()
-				{
-					FlxG.save.data.songScores = null;
-					FlxG.save.data.songRanks = null;
-					for (key in Highscore.songScores.keys())
+					"Yeah!", 
+					"Nah.", 
+					function()
 					{
-						Highscore.songScores[key] = 0;
-					}
-					for (key in Highscore.songAccuracies.keys())
-					{
-						Highscore.songAccuracies[key] = 0.0;
-					}
-				}, null));
+						FlxG.save.data.songScores = null;
+						FlxG.save.data.songRanks = null;
+						for (key in Highscore.songScores.keys())
+						{
+							Highscore.songScores[key] = 0;
+						}
+						for (key in Highscore.songAccuracies.keys())
+						{
+							Highscore.songAccuracies[key] = 0.0;
+						}
+					}, null));
 			}),
 			new PressOption("Erase Data", "Remove ALL data.\n(Prompted, be careful!)", function()
 			{
-				FlxG.state.openSubState(new ConfirmationPrompt("AYO!",
-					"Are you sure you want to delete ALL DATA?\nThis will reset everything, from options to scores.\nThis is IRREVERSIBLE!", "Yeah!", "Nah.",
+				FlxG.state.openSubState(new ConfirmationPrompt(
+					"AYO!",
+					"Are you sure you want to delete ALL DATA?\nThis will reset everything, from options to scores.\nThis is IRREVERSIBLE!", 
+					"Yeah!", 
+					"Nah.",
 					function()
 					{
 						FlxG.save.erase();

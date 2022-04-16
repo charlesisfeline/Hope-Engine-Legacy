@@ -40,6 +40,8 @@ class Settings
 	public static var dynamicCamera:Float = 0;
 
 	public static var persistentVolume:Bool = true;
+	public static var autopause:Bool = true;
+
 	public static var lastVolume:Float = 1;
 	public static var lastMuted:Bool = false;
 
@@ -85,6 +87,7 @@ class Settings
 		botplay = FlxG.save.data.botplay;
 		dynamicCamera = FlxG.save.data.dynamicCamera;
 		persistentVolume = FlxG.save.data.persistentVolume;
+		autopause = FlxG.save.data.autopause;
 		lastVolume = FlxG.save.data.lastVolume;
 		lastMuted = FlxG.save.data.lastMuted;
 
@@ -136,6 +139,7 @@ class Settings
 		FlxG.save.data.botplay = botplay;
 		FlxG.save.data.dynamicCamera = dynamicCamera;
 		FlxG.save.data.persistentVolume = persistentVolume;
+		FlxG.save.data.autopause = autopause;
 		FlxG.save.data.lastVolume = lastVolume;
 		FlxG.save.data.lastMuted = lastMuted;
 
@@ -245,6 +249,9 @@ class Settings
 		if (FlxG.save.data.persistentVolume == null)
 			FlxG.save.data.persistentVolume = persistentVolume;
 
+		if (FlxG.save.data.autopause == null)
+			FlxG.save.data.autopause = autopause;
+
 		///////////////////////////////////
 
 		if (FlxG.save.data.difficultyVocals == null)
@@ -272,6 +279,7 @@ class Settings
 
 		FlxG.drawFramerate = fpsCap;
 		FlxG.updateFramerate = fpsCap;
+		FlxG.autoPause = autopause;
 
 		if (Settings.persistentVolume)
 		{

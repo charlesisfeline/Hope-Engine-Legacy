@@ -675,42 +675,45 @@ class PlayState extends MusicBeatState
 
 		// setup pause events for autopause stuff
 
-		FlxG.signals.focusLost.add(function()
+		if (Settings.autopause)
 		{
-			if (FlxG.sound.music != null)
+			FlxG.signals.focusLost.add(function()
 			{
-				FlxG.sound.music.pause();
-				vocals.pause();
-			}
-
-			#if desktop
-			DiscordClient.changePresence("Paused on " + SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
-			#end
-
-			if (!startTimer.finished)
-				startTimer.active = false;
-		});
-
-		FlxG.signals.focusGained.add(function()
-		{
-			if (FlxG.sound.music != null && !startingSong)
-				resyncVocals();
-
-			if (!startTimer.finished)
-				startTimer.active = true;
-
-			#if desktop
-			if (startTimer.finished)
-				DiscordClient.changePresence(SONG.song
-					+ " ("
-					+ CoolUtil.difficultyFromInt(storyDifficulty)
-					+ ") ", null, iconRPC,
-					songLength
-					- Conductor.songPosition);
-			else
-				DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
-			#end
-		});
+				if (FlxG.sound.music != null)
+				{
+					FlxG.sound.music.pause();
+					vocals.pause();
+				}
+	
+				#if desktop
+				DiscordClient.changePresence("Paused on " + SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
+				#end
+	
+				if (!startTimer.finished)
+					startTimer.active = false;
+			});
+	
+			FlxG.signals.focusGained.add(function()
+			{
+				if (FlxG.sound.music != null && !startingSong)
+					resyncVocals();
+	
+				if (!startTimer.finished)
+					startTimer.active = true;
+	
+				#if desktop
+				if (startTimer.finished)
+					DiscordClient.changePresence(SONG.song
+						+ " ("
+						+ CoolUtil.difficultyFromInt(storyDifficulty)
+						+ ") ", null, iconRPC,
+						songLength
+						- Conductor.songPosition);
+				else
+					DiscordClient.changePresence(SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
+				#end
+			});
+		}
 	}
 
 	var startTimer:FlxTimer;
