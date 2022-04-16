@@ -1,17 +1,11 @@
 package;
 
 import flixel.FlxG;
-import haxe.iterators.StringIteratorUnicode;
 
 class Highscore
 {
-	#if (haxe >= "4.0.0")
 	public static var songScores:Map<String, Int> = new Map();
-	public static var songRanks:Map<String, Int> = new Map();
-	#else
-	public static var songScores:Map<String, Int> = new Map<String, Int>();
-	public static var songRanks:Map<String, Int> = new Map<String, Int>();
-	#end
+	public static var songAccuracies:Map<String, Float> = new Map();
 
 	public static function saveScore(song:String, score:Int = 0, ?diff:Int = 0):Void
 	{
@@ -45,19 +39,19 @@ class Highscore
 		}
 	}
 
-	public static function saveRank(song:String, rank:Int = 0, ?diff:Int = 0):Void
+	public static function saveAccuracy(song:String, acc:Float = 0, ?diff:Int = 0):Void
 	{
 		var daSong:String = formatSong(song, diff);
 
 		if (!Settings.botplay && !PlayState.openedCharting)
 		{
-			if (songRanks.exists(daSong))
+			if (songAccuracies.exists(daSong))
 			{
-				if (songRanks.get(daSong) > rank)
-					setRank(daSong, rank);
+				if (songAccuracies.get(daSong) < acc)
+					setAccuracy(daSong, acc);
 			}
 			else
-				setRank(daSong, rank);
+				setAccuracy(daSong, acc);
 		}
 	}
 
@@ -72,11 +66,11 @@ class Highscore
 		FlxG.save.flush();
 	}
 
-	static function setRank(song:String, rank:Int):Void
+	static function setAccuracy(song:String, acc:Float):Void
 	{
 		// Reminder that I don't need to format this song, it should come formatted!
-		songRanks.set(song, rank);
-		FlxG.save.data.songRanks = songRanks;
+		songAccuracies.set(song, acc);
+		FlxG.save.data.songAccuracies = songAccuracies;
 		FlxG.save.flush();
 	}
 
@@ -102,12 +96,12 @@ class Highscore
 		return songScores.get(formatSong(song, diff));
 	}
 
-	public static function getRank(song:String, diff:Int):Int
+	public static function getAccuracy(song:String, diff:Int):Float
 	{
-		if (!songRanks.exists(formatSong(song, diff)))
-			setRank(formatSong(song, diff), 17);
+		if (!songAccuracies.exists(formatSong(song, diff)))
+			setAccuracy(formatSong(song, diff), 0);
 
-		return songRanks.get(formatSong(song, diff));
+		return songAccuracies.get(formatSong(song, diff));
 	}
 
 	public static function getWeekScore(week:Int, diff:Int):Int
@@ -123,8 +117,8 @@ class Highscore
 		if (FlxG.save.data.songScores != null)
 			songScores = FlxG.save.data.songScores;
 
-		if (FlxG.save.data.songRanks != null)
-			songRanks = FlxG.save.data.songRanks;
+		if (FlxG.save.data.songAccuracies != null)
+			songAccuracies = FlxG.save.data.songAccuracies;
 
 		#if !UNLOCK_ALL_WEEKS
 		if (FlxG.save.data.weeksUnlocked == null)

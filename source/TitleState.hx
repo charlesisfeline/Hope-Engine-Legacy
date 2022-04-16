@@ -107,8 +107,6 @@ class TitleState extends MusicBeatState
 			Settings.lastVolume = FlxG.sound.volume;
 			Settings.lastMuted = FlxG.sound.muted;
 
-			trace("FUCKING " + Settings.lastVolume, Settings.lastMuted);
-
 			Settings.save();
 			Achievements.save();
 			FlxG.save.flush();

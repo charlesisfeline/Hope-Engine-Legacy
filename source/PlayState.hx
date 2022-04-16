@@ -2151,7 +2151,7 @@ class PlayState extends MusicBeatState
 				var songHighscore = StringTools.replace(PlayState.SONG.song, " ", "-");
 
 				Highscore.saveScore(songHighscore, Math.round(songScore), storyDifficulty);
-				Highscore.saveRank(songHighscore, Std.parseInt(Ratings.GenerateLetterRank(accuracy, true)), storyDifficulty);
+				Highscore.saveAccuracy(songHighscore, accuracy, storyDifficulty);
 			}
 
 			if (executeModchart)

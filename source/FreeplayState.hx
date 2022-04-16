@@ -35,10 +35,10 @@ class FreeplayState extends MusicBeatState
 	var scoreText:FlxText;
 	var diffText:FlxText;
 	// var metaShit:FlxText;
-	var rankImage:FlxSprite;
 	var ratingText:FlxText;
 	var lerpScore:Int = 0;
 	var intendedScore:Int = 0;
+	var intendedAcc:Float = 0;
 	var bg:FlxSprite;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
@@ -122,12 +122,6 @@ class FreeplayState extends MusicBeatState
 		scoreBG.x = FlxG.width * 0.6;
 		add(scoreBG);
 
-		rankImage = new FlxSprite(0, 0).loadGraphic(Paths.image('ranks/NA'));
-		rankImage.scale.set(0.35, 0.35);
-		rankImage.updateHitbox();
-		rankImage.antialiasing = true;
-		add(rankImage);
-
 		scoreText = new FlxText(0, 0, 0, "", 48);
 		scoreText.x = scoreBG.x + 2;
 		scoreText.y = 2;
@@ -179,9 +173,6 @@ class FreeplayState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		rankImage.x = FlxG.width - rankImage.width - 25;
-		rankImage.y = FlxG.height - rankImage.height - 25;
 
 		if (FlxG.sound.music != null)
 		{
@@ -272,18 +263,19 @@ class FreeplayState extends MusicBeatState
 		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
 
 		var prevScore = intendedScore;
+		var prevAcc = intendedAcc;
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
+		intendedAcc = Highscore.getAccuracy(songHighscore, curDifficulty);
+		var accString = '(${FlxMath.roundDecimal(prevAcc, 2)}%)';
+		FlxTween.num(prevAcc, intendedAcc, 0.5, {ease: FlxEase.circOut}, function(v:Float)
+		{
+			accString = '(${FlxMath.roundDecimal(v, 2)}%)';
+		});
 		FlxTween.num(prevScore, intendedScore, 0.5, {ease: FlxEase.circOut}, function(v:Float)
 		{
-			scoreText.text = "PERSONAL BEST:" + Math.floor(v);
+			scoreText.text = "PERSONAL BEST: " + Math.floor(v) + " " + accString;
 			updateScoreBox();
 		});
-
-		rankImage.alpha = 0;
-		FlxTween.tween(rankImage, {alpha: 1}, 0.125);
-		rankImage.loadGraphic(Paths.image('ranks/' + Ratings.ranks[Highscore.getRank(songHighscore, curDifficulty)]));
-		rankImage.scale.set(0.35, 0.35);
-		rankImage.updateHitbox();
 
 		diffText.text = "< " + CoolUtil.difficultyFromInt(curDifficulty) + " >";
 		diffText.x = scoreText.x + (scoreText.width / 2) - (diffText.width / 2);
@@ -308,18 +300,19 @@ class FreeplayState extends MusicBeatState
 		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
 
 		var prevScore = intendedScore;
+		var prevAcc = intendedAcc;
 		intendedScore = Highscore.getScore(songHighscore, curDifficulty);
+		intendedAcc = Highscore.getAccuracy(songHighscore, curDifficulty);
+		var accString = '(${FlxMath.roundDecimal(prevAcc, 2)}%)';
+		FlxTween.num(prevAcc, intendedAcc, 0.5, {ease: FlxEase.circOut}, function(v:Float)
+		{
+			accString = '(${FlxMath.roundDecimal(v, 2)}%)';
+		});
 		FlxTween.num(prevScore, intendedScore, 0.5, {ease: FlxEase.circOut}, function(v:Float)
 		{
-			scoreText.text = "PERSONAL BEST:" + Math.floor(v);
+			scoreText.text = "PERSONAL BEST: " + Math.floor(v) + " " + accString;
 			updateScoreBox();
 		});
-
-		rankImage.alpha = 0;
-		FlxTween.tween(rankImage, {alpha: 1}, 0.125);
-		rankImage.loadGraphic(Paths.image('ranks/' + Ratings.ranks[Highscore.getRank(songHighscore, curDifficulty)]));
-		rankImage.scale.set(0.35, 0.35);
-		rankImage.updateHitbox();
 
 		if (Settings.flashing)
 		{

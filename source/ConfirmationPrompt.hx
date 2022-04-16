@@ -133,7 +133,17 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		if (confirmThing != null)
 			confirmThing();
 
-		close();
+		forEachOfType(FlxSprite, function(spr:FlxSprite)
+		{
+			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2, alpha: 0}, 0.3, {
+				ease: FlxEase.backIn,
+				onComplete: function(twn:FlxTween)
+				{
+					close();
+				}
+			});
+		});
+
 		FlxG.camera.zoom = prevCamZoom;
 	}
 

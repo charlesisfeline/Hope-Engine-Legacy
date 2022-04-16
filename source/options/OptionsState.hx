@@ -145,9 +145,9 @@ class OptionsState extends MusicBeatState
 					{
 						Highscore.songScores[key] = 0;
 					}
-					for (key in Highscore.songRanks.keys())
+					for (key in Highscore.songAccuracies.keys())
 					{
-						Highscore.songRanks[key] = 17;
+						Highscore.songAccuracies[key] = 0.0;
 					}
 				}, null));
 			}),
