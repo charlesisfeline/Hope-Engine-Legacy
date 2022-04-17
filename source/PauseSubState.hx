@@ -10,6 +10,7 @@ import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import lime.utils.Assets;
 import openfl.Lib;
 
 using StringTools;
@@ -228,6 +229,12 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.switchState(new MainMenuState());
 					PlayState.openedCharting = false;
 					Settings.botplay = false;
+
+					if (Paths.currentMod == null)
+					{
+						FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
+						FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
+					}
 				case "Toggle Botplay":
 					Settings.botplay = !Settings.botplay;
 

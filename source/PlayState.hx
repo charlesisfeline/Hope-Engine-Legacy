@@ -1034,10 +1034,16 @@ class PlayState extends MusicBeatState
 		var songData = SONG;
 		Conductor.changeBPM(songData.bpm);
 
+		if (Paths.currentMod == null)
+		{
+			FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
+			FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
+		}
+
 		curSong = songData.song;
 
 		if (SONG.needsVoices)
-			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song));
+			vocals = new FlxSound().loadEmbedded(Paths.voices(PlayState.SONG.song), false, true);
 		else
 			vocals = new FlxSound();
 
@@ -2129,6 +2135,9 @@ class PlayState extends MusicBeatState
 			canPause = false;
 			FlxG.sound.music.volume = 0;
 			vocals.volume = 0;
+
+			openfl.Assets.cache.clear(Paths.inst(PlayState.SONG.song));
+			openfl.Assets.cache.clear(Paths.voices(PlayState.SONG.song));
 
 			if (SONG.validScore)
 			{
