@@ -9,6 +9,9 @@ import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import haxe.Json;
 import openfl.Assets;
+
+using StringTools;
+
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -16,6 +19,7 @@ import Discord.DiscordClient;
 import sys.FileSystem;
 import sys.io.File;
 #end
+
 
 class AchievementState extends MusicBeatState
 {
@@ -83,6 +87,7 @@ class AchievementState extends MusicBeatState
 			box.y = (ach.height / 2) - (box.height / 2);
 
 			var lock:FlxSprite = null;
+			var icon:FlxSprite = null;
 
 			if (!unlocked)
 			{
@@ -99,12 +104,24 @@ class AchievementState extends MusicBeatState
 				lock.y = box.y + (box.height / 2) - (lock.height / 2);
 				// ach.add(lock);
 			}
+			else
+			{
+				icon = new FlxSprite().loadGraphic(Paths.image("achievements/" + Achievements.achievements[i].trim(), "preload"));
+				icon.antialiasing = actualAch.iconAntiAliasing != null ? actualAch.iconAntiAliasing : true;
+				icon.setGraphicSize(Std.int(box.width));
+				icon.updateHitbox();
+				icon.x = box.x + (box.width / 2) - (icon.width / 2);
+				icon.y = box.y + (box.height / 2) - (icon.height / 2);
+			}
 
 			// coords normalize after adding to an FlxSpriteGroup
 			ach.add(box);
 
 			if (lock != null)
 				ach.add(lock);
+
+			if (icon != null)
+				ach.add(icon);
 		}
 
 		descBG = new FlxSprite().makeGraphic(Std.int((FlxG.width * 0.85) + 8), 72, 0xFF000000);
