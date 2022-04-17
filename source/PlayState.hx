@@ -440,16 +440,6 @@ class PlayState extends MusicBeatState
 		strumLineNotes = new FlxTypedGroup<FlxSprite>();
 		add(strumLineNotes);
 
-		// and i quote: shitty layering, but it works
-		if (SONG.noteStyle == 'pixel')
-		{
-			remove(strumLineNotes);
-			remove(displaySustains);
-
-			add(displaySustains);
-			add(strumLineNotes);
-		}
-
 		playerStrums = new FlxTypedSpriteGroup<StaticArrow>();
 		cpuStrums = new FlxTypedSpriteGroup<StaticArrow>();
 
