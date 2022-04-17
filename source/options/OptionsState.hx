@@ -85,7 +85,7 @@ class OptionsState extends MusicBeatState
 				}),
 			new ToggleOption("Note Splashes", "Toggle the splashes that show up when you hit a \"Sick!!\"", "noteSplashes"),
 			new ToggleOption("Extensive Score Display", "Should the score text under the health bar have more info than just Score and Accuracy?", "extensiveDisplay"),
-			new ToggleOption("Show NPS", "Shows your current Notes Per Second.\n(\"Extensive\" info text is needed for this!)", "npsDisplay"),
+			new ToggleOption("Show NPS", "Shows your current Notes Per Second.", "npsDisplay"),
 			new ToggleOption("Health Bar Colors", "Colors the health bar to fit the character's theme.\nLike boyfriend's bar side (right) will be cyan.", "healthBarColors"),
 			new ToggleOption("Hide Health Icons", "Hide the icons on the health bar.", "hideHealthIcons"),
 			new SelectionOption("Bar Type", "What should the song position bar show?", "posBarType", [

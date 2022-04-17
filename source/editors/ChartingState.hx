@@ -1847,12 +1847,7 @@ class ChartingState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		trace("resyncing... time diffs: " + "\nInst - Internal Song Position : " + Math.abs(FlxG.sound.music.time - Conductor.songPosition)
-			+ "\nVocals - Internal Song Position : " + Math.abs(vocals.time - Conductor.songPosition) + "\nInst - Vocals : "
-			+ Math.abs(FlxG.sound.music.time - vocals.time));
-
 		vocals.pause();
-
 		FlxG.sound.music.play();
 		Conductor.songPosition = FlxG.sound.music.time;
 		vocals.time = Conductor.songPosition;

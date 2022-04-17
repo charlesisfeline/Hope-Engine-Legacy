@@ -549,7 +549,10 @@ class PlayState extends MusicBeatState
 		botPlayState.visible = scrollSpeedText.visible = false;
 
 		if (Settings.botplay)
-			iconP1 = new HealthIcon('bf-bot' + (SONG.noteStyle == "pixel" ? "-pixel" : ""), true);
+		{
+			if (SONG.player1.startsWith('bf'))
+				iconP1 = new HealthIcon('bf-bot' + (SONG.noteStyle == "pixel" ? "-pixel" : ""), true);
+		}
 		else
 			iconP1 = new HealthIcon(SONG.player1, true);
 
@@ -576,13 +579,8 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-
-		if (Settings.botplay)
-		{
-			botPlayState.cameras = [camHUD];
-			scrollSpeedText.cameras = [camHUD];
-		}
-
+		botPlayState.cameras = [camHUD];
+		scrollSpeedText.cameras = [camHUD];
 		startingSong = true;
 
 		trace('starting');
@@ -1434,9 +1432,12 @@ class PlayState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		trace("resyncing... time diffs: " + "\nInst - Internal Song Position : " + Math.abs(FlxG.sound.music.time - Conductor.songPosition)
-			+ "\nVocals - Internal Song Position : " + Math.abs(vocals.time - Conductor.songPosition) + "\nInst - Vocals : "
-			+ Math.abs(FlxG.sound.music.time - vocals.time));
+		#if debug
+		debugPrint("diffs lmao: "
+		  		 + Math.abs(FlxG.sound.music.time - Conductor.songPosition) 
+		  + ", " + Math.abs(vocals.time - Conductor.songPosition)
+		  + ", " + Math.abs(FlxG.sound.music.time - vocals.time));
+		#end
 
 		vocals.pause();
 		FlxG.sound.music.play();
@@ -1554,17 +1555,9 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		if (!Settings.extensiveDisplay)
-			scoreTxt.text = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "")
-				+ "Score: "
-				+ songScore
-				+ " | Misses: "
-				+ misses
-				+ " | Accuracy: "
-				+ Helper.truncateFloat(accuracy, 2)
-				+ "%";
+			scoreTxt.text = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "") + "Score: " + songScore + " | Misses: " + misses + " | Accuracy: " + Helper.truncateFloat(accuracy, 2) + "%";
 		else
-			scoreTxt.text = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "")
-				+ Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
+			scoreTxt.text = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "") + Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause && songStarted && !inCutscene)
 		{
@@ -3002,6 +2995,7 @@ class PlayState extends MusicBeatState
 
 	function debugPrint(s:Dynamic)
 	{
+		s = Date.now() + " " + s;
 		debugPrints.text = s + "\n" + debugPrints.text.trim();
 
 		var a = debugPrints.text.split("\n");
