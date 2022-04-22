@@ -1,0 +1,4 @@
+function trigger(params:Map<String, Dynamic>)
+{
+
+}

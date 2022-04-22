@@ -1,6 +1,7 @@
 package;
 
 import DialogueSubstate.DialogueStyle;
+import Event;
 import Section.SwagSection;
 import Song.SwagSong;
 import editors.CharacterEditor;
@@ -66,6 +67,7 @@ class PlayState extends MusicBeatState
 	// main vars
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
+	public static var EVENTS:EventData;
 	public static var isStoryMode:Bool = false;
 	public static var isPlaylistMode:Bool = false;
 	public static var storyWeek:Int = 0;
@@ -163,7 +165,7 @@ class PlayState extends MusicBeatState
 	public static var openedCharting:Bool = false;
 
 	var currentFrames:Int = 0;
-	var whosFocused:Character = dad;
+	var whosFocused(default, set):Character = dad;
 
 	var notesHitArray:Array<Date> = [];
 	var warningSections:Array<Int> = [];
@@ -667,27 +669,33 @@ class PlayState extends MusicBeatState
 		{
 			FlxG.signals.focusLost.add(function()
 			{
-				if (FlxG.sound.music != null)
+				if (!paused)
 				{
-					FlxG.sound.music.pause();
-					vocals.pause();
+					if (FlxG.sound.music != null)
+					{
+						FlxG.sound.music.pause();
+						vocals.pause();
+					}
+	
+					if (!startTimer.finished)
+						startTimer.active = false;
 				}
 	
 				#if desktop
 				DiscordClient.changePresence("Paused on " + SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ", null, iconRPC);
 				#end
-	
-				if (!startTimer.finished)
-					startTimer.active = false;
 			});
 	
 			FlxG.signals.focusGained.add(function()
 			{
-				if (FlxG.sound.music != null && !startingSong)
-					resyncVocals();
-	
-				if (!startTimer.finished)
-					startTimer.active = true;
+				if (!paused)
+				{
+					if (FlxG.sound.music != null && !startingSong)
+						resyncVocals();
+		
+					if (!startTimer.finished)
+						startTimer.active = true;
+				}
 	
 				#if desktop
 				if (startTimer.finished)
@@ -1653,6 +1661,32 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		// events!
+		if (PlayState.EVENTS != null)
+		{
+			if (songStarted && generatedMusic && PlayState.EVENTS.events[Std.int(curStep / 16)] != null)
+			{
+				/**
+				 * create how events work
+				 * 
+				 * when event strumtime is LESS THAN OR EQUAL TO songposition:
+				 * - trigger event
+				 * - trigger hscript event (args being event name and parameters provided)
+				 * - cause pain
+				 * 
+				 * 
+				 * create EventEditor LMAOOO
+				 */
+
+				var section = PlayState.EVENTS.events[Std.int(curStep / 16)];
+
+				for (note in section)
+				{
+					
+				}
+			}
+		}
+
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 		{
 			// Make sure Girlfriend cheers only for certain songs
@@ -2207,6 +2241,7 @@ class PlayState extends MusicBeatState
 
 						PlayState.SONG = Song.loadFromJson(nextSongLowercase + difficulty, nextSongLowercase,
 							(Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
+						PlayState.EVENTS = Event.load(nextSongLowercase, (Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 						FlxG.sound.music.stop();
 
 						LoadingState.loadAndSwitchState(new PlayState());
@@ -3163,6 +3198,19 @@ class PlayState extends MusicBeatState
 		if (botplayTween != null)
 			botplayTween.active = !paused;
 
+		return value;
+	}
+
+	function set_whosFocused(value:Character):Character 
+	{
+		if (whosFocused != value && songStarted && executeModchart)
+		{
+			if (interp.variables.get("onFocusChange") != null)
+				interp.variables.get("onFocusChange")(value);
+		}
+
+		whosFocused = value;
+		
 		return value;
 	}
 }

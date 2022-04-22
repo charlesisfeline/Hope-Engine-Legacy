@@ -1,5 +1,6 @@
 package;
 
+import Alphabet.AlphaCharacter;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -109,6 +110,30 @@ class FreeplayState extends MusicBeatState
 			songText.targetY = i;
 			songText.x = -songText.width;
 			grpSongs.add(songText);
+
+			if (songText.width > FlxG.width - 360)
+			{
+				var origWidth:Float = songText.width;
+				var newScale:Float = (FlxG.width - 360) / songText.width;
+				var prevLet:FlxSprite = null;
+				
+				for (let in songText.members)
+				{
+					let.scale.x = newScale;
+					let.updateHitbox();
+					
+					if (prevLet != null)
+						let.x = prevLet.x + prevLet.width;
+					else
+						let.x = -origWidth;
+
+					var char:AlphaCharacter = cast let;
+					if (char.lastWasSpace)
+						let.x += 40 * newScale;
+					
+					prevLet = let;
+				}
+			}
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
@@ -235,6 +260,7 @@ class FreeplayState extends MusicBeatState
 			#end
 			{
 				PlayState.SONG = Song.loadFromJson(poop, songLowercase, mod);
+				PlayState.EVENTS = Event.load(songLowercase, mod);
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
 				PlayState.storyWeek = songs[curSelected].week;

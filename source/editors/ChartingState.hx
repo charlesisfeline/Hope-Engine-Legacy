@@ -108,6 +108,8 @@ class ChartingState extends MusicBeatState
 	**/
 	var curSelectedNote:Array<Dynamic>;
 
+	var curSelectedEvent:Array<Event.SwagEvent>;
+
 	var tempBpm:Float = 0;
 	var gridBlackLine:FlxSprite;
 	var vocals:FlxSound;
@@ -266,6 +268,7 @@ class ChartingState extends MusicBeatState
 
 		addAssetsUI();
 		addMiscUI();
+		addEventUI();
 		addSectionUI();
 		addNoteUI();
 		addSongUI();
@@ -442,6 +445,45 @@ class ChartingState extends MusicBeatState
 		tab_group_misc.add(muteInst);
 		tab_group_misc.add(showBeatLines);
 		tab_group_misc.add(showStepLines);
+
+		UI_box.addGroup(tab_group_misc);
+	}
+
+	var eventDropdown:FlxUIDropDownMenu;
+	var currentEvent:String = "hopeEngine/nothing";
+
+	function addEventUI():Void
+	{
+		var eventsArray:Array<String> = [
+			"hopeEngine/nothing"
+		];
+
+		// do a reading if FILESYSTEM epic
+		#if FILESYSTEM
+		if (FileSystem.exists(Sys.getCwd() + "mods"))
+		{
+			for (mod in FileSystem.readDirectory(Sys.getCwd() + "mods"))
+			{
+				if (Paths.currentMod == mod && FileSystem.exists(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
+				{
+					for (noteType in FileSystem.readDirectory(Sys.getCwd() + 'mods/$mod/assets/_noteTypes'))
+						eventsArray.push('$mod/$noteType');
+				}
+			}
+		}
+		#end
+
+		var eventsLabel = new FlxText(10, 10, "Events List");
+		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray(eventsArray, true),
+			function(a:String)
+			{
+				currentEvent = eventDropdown.selectedLabel;
+			});
+
+		var tab_group_event = new FlxUI(null, UI_box);
+		tab_group_event.name = '3';
+		tab_group_event.add(eventsLabel);
+		tab_group_event.add(eventDropdown);
 
 		UI_box.addGroup(tab_group_misc);
 	}

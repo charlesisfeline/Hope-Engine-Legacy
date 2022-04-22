@@ -102,9 +102,12 @@ class Alphabet extends FlxSpriteGroup
 				else
 					xPosResetted = false;
 
+				var wasSpaced:Bool = false;
+				
 				if (lastWasSpace)
 				{
 					xPos += 40;
+					wasSpaced = true;
 					lastWasSpace = false;
 				}
 
@@ -122,6 +125,7 @@ class Alphabet extends FlxSpriteGroup
 				else
 					letter.createLetter(character);
 
+				letter.lastWasSpace = wasSpaced;
 				add(letter);
 
 				lastSprite = letter;
@@ -163,6 +167,8 @@ class AlphaCharacter extends FlxSprite
 	public static var symbols:String = "|~#$%()*+-:;<=>@[]^_.,'!&?";
 
 	public var row:Int = 0;
+
+	public var lastWasSpace:Bool = false;
 
 	public function new(x:Float, y:Float)
 	{

@@ -367,6 +367,7 @@ class StoryMenuState extends MusicBeatState
 			var lma = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
 			PlayState.SONG = Song.loadFromJson(lma + diffic, lma, (Paths.currentMod != null
 				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
+			PlayState.EVENTS = Event.load(lma, (Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)

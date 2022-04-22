@@ -158,6 +158,12 @@ class CharacterEditor extends MusicBeatState
 		curAnimName.cameras = [camHUD];
 		instructions.cameras = [camHUD];
 
+		var pointer:FlxGraphic = FlxGraphic.fromClass(GraphicCursorCross);
+		camFollowDisplay = new FlxSprite().loadGraphic(pointer);
+		camFollowDisplay.setGraphicSize(50, 50);
+		camFollowDisplay.updateHitbox();
+		camFollowDisplay.color = FlxColor.WHITE;
+
 		add(ghostCharacter);
 		loadChar(isDad, initChar);
 		genBoyOffsets();
@@ -168,11 +174,6 @@ class CharacterEditor extends MusicBeatState
 		addCharacterStuff();
 		addGhostStuff();
 
-		var pointer:FlxGraphic = FlxGraphic.fromClass(GraphicCursorCross);
-		camFollowDisplay = new FlxSprite().loadGraphic(pointer);
-		camFollowDisplay.setGraphicSize(50, 50);
-		camFollowDisplay.updateHitbox();
-		camFollowDisplay.color = FlxColor.WHITE;
 		add(camFollowDisplay);
 
 		updateCamFollowDisplay();
@@ -1020,7 +1021,7 @@ class CharacterEditor extends MusicBeatState
 				fromEditors = false;
 			}
 			else
-				FlxG.switchState(new PlayState());
+				LoadingState.loadAndSwitchState(new PlayState());
 
 			FlxG.mouse.visible = false;
 		}
