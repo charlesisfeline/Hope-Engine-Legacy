@@ -37,7 +37,7 @@ class MenuItem extends FlxSpriteGroup
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * (60 / lime.app.Application.current.window.frameRate));
+		y = FlxMath.lerp(y, (targetY * 120) + 480, 0.17 * Helper.boundTo(elapsed * 60, 0, 1));
 
 		if (isFlashing)
 			flashingInt += 1;

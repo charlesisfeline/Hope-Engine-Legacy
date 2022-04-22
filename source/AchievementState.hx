@@ -203,6 +203,6 @@ class AchievementState extends MusicBeatState
 			FlxG.switchState(new MainMenuState());
 
 		for (achLabel in grpAchievements.members)
-			achLabel.x = FlxMath.lerp(achLabel.x, (achLabel.targetY * 20) + 315, 9 / lime.app.Application.current.window.frameRate);
+			achLabel.x = FlxMath.lerp(achLabel.x, (achLabel.targetY * 20) + 315, Helper.boundTo(elapsed * 9.6, 0, 1));
 	}
 }

@@ -121,7 +121,6 @@ class EventEditor extends MusicBeatState
 
 		var descLabel = new FlxText(10, nameInput.y + nameInput.height + 20, "Event Description");
 		descInput = new FlxUIInputText(10, descLabel.y + descLabel.height, Std.int(UI_box.width - 20), _info.eventDesc);
-		descInput.resize(descInput.width, descInput.height * 3);
 		descInput.lines = 3;
 		descInput.callback = function(s1:String, s2:String) {
 			_info.eventDesc = descInput.text;
@@ -242,62 +241,73 @@ class EventEditor extends MusicBeatState
 		var paramInfo = new FlxText();
 		paramInfo.text = "Parameter Types:"
 					   + "\nbool: Turns into checkmark"
-					   + "\nstring: Turns into a textfield"
-					   + "\nnumber: Turns into a number stepper thing";
+					   + "\n\nstring: Turns into a textfield"
+					   + "\n\nnumber: Turns into a number stepper thing";
 		paramInfo.fieldWidth = Std.int((UI_box.width / 2) - 15);
 		paramInfo.x = paramIDInput.x;
 		paramInfo.y = paramTypeLabel.y;
 
 		var updateButton:FlxButton = new FlxButton(0, 0, "Add/Update", function() {
-			for (event in _event.params)
+			var lmao:Int = _event.params.length;
+			
+			for (i in 0..._event.params.length)
 			{
+				var event = _event.params[i];
 				if (paramIDInput.text == event.paramID)
-				{
-					paramNameInput.text = event.paramName;
-					paramTypeDropdown.selectedLabel = event.type;
-					paramTypeDropdown.callback("");
-					eventExists = true;
-				}
-				else
-					eventExists = false;
+					lmao = i;
 			}
 				
-			if (!eventExists)
-			{
-				var defaultV:Dynamic = null;
-				var increment:Null<Float> = null;
-				var maxLetters:Null<Int> = null;
+			var defaultV:Dynamic = null;
+			var increment:Null<Float> = null;
+			var maxLetters:Null<Int> = null;
 
-				switch (paramTypeDropdown.selectedLabel)
-				{
-					case 'bool':
-						defaultV = Helper.toBool(defaultValueInput.text);
-					case 'string':
-						defaultV = defaultValueInput.text;
-						maxLetters = Std.parseInt(maxLettersInput.text);
-					case 'number':
-						defaultV = Std.parseFloat(defaultValueInput.text);
-						increment = Std.parseFloat(incrementInput.text);
-				}
-				_event.params.push({
-					paramID: paramIDInput.text,
-					paramName: paramNameInput.text,
-					type: paramTypeDropdown.selectedLabel,
-					value: null,
-					defaultValue: defaultV,
-					increment: increment,
-					maxLetters: maxLetters
-				});
+			switch (paramTypeDropdown.selectedLabel)
+			{
+				case 'bool':
+					defaultV = Helper.toBool(defaultValueInput.text);
+				case 'string':
+					defaultV = defaultValueInput.text;
+					maxLetters = Std.parseInt(maxLettersInput.text);
+				case 'number':
+					defaultV = Std.parseFloat(defaultValueInput.text);
+					increment = Std.parseFloat(incrementInput.text);
 			}
+			_event.params[lmao] = {
+				paramID: paramIDInput.text,
+				paramName: paramNameInput.text,
+				type: paramTypeDropdown.selectedLabel,
+				value: null,
+				defaultValue: defaultV,
+				increment: increment,
+				maxLetters: maxLetters
+			};
 
 			updateEventParams();
 
 			paramTypeDropdown.callback("");
 		});
 		updateButton.x = (UI_box.width / 2) - updateButton.width - 5;
-		updateButton.y = UI_box.height - (updateButton.height * 1.5) - 10;
+		updateButton.y = UI_box.height - (updateButton.height * 1.5) - 20;
 
-		paramTypeDropdown.callback("");
+		var removeButton:FlxButton = new FlxButton(0, 0, "Remove", function() {
+			var lmao:EventParam = null;
+			
+			for (event in _event.params)
+			{
+				if (paramIDInput.text == event.paramID)
+					lmao = event;
+			}
+
+			if (lmao != null) 
+			{
+				_event.params.remove(lmao);
+
+				updateEventParams();
+				paramTypeDropdown.callback("");
+			}
+		});
+		removeButton.x = (UI_box.width / 2) + 5;
+		removeButton.y = UI_box.height - (removeButton.height * 1.5) - 20;
 
 		tab_param = new FlxUI(null, UI_box);
 		tab_param.name = '2';
@@ -315,8 +325,14 @@ class EventEditor extends MusicBeatState
 		tab_param.add(maxLettersInput);
 		tab_param.add(maxLettersInput);
 		tab_param.add(updateButton);
+		tab_param.add(removeButton);
 		tab_param.add(paramTypeDropdown);
 		UI_box.addGroup(tab_param);
+
+		paramTypeDropdown.selectedLabel = 'bool';
+		paramTypeDropdown.callback("bool");
+		incrementLabel.active = incrementLabel.visible = false;
+		maxLettersLabel.active = maxLettersLabel.visible = false;
 	}
 
 	var eventDropdown:FlxUIDropDownMenu;
@@ -329,7 +345,7 @@ class EventEditor extends MusicBeatState
 		var eventsLabel = new FlxText(10, 10, "Events List");
 		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray([_info.eventName], true));
 
-		description = new FlxText(10, eventDropdown.y + eventDropdown.header.height + 10, Std.int(fakeoutBox.width - 20), _info.eventDesc, 14);
+		description = new FlxText(10, eventDropdown.y + eventDropdown.header.height + 10, Std.int(fakeoutBox.width - 20), _info.eventDesc);
 
 		tab_group_events = new FlxUI(null, fakeoutBox);
 		tab_group_events.name = '1';
@@ -352,6 +368,7 @@ class EventEditor extends MusicBeatState
 	{
 		removeEventParams();
 		createEventParams();
+		description.y = curEventParams[curEventParams.length - 1].y + curEventParams[curEventParams.length - 1].height + 20;
 	}
 
 	function removeEventParams():Void
@@ -368,6 +385,7 @@ class EventEditor extends MusicBeatState
 	function createEventParams():Void
 	{
 		var previousItem:FlxSprite = new FlxSprite(10, eventDropdown.y + eventDropdown.header.height + 10).makeGraphic(1, 1, FlxColor.TRANSPARENT);
+		curEventParams[0] = previousItem;
 		var itemToAdd:FlxSprite = null;
 
 		for (param in _event.params)
@@ -377,11 +395,8 @@ class EventEditor extends MusicBeatState
 				case 'bool':
 					itemToAdd = new FlxUICheckBox(10, previousItem.y - tab_group_events.y + previousItem.height + 10, null, null, param.paramName);
 
-					if (param.value == null)
-					{
-						var ass:FlxUICheckBox = cast itemToAdd;
-						ass.checked = param.defaultValue;
-					}
+					var ass:FlxUICheckBox = cast itemToAdd;
+					ass.checked = param.value != null ? param.value : param.defaultValue;
 				case 'string':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
@@ -390,11 +405,9 @@ class EventEditor extends MusicBeatState
 					tab_group_events.add(label);
 					curEventParams.push(label);
 					
-					if (param.value == null)
-					{
-						var ass:FlxUIInputText = cast itemToAdd;
-						ass.text = param.defaultValue;
-					}
+					var ass:FlxUIInputText = cast itemToAdd;
+					ass.maxLength = param.maxLetters;
+					ass.text = param.value != null ? param.value : param.defaultValue;
 				case 'number':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
@@ -403,16 +416,10 @@ class EventEditor extends MusicBeatState
 					tab_group_events.add(label);
 					curEventParams.push(label);
 					
-					if (param.value == null)
-					{
-						var ass:FlxUINumericStepper = cast itemToAdd;
-						ass.value = param.defaultValue;
-					}
-					else
-					{
-						var ass:FlxUINumericStepper = cast itemToAdd;
-						ass.value = param.value;
-					}
+					var ass:FlxUINumericStepper = cast itemToAdd;
+					ass.decimals = 2;
+					ass.stepSize = param.increment != null ? param.increment : .1;
+					ass.value = param.value != null ? param.value : param.defaultValue;
 			}
 
 			tooltips.add(itemToAdd, {
@@ -448,6 +455,12 @@ class EventEditor extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (FlxG.keys.justPressed.R)
+		{
+			trace(Json.stringify(_info, null, "\t"));
+			trace(Json.stringify(_event, null, "\t"));
+		}
 	}
 
 	var _file:FileReference;

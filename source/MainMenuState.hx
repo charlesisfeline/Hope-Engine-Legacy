@@ -130,7 +130,7 @@ class MainMenuState extends MusicBeatState
 
 		firstStart = false;
 
-		FlxG.camera.follow(camFollow, LOCKON, 9 / lime.app.Application.current.window.frameRate);
+		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 9.6, 0, 1));
 
 		changeItem(0);
 

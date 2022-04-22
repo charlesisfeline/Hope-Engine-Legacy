@@ -29,7 +29,7 @@ class Option extends FlxSpriteGroup
 	override function update(elapsed:Float)
 	{
 		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
-		y = FlxMath.lerp(y, (scaledY * 120) + additive, 9 / lime.app.Application.current.window.frameRate);
+		y = FlxMath.lerp(y, (scaledY * 120) + additive, Helper.boundTo(elapsed * 9.6, 0, 1));
 
 		super.update(elapsed);
 	}

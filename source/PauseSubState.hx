@@ -144,7 +144,7 @@ class PauseSubState extends MusicBeatSubstate
 			pauseMusic.volume += 0.01 * elapsed;
 
 		for (item in grpMenuShit)
-			item.x = FlxMath.lerp(item.x, (item.targetY * 20) + 90, 9 / lime.app.Application.current.window.frameRate);
+			item.x = FlxMath.lerp(item.x, (item.targetY * 20) + 90, Helper.boundTo(elapsed * 9.6, 0, 1));
 
 		super.update(elapsed);
 

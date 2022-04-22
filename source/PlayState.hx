@@ -482,7 +482,7 @@ class PlayState extends MusicBeatState
 
 		add(camFollow);
 
-		FlxG.camera.follow(camFollow, LOCKON, 1.2 / Application.current.window.frameRate);
+		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 1.2, 0, 1));
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
@@ -1595,8 +1595,8 @@ class PlayState extends MusicBeatState
 		// FlxG.watch.addQuick('VOL', vocals.amplitudeLeft);
 		// FlxG.watch.addQuick('VOLRight', vocals.amplitudeRight);
 
-		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, 10 / Application.current.window.frameRate)));
-		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, 10 / Application.current.window.frameRate)));
+		iconP1.setGraphicSize(Std.int(FlxMath.lerp(iconP1.width, 150, Helper.boundTo(elapsed * 10, 0, 1))));
+		iconP2.setGraphicSize(Std.int(FlxMath.lerp(iconP2.width, 150, Helper.boundTo(elapsed * 10, 0, 1))));
 
 		iconP1.updateHitbox();
 		iconP2.updateHitbox();

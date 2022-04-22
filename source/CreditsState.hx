@@ -107,7 +107,7 @@ class CreditsState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, 9 / lime.app.Application.current.window.frameRate);
+		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, Helper.boundTo(elapsed * 9.6, 0, 1));
 
 		if (controls.UP_P)
 		{
