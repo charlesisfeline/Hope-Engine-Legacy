@@ -58,8 +58,7 @@ class OptionsState extends MusicBeatState
 			new ValueOptionInt("FPS Cap", "The maximum FPS the game can have", "fpsCap", Application.current.window.displayMode.refreshRate, 290, 1, 10,
 				function()
 				{
-					FlxG.drawFramerate = Settings.fpsCap;
-					FlxG.updateFramerate = Settings.fpsCap;
+					FlxG.updateFramerate = FlxG.drawFramerate = Settings.fpsCap;
 				}, 60, " FPS"),
 			#end
 			new ValueOptionFloat("Scroll Speed", "Change your scroll speed.\n(1 = chart-dependent)", "scrollSpeed", 1, Math.POSITIVE_INFINITY, 0.1, 10, null, 1, "", 2),

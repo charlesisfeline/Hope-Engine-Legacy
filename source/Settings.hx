@@ -277,8 +277,7 @@ class Settings
 		load();
 		save();
 
-		FlxG.drawFramerate = fpsCap;
-		FlxG.updateFramerate = fpsCap;
+		FlxG.updateFramerate = FlxG.drawFramerate = fpsCap;
 		FlxG.autoPause = autopause;
 
 		if (Settings.persistentVolume)
