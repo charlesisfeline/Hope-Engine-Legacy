@@ -19,7 +19,7 @@ class Paths
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;
-	public static var currentMod:String;
+	public static var currentMod:Null<String>;
 
 	public static var customImages:Map<String, FlxGraphic> = new Map();
 	public static var customSounds:Map<String, Sound> = new Map();

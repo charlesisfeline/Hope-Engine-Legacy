@@ -284,7 +284,7 @@ class ChartingState extends MusicBeatState
 
 	function addAssetsUI():Void
 	{
-		var pastMod = Paths.currentMod;
+		var pastMod:Null<String> = Paths.currentMod;
 		Paths.setCurrentMod(null);
 
 		var characters:Array<String> = CoolUtil.coolTextFile(Paths.txt('characterList'));
@@ -298,16 +298,16 @@ class ChartingState extends MusicBeatState
 
 		if (Paths.currentMod != null)
 		{
-			if (FileSystem.exists(Paths.txt('characterList')))
+			if (FileSystem.exists(Paths.modTxt('characterList')))
 				characters = characters.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('characterList'))));
 
-			if (FileSystem.exists(Paths.txt('gfVersionList')))
+			if (FileSystem.exists(Paths.modTxt('gfVersionList')))
 				gfVersions = gfVersions.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('gfVersionList'))));
 
-			if (FileSystem.exists(Paths.txt('stageList')))
+			if (FileSystem.exists(Paths.modTxt('stageList')))
 				stages = stages.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('stageList'))));
 
-			if (FileSystem.exists(Paths.txt('noteStyleList')))
+			if (FileSystem.exists(Paths.modTxt('noteStyleList')))
 				noteStyles = noteStyles.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('noteStyleList'))));
 		}
 		#end
