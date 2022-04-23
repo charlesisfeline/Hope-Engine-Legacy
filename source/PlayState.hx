@@ -748,15 +748,15 @@ class PlayState extends MusicBeatState
 	{
 		inCutscene = false;
 
-		var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets');
-		#if FILESYSTEM
-		if (Settings.noteSkin != "default")
-			theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-				File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
-		#end
+		// var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets');
+		// #if FILESYSTEM
+		// if (Settings.noteSkin != "default")
+		// 	theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
+		// 		File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
+		// #end
 
-		generateStaticArrows(0, theSex);
-		generateStaticArrows(1, theSex);
+		generateStaticArrows(0);
+		generateStaticArrows(1);
 
 		if (executeModchart)
 		{
@@ -1088,13 +1088,6 @@ class PlayState extends MusicBeatState
 			songOffset = 0;
 
 		var daBeats:Int = 0; // Not exactly representative of 'daBeats' lol, just how much it has looped
-		var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets');
-
-		#if FILESYSTEM
-		if (Settings.noteSkin != "default")
-			theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-				File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
-		#end
 
 		var noteTypesDetected:Array<String> = [];
 
@@ -1118,7 +1111,7 @@ class PlayState extends MusicBeatState
 				else
 					oldNote = null;
 
-				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, songNotes[3], theSex);
+				var swagNote:Note = new Note(daStrumTime, daNoteData, oldNote, false, songNotes[3]);
 				swagNote.sustainLength = songNotes[2];
 				swagNote.kill();
 				swagNote.scrollFactor.set(0, 0);
@@ -1139,7 +1132,7 @@ class PlayState extends MusicBeatState
 						var sustainNote:Note = new Note(daStrumTime
 							+ (Conductor.stepCrochet * susNote)
 							+ Math.abs(Conductor.stepCrochet / FlxMath.roundDecimal(globalScrollSpeed, 2)),
-							daNoteData, oldNote, true, songNotes[3], theSex);
+							daNoteData, oldNote, true, songNotes[3]);
 						sustainNote.strumTimeSus = daStrumTime + (Conductor.stepCrochet * susNote);
 						sustainNote.scrollFactor.set();
 						sustainNote.kill();
@@ -1206,7 +1199,7 @@ class PlayState extends MusicBeatState
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 	}
 
-	private function generateStaticArrows(player:Int, ?skin:FlxAtlasFrames, ?inverted:Bool = false):Void
+	private function generateStaticArrows(player:Int, ?inverted:Bool = false):Void
 	{
 		for (i in 0...4)
 		{
@@ -1222,11 +1215,6 @@ class PlayState extends MusicBeatState
 					if (Settings.noteSkin != "default" && s != null)
 						babyArrow.loadGraphic(s, true, 17, 17);
 					#end
-
-					babyArrow.animation.add('green', [6]);
-					babyArrow.animation.add('red', [7]);
-					babyArrow.animation.add('blue', [5]);
-					babyArrow.animation.add('purplel', [4]);
 
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * daPixelZoom));
 					babyArrow.updateHitbox();
@@ -1257,14 +1245,10 @@ class PlayState extends MusicBeatState
 					}
 
 				case 'normal':
-					if (skin == null)
-						babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
-					else
-						babyArrow.frames = skin;
-					babyArrow.animation.addByPrefix('green', 'arrowUP');
-					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');
-					babyArrow.animation.addByPrefix('purple', 'arrowLEFT');
-					babyArrow.animation.addByPrefix('red', 'arrowRIGHT');
+					babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+
+					if (Settings.noteSkin != "default")
+						babyArrow.frames = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
 
 					babyArrow.antialiasing = true;
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * 0.7));
@@ -1294,10 +1278,10 @@ class PlayState extends MusicBeatState
 					}
 
 				default:
-					if (skin == null)
-						babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
-					else
-						babyArrow.frames = skin;
+					babyArrow.frames = Paths.getSparrowAtlas('NOTE_assets');
+
+					if (Settings.noteSkin != "default")
+						babyArrow.frames = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
 
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
 					babyArrow.animation.addByPrefix('blue', 'arrowDOWN');

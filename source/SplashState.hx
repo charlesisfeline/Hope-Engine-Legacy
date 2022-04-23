@@ -45,7 +45,7 @@ class SplashState extends MusicBeatState
 
 			for (i in 0...4)
 			{
-				var note = new Note(0, i, null, false, "hopeEngine/normal", Paths.getSparrowAtlas("NOTE_assets", "shared"));
+				var note = new Note(0, i, null, false, "hopeEngine/normal");
 				note.x = Note.swagWidth * i;
 				note.y = 0;
 				note.visible = false;

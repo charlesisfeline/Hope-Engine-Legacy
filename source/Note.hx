@@ -62,16 +62,12 @@ class Note extends FlxSprite
 
 	var noteStyle:String = "normal";
 
-	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal",
-			?skin:FlxAtlasFrames)
+	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal")
 	{
 		super();
 
 		if (prevNote == null)
 			prevNote = this;
-
-		if (skin == null)
-			skin = Paths.getSparrowAtlas("NOTE_assets", "shared");
 
 		this.prevNote = prevNote;
 		isSustainNote = sustainNote;
@@ -99,11 +95,11 @@ class Note extends FlxSprite
 				if (Settings.noteSkin != "default" && options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel") != null)
 					loadGraphic(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel"), true, 17, 17);
 				#end
-
+				
+				animation.add('purpleScroll', [4]);
+				animation.add('blueScroll', [5]);
 				animation.add('greenScroll', [6]);
 				animation.add('redScroll', [7]);
-				animation.add('blueScroll', [5]);
-				animation.add('purpleScroll', [4]);
 
 				if (isSustainNote)
 				{
@@ -116,20 +112,23 @@ class Note extends FlxSprite
 					#end
 
 					animation.add('purpleholdend', [4]);
+					animation.add('blueholdend', [5]);
 					animation.add('greenholdend', [6]);
 					animation.add('redholdend', [7]);
-					animation.add('blueholdend', [5]);
 
 					animation.add('purplehold', [0]);
+					animation.add('bluehold', [1]);
 					animation.add('greenhold', [2]);
 					animation.add('redhold', [3]);
-					animation.add('bluehold', [1]);
 				}
 
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 			default:
-				frames = skin;
+				frames = Paths.getSparrowAtlas("NOTE_assets", "shared");
+
+				if (Settings.noteSkin != "default" && options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin) != null)
+					frames = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
 
 				animation.addByPrefix('greenScroll', 'green0');
 				animation.addByPrefix('redScroll', 'red0');
@@ -373,11 +372,6 @@ class Note extends FlxSprite
 				}
 			}
 		}
-
-		// if (PlayState.SONG.noteStyle == "pixel")
-		// 	setGraphicSize(Std.int(width * PlayState.daPixelZoom));
-		// else
-		// 	setGraphicSize(Std.int(width * 0.7));
 
 		if (animOffset == null)
 			animOffset = [0, 0];

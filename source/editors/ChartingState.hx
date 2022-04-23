@@ -127,7 +127,6 @@ class ChartingState extends MusicBeatState
 
 	var sectionToCopy:Int = 0;
 	var notesCopied:Array<Dynamic>;
-	var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets', 'shared');
 
 	var beatLineGroup:FlxTypedGroup<FlxSprite>;
 	var beatNumsGroup:FlxTypedGroup<FlxText>;
@@ -162,14 +161,6 @@ class ChartingState extends MusicBeatState
 		bg.color = 0x2e2e2e;
 		bg.scrollFactor.set();
 		add(bg);
-
-		theSex = Paths.getSparrowAtlas('NOTE_assets', 'shared');
-
-		#if FILESYSTEM
-		if (Settings.noteSkin != "default")
-			theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-				File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
-		#end
 
 		gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * 16);
 		add(gridBG);
@@ -1026,7 +1017,7 @@ class ChartingState extends MusicBeatState
 			var i = pressArray[p];
 			if (i && !delete)
 			{
-				addNote(new Note(Conductor.songPosition, p, null, false, currentNoteType, theSex));
+				addNote(new Note(Conductor.songPosition, p, null, false, currentNoteType));
 			}
 		}
 
@@ -1575,7 +1566,7 @@ class ChartingState extends MusicBeatState
 			var daSus = i[2];
 			var daType = i[3];
 
-			var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, daType, theSex);
+			var note:Note = new Note(daStrumTime, daNoteInfo % 4, null, false, daType);
 			note.sustainLength = daSus;
 			note.setGraphicSize(GRID_SIZE);
 			note.updateHitbox();
