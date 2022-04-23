@@ -192,7 +192,6 @@ class FreeplayState extends MusicBeatState
 		super.create();
 	}
 
-	var tweensPlayed:Bool = false;
 	var holdTime:Float = 0;
 
 	override function update(elapsed:Float)
@@ -202,7 +201,6 @@ class FreeplayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 		{
 			Conductor.songPosition = FlxG.sound.music.time;
-			pastPosition = FlxG.sound.music.time;
 		}
 
 		if (FlxG.sound.music.volume < 0.7)
@@ -234,9 +232,6 @@ class FreeplayState extends MusicBeatState
 		}
 		else
 			holdTime = 0;
-
-		if (FlxG.keys.justPressed.V && Settings.cacheMusic)
-			playMusic(false);
 
 		if (controls.LEFT_P)
 			changeDiff(-1);
@@ -346,14 +341,14 @@ class FreeplayState extends MusicBeatState
 			FlxTween.color(bg, 0.5, bg.color, songs[curSelected].color);
 		}
 
-		#if PRELOAD_ALL
-		if (Settings.cacheMusic)
-		{
-			FlxG.sound.music.stop();
-			playMusic(true);
-			Conductor.changeBPM(songs[curSelected].bpm);
-		}
-		#end
+		// #if PRELOAD_ALL
+		// if (Settings.cacheMusic)
+		// {
+		// 	FlxG.sound.music.stop();
+		// 	playMusic(true);
+		// 	Conductor.changeBPM(songs[curSelected].bpm);
+		// }
+		// #end
 
 		var bullShit:Int = 0;
 
@@ -369,29 +364,6 @@ class FreeplayState extends MusicBeatState
 
 			if (item.targetY == 0)
 				item.alpha = icon.alpha = 1;
-		}
-	}
-
-	var vocalsPlaying:Bool = false;
-	var pastPosition:Float = 0.00;
-
-	// VOCAL SWITCHING BULLSHIT
-	function playMusic(justPlayIt:Bool = false)
-	{
-		if (!justPlayIt)
-			vocalsPlaying = !vocalsPlaying;
-		else
-			pastPosition = 0.00;
-
-		if (vocalsPlaying)
-		{
-			FlxG.sound.playMusic(Paths.voices(songs[curSelected].songName), 0);
-			FlxG.sound.music.time = pastPosition;
-		}
-		else
-		{
-			FlxG.sound.playMusic(Paths.inst(songs[curSelected].songName), 0);
-			FlxG.sound.music.time = pastPosition;
 		}
 	}
 

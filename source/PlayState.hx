@@ -1424,13 +1424,6 @@ class PlayState extends MusicBeatState
 
 	function resyncVocals():Void
 	{
-		#if debug
-		debugPrint("diffs lmao: "
-		  		 + Math.abs(FlxG.sound.music.time - Conductor.songPosition) 
-		  + ", " + Math.abs(vocals.time - Conductor.songPosition)
-		  + ", " + Math.abs(FlxG.sound.music.time - vocals.time));
-		#end
-
 		vocals.pause();
 		FlxG.sound.music.play();
 		Conductor.songPosition = FlxG.sound.music.time;
