@@ -192,6 +192,8 @@ class PlayState extends MusicBeatState
 
 	var defaultCamZoom:Float = 1.05;
 
+	var followLerp:Float = Helper.boundTo(FlxG.elapsed * 1.2, 0, 1);
+
 	public static var daPixelZoom:Float = 6;
 
 	var inCutscene:Bool = false;
@@ -482,7 +484,7 @@ class PlayState extends MusicBeatState
 
 		add(camFollow);
 
-		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 1.2, 0, 1));
+		FlxG.camera.follow(camFollow, LOCKON, followLerp);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
@@ -1445,6 +1447,8 @@ class PlayState extends MusicBeatState
 		perfectMode = false;
 		#end
 
+		FlxG.camera.followLerp = followLerp;
+
 		if (executeModchart)
 			interpVariables(interp);
 
@@ -1812,8 +1816,8 @@ class PlayState extends MusicBeatState
 
 		if (camZooming)
 		{
-			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, 0.95);
-			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, 0.95);
+			FlxG.camera.zoom = FlxMath.lerp(defaultCamZoom, FlxG.camera.zoom, Helper.boundTo(1 - (elapsed * 3.125), 0, 1));
+			camHUD.zoom = FlxMath.lerp(1, camHUD.zoom, Helper.boundTo(1 - (elapsed * 3.125), 0, 1));
 		}
 
 		FlxG.watch.addQuick("beatShit", curBeat);
