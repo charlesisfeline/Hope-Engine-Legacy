@@ -118,7 +118,10 @@ class EditorsState extends MusicBeatState
 		modTxt.text = 'CURRENT MOD: < $mod >';
 
 		if (mod == 'none')
+		{
 			Paths.setCurrentMod(null);
+			modTxt.text = '< NO MOD SELECTED >';
+		}
 		else
 			Paths.setCurrentMod(mod);
 	}
