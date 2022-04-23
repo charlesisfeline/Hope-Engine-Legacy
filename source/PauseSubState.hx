@@ -229,16 +229,10 @@ class PauseSubState extends MusicBeatSubstate
 					FlxG.switchState(new MainMenuState());
 					PlayState.openedCharting = false;
 					Settings.botplay = false;
-
-					if (Paths.currentMod == null)
-					{
-						FlxG.sound.cache(Paths.inst(PlayState.SONG.song));
-						FlxG.sound.cache(Paths.voices(PlayState.SONG.song));
-					}
 				case "Toggle Botplay":
 					Settings.botplay = !Settings.botplay;
 
-					@:privateAccess
+					@:privateAccess // shoutout to private access for being so sexy
 					PlayState.instance.botPlayState.visible = PlayState.instance.scrollSpeedText.visible = Settings.botplay;
 			}
 		}
