@@ -7,6 +7,8 @@ import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.effects.FlxFlicker;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -26,7 +28,7 @@ class MainMenuState extends MusicBeatState
 	var bg:FlxBackdrop;
 	var magenta:FlxBackdrop;
 
-	var menuItems:FlxTypedGroup<FlxSprite>;
+	var menuItems:FlxSpriteGroup;
 
 	#if !switch
 	var optionShit:Array<String> = [
@@ -40,8 +42,6 @@ class MainMenuState extends MusicBeatState
 	#else
 	var optionShit:Array<String> = ['story mode', 'freeplay'];
 	#end
-
-	public static var firstStart:Bool = true;
 
 	public static var hopeEngineVer:String = "";
 	public static var kadeEngineVer:String = "1.5.2";
@@ -99,7 +99,7 @@ class MainMenuState extends MusicBeatState
 		watermark.setPosition(10, FlxG.height - watermark.height - 10);
 		add(watermark);
 
-		menuItems = new FlxTypedGroup<FlxSprite>();
+		menuItems = new FlxSpriteGroup();
 		add(menuItems);
 
 		for (i in 0...optionShit.length)
@@ -127,8 +127,8 @@ class MainMenuState extends MusicBeatState
 			menuItem.y = (i * 160);
 			fuckingStupid.push(menuItem.height);
 		}
-
-		firstStart = false;
+		
+		menuItems.screenCenter(Y);
 
 		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 9.6, 0, 1));
 
@@ -149,6 +149,8 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
+
+		FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 9.6, 0, 1);
 
 		if (!selectedSomethin)
 		{
@@ -260,7 +262,9 @@ class MainMenuState extends MusicBeatState
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				spr.animation.play('selected');
-				camFollow.setPosition(spr.getGraphicMidpoint().x, spr.getGraphicMidpoint().y);
+				
+				var sprY = FlxMath.remapToRange(spr.y + (spr.height / 2), menuItems.y, menuItems.height, 0, FlxG.height);
+				camFollow.setPosition(spr.getGraphicMidpoint().x, sprY);
 			}
 
 			spr.updateHitbox();

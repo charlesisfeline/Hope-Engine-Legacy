@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
+import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
@@ -104,6 +105,8 @@ class Main extends Sprite
 
 		// WHAT????
 		openfl.Assets.cache.enabled = !Settings.cacheImages && !Settings.cacheMusic;
+		
+		MainMenuState.hopeEngineVer = Assets.getText('version.awesome');
 	}
 
 	var game:FlxGame;

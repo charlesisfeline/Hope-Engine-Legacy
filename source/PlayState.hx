@@ -192,7 +192,7 @@ class PlayState extends MusicBeatState
 
 	var defaultCamZoom:Float = 1.05;
 
-	var followLerp:Float = Helper.boundTo(FlxG.elapsed * 1.2, 0, 1);
+	var customFollowLerp:Null<Float> = null;
 
 	public static var daPixelZoom:Float = 6;
 
@@ -484,7 +484,7 @@ class PlayState extends MusicBeatState
 
 		add(camFollow);
 
-		FlxG.camera.follow(camFollow, LOCKON, followLerp);
+		FlxG.camera.follow(camFollow, LOCKON, 1);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
@@ -905,7 +905,7 @@ class PlayState extends MusicBeatState
 	var previousFrameTime:Int = 0;
 	var lastReportedPlayheadPosition:Int = 0;
 	var songTime:Float = 0;
-	var songStarted = false;
+	public var songStarted = false;
 
 	function startSong():Void
 	{
@@ -1447,8 +1447,6 @@ class PlayState extends MusicBeatState
 		perfectMode = false;
 		#end
 
-		FlxG.camera.followLerp = followLerp;
-
 		if (executeModchart)
 			interpVariables(interp);
 
@@ -1541,6 +1539,11 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.NINE)
 			iconP1.swapOldIcon();
 
+		if (customFollowLerp != null)
+			FlxG.camera.followLerp = customFollowLerp;
+		else
+			FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 2.2, 0, 1);
+
 		super.update(elapsed);
 
 		if (!Settings.extensiveDisplay)
@@ -1548,7 +1551,7 @@ class PlayState extends MusicBeatState
 		else
 			scoreTxt.text = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "") + Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause && songStarted && !inCutscene)
+		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause && !inCutscene)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;

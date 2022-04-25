@@ -202,7 +202,7 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
-					if (Settings.resumeCountdown)
+					if (Settings.resumeCountdown && PlayState.instance.songStarted)
 					{
 						resuming = true;
 						var swagCounter:Int = 0;

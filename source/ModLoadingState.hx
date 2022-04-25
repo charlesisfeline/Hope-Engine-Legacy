@@ -103,6 +103,8 @@ class ModLoadingState extends MusicBeatState
 	{
 		super.update(elapsed);
 
+		FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 9.6, 0, 1);
+
 		if (controls.BACK)
 		{
 			#if FILESYSTEM

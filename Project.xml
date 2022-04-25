@@ -206,4 +206,7 @@
 
 	<error value="Seems like you're using Haxe ${haxe}, please update!" if="${haxe == 4.1.5}" />
 	<error value="haxe ${haxe} ain't gonna do it come on" if="${haxe &lt; 4.1.5}" />
+
+	<!-- COMMENT THIS TAG OUT IF YOU WANT TO FIX HOPE ENGINE HTML5 ERRORS -->
+	<error value="HTML5 builds will error a lot. Remove this error in Project.xml to not error when compiling." if="web" />
 </project>
