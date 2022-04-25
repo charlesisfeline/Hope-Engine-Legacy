@@ -353,6 +353,8 @@ class PlayState extends MusicBeatState
 		Conductor.mapBPMChanges(SONG);
 		Conductor.changeBPM(SONG.bpm);
 
+		// haxe formatter fucked this up hard
+		// what the hell
 		trace("\n" + '//////////////////////////////////////////\n' + '//  /---- GETTING READY TO START ----\\\n' + '//  FRAMES: ${Conductor.safeFrames}\n'
 			+ '//  ZONE: ${Conductor.safeZoneOffset}\n' + '//  TS: ${Conductor.timeScale}\n' + '//  BOTPLAY: ${Settings.botplay}\n'
 			+ '//  \\---- GETTING READY TO START ----/\n' + '//////////////////////////////////////////\n');
@@ -2803,9 +2805,9 @@ class PlayState extends MusicBeatState
 	#if VIDEOS_ALLOWED
 	var video:MP4Handler;
 
-	function playVideo(name:String)
+	function playVideo(name:String, ?isCutscene:Bool = false)
 	{
-		inCutscene = true;
+		inCutscene = isCutscene;
 
 		video = new MP4Handler();
 		video.finishCallback = function()
@@ -2971,6 +2973,7 @@ class PlayState extends MusicBeatState
 		// mp4 videos!!!!
 		#if VIDEOS_ALLOWED
 		funnyInterp.variables.set("playVideo", playVideo);
+		funnyInterp.variables.set("MP4Sprite", MP4Sprite); // i have no clue how this works
 		#end
 
 		// cameras
