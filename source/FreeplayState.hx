@@ -217,7 +217,7 @@ class FreeplayState extends MusicBeatState
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
-		if (FlxG.sound.music.volume < 0.7)
+		if (FlxG.sound.music.volume < 0.7 && !switching)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 
 		if (vocals.volume < 0.7 * FlxG.sound.volume && !exiting && !switching)
