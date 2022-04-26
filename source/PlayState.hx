@@ -246,6 +246,9 @@ class PlayState extends MusicBeatState
 	{
 		instance = this;
 
+		if (FreeplayState.vocals != null)
+			FreeplayState.vocals.kill();
+
 		parser = new Parser();
 		parser.allowTypes = true;
 		parser.allowJSON = true;

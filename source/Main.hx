@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.graphics.FlxGraphic;
+import flixel.tweens.FlxTween;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
@@ -97,10 +98,7 @@ class Main extends Sprite
 		PlayerSettings.init();
 		Settings.init();
 		Achievements.init();
-		#end
-
-		#if html5
-		FlxG.autoPause = false;
+		autopauseMusicShit();
 		#end
 
 		// WHAT????
@@ -114,4 +112,31 @@ class Main extends Sprite
 
 	public function toggleFPS(fpsEnabled:Bool):Void
 		fpsCounter.visible = fpsEnabled;
+
+	public static function autopauseMusicShit():Void
+	{
+		FlxG.signals.focusGained.add(function() {
+			if (!Settings.autopause)
+				fadeIn();
+		});
+		FlxG.signals.focusLost.add(function() {
+			if (!Settings.autopause)
+				fadeOut();
+		});
+	}
+
+	static var lmao:Float = 1;
+
+	static function fadeOut():Void
+	{
+		FlxTween.cancelTweensOf(FlxG.sound, ["volume"]);
+		lmao = FlxG.sound.volume;
+		FlxTween.tween(FlxG.sound, {volume: lmao * 0.5}, 0.5);
+	}
+
+	static function fadeIn():Void
+	{
+		FlxTween.cancelTweensOf(FlxG.sound, ["volume"]);
+		FlxTween.tween(FlxG.sound, {volume: lmao}, 0.5);
+	}
 }

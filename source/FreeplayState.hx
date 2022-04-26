@@ -6,6 +6,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -41,6 +42,8 @@ class FreeplayState extends MusicBeatState
 	var intendedScore:Int = 0;
 	var intendedAcc:Float = 0;
 	var bg:FlxSprite;
+
+	public static var vocals:FlxSound;
 
 	private var grpSongs:FlxTypedGroup<Alphabet>;
 	private var grpIcons:FlxTypedGroup<HealthIcon>;
@@ -151,18 +154,30 @@ class FreeplayState extends MusicBeatState
 		scoreText.x = scoreBG.x + 2;
 		scoreText.y = 2;
 		scoreText.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER);
+		add(scoreText);
 
 		diffText = new FlxText(0, 0, 0, "", 24);
 		diffText.alignment = CENTER;
 		diffText.x = scoreBG.x;
 		diffText.y = scoreBG.y + scoreBG.height - 26;
 		diffText.font = scoreText.font;
-
 		add(diffText);
-		add(scoreText);
+
+		var instBG:FlxSprite = new FlxSprite(0, FlxG.height - 34).makeGraphic(FlxG.width, 36, FlxColor.BLACK);
+		instBG.alpha = 0.6;
+		add(instBG);
+
+		var instTxt:FlxText = new FlxText(5, FlxG.height - 29, FlxG.width - 10, "Press SPACE to listen to the song selected.");
+		instTxt.setFormat("VCR OSD Mono", 24, FlxColor.WHITE, RIGHT);
+		add(instTxt);
 
 		changeSelection();
 		changeDiff();
+
+		if (vocals == null)
+		{
+			vocals = new FlxSound();
+		}
 
 		// FlxG.sound.playMusic(Paths.music('title'), 0);
 		// FlxG.sound.music.fadeIn(2, 0, 0.8);
@@ -193,39 +208,56 @@ class FreeplayState extends MusicBeatState
 	}
 
 	var holdTime:Float = 0;
+	var exiting:Bool = false;
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
 		if (FlxG.sound.music != null)
-		{
 			Conductor.songPosition = FlxG.sound.music.time;
-		}
 
 		if (FlxG.sound.music.volume < 0.7)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
+
+		if (vocals.volume < 0.7 * FlxG.sound.volume && !exiting && !switching)
+			vocals.volume += 0.5 * FlxG.elapsed;
+		else
+		{
+			if (!exiting)
+				vocals.volume = 0.7 * FlxG.sound.volume;
+		}
 
 		for (songLabel in grpSongs)
 			songLabel.x = FlxMath.lerp(songLabel.x, (songLabel.targetY * 20) + 90, Helper.boundTo(elapsed * 9.6, 0, 1));
 
 		if (controls.UP || controls.DOWN)
 		{
-			if (holdTime > Main.globalMaxHoldTime)
+			if (holdTime > maxThing)
 			{
 				if (controls.UP)
 					changeSelection(-1);
 
 				if (controls.DOWN)
 					changeSelection(1);
+
+				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
+				holdTime = 0;
 			}
 			else
 			{
 				if (controls.UP_P)
+				{
 					changeSelection(-1);
+					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				}
 
 				if (controls.DOWN_P)
+				{
 					changeSelection(1);
+					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+				}
 			}
 
 			holdTime += elapsed;
@@ -239,9 +271,16 @@ class FreeplayState extends MusicBeatState
 			changeDiff(1);
 
 		if (controls.BACK)
+		{
+			exiting = true;
+			vocals.fadeOut(0.5, 0);
 			FlxG.switchState(new MainMenuState());
+		}
 
-		if (controls.ACCEPT)
+		if (FlxG.keys.justPressed.SPACE)
+			playMusic();
+
+		if (controls.ACCEPT && !FlxG.keys.justPressed.SPACE)
 		{
 			var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
 			var songLowercase = songs[curSelected].songName.replace(" ", "-").toLowerCase();
@@ -302,10 +341,10 @@ class FreeplayState extends MusicBeatState
 		diffText.x = scoreText.x + (scoreText.width / 2) - (diffText.width / 2);
 	}
 
+	var maxThing:Float = (FlxG.sound.load(Paths.sound('scrollMenu'), 0.4).length / 1000) * 0.75;
+
 	function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
-
 		curSelected += change;
 
 		if (curSelected < 0)
@@ -367,6 +406,33 @@ class FreeplayState extends MusicBeatState
 		}
 	}
 
+	var switching:Bool = false;
+
+	function playMusic():Void
+	{
+		switching = true;
+		
+		var song = songs[curSelected].songName.replace(" ", "-").toLowerCase();
+		var bpm = songs[curSelected].bpm;
+
+		FlxG.sound.music.fadeOut(0.25, 0, function(twn:FlxTween)
+		{
+			Conductor.changeBPM(bpm);
+			
+			FlxG.sound.playMusic(Paths.inst(song));
+			FlxG.sound.music.volume = 0;
+			FlxG.sound.music.fadeIn(0.25, 0, 0.7, function(twn:FlxTween) {
+				switching = false;
+			});
+			vocals.loadEmbedded(Paths.voices(song), true);
+			vocals.volume = 0;
+			vocals.fadeIn(0.25, 0, 0.7);
+		});
+		vocals.fadeOut(0.25, 0);
+
+		resyncVocals();
+	}
+
 	function updateScoreBox():Void
 	{
 		scoreText.setPosition(FlxG.width - scoreText.width - 5, 5);
@@ -389,6 +455,25 @@ class FreeplayState extends MusicBeatState
 		scoreBG.updateHitbox();
 
 		scoreBG.setPosition(biggerObject.x - 5, scoreText.y - 5);
+	}
+
+	function resyncVocals():Void
+	{
+		vocals.pause();
+		FlxG.sound.music.play();
+		Conductor.songPosition = FlxG.sound.music.time;
+		vocals.time = Conductor.songPosition;
+		vocals.play();
+	}
+
+	override function stepHit()
+	{
+		super.stepHit();
+
+		if (Math.abs(FlxG.sound.music.time - Conductor.songPosition) > 20
+			|| Math.abs(vocals.time - Conductor.songPosition) > 20
+			|| Math.abs(FlxG.sound.music.time - vocals.time) > 20)
+			resyncVocals();
 	}
 }
 
