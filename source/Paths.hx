@@ -271,6 +271,26 @@ class Paths
 		return 'assets/_noteTypes/$key/note.hent';
 	}
 
+	inline static public function eventInfo(key:String, mod:String)
+	{
+		#if FILESYSTEM
+		if (mod != "hopeEngine")
+			return 'mods/$mod/assets/_events/$key/info.json';
+		#end
+
+		return 'assets/_events/$key/info.json';
+	}
+
+	inline static public function event(key:String, mod:String)
+	{
+		#if FILESYSTEM
+		if (mod != "hopeEngine")
+			return 'mods/$mod/assets/_events/$key/event.json';
+		#end
+
+		return 'assets/_events/$key/event.json';
+	}
+
 	static public function sound(key:String, ?library:String):Dynamic
 	{
 		var pissOff:String;

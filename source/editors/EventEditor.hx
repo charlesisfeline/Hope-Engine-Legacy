@@ -38,26 +38,7 @@ class EventEditor extends MusicBeatState
 
 	var _event:SwagEvent = {
 		eventID: "simple_event",
-		params: [
-			{
-				paramID: "nothing",
-				paramName: "Nothing",
-				type: "bool",
-				value: null,
-				defaultValue: false,
-				increment: null,
-				maxLetters: null
-			},
-			{
-				paramID: "nothing_too",
-				paramName: "Nothing... again",
-				type: "string",
-				value: null,
-				defaultValue: "",
-				increment: null,
-				maxLetters: null
-			},
-		]
+		params: []
 	}
 
 	var _info:EventInfo = {
@@ -97,6 +78,11 @@ class EventEditor extends MusicBeatState
 		fakeoutBox.x = (FlxG.width / 2) - fakeoutBox.width - 20;
 		fakeoutBox.screenCenter(Y);
 		add(fakeoutBox);
+
+		var saveEvent = new FlxButton(0, 0, "Save Event", saveEvent);
+		saveEvent.x = UI_box.x;
+		saveEvent.y = UI_box.y + UI_box.height + 10;
+		add(saveEvent);
 
 		super.create();
 
@@ -476,6 +462,20 @@ class EventEditor extends MusicBeatState
 			_file.addEventListener(Event.CANCEL, onSaveCancel);
 			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 			_file.save(data.trim(), "info.json");
+		}
+	}
+
+	private function saveEvent()
+	{
+		var data:String = Json.stringify(_event, null, "\t");
+
+		if ((data != null) && (data.length > 0))
+		{
+			_file = new FileReference();
+			_file.addEventListener(Event.COMPLETE, onSaveComplete);
+			_file.addEventListener(Event.CANCEL, onSaveCancel);
+			_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
+			_file.save(data.trim(), "event.json");
 		}
 	}
 
