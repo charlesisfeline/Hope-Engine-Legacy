@@ -67,7 +67,7 @@ class PlayState extends MusicBeatState
 	// main vars
 	public static var curStage:String = '';
 	public static var SONG:SwagSong;
-	public static var EVENTS:EventData;
+	public static var EVENTS:Null<EventData>;
 	public static var isStoryMode:Bool = false;
 	public static var isPlaylistMode:Bool = false;
 	public static var storyWeek:Int = 0;
@@ -125,6 +125,8 @@ class PlayState extends MusicBeatState
 	private var displaySustains:FlxTypedGroup<Note>;
 	private var displayNotes:FlxTypedGroup<Note>;
 
+	private var eventNotes:Array<EventNote> = [];
+
 	public var strumLine:FlxSprite;
 
 	public static var strumLineNotes:FlxTypedGroup<FlxSprite>;
@@ -171,6 +173,7 @@ class PlayState extends MusicBeatState
 	var warningSections:Array<Int> = [];
 
 	var loadedNoteTypeInterps:Map<String, Interp>;
+	var loadedEventInterps:Map<String, Interp>;
 
 	// misc FlxSprites
 	var daLogo:FlxSprite;
@@ -255,6 +258,7 @@ class PlayState extends MusicBeatState
 		parser.allowMetadata = true;
 
 		loadedNoteTypeInterps = new Map<String, Interp>();
+		loadedEventInterps = new Map<String, Interp>();
 
 		#if FILESYSTEM
 		Paths.destroyCustomImages();
@@ -547,7 +551,7 @@ class PlayState extends MusicBeatState
 			if (!Settings.downscroll)
 				botPlayState.y = strumLine.y + (Note.swagWidth / 2) - (botPlayState.height / 2);
 			else
-				botPlayState.y = strumLine.y - (Note.swagWidth / 2) - (botPlayState.height / 2);
+				botPlayState.y = strumLine.y - (Note.swagWidth / 2) + (botPlayState.height / 2);
 		}
 
 		botplayTween = FlxTween.tween(botPlayState, {alpha: 0}, Conductor.crochet / 1000, {ease: FlxEase.sineInOut, type: PINGPONG, loopDelay: 0.2});
@@ -555,7 +559,7 @@ class PlayState extends MusicBeatState
 		add(botPlayState);
 		add(scrollSpeedText);
 
-		botPlayState.visible = scrollSpeedText.visible = false;
+		botPlayState.visible = scrollSpeedText.visible = Settings.botplay;
 
 		if (Settings.botplay)
 		{
@@ -1045,6 +1049,7 @@ class PlayState extends MusicBeatState
 	private function generateSong(dataPath:String):Void
 	{
 		var songData = SONG;
+		var eventData = EVENTS;
 		Conductor.changeBPM(songData.bpm);
 
 		if (Paths.currentMod == null)
@@ -1196,15 +1201,56 @@ class PlayState extends MusicBeatState
 			}
 		}
 
+		var eventsDetected:Array<String> = [];
+
+		if (EVENTS != null)
+		{
+			for (section in EVENTS.events)
+			{
+				for (eventNote in section)
+				{
+					eventNotes.push(eventNote);
+					for (event in eventNote.events)
+					{
+						if (!eventsDetected.contains(event.eventID))
+							eventsDetected.push(event.eventID);
+					}
+				}
+			}
+		}
+
+		for (eventID in eventsDetected)
+		{
+			var a = eventID.split("/");
+
+			if (a.length == 2)
+			{
+				#if FILESYSTEM
+				var heev = File.getContent(Sys.getCwd() + Paths.eventScript(a[1], a[0]));
+				#else
+				var heev = Assets.getText(Paths.eventScript(a[1], a[0]));
+				#end
+
+				var daInterp = new Interp();
+				var daAst = parser.parseString(heev);
+				interpVariables(daInterp);
+				daInterp.execute(daAst);
+
+				loadedEventInterps.set(eventID, daInterp);
+			}
+		}
+
 		unspawnNotes.sort(sortByShit);
+		eventNotes.sort(sortEvent);
 
 		generatedMusic = true;
 	}
 
 	function sortByShit(Obj1:Note, Obj2:Note):Int
-	{
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
-	}
+
+	function sortEvent(ob1:EventNote, ob2:EventNote)
+		return FlxSort.byValues(FlxSort.ASCENDING, ob1.strumTime, ob2.strumTime);
 
 	private function generateStaticArrows(player:Int, ?inverted:Bool = false):Void
 	{
@@ -1460,6 +1506,9 @@ class PlayState extends MusicBeatState
 		for (type => int in loadedNoteTypeInterps)
 			interpVariables(int);
 
+		for (type => int in loadedEventInterps)
+			interpVariables(int);
+
 		if (Settings.botplay && FlxG.keys.justPressed.ONE)
 			camHUD.visible = !camHUD.visible;
 
@@ -1655,27 +1704,34 @@ class PlayState extends MusicBeatState
 		{
 			if (songStarted && generatedMusic && PlayState.EVENTS.events[Std.int(curStep / 16)] != null)
 			{
-				/**
-				 * create how events work
-				 * 
-				 * when event strumtime is LESS THAN OR EQUAL TO songposition:
-				 * - trigger event
-				 * - trigger hscript event (args being event name and parameters provided)
-				 * - cause pain
-				 * 
-				 * 
-				 * create EventEditor LMAOOO
-				 */
-
-				var section = PlayState.EVENTS.events[Std.int(curStep / 16)];
-
-				for (note in section)
+				for (note in eventNotes)
 				{
-					
+					if (note.strumTime <= Conductor.songPosition && eventNotes.contains(note))
+					{
+						// FIRE!
+						for (event in note.events)
+						{
+							var paramsMap:Map<String, Dynamic> = new Map<String, Dynamic>();
+							for (param in event.params)
+							{
+								var paramID = param.paramID;
+								var paramValue = param.value != null ? param.value : param.defaultValue;
+								paramsMap.set(paramID, paramValue);
+								trace(paramID, paramValue);
+							}
+
+							var eventInt = loadedEventInterps.get(event.eventID);
+							eventInt.variables.get("trigger")(paramsMap);
+							trace("fired " + event.eventID + "!");
+						}
+
+						eventNotes.remove(note);
+					}
 				}
 			}
 		}
 
+		/*
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 		{
 			// Make sure Girlfriend cheers only for certain songs
@@ -1786,6 +1842,7 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
+		*/
 
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
 		{
@@ -3105,14 +3162,6 @@ class PlayState extends MusicBeatState
 		if (generatedMusic)
 			notes.sort(FlxSort.byY, (Settings.downscroll ? FlxSort.ASCENDING : FlxSort.DESCENDING));
 
-		if (curSong == 'Tutorial' && dad.curCharacter == 'gf' && !dad.animation.curAnim.name.startsWith("sing"))
-		{
-			if (curBeat % 2 == 1 && dad.animOffsets.exists('danceLeft'))
-				dad.playAnim('danceLeft');
-			if (curBeat % 2 == 0 && dad.animOffsets.exists('danceRight'))
-				dad.playAnim('danceRight');
-		}
-
 		if (SONG.notes[Math.floor(curStep / 16)] != null)
 		{
 			if (SONG.notes[Math.floor(curStep / 16)].changeBPM)
@@ -3120,13 +3169,6 @@ class PlayState extends MusicBeatState
 				Conductor.changeBPM(SONG.notes[Math.floor(curStep / 16)].bpm);
 				FlxG.log.add('CHANGED BPM!');
 			}
-		}
-
-		// HARDCODING FOR MILF ZOOMS!
-		if (curSong.toLowerCase() == 'milf' && curBeat >= 168 && curBeat < 200 && camZooming && FlxG.camera.zoom < 1.35)
-		{
-			FlxG.camera.zoom += 0.015;
-			camHUD.zoom += 0.03;
 		}
 
 		if (camZooming && FlxG.camera.zoom < 1.35 && curBeat % 4 == 0)
@@ -3164,20 +3206,6 @@ class PlayState extends MusicBeatState
 				cameraOffsetX = 0;
 				cameraOffsetY = 0;
 			}
-		}
-
-		if (curBeat % 8 == 7 && curSong == 'Bopeebo')
-		{
-			boyfriend.specialAnim = true;
-			boyfriend.playAnim('hey', true);
-		}
-
-		if (curBeat % 16 == 15 && SONG.song == 'Tutorial' && dad.curCharacter == 'gf' && curBeat > 16 && curBeat < 48)
-		{
-			boyfriend.specialAnim = true;
-			dad.specialAnim = true;
-			boyfriend.playAnim('hey', true);
-			dad.playAnim('cheer', true);
 		}
 	}
 

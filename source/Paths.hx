@@ -291,6 +291,16 @@ class Paths
 		return 'assets/_events/$key/event.json';
 	}
 
+	inline static public function eventScript(key:String, mod:String)
+	{
+		#if FILESYSTEM
+		if (mod != "hopeEngine")
+			return 'mods/$mod/assets/_events/$key/script.heev';
+		#end
+
+		return 'assets/_events/$key/script.heev';
+	}
+
 	static public function sound(key:String, ?library:String):Dynamic
 	{
 		var pissOff:String;

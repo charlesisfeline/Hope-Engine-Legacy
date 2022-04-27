@@ -1,0 +1,29 @@
+function trigger(params:Map<String, Dynamic>)
+{
+	// Self-explanatory.
+
+	var gfHey:Bool = params.get("gfHey");
+	var bfHey:Bool = params.get("bfHey");
+	var dadHey:Bool = params.get("dadHey");
+
+	if (gfHey)
+	{
+		gf.specialAnim = true;
+		gf.playAnim("hey", true);
+		gf.playAnim("cheer", true);
+	}
+
+	if (bfHey)
+	{
+		boyfriend.specialAnim = true;
+		boyfriend.playAnim("hey", true);
+		boyfriend.playAnim("cheer", true);
+	}
+
+	if (dadHey)
+	{
+		dad.specialAnim = true;
+		dad.playAnim("hey", true);
+		dad.playAnim("cheer", true);
+	}
+}

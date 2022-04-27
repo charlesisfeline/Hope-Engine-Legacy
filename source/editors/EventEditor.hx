@@ -37,7 +37,7 @@ class EventEditor extends MusicBeatState
 	var fakeoutBox:FlxUITabMenu;
 
 	var _event:SwagEvent = {
-		eventID: "simple_event",
+		eventID: "", // gets set dynamically by charter
 		params: []
 	}
 
@@ -403,7 +403,7 @@ class EventEditor extends MusicBeatState
 					curEventParams.push(label);
 					
 					var ass:FlxUINumericStepper = cast itemToAdd;
-					ass.decimals = 2;
+					ass.decimals = 5;
 					ass.stepSize = param.increment != null ? param.increment : .1;
 					ass.value = param.value != null ? param.value : param.defaultValue;
 			}

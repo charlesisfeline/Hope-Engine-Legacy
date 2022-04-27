@@ -57,19 +57,23 @@ class Event
 
 		trace('loading events for ' + folderLowercase);
 
+		var rawJson:Null<String> = null;
+
 		#if FILESYSTEM
 		if (!FileSystem.exists(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/events.json')) return null;
-		var rawJson = File.getContent(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/events.json').trim();
+		rawJson = File.getContent(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/events.json').trim();
 		#else
 		if (!Assets.exists(Paths.json(folderLowercase + '/events'))) return null;
-		var rawJson = Assets.getText(Paths.json(folderLowercase + '/events')).trim();
+		rawJson = Assets.getText(Paths.json(folderLowercase + '/events')).trim();
 		#end
 
 		return parseJSON(rawJson);
 	}
 
-	public static function parseJSON(rawJson:String):EventData
+	public static function parseJSON(rawJson:Null<String>):Null<EventData>
 	{
+		if (rawJson == null) return null;
+		
 		var swagShit:EventData = cast Json.parse(rawJson);
 		return swagShit;
 	}

@@ -1,0 +1,23 @@
+{
+	"params": [
+		{
+			"paramID": "camGame_zoom",
+			"defaultValue": 0.015,
+			"value": null,
+			"increment": 0.001,
+			"paramName": "Game zoom",
+			"type": "number",
+			"maxLetters": null
+		},
+		{
+			"paramID": "camHUD_zoom",
+			"defaultValue": 0.03,
+			"value": null,
+			"increment": 0.001,
+			"paramName": "HUD zoom",
+			"type": "number",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}
