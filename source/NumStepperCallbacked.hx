@@ -17,6 +17,10 @@ import flixel.text.FlxText;
 import flixel.util.FlxArrayUtil;
 import flixel.util.FlxStringUtil;
 
+/**
+ * FlxUINumericStepper fork that adds a callback.
+ */
+
 class NumStepperCallbacked extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams
 {
 	private var button_plus:FlxUITypedButton<FlxSprite>;

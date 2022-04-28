@@ -4,6 +4,7 @@ import editors.*;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
@@ -21,9 +22,10 @@ import sys.io.File;
 
 class EditorsState extends MusicBeatState
 {
-	var options:Array<String> = ["Chart Editor", "Character Editor", "Week Editor"];
-	var grpOptions:FlxTypedGroup<Alphabet>;
+	var options:Array<String> = ["Chart Editor", "Character Editor", "Week Editor", "Event Editor"];
 
+	var grpOptions:FlxTypedGroup<Alphabet>;
+	
 	var mods:Array<String> = ["none"];
 
 	var curSelected:Int = 0;
@@ -93,8 +95,7 @@ class EditorsState extends MusicBeatState
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
-
-			item.x = 25;
+			
 			item.alpha = 0.6;
 
 			if (item.targetY == 0)
@@ -140,6 +141,9 @@ class EditorsState extends MusicBeatState
 			case "Week Editor":
 				WeekEditor.fromEditors = true;
 				state = new WeekEditor();
+			case "Event Editor":
+				EventEditor.fromEditors = true;
+				state = new EventEditor();
 		}
 
 		FlxG.switchState(state);
@@ -163,6 +167,9 @@ class EditorsState extends MusicBeatState
 			changeMod(-1);
 		if (controls.RIGHT_P)
 			changeMod(1);
+
+		for (opt in grpOptions)
+			opt.x = FlxMath.lerp(opt.x, (opt.targetY * 20) + 90, Helper.boundTo(elapsed * 9.6, 0, 1));
 
 		modTxt.y = modTxtBG.y + (modTxtBG.height / 2) - (modTxt.height / 2);
 	}

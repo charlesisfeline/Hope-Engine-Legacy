@@ -6,6 +6,7 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUI;
+import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUIInputText;
@@ -33,8 +34,11 @@ import sys.io.File;
 
 class EventEditor extends MusicBeatState
 {
+	public static var fromEditors:Bool = false;
+	
 	var UI_box:FlxUITabMenu;
 	var fakeoutBox:FlxUITabMenu;
+	var eventTextPreview:TrackedText;
 
 	var _event:SwagEvent = {
 		eventID: "", // gets set dynamically by charter
@@ -83,6 +87,23 @@ class EventEditor extends MusicBeatState
 		saveEvent.x = UI_box.x;
 		saveEvent.y = UI_box.y + UI_box.height + 10;
 		add(saveEvent);
+
+		var gridCell:FlxSprite = new FlxSprite().makeGraphic(ChartingState.GRID_SIZE, ChartingState.GRID_SIZE, (FlxG.random.bool() ? 0xffe7e6e6 : 0xffd9d5d5));
+		gridCell.x = fakeoutBox.x + fakeoutBox.width - gridCell.width;
+		gridCell.y = fakeoutBox.y + fakeoutBox.height + 10;
+		add(gridCell);
+
+		var eventIcon:FlxSprite = new FlxSprite().loadGraphic(Paths.image("event", "shared"));
+		eventIcon.setGraphicSize(ChartingState.GRID_SIZE, ChartingState.GRID_SIZE);
+		eventIcon.updateHitbox();
+		eventIcon.x = fakeoutBox.x + fakeoutBox.width - gridCell.width;
+		eventIcon.y = fakeoutBox.y + fakeoutBox.height + 10;
+		add(eventIcon);
+
+		eventTextPreview = new TrackedText(eventIcon.x, eventIcon.y, "");
+		eventTextPreview.fieldWidth = 145;
+		eventTextPreview.xOffset = -eventTextPreview.width - 5;
+		add(eventTextPreview);
 
 		super.create();
 
@@ -329,22 +350,38 @@ class EventEditor extends MusicBeatState
 	function addEventUI():Void
 	{
 		var eventsLabel = new FlxText(10, 10, "Events List");
-		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray([_info.eventName], true));
+		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray([""]), new FlxUIDropDownHeader(Std.int(fakeoutBox.width - 80)));
 
 		description = new FlxText(10, eventDropdown.y + eventDropdown.header.height + 10, Std.int(fakeoutBox.width - 20), _info.eventDesc);
+
+		var addEvent = new FlxUIButton(eventDropdown.x + eventDropdown.width + 10, eventDropdown.y, '+');
+		addEvent.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		addEvent.resize(eventDropdown.header.height, eventDropdown.header.height);
+		addEvent.label.resize(eventDropdown.header.height, eventDropdown.header.height);
+		addEvent.label.offset.y = 3;
+
+		var delEvent = new FlxUIButton(addEvent.x + addEvent.width + 10, eventDropdown.y, '-');
+		delEvent.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		delEvent.resize(eventDropdown.header.height, eventDropdown.header.height);
+		delEvent.label.resize(eventDropdown.header.height, eventDropdown.header.height);
+		delEvent.label.offset.y = 3;
 
 		tab_group_events = new FlxUI(null, fakeoutBox);
 		tab_group_events.name = '1';
 		tab_group_events.add(eventsLabel);
 		tab_group_events.add(description);
 		tab_group_events.add(eventDropdown);
+		tab_group_events.add(addEvent);
+		tab_group_events.add(delEvent);
 		fakeoutBox.addGroup(tab_group_events);
 	}
 
 	function updateEventsUI():Void
 	{
-		eventDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray([_info.eventName]));
-		eventDropdown.selectedLabel = _info.eventName;
+		// eventDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray([]));
+		// eventDropdown.selectedLabel = _info.eventName;
+
+		eventTextPreview.text = "Events:\n" + _info.eventName;
 
 		description.text = _info.eventDesc;
 		description.y = curEventParams[curEventParams.length - 1].y + curEventParams[curEventParams.length - 1].height + 20;
@@ -355,6 +392,9 @@ class EventEditor extends MusicBeatState
 		removeEventParams();
 		createEventParams();
 		description.y = curEventParams[curEventParams.length - 1].y + curEventParams[curEventParams.length - 1].height + 20;
+
+		tab_group_events.remove(eventDropdown, true);
+		tab_group_events.add(eventDropdown);
 	}
 
 	function removeEventParams():Void
@@ -397,7 +437,7 @@ class EventEditor extends MusicBeatState
 				case 'number':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
-					itemToAdd = new FlxUINumericStepper(10, previousItem.y + previousItem.height, .1);
+					itemToAdd = new FlxUINumericStepper(10, previousItem.y + previousItem.height, .1, new FlxUIInputText(0, 0, 200));
 
 					tab_group_events.add(label);
 					curEventParams.push(label);
@@ -446,6 +486,17 @@ class EventEditor extends MusicBeatState
 		{
 			trace(Json.stringify(_info, null, "\t"));
 			trace(Json.stringify(_event, null, "\t"));
+		}
+
+		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		{
+			if (fromEditors)
+			{
+				FlxG.switchState(new EditorsState());
+				fromEditors = false;
+			}
+			else
+				FlxG.switchState(new StoryMenuState());
 		}
 	}
 
