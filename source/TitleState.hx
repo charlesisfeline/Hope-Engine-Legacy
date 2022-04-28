@@ -1,17 +1,13 @@
 package;
 
-import editors.EventEditor;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.display.FlxSliceSprite;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileDiamond;
 import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
@@ -283,7 +279,7 @@ class TitleState extends MusicBeatState
 			FlxG.fullscreen = !FlxG.fullscreen;
 
 		if (FlxG.keys.justPressed.G)
-			FlxG.switchState(new EventEditor());
+			FlxG.switchState(new hopeUI.HopeTitle());
 
 		if (FlxG.keys.justPressed.F3)
 		{
