@@ -8,10 +8,12 @@ import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
+import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
+import hopeUI.HopeTitle;
 import lime.app.Application;
 import openfl.Assets;
 import openfl.filters.BitmapFilter;
@@ -38,6 +40,9 @@ class TitleState extends MusicBeatState
 	var credTextShit:Alphabet;
 	var curWacky:Array<String> = [];
 	var wackyImage:FlxSprite;
+
+	var code:Array<FlxKey> = [H, O, P, E];
+	var typed:Array<FlxKey> = [];
 
 	// version
 	var requestedVersion:Null<String> = null;
@@ -294,7 +299,41 @@ class TitleState extends MusicBeatState
 			FlxG.game.setFilters(hahaArray[curFilter]);
 		}
 
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER;
+		if (FlxG.keys.anyJustPressed([ANY]))
+		{
+			typed.push(cast FlxG.keys.firstJustPressed());
+
+			var cur = 0;
+			
+			for (key in typed) 
+			{
+				var curKey = code[cur];
+
+				if (key != curKey)
+				{
+					for (k in typed)
+						typed.remove(k);
+
+					break;
+				}
+
+				cur++;
+			}
+
+			if (typed.length == code.length)
+			{
+				FlxG.sound.music.volume = 0;
+				var a = FlxG.sound.play(Paths.sound("titleShoot"), 0.6).length / 1000;
+				
+				FlxG.camera.flash(FlxColor.WHITE, a, true);
+				FlxG.camera.fade(0xff000000, a);
+				new FlxTimer().start(a, function(tmr:FlxTimer) {
+					FlxG.switchState(new HopeTitle());	
+				});
+			}
+		}
+
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
