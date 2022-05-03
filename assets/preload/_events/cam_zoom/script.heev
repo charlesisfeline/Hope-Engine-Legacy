@@ -2,7 +2,7 @@ function trigger(params:Map<String, Dynamic>)
 {
 	// Self-explanatory.
 
-	var gameZoom:Float = params.get("camGame_Zoom");
+	var gameZoom:Float = params.get("camGame_zoom");
 	var hudZoom:Float = params.get("camHUD_zoom");
 
 	FlxG.camera.zoom += gameZoom;

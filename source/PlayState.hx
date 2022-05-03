@@ -11,6 +11,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
+import flixel.addons.display.FlxBackdrop;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -649,7 +650,7 @@ class PlayState extends MusicBeatState
 			});
 		}
 
-		debugPrints = new FlxText(10, 10, 0, "");
+		debugPrints = new FlxText(0, FlxG.height * 0.35, 0, "");
 		debugPrints.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
 		debugPrints.borderSize = 3;
 		add(debugPrints);
@@ -2961,6 +2962,7 @@ class PlayState extends MusicBeatState
 		funnyInterp.variables.set("FlxAtlasFrames", FlxAtlasFrames);
 		funnyInterp.variables.set("FlxTypedGroup", FlxTypedGroup);
 		funnyInterp.variables.set("Achievements", Achievements);
+		funnyInterp.variables.set("FlxBackdrop", FlxBackdrop);
 		funnyInterp.variables.set("StringTools", StringTools);
 		funnyInterp.variables.set("FlxSprite", FlxSprite);
 		funnyInterp.variables.set("Character", Character);
@@ -2973,9 +2975,11 @@ class PlayState extends MusicBeatState
 		funnyInterp.variables.set("FlxText", FlxText);
 		funnyInterp.variables.set("Ratings", Ratings);
 		funnyInterp.variables.set("Paths", Paths);
+		funnyInterp.variables.set("Count", Count);
 		funnyInterp.variables.set("Math", Math);
 		funnyInterp.variables.set("FlxG", FlxG);
 		funnyInterp.variables.set("Std", Std);
+		funnyInterp.variables.set("Lib", Lib);
 
 		// state funcs
 		funnyInterp.variables.set("add", add);
@@ -3077,13 +3081,22 @@ class PlayState extends MusicBeatState
 
 	function debugPrint(s:Dynamic)
 	{
-		s = Date.now() + " " + s;
-		debugPrints.text = s + "\n" + debugPrints.text.trim();
+		var now = Date.now();
+		var time = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours() + "")
+			+ ":"
+			+ (now.getMinutes() < 10 ? "0" + now.getMinutes() : now.getMinutes() + "")
+			+ ":"
+			+ (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds() + "");
+		
+		s = "[" + time + "] " + s;
+		debugPrints.text = debugPrints.text.trim() + "\n" + s;
+
+		
 
 		var a = debugPrints.text.split("\n");
-		if (debugPrints.height + 10 > FlxG.height)
+		if (debugPrints.y + debugPrints.height > FlxG.height)
 		{
-			a.pop();
+			a.shift();
 			debugPrints.text = a.join("\n");
 		}
 	}
@@ -3106,10 +3119,7 @@ class PlayState extends MusicBeatState
 					case 0:
 						songName.text = SONG.song.toUpperCase() + " (" + FlxStringUtil.formatTime(Math.abs(Conductor.songPosition) / 1000) + ")";
 					case 1:
-						songName.text = SONG.song.toUpperCase()
-							+ " ("
-							+ FlxStringUtil.formatTime(Math.abs(FlxG.sound.music.length - Conductor.songPosition) / 1000)
-							+ ")";
+						songName.text = SONG.song.toUpperCase() + " (" + FlxStringUtil.formatTime(Math.abs(FlxG.sound.music.length - Conductor.songPosition) / 1000) + ")";
 					case 2:
 						songName.text = SONG.song.toUpperCase();
 					case 3:

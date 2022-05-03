@@ -604,7 +604,7 @@ class ChartingState extends MusicBeatState
 	{
 		removeEventParams();
 		createEventParams();
-		description.y = curEventParams[curEventParams.length - 1].y + curEventParams[curEventParams.length - 1].height + 20;
+		updateEventsUI();
 
 		tab_group_events.remove(eventDropdown, true);
 		tab_group_events.add(eventDropdown);
