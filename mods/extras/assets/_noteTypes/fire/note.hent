@@ -4,12 +4,9 @@
 // note: if you know what you're doing, feel free to modify
 
 
-function onNoteHit(note, splash)
+function onNoteHit(note)
 {
     // happens/executes when this specific note gets hit properly
-
-    if (splash != null)
-        splash.visible = false;
 
     var smoke = new FlxSprite(0, 0);
     smoke.frames = Paths.getSparrowAtlas("Smoke");

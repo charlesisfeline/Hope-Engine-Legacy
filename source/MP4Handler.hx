@@ -29,11 +29,13 @@ class MP4Handler extends vlc.VlcBitmap
 
 		FlxG.signals.focusGained.add(function()
 		{
-			resume();
+			if (Settings.autopause)
+				resume();
 		});
 		FlxG.signals.focusLost.add(function()
 		{
-			pause();
+			if (Settings.autopause)
+				pause();
 		});
 	}
 

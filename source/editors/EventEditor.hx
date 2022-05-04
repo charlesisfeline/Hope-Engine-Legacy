@@ -350,21 +350,12 @@ class EventEditor extends MusicBeatState
 	function addEventUI():Void
 	{
 		var eventsLabel = new FlxText(10, 10, "Events List");
-		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray([""]), new FlxUIDropDownHeader(Std.int(fakeoutBox.width - 80)));
+		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray([""]), new FlxUIDropDownHeader(Std.int(fakeoutBox.width - 205)));
 
 		description = new FlxText(10, eventDropdown.y + eventDropdown.header.height + 10, Std.int(fakeoutBox.width - 20), _info.eventDesc);
 
-		var addEvent = new FlxUIButton(eventDropdown.x + eventDropdown.width + 10, eventDropdown.y, '+');
-		addEvent.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
-		addEvent.resize(eventDropdown.header.height, eventDropdown.header.height);
-		addEvent.label.resize(eventDropdown.header.height, eventDropdown.header.height);
-		addEvent.label.offset.y = 3;
-
-		var delEvent = new FlxUIButton(addEvent.x + addEvent.width + 10, eventDropdown.y, '-');
-		delEvent.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
-		delEvent.resize(eventDropdown.header.height, eventDropdown.header.height);
-		delEvent.label.resize(eventDropdown.header.height, eventDropdown.header.height);
-		delEvent.label.offset.y = 3;
+		var addEvent = new FlxButton(eventDropdown.x + eventDropdown.width + 10, eventDropdown.y, 'Add/Update');
+		var delEvent = new FlxButton(addEvent.x + addEvent.width + 10, eventDropdown.y, 'Remove');
 
 		tab_group_events = new FlxUI(null, fakeoutBox);
 		tab_group_events.name = '1';

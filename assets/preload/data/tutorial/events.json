@@ -4,8 +4,54 @@
 		[],
 		[],
 		[],
-		[],
-		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": 0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 9600
+			}
+		],
 		[],
 		[
 			{
@@ -13,41 +59,135 @@
 					{
 						"params": [
 							{
-								"paramName": "Should GF Hey?",
-								"defaultValue": true,
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": -0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 14400
+			}
+		],
+		[
+			{
+				"strumTime": 18000,
+				"events": [
+					{
+						"params": [
+							{
 								"paramID": "gfHey",
-								"maxLetters": null,
+								"defaultValue": true,
+								"paramName": "Should GF Hey?",
 								"value": true,
+								"maxLetters": null,
 								"type": "bool",
 								"increment": null
 							},
 							{
-								"paramName": "Should BF Hey?",
-								"defaultValue": null,
 								"paramID": "bfHey",
-								"maxLetters": null,
+								"defaultValue": null,
+								"paramName": "Should BF Hey?",
 								"value": false,
+								"maxLetters": null,
 								"type": "bool",
 								"increment": null
 							},
 							{
-								"paramName": "Should Dad Hey?",
-								"defaultValue": false,
 								"paramID": "dadHey",
-								"maxLetters": null,
+								"defaultValue": false,
+								"paramName": "Should Dad Hey?",
 								"value": true,
+								"maxLetters": null,
 								"type": "bool",
 								"increment": null
 							}
 						],
 						"eventID": "hopeEngine/gf_hey"
 					}
-				],
-				"strumTime": 18000
+				]
 			}
 		],
-		[],
-		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": 0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 19200
+			}
+		],
 		[],
 		[
 			{
@@ -55,49 +195,379 @@
 					{
 						"params": [
 							{
-								"paramName": "Should GF Hey?",
-								"defaultValue": true,
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": -0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 24000
+			}
+		],
+		[
+			{
+				"strumTime": 27600,
+				"events": [
+					{
+						"params": [
+							{
 								"paramID": "gfHey",
-								"maxLetters": null,
+								"defaultValue": true,
+								"paramName": "Should GF Hey?",
 								"value": true,
+								"maxLetters": null,
 								"type": "bool",
 								"increment": null
 							},
 							{
-								"paramName": "Should BF Hey?",
-								"defaultValue": null,
 								"paramID": "bfHey",
-								"maxLetters": null,
+								"defaultValue": null,
+								"paramName": "Should BF Hey?",
 								"value": false,
+								"maxLetters": null,
 								"type": "bool",
 								"increment": null
 							},
 							{
-								"paramName": "Should Dad Hey?",
-								"defaultValue": false,
 								"paramID": "dadHey",
-								"maxLetters": null,
+								"defaultValue": false,
+								"paramName": "Should Dad Hey?",
 								"value": true,
+								"maxLetters": null,
 								"type": "bool",
 								"increment": null
 							}
 						],
 						"eventID": "hopeEngine/gf_hey"
 					}
+				]
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": 0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
 				],
-				"strumTime": 27600
+				"strumTime": 28800
 			}
 		],
 		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": -0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 33600
+			}
+		],
 		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": 0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 38400
+			}
+		],
 		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": -0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 43200
+			}
+		],
 		[],
-		[],
-		[],
-		[],
-		[],
-		[],
-		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": 0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 48000
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Change by",
+								"defaultValue": 0,
+								"paramID": "change",
+								"maxLetters": null,
+								"value": -0.3,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "Easing Style",
+								"defaultValue": "linear",
+								"paramID": "easing",
+								"maxLetters": null,
+								"value": "linear",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Easing Direction",
+								"defaultValue": "",
+								"paramID": "easing_direction",
+								"maxLetters": null,
+								"value": "",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Change Duration (set to 0 for instant changes)",
+								"defaultValue": 0,
+								"paramID": "time",
+								"maxLetters": null,
+								"value": 0.5,
+								"type": "number",
+								"increment": 0.01
+							}
+						],
+						"eventID": "hopeEngine/def_cam_zoom"
+					}
+				],
+				"strumTime": 50400
+			}
+		],
 		[],
 		[],
 		[],

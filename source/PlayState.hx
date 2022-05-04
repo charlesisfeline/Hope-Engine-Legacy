@@ -194,13 +194,13 @@ class PlayState extends MusicBeatState
 	public var camGame:FlxCamera;
 	public var camFollow:FlxObject;
 
-	var defaultCamZoom:Float = 1.05;
+	public var defaultCamZoom:Float = 1.05;
 
 	var customFollowLerp:Null<Float> = null;
 
 	public static var daPixelZoom:Float = 6;
 
-	var inCutscene:Bool = false;
+	public var inCutscene:Bool = false;
 
 	var triggeredAlready:Bool = false;
 	var allowedToHeadbang:Bool = false;
@@ -338,7 +338,6 @@ class PlayState extends MusicBeatState
 
 			ast = parser.parseString(modchart);
 			interpVariables(interp);
-			interp.variables.set("cutsceneDuration", 0);
 			interp.execute(ast);
 		}
 
@@ -599,56 +598,54 @@ class PlayState extends MusicBeatState
 
 		trace('starting');
 
-		var duration:Float = 0;
-
 		if (executeModchart)
 		{
 			interpVariables(interp);
 
 			if (interp.variables.get("onStart") != null)
 				interp.variables.get("onStart")();
-
-			if (interp.variables.get("cutsceneDuration") > 0)
-				duration = interp.variables.get("cutsceneDuration");
 		}
 
-		if (!inCutscene)
+		new FlxTimer().start(FlxG.elapsed, function(tmr:FlxTimer)
 		{
-			new FlxTimer().start(duration, function(tmr:FlxTimer)
+			if (inCutscene)
 			{
-				if (isStoryMode)
+				tmr.reset(FlxG.elapsed);
+				return;
+			}
+			
+			if (isStoryMode)
+			{
+				// we soft-codin this bitch in
+				#if FILESYSTEM
+				if (FileSystem.exists(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase())))
 				{
-					// we soft-codin this bitch in
-					#if FILESYSTEM
-					if (FileSystem.exists(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase())))
-					{
-						inCutscene = true;
+					inCutscene = true;
 
-						// also, does opening substates need the parent state to update ATLEAST once?
-						new FlxTimer().start(1, function(tmr:FlxTimer)
-						{
-							startDialogue();
-						});
-					}
-					#else
-					if (Assets.exists("assets/data/" + StringTools.replace(curSong, " ", "-").toLowerCase() + '/dialogueStart.txt'))
+					// also, does opening substates need the parent state to update ATLEAST once?
+					new FlxTimer().start(1, function(tmr:FlxTimer)
 					{
-						inCutscene = true;
-
-						// also, does opening substates need the parent state to update ATLEAST once?
-						new FlxTimer().start(1, function(tmr:FlxTimer)
-						{
-							startDialogue();
-						});
-					}
-					#end
-				else
-					startCountdown();
+						startDialogue();
+					});
 				}
-				else
-					startCountdown();
-			});
-		}
+				#else
+				if (Assets.exists("assets/data/" + StringTools.replace(curSong, " ", "-").toLowerCase() + '/dialogueStart.txt'))
+				{
+					inCutscene = true;
+
+					// also, does opening substates need the parent state to update ATLEAST once?
+					new FlxTimer().start(1, function(tmr:FlxTimer)
+					{
+						startDialogue();
+					});
+				}
+				#end
+			else
+				startCountdown();
+			}
+			else
+				startCountdown();
+		});
 
 		debugPrints = new FlxText(0, FlxG.height * 0.35, 0, "");
 		debugPrints.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
@@ -925,7 +922,10 @@ class PlayState extends MusicBeatState
 		lastReportedPlayheadPosition = 0;
 
 		if (!paused)
+		{
 			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
+			vocals.play();
+		}
 
 		if (songRecording)
 		{
@@ -982,8 +982,6 @@ class PlayState extends MusicBeatState
 						DialogueStyle.NORMAL, endSong));
 			};
 		#end
-
-		vocals.play();
 
 		if (executeModchart)
 		{
@@ -1723,7 +1721,12 @@ class PlayState extends MusicBeatState
 
 							var eventInt = loadedEventInterps.get(event.eventID);
 							eventInt.variables.get("trigger")(paramsMap);
-							trace("fired " + event.eventID + "!");
+
+							if (executeModchart)
+							{
+								if (interp.variables.get("onEvent") != null)
+									interp.variables.get("onEvent")(event.eventID, paramsMap);
+							}
 						}
 
 						eventNotes.remove(note);
@@ -2200,7 +2203,7 @@ class PlayState extends MusicBeatState
 	{
 		if (!paused)
 		{
-			var waitTime = 0;
+			var waitTime:Float = 0;
 
 			FlxTween.tween(songPosBar, {alpha: 0}, Conductor.crochet / 1500, {ease: FlxEase.expoInOut});
 			FlxTween.tween(songPosBG, {alpha: 0}, Conductor.crochet / 1500, {ease: FlxEase.expoInOut});
@@ -2226,12 +2229,18 @@ class PlayState extends MusicBeatState
 				if (interp.variables.get("onSongEnd") != null)
 				{
 					interp.variables.get("onSongEnd")();
-					waitTime = 1;
+					waitTime = FlxG.elapsed;
 				}
 			}
 
 			new FlxTimer().start(waitTime, function(tmr:FlxTimer)
 			{
+				if (inCutscene)
+				{
+					tmr.reset(FlxG.elapsed);
+					return;
+				}
+				
 				if (isStoryMode)
 				{
 					campaignScore += Math.round(songScore);
@@ -2809,7 +2818,7 @@ class PlayState extends MusicBeatState
 				if (loadedNoteTypeInterps.exists(note.noteType))
 				{
 					if (loadedNoteTypeInterps.get(note.noteType).variables.get("onNoteHit") != null)
-						loadedNoteTypeInterps.get(note.noteType).variables.get("onNoteHit")(note, splash);
+						loadedNoteTypeInterps.get(note.noteType).variables.get("onNoteHit")(note);
 				}
 			}
 
@@ -2864,20 +2873,31 @@ class PlayState extends MusicBeatState
 
 	/// mp4 bullshit starts here
 	#if VIDEOS_ALLOWED
-	var video:MP4Handler;
-
-	function playVideo(name:String, ?isCutscene:Bool = false)
+	function playVideo(name:String, ?isCutscene:Bool = true)
 	{
 		inCutscene = isCutscene;
 
-		video = new MP4Handler();
+		// patch for mid-song videos
+		if (isCutscene && songStarted)
+		{
+			persistentUpdate = false;
+			persistentDraw = true;
+			paused = true;
+
+			var ass = new WarningSubstate("You're seeing this\nbecause the video fucked up.\n\nLook away!");
+			ass.cameras = [camHUD];
+			openSubState(ass);
+		}
+
+		var video:MP4Handler = new MP4Handler();
 		video.finishCallback = function()
 		{
-			if (!startedCountdown)
-				startCountdown();
+			if (isCutscene && songStarted)
+				closeSubState();
 
 			inCutscene = false;
 		}
+		
 		video.playVideo(Paths.video(name));
 	}
 	#end
@@ -2893,23 +2913,6 @@ class PlayState extends MusicBeatState
 
 		character.holdTimer = 0;
 		character.playAnim('sing' + DIRECTIONS[direction] + alt, true);
-
-		if (character == boyfriend)
-		{
-			if (executeModchart)
-			{
-				if (interp.variables.get("bfSing") != null)
-					interp.variables.get("bfSing")();
-			}
-		}
-		else if (character == dad)
-		{
-			if (executeModchart)
-			{
-				if (interp.variables.get("dadSing") != null)
-					interp.variables.get("dadSing")();
-			}
-		}
 
 		if (whosFocused == character)
 			moveCamera(direction);
@@ -3225,6 +3228,12 @@ class PlayState extends MusicBeatState
 
 		if (botplayTween != null)
 			botplayTween.active = !paused;
+
+		if (songStarted && executeModchart)
+		{
+			if (interp.variables.get("onPause") != null)
+				interp.variables.get("onPause")(value);
+		}
 
 		return value;
 	}

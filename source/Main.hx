@@ -76,7 +76,7 @@ class Main extends Sprite
 
 		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
 
-		FlxGraphic.defaultPersist = true;
+		// FlxGraphic.defaultPersist = true;
 		addChild(game);
 
 		#if !mobile
