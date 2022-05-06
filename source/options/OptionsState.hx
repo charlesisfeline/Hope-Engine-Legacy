@@ -148,6 +148,18 @@ class OptionsState extends MusicBeatState
 						}
 					}, null));
 			}),
+			new PressOption("Erase Achievements", "Remove ACHIEVEMENTS data.\n(Prompted, be careful!)", function()
+			{
+				FlxG.state.openSubState(new ConfirmationPrompt(
+					"HEY!",
+					"Are you sure you want to delete ALL ACHIEVEMENTS?\nThis is IRREVERSIBLE!",
+					"Yeah!", 
+					"Nah.", 
+					function()
+					{
+						Achievements.takeAll();
+					}, null));
+			}),
 			new PressOption("Erase Data", "Remove ALL data.\n(Prompted, be careful!)", function()
 			{
 				FlxG.state.openSubState(new ConfirmationPrompt(

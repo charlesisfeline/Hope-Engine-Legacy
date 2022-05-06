@@ -199,7 +199,7 @@ class PlayState extends MusicBeatState
 
 	public var defaultCamZoom:Float = 1.05;
 
-	var customFollowLerp:Null<Float> = null;
+	public var customFollowLerp:Null<Float> = null;
 
 	public static var daPixelZoom:Float = 6;
 
@@ -1593,7 +1593,7 @@ class PlayState extends MusicBeatState
 		if (customFollowLerp != null)
 			FlxG.camera.followLerp = customFollowLerp;
 		else
-			FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 2.2, 0, 1);
+			FlxG.camera.followLerp = 1;
 
 		super.update(elapsed);
 

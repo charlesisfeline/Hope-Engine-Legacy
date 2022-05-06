@@ -130,11 +130,19 @@ class MainMenuState extends MusicBeatState
 		
 		menuItems.screenCenter(Y);
 
-		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 9.6, 0, 1));
+		FlxG.camera.follow(camFollow, LOCKON, 1);
 
 		changeItem(0);
 
 		super.create();
+
+		// friday night funkin check
+		var now = Date.now();
+		if (now.getDay() == 5)
+		{
+			if (now.getHours() >= 15)
+				Achievements.give("friday_night");
+		}
 	}
 
 	var selectedSomethin:Bool = false;
@@ -149,8 +157,6 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-
-		FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 9.6, 0, 1);
 
 		if (!selectedSomethin)
 		{

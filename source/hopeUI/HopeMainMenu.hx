@@ -87,7 +87,7 @@ class HopeMainMenu extends MusicBeatState
 			fuckingStupid.push(menuItem.height);
 		}
 
-		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 9.6, 0, 1));
+		FlxG.camera.follow(camFollow, LOCKON, 1);
 
 		changeItem();
 
@@ -161,8 +161,6 @@ class HopeMainMenu extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
-
-		FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 9.6, 0, 1);
 
 		if (!selected)
 		{

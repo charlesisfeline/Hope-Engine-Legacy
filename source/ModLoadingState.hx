@@ -73,7 +73,7 @@ class ModLoadingState extends MusicBeatState
 			modGroup.add(pain);
 		}
 
-		FlxG.camera.follow(camFollow, LOCKON, Helper.boundTo(FlxG.elapsed * 9.6, 0, 1));
+		FlxG.camera.follow(camFollow, LOCKON, 1);
 		changeItem();
 
 		super.create();
@@ -102,8 +102,6 @@ class ModLoadingState extends MusicBeatState
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		FlxG.camera.followLerp = Helper.boundTo(FlxG.elapsed * 9.6, 0, 1);
 
 		if (controls.BACK)
 		{

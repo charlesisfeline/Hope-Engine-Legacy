@@ -141,14 +141,14 @@ class Achievements
 		sprGroup.add(icon);
 
 		var name = new FlxText(0, 0, actualAch.name);
-		name.setFormat("VCR OSD Mono", 16, FlxColor.WHITE);
+		name.setFormat("VCR OSD Mono", 18, FlxColor.WHITE);
 		name.x = icon.x + icon.width + 25;
 		name.fieldWidth = bg.width - name.x - 25;
 		name.y = 25;
 		sprGroup.add(name);
 
 		var desc = new FlxText(0, 0, actualAch.desc);
-		desc.setFormat("VCR OSD Mono", 14, FlxColor.WHITE);
+		desc.setFormat("VCR OSD Mono", 16, FlxColor.WHITE);
 		desc.x = icon.x + icon.width + 25;
 		desc.fieldWidth = bg.width - desc.x - 25;
 		desc.y = name.y + name.height + 12.5;
