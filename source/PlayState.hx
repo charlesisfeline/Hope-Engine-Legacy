@@ -25,6 +25,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
+import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
@@ -183,7 +184,8 @@ class PlayState extends MusicBeatState
 	var scoreTxt:FlxText;
 	var scrollSpeedText:FlxText;
 	var songName:FlxText;
-	var debugPrints:FlxText;
+
+	var debugPrints:FlxTypedGroup<FlxText>;
 
 	// camera
 	private static var prevCamFollow:FlxObject;
@@ -192,6 +194,7 @@ class PlayState extends MusicBeatState
 
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
+	public var camMisc:FlxCamera;
 	public var camFollow:FlxObject;
 
 	public var defaultCamZoom:Float = 1.05;
@@ -299,10 +302,19 @@ class PlayState extends MusicBeatState
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
 
+		camMisc = new FlxCamera();
+		camMisc.bgColor.alpha = 0;
+
 		FlxG.cameras.reset(camGame);
 		FlxG.cameras.add(camHUD);
+		FlxG.cameras.add(camMisc);
 
 		FlxCamera.defaultCameras = [camGame];
+
+		
+		debugPrints = new FlxTypedGroup<FlxText>();
+		add(debugPrints);
+		debugPrints.cameras = [camMisc];
 
 		// pre lowercasing the song name (create)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
@@ -647,13 +659,6 @@ class PlayState extends MusicBeatState
 				startCountdown();
 		});
 
-		debugPrints = new FlxText(0, FlxG.height * 0.35, 0, "");
-		debugPrints.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
-		debugPrints.borderSize = 3;
-		add(debugPrints);
-
-		debugPrints.cameras = [camHUD];
-
 		super.create();
 
 		if (Paths.exists(Paths.cautionFile(curSong.replace(" ", "-").toLowerCase())))
@@ -756,13 +761,6 @@ class PlayState extends MusicBeatState
 	function startCountdown():Void
 	{
 		inCutscene = false;
-
-		// var theSex:FlxAtlasFrames = Paths.getSparrowAtlas('NOTE_assets');
-		// #if FILESYSTEM
-		// if (Settings.noteSkin != "default")
-		// 	theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-		// 		File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
-		// #end
 
 		generateStaticArrows(0);
 		generateStaticArrows(1);
@@ -1609,6 +1607,12 @@ class PlayState extends MusicBeatState
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
+
+			if (songStarted && executeModchart)
+			{
+				if (interp.variables.get("onPause") != null)
+					interp.variables.get("onPause")();
+			}
 
 			// 1 / 1000 chance for Gitaroo Man easter egg
 			if (FlxG.random.bool(0.1))
@@ -2980,6 +2984,7 @@ class PlayState extends MusicBeatState
 		funnyInterp.variables.set("Paths", Paths);
 		funnyInterp.variables.set("Count", Count);
 		funnyInterp.variables.set("Math", Math);
+		funnyInterp.variables.set("Note", Note);
 		funnyInterp.variables.set("FlxG", FlxG);
 		funnyInterp.variables.set("Std", Std);
 		funnyInterp.variables.set("Lib", Lib);
@@ -3046,6 +3051,7 @@ class PlayState extends MusicBeatState
 		// cameras
 		funnyInterp.variables.set("camHUD", camHUD);
 		funnyInterp.variables.set("camGame", camGame);
+		funnyInterp.variables.set("camMisc", camMisc);
 		funnyInterp.variables.set("camFollow", camFollow);
 
 		// song
@@ -3080,9 +3086,14 @@ class PlayState extends MusicBeatState
 			RIGHT: FlxTextAlign.RIGHT,
 			JUSTIFY: FlxTextAlign.JUSTIFY
 		});
+		funnyInterp.variables.set("FlxAxes", {
+			X: X,
+			Y: Y,
+			XY: XY,
+		});
 	}
 
-	function debugPrint(s:Dynamic)
+	function debugPrint(s:Dynamic, ?errorTypeOrColor:String = "normal")
 	{
 		var now = Date.now();
 		var time = (now.getHours() < 10 ? "0" + now.getHours() : now.getHours() + "")
@@ -3092,15 +3103,53 @@ class PlayState extends MusicBeatState
 			+ (now.getSeconds() < 10 ? "0" + now.getSeconds() : now.getSeconds() + "");
 		
 		s = "[" + time + "] " + s;
-		debugPrints.text = debugPrints.text.trim() + "\n" + s;
 
-		
-
-		var a = debugPrints.text.split("\n");
-		if (debugPrints.y + debugPrints.height > FlxG.height)
+		var color = 0xFFAD34FF;
+		switch (errorTypeOrColor.toLowerCase())
 		{
-			a.shift();
-			debugPrints.text = a.join("\n");
+			case "error":
+				color = FlxColor.RED;
+			case "success":
+				color = FlxColor.LIME;
+			default:
+				color = FlxColor.WHITE;
+
+				if (FlxColor.fromString("#" + errorTypeOrColor) != null)
+					color = FlxColor.fromString("#" + errorTypeOrColor);
+
+				if (FlxColor.colorLookup.exists(errorTypeOrColor.toUpperCase()))
+					color = FlxColor.colorLookup.get(errorTypeOrColor.toUpperCase());
+		}
+
+		var print = new FlxText(10, 0, 0, s);
+		print.setFormat(Paths.font("vcr.ttf"), 20, color, LEFT, OUTLINE, FlxColor.BLACK);
+		print.borderSize = 3;
+
+		if (debugPrints.members[debugPrints.length - 1] != null)
+		{
+			var last = debugPrints.members[debugPrints.length - 1];
+			print.y = last.y + last.height + 5;
+		}
+		else 
+			print.y = FlxG.height / 2;
+
+		debugPrints.add(print);
+
+		if (print.y + print.height > FlxG.height)
+		{
+			debugPrints.remove(debugPrints.members[0], true).destroy();
+
+			var prevItem:FlxText = null;
+
+			for (item in debugPrints.members)
+			{
+				if (prevItem != null)
+					item.y = prevItem.y + prevItem.height + 5;
+				else
+					item.y = FlxG.height / 2;
+				
+				prevItem = item;
+			}
 		}
 	}
 
@@ -3228,12 +3277,6 @@ class PlayState extends MusicBeatState
 
 		if (botplayTween != null)
 			botplayTween.active = !paused;
-
-		if (songStarted && executeModchart)
-		{
-			if (interp.variables.get("onPause") != null)
-				interp.variables.get("onPause")(value);
-		}
 
 		return value;
 	}
