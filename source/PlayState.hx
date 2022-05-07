@@ -2206,7 +2206,7 @@ class PlayState extends MusicBeatState
 
 		#if debug
 		if (FlxG.keys.justPressed.ONE)
-			endSong();
+			FlxG.sound.music.time = FlxG.sound.music.length - 10;
 		#end
 	}
 

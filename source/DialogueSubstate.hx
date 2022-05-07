@@ -319,7 +319,10 @@ class DialogueSubstate extends MusicBeatSubstate
 								onComplete();
 
 							if (PlayState.instance != null)
+							{
 								FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, 0.25);
+								PlayState.instance.inCutscene = false;
+							}
 
 							FlxTween.tween(pissCamera, {alpha: 0}, 1, {
 								onComplete: function(twn:FlxTween)
