@@ -8,6 +8,7 @@ import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import haxe.Json;
+import lime.app.Application;
 import openfl.Assets;
 
 using StringTools;
@@ -139,6 +140,13 @@ class AchievementState extends MusicBeatState
 		changeSelection();
 
 		super.create();
+
+		var cheater = aches[Achievements.achievements.indexOf('cheater')];
+		if (cheater.name != 'Cheater' || cheater.desc != 'Yikes...' || cheater.hint != '')
+		{
+			Application.current.window.alert("Don't edit \"cheater.json\", you cockhead.", "Achievement Info Missing!");
+			Application.current.window.close();
+		}
 	}
 
 	function changeSelection(change:Int = 0)

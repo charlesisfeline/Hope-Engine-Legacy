@@ -7,6 +7,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import haxe.Json;
+import lime.app.Application;
 import openfl.Assets;
 
 using StringTools;
@@ -37,6 +38,8 @@ class Achievements
 	public static var achievements:Array<String> = [];
 	public static var achievementsGet:Map<String, AchInfo> = new Map<String, AchInfo>();
 
+	static var prevAchTime:Float = 0;
+
 	public static function init():Void
 	{
 		#if FILESYSTEM
@@ -56,6 +59,12 @@ class Achievements
 
 		if (FlxG.save.data.achievementsGet == null)
 			FlxG.save.data.achievementsGet = achievementsGet;
+
+		if (!achievements.contains('cheater'))
+		{
+			Application.current.window.alert("..Did you really just look through the files and remove \"Cheater\" in the list to feel no guilt? Shame on you.", "Achievement Missing!");
+			Application.current.window.close();
+		}
 
 		load();
 		save();

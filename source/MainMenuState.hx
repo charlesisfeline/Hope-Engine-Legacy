@@ -134,6 +134,8 @@ class MainMenuState extends MusicBeatState
 		
 		menuItems.screenCenter(Y);
 
+		var cur = menuItems.members[curSelected];
+		camPos.setPosition(cur.getGraphicMidpoint().x, cur.getGraphicMidpoint().y);
 		FlxG.camera.follow(camPos, LOCKON, 1);
 
 		changeItem(0);

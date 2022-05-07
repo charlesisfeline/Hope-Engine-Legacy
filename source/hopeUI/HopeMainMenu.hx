@@ -91,11 +91,15 @@ class HopeMainMenu extends MusicBeatState
 			fuckingStupid.push(menuItem.height);
 		}
 
+		var cur = menuItems.members[curSelected];
+		camPos.setPosition(cur.x + (FlxG.width * 0.45), cur.getGraphicMidpoint().y);
 		FlxG.camera.follow(camPos, LOCKON, 1);
 
 		changeItem();
 
 		super.create();
+
+		Achievements.give("hope_ui");
 	}
 
 	function changeItem(huh:Int = 0)
