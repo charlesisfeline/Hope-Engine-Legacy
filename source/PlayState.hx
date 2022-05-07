@@ -101,8 +101,6 @@ class PlayState extends MusicBeatState
 	public static var songPosBG:FlxSprite;
 	public static var songPosBar:FlxBar;
 
-	public static var lastSongCamPos:FlxPoint;
-
 	var songLength:Float = 0;
 
 	#if desktop
@@ -405,9 +403,6 @@ class PlayState extends MusicBeatState
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
 
-		if (lastSongCamPos != null)
-			camPos = lastSongCamPos;
-
 		var stageCheck = SONG.stage != null ? SONG.stage : 'stage';
 
 		#if FILESYSTEM
@@ -509,9 +504,12 @@ class PlayState extends MusicBeatState
 		add(camFollow);
 		add(curCamPos);
 
+		camFollow.setPosition(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
+		curCamPos.setPosition(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
+
 		FlxG.camera.follow(curCamPos, LOCKON, 1);
 		FlxG.camera.zoom = defaultCamZoom;
-		FlxG.camera.focusOn(camFollow.getPosition());
+		FlxG.camera.focusOn(curCamPos.getPosition());
 
 		FlxG.worldBounds.set(0, 0, FlxG.width, FlxG.height);
 
@@ -2272,7 +2270,6 @@ class PlayState extends MusicBeatState
 						transOut = FlxTransitionableState.defaultTransOut;
 
 						originalPlaylistLength = -1;
-						lastSongCamPos = null;
 
 						FlxG.sound.playMusic(Paths.music('freakyMenu'));
 						Conductor.changeBPM(102);
@@ -2292,7 +2289,6 @@ class PlayState extends MusicBeatState
 					}
 					else
 					{
-						lastSongCamPos = new FlxPoint(camFollow.x, camFollow.y);
 						var difficulty:String = "";
 
 						difficulty = CoolUtil.difficultySuffix();
