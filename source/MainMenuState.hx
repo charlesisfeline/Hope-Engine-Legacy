@@ -48,6 +48,7 @@ class MainMenuState extends MusicBeatState
 	public static var gameVer:String = "0.2.7.1";
 
 	var camFollow:FlxObject;
+	var camPos:FlxObject;
 
 	override function create()
 	{
@@ -86,6 +87,9 @@ class MainMenuState extends MusicBeatState
 
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
+
+		camPos = new FlxObject(0, 0, 1, 1);
+		add(camPos);
 
 		var whatTheMarkSay:String = "Hope Engine v" + hopeEngineVer + "\nKade Engine v" + kadeEngineVer + "\nFunkin' v" + gameVer;
 
@@ -130,7 +134,7 @@ class MainMenuState extends MusicBeatState
 		
 		menuItems.screenCenter(Y);
 
-		FlxG.camera.follow(camFollow, LOCKON, 1);
+		FlxG.camera.follow(camPos, LOCKON, 1);
 
 		changeItem(0);
 
@@ -157,6 +161,10 @@ class MainMenuState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
+
+		var lerp:Float = Helper.boundTo(elapsed * 9.2, 0, 1);
+		camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
+		camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
 
 		if (!selectedSomethin)
 		{

@@ -4,6 +4,7 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
+import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -19,11 +20,13 @@ class GameOverSubstate extends MusicBeatSubstate
 	var camFollow:FlxObject;
 	var camFollow2:FlxObject;
 
+	var camPos:FlxObject;
+
 	var stageSuffix:String = "";
 	
 	var wellRip:FlxText;
 
-	public function new(x:Float, y:Float)
+	public function new(x:Float, y:Float, camPos:FlxObject)
 	{
 		stageSuffix = (PlayState.SONG.noteStyle == "pixel" ? "-pixel" : "");
 
@@ -45,13 +48,13 @@ class GameOverSubstate extends MusicBeatSubstate
 		camFollow2 = new FlxObject(bf.getGraphicMidpoint().x, bf.getGraphicMidpoint().y, 1, 1);
 		add(camFollow2);
 
+		this.camPos = camPos;
+		add(camPos);
+
 		FlxG.sound.play(Paths.sound('fnf_loss_sfx' + stageSuffix));
 		Conductor.changeBPM(100);
-
-		// FlxG.camera.followLerp = 1;
-		// FlxG.camera.focusOn(FlxPoint.get(FlxG.width / 2, FlxG.height / 2));
-		FlxG.camera.scroll.set();
-		FlxG.camera.target = null;
+		
+		FlxG.camera.follow(camPos, LOCKON, 1);
 
 		bf.playAnim('firstDeath');
 
@@ -77,13 +80,17 @@ class GameOverSubstate extends MusicBeatSubstate
 	}
 
 	var stopQuitting = false;
+	var stopEnding = false;
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		if (controls.ACCEPT)
+		if (controls.ACCEPT && !stopEnding)
+		{
 			endBullshit();
+			stopEnding = true;
+		}
 
 		if (controls.BACK && !stopQuitting)
 		{
@@ -91,9 +98,17 @@ class GameOverSubstate extends MusicBeatSubstate
 			stopQuitting = true;
 		}
 
-		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.curFrame == 12)
+		var lerp:Float = Helper.boundTo(elapsed * 2.2, 0, 1);
+
+		if (stopEnding)
 		{
-			FlxG.camera.follow(camFollow, LOCKON, 0.01);
+			camPos.x = FlxMath.lerp(camPos.x, camFollow2.x, lerp);
+			camPos.y = FlxMath.lerp(camPos.y, camFollow2.y, lerp);
+		}
+		else
+		{
+			camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
+			camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
 		}
 
 		if (bf.animation.curAnim.name == 'firstDeath' && bf.animation.curAnim.finished)
@@ -133,8 +148,7 @@ class GameOverSubstate extends MusicBeatSubstate
 					restartImage.visible = false;
 				}
 			});
-
-			FlxG.camera.follow(camFollow2, LOCKON, 0.01);
+			
 			new FlxTimer().start(0.7, function(tmr:FlxTimer)
 			{
 				FlxG.camera.fade(FlxColor.BLACK, 2, false, function()

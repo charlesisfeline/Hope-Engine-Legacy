@@ -28,6 +28,7 @@ class HopeMainMenu extends MusicBeatState
 	var menuItems:FlxSpriteGroup;
 	var curSelected:Int = 0;
 	var camFollow:FlxObject;
+	var camPos:FlxObject;
 
 	override function create() 
 	{
@@ -61,6 +62,9 @@ class HopeMainMenu extends MusicBeatState
 		camFollow = new FlxObject(0, 0, 1, 1);
 		add(camFollow);
 
+		camPos = new FlxObject(0, 0, 1, 1);
+		add(camPos);
+
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, 0);
@@ -87,7 +91,7 @@ class HopeMainMenu extends MusicBeatState
 			fuckingStupid.push(menuItem.height);
 		}
 
-		FlxG.camera.follow(camFollow, LOCKON, 1);
+		FlxG.camera.follow(camPos, LOCKON, 1);
 
 		changeItem();
 
@@ -161,6 +165,10 @@ class HopeMainMenu extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
+
+		var lerp:Float = Helper.boundTo(elapsed * 9.2, 0, 1);
+		camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
+		camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
 
 		if (!selected)
 		{

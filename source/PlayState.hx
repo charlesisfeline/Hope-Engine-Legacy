@@ -196,6 +196,7 @@ class PlayState extends MusicBeatState
 	public var camGame:FlxCamera;
 	public var camMisc:FlxCamera;
 	public var camFollow:FlxObject;
+	public var curCamPos:FlxObject;
 
 	public var defaultCamZoom:Float = 1.05;
 
@@ -494,8 +495,10 @@ class PlayState extends MusicBeatState
 		// add(strumLine);
 
 		camFollow = new FlxObject(0, 0, 1, 1);
+		curCamPos = new FlxObject(0, 0, 1, 1);
 
 		camFollow.setPosition(camPos.x, camPos.y);
+		curCamPos.setPosition(camPos.x, camPos.y);
 
 		if (prevCamFollow != null)
 		{
@@ -504,8 +507,9 @@ class PlayState extends MusicBeatState
 		}
 
 		add(camFollow);
+		add(curCamPos);
 
-		FlxG.camera.follow(camFollow, LOCKON, 1);
+		FlxG.camera.follow(curCamPos, LOCKON, 1);
 		FlxG.camera.zoom = defaultCamZoom;
 		FlxG.camera.focusOn(camFollow.getPosition());
 
@@ -1495,6 +1499,14 @@ class PlayState extends MusicBeatState
 		perfectMode = false;
 		#end
 
+		var lerp:Float = Helper.boundTo(elapsed * 2.2, 0, 1);
+
+		if (customFollowLerp != null)
+			lerp = customFollowLerp;
+		
+		curCamPos.x = FlxMath.lerp(curCamPos.x, camFollow.x, lerp);
+		curCamPos.y = FlxMath.lerp(curCamPos.y, camFollow.y, lerp);
+
 		if (executeModchart)
 			interpVariables(interp);
 
@@ -1589,11 +1601,6 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.NINE)
 			iconP1.swapOldIcon();
-
-		if (customFollowLerp != null)
-			FlxG.camera.followLerp = customFollowLerp;
-		else
-			FlxG.camera.followLerp = 1;
 
 		super.update(elapsed);
 
@@ -1924,7 +1931,7 @@ class PlayState extends MusicBeatState
 			vocals.stop();
 			FlxG.sound.music.stop();
 
-			openSubState(new GameOverSubstate(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			openSubState(new GameOverSubstate(boyfriend.x, boyfriend.y, curCamPos));
 
 			#if desktop
 			DiscordClient.changePresence("Dead on " + SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ");
