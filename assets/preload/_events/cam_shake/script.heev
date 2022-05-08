@@ -1,0 +1,10 @@
+function trigger(params:Map<String, Dynamic>)
+{
+	var camGameInt:Float = params.get("camGame_int");
+	var camGameDur:Float = params.get("camGame_dur");
+	var camHUDInt:Float = params.get("camHUD_int");
+	var camHUDDur:Float = params.get("camHUD_dur");
+
+	FlxG.camera.shake(camGameInt, camGameDur);
+	camHUD.shake(camHUDInt, camHUDDur);
+}

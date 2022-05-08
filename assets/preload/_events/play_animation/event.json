@@ -1,0 +1,50 @@
+{
+	"params": [
+		{
+			"paramID": "character",
+			"defaultValue": "bf",
+			"value": null,
+			"increment": null,
+			"paramName": "Character to play animation on (can be bf, gf, or dad)",
+			"type": "string",
+			"maxLetters": null
+		},
+		{
+			"paramID": "animation",
+			"defaultValue": "",
+			"value": null,
+			"increment": null,
+			"paramName": "Animation to play",
+			"type": "string",
+			"maxLetters": null
+		},
+		{
+			"paramID": "forced",
+			"defaultValue": true,
+			"value": null,
+			"increment": null,
+			"paramName": "Forced to play?",
+			"type": "bool",
+			"maxLetters": null
+		},
+		{
+			"paramID": "reversed",
+			"defaultValue": false,
+			"value": null,
+			"increment": null,
+			"paramName": "Play the animation in reverse?",
+			"type": "bool",
+			"maxLetters": null
+		},
+		{
+			"paramID": "starting_frame",
+			"defaultValue": 0,
+			"value": null,
+			"increment": 1,
+			"paramName": "(ADVANCED) Starting frame",
+			"type": "number",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}

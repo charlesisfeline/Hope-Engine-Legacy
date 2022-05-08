@@ -490,7 +490,9 @@ class ChartingState extends MusicBeatState
 		var eventsArray:Array<String> = [
 			"hopeEngine/gf_hey",
 			"hopeEngine/cam_zoom",
-			"hopeEngine/def_cam_zoom"
+			"hopeEngine/cam_shake",
+			"hopeEngine/def_cam_zoom",
+			"hopeEngine/play_animation"
 		];
 
 		// do a reading if FILESYSTEM epic

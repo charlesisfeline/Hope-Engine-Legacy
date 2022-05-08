@@ -1,0 +1,23 @@
+function trigger(params:Map<String, Dynamic>)
+{
+	var character:String = params.get("character");
+	var animation:String = params.get("animation");
+	var forced:Bool = params.get("forced");
+	var reversed:Bool = params.get("reversed");
+	var startingFrame:Int = params.get("starting_frame");
+
+	var actualChar:Character = boyfriend;
+
+	switch (character)
+	{
+		case 'gf' | 'girlfriend':
+			actualChar = gf;
+		case 'dad':
+			actualChar = dad;
+		default:
+			actualChar = boyfriend;
+	}
+
+	actualChar.specialAnim = true;
+	actualChar.playAnim(animation, forced, reversed, startingFrame);
+}

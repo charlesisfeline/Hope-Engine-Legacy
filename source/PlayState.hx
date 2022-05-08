@@ -115,7 +115,7 @@ class PlayState extends MusicBeatState
 	public static var gf:Character;
 	public static var boyfriend:Boyfriend;
 
-	private var gfSpeed:Int = 1;
+	public var gfSpeed:Int = 1;
 
 	// notes
 	public var notes:FlxTypedGroup<Note>;
@@ -188,7 +188,8 @@ class PlayState extends MusicBeatState
 	// camera
 	private static var prevCamFollow:FlxObject;
 
-	private var camZooming:Bool = false;
+	public var camZooming:Bool = false;
+	public var isCamForced:Bool = false;
 
 	public var camHUD:FlxCamera;
 	public var camGame:FlxCamera;
@@ -1865,7 +1866,8 @@ class PlayState extends MusicBeatState
 					+ dad.cameraOffset[1]
 					+ cameraOffsetY)
 				&& !PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection
-				&& !inCutscene)
+				&& !inCutscene
+				&& !isCamForced)
 			{
 				var offsetX = dad.cameraOffset[0] + cameraOffsetX;
 				var offsetY = dad.cameraOffset[1] + cameraOffsetY;
@@ -1881,7 +1883,8 @@ class PlayState extends MusicBeatState
 					+ boyfriend.cameraOffset[1]
 					+ cameraOffsetY)
 				&& PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection
-				&& !inCutscene)
+				&& !inCutscene
+				&& !isCamForced)
 			{
 				var offsetX = boyfriend.cameraOffset[0] + cameraOffsetX;
 				var offsetY = boyfriend.cameraOffset[1] + cameraOffsetY;
@@ -1902,21 +1905,21 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("stepShit", curStep);
 		FlxG.watch.addQuick("sectionShit", Std.int(curStep / 16));
 
-		if (curSong == 'Fresh')
-		{
-			switch (curBeat)
-			{
-				case 16:
-					camZooming = true;
-					gfSpeed = 2;
-				case 48:
-					gfSpeed = 1;
-				case 80:
-					gfSpeed = 2;
-				case 112:
-					gfSpeed = 1;
-			}
-		}
+		// if (curSong == 'Fresh')
+		// {
+		// 	switch (curBeat)
+		// 	{
+		// 		case 16:
+		// 			camZooming = true;
+		// 			gfSpeed = 2;
+		// 		case 48:
+		// 			gfSpeed = 1;
+		// 		case 80:
+		// 			gfSpeed = 2;
+		// 		case 112:
+		// 			gfSpeed = 1;
+		// 	}
+		// }
 
 		if (health <= 0)
 		{
