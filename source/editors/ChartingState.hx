@@ -16,7 +16,6 @@ import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
-import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUIText;
@@ -109,7 +108,7 @@ class ChartingState extends MusicBeatState
 	var _song:SwagSong;
 	var _events:EventData;
 
-	var typingShit:FlxInputText;
+	var typingShit:InputTextFix;
 	/*
 	 * WILL BE THE CURRENT / LAST PLACED NOTE
 	**/
@@ -575,7 +574,7 @@ class ChartingState extends MusicBeatState
 						var paramField:NumStepperCallbacked = cast renderedFields.get(param.paramID);
 						param.value = paramField.value;
 					case 'string':
-						var paramField:FlxUIInputText = cast renderedFields.get(param.paramID);
+						var paramField:InputTextFix = cast renderedFields.get(param.paramID);
 						param.value = paramField.text;
 				}
 			}
@@ -648,18 +647,18 @@ class ChartingState extends MusicBeatState
 				case 'string':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
-					itemToAdd = new FlxUIInputText(10, previousItem.y + previousItem.height);
+					itemToAdd = new InputTextFix(10, previousItem.y + previousItem.height);
 
 					tab_group_events.add(label);
 					curEventParams.push(label);
 					
-					var ass:FlxUIInputText = cast itemToAdd;
+					var ass:InputTextFix = cast itemToAdd;
 					ass.maxLength = param.maxLetters;
 					ass.text = param.value != null ? param.value : param.defaultValue;
 				case 'number':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
-					itemToAdd = new NumStepperCallbacked(10, previousItem.y + previousItem.height, .1, new FlxUIInputText(0, 0, 200));
+					itemToAdd = new NumStepperCallbacked(10, previousItem.y + previousItem.height, .1, new InputTextFix(0, 0, 200));
 
 					tab_group_events.add(label);
 					curEventParams.push(label);
@@ -881,7 +880,7 @@ class ChartingState extends MusicBeatState
 
 	function addSongUI():Void
 	{
-		var UI_songTitle = new FlxUIInputText(10, 10, 70, _song.song, 8);
+		var UI_songTitle = new InputTextFix(10, 10, 70, _song.song, 8);
 		typingShit = UI_songTitle;
 
 		var check_voices = new FlxUICheckBox(10, 25, null, null, "Has voice track", 100);

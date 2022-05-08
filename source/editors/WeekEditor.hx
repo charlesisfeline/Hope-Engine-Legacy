@@ -3,12 +3,10 @@ package editors;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
-import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUIList;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
@@ -197,15 +195,15 @@ class WeekEditor extends MusicBeatState
 		createToolTips();
 	}
 
-	var weekNameInput:FlxInputText;
-	var weekJSONNameInput:FlxInputText;
+	var weekNameInput:InputTextFix;
+	var weekJSONNameInput:InputTextFix;
 	var diffLockDropdown:FlxUIDropDownMenu;
 
 	function createWeekDataUI():Void
 	{
 		var weekNameTitle:FlxText = new FlxText(10, 10, "Week Name");
 
-		weekNameInput = new FlxInputText(10, weekNameTitle.y + weekNameTitle.height, 330, _week.weekName);
+		weekNameInput = new InputTextFix(10, weekNameTitle.y + weekNameTitle.height, 330, _week.weekName);
 		weekNameInput.callback = function(s:String, y:String)
 		{
 			_week.weekName = weekNameInput.text;
@@ -226,7 +224,7 @@ class WeekEditor extends MusicBeatState
 
 		var weekJSONTitle:FlxText = new FlxText(diffLockDropdown.x + diffLockDropdown.width + 10, diffLockTitle.y, "Week File Name and Week Image Name");
 
-		weekJSONNameInput = new FlxInputText(weekJSONTitle.x, diffLockDropdown.y, Std.int(Math.abs(weekJSONTitle.x - UI_box.width) - 10), weekJSONName);
+		weekJSONNameInput = new InputTextFix(weekJSONTitle.x, diffLockDropdown.y, Std.int(Math.abs(weekJSONTitle.x - UI_box.width) - 10), weekJSONName);
 		weekJSONNameInput.callback = function(s:String, y:String)
 		{
 			weekJSONName = weekJSONNameInput.text;
@@ -274,7 +272,7 @@ class WeekEditor extends MusicBeatState
 	}
 
 	var songList:FlxUIList;
-	var songNameInput:FlxUIInputText;
+	var songNameInput:InputTextFix;
 
 	function createSongsUI():Void
 	{
@@ -288,7 +286,7 @@ class WeekEditor extends MusicBeatState
 
 		var songNameTitle = new FlxText(10, 10, 0, "Song Name");
 
-		songNameInput = new FlxUIInputText(10, songListTitle.height + 10);
+		songNameInput = new InputTextFix(10, songListTitle.height + 10);
 		songNameInput.callback = function(a:String, b:String)
 		{
 			if (b.toLowerCase().trim() == 'enter')
@@ -400,9 +398,9 @@ class WeekEditor extends MusicBeatState
 	var gfErrors:FlxText;
 	var p1Errors:FlxText;
 
-	var p2Input:FlxUIInputText;
-	var gfInput:FlxUIInputText;
-	var p1Input:FlxUIInputText;
+	var p2Input:InputTextFix;
+	var gfInput:InputTextFix;
+	var p1Input:InputTextFix;
 
 	function createCharUI():Void
 	{
@@ -411,7 +409,7 @@ class WeekEditor extends MusicBeatState
 		gfErrors = new FlxText();
 
 		var p2InputTitle = new FlxText(10, 10, "Enemy Menu Character (left-hand side)");
-		p2Input = new FlxUIInputText(10, p2InputTitle.y + p2InputTitle.height);
+		p2Input = new InputTextFix(10, p2InputTitle.y + p2InputTitle.height);
 		p2Input.callback = function(a:String, b:String)
 		{
 			p2Errors.text = getFileErrors(p2Input.text);
@@ -423,7 +421,7 @@ class WeekEditor extends MusicBeatState
 		p2Input.callback("", "");
 
 		var gfInputTitle = new FlxText(10, p2Input.y + p2Input.height + 10, "Speaker Menu Character (middle)");
-		gfInput = new FlxUIInputText(10, gfInputTitle.y + gfInputTitle.height);
+		gfInput = new InputTextFix(10, gfInputTitle.y + gfInputTitle.height);
 		gfInput.callback = function(a:String, b:String)
 		{
 			gfErrors.text = getFileErrors(gfInput.text);
@@ -435,7 +433,7 @@ class WeekEditor extends MusicBeatState
 		gfInput.callback("", "");
 
 		var p1InputTitle = new FlxText(10, gfInput.y + gfInput.height + 10, "Player Menu Character (right-hand side)");
-		p1Input = new FlxUIInputText(10, p1InputTitle.y + p1InputTitle.height);
+		p1Input = new InputTextFix(10, p1InputTitle.y + p1InputTitle.height);
 		p1Input.callback = function(a:String, b:String)
 		{
 			p1Errors.text = getFileErrors(p1Input.text);
@@ -548,7 +546,7 @@ class WeekEditor extends MusicBeatState
 
 		var a = [];
 
-		forEachOfType(FlxInputText, function(inp:FlxInputText)
+		forEachOfType(InputTextFix, function(inp:InputTextFix)
 		{
 			a.push(inp.hasFocus);
 		}, true);

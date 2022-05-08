@@ -256,6 +256,7 @@ class PlayState extends MusicBeatState
 		if (FreeplayState.vocals != null)
 			FreeplayState.vocals.kill();
 
+		// set up hscript stuff
 		parser = new Parser();
 		parser.allowTypes = true;
 		parser.allowJSON = true;

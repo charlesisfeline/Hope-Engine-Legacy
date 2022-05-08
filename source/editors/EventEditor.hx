@@ -9,7 +9,6 @@ import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
-import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.group.FlxSpriteGroup;
@@ -114,20 +113,20 @@ class EventEditor extends MusicBeatState
 		updateEventsUI();
 	}
 
-	var nameInput:FlxUIInputText;
-	var descInput:FlxUIInputText;
+	var nameInput:InputTextFix;
+	var descInput:InputTextFix;
 
 	function addInfoUI():Void
 	{
 		var nameLabel = new FlxText(10, 10, "Event Name");
-		nameInput = new FlxUIInputText(10, nameLabel.height + 10, Std.int(UI_box.width - 20), _info.eventName);
+		nameInput = new InputTextFix(10, nameLabel.height + 10, Std.int(UI_box.width - 20), _info.eventName);
 		nameInput.callback = function(s1:String, s2:String) {
 			_info.eventName = nameInput.text;
 			updateEventsUI();
 		}
 
 		var descLabel = new FlxText(10, nameInput.y + nameInput.height + 20, "Event Description");
-		descInput = new FlxUIInputText(10, descLabel.y + descLabel.height, Std.int(UI_box.width - 20), _info.eventDesc);
+		descInput = new InputTextFix(10, descLabel.y + descLabel.height, Std.int(UI_box.width - 20), _info.eventDesc);
 		descInput.lines = 3;
 		descInput.callback = function(s1:String, s2:String) {
 			_info.eventDesc = descInput.text;
@@ -161,8 +160,8 @@ class EventEditor extends MusicBeatState
 		UI_box.addGroup(tab);
 	}
 
-	var paramNameInput:FlxUIInputText;
-	var paramIDInput:FlxUIInputText;
+	var paramNameInput:InputTextFix;
+	var paramIDInput:InputTextFix;
 	var paramTypeDropdown:FlxUIDropDownMenu;
 	var paramTypes:Array<String> = [
 		"bool",
@@ -172,12 +171,12 @@ class EventEditor extends MusicBeatState
 
 	var paramsFieldsInUI:Array<Dynamic> = [];
 	
-	var defaultValueInput:FlxUIInputText;
+	var defaultValueInput:InputTextFix;
 	
 	var incrementLabel:FlxText;
-	var incrementInput:FlxUIInputText;
+	var incrementInput:InputTextFix;
 	var maxLettersLabel:FlxText;
-	var maxLettersInput:FlxUIInputText;
+	var maxLettersInput:InputTextFix;
 
 	var tab_param:FlxUI;
 
@@ -186,10 +185,10 @@ class EventEditor extends MusicBeatState
 		var eventExists:Bool = false;
 		
 		var paramNameLabel = new FlxText(10, 10, "Parameter Name");
-		paramNameInput = new FlxUIInputText(10, paramNameLabel.y + paramNameLabel.height, Std.int((UI_box.width / 2) - 15));
+		paramNameInput = new InputTextFix(10, paramNameLabel.y + paramNameLabel.height, Std.int((UI_box.width / 2) - 15));
 
 		var paramIDLabel = new FlxText(paramNameInput.x + paramNameInput.width + 10, 10, "Parameter ID");
-		paramIDInput = new FlxUIInputText(paramIDLabel.x, paramIDLabel.y + paramIDLabel.height, Std.int((UI_box.width / 2) - 15));
+		paramIDInput = new InputTextFix(paramIDLabel.x, paramIDLabel.y + paramIDLabel.height, Std.int((UI_box.width / 2) - 15));
 		paramIDInput.callback = function(s1:String, s2:String)
 		{
 			for (event in _event.params)
@@ -237,13 +236,13 @@ class EventEditor extends MusicBeatState
 		}
 
 		var defaultValueLabel:FlxText = new FlxText(10, paramTypeDropdown.y + paramTypeDropdown.header.height + 10, "Default Value");
-		defaultValueInput = new FlxUIInputText(10, defaultValueLabel.y + defaultValueLabel.height, Std.int((UI_box.width / 2) - 15));
+		defaultValueInput = new InputTextFix(10, defaultValueLabel.y + defaultValueLabel.height, Std.int((UI_box.width / 2) - 15));
 
 		incrementLabel = new FlxText(10, defaultValueInput.y + defaultValueInput.height + 10, "Number Increment");
-		incrementInput = new FlxUIInputText(10, incrementLabel.y + incrementLabel.height, Std.int((UI_box.width / 2) - 15));
+		incrementInput = new InputTextFix(10, incrementLabel.y + incrementLabel.height, Std.int((UI_box.width / 2) - 15));
 
 		maxLettersLabel = new FlxText(10, defaultValueInput.y + defaultValueInput.height + 10, "Max Letters");
-		maxLettersInput = new FlxUIInputText(10, maxLettersLabel.y + maxLettersLabel.height, Std.int((UI_box.width / 2) - 15));
+		maxLettersInput = new InputTextFix(10, maxLettersLabel.y + maxLettersLabel.height, Std.int((UI_box.width / 2) - 15));
 
 		var paramInfo = new FlxText();
 		paramInfo.text = "Parameter Types:"
@@ -417,18 +416,18 @@ class EventEditor extends MusicBeatState
 				case 'string':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
-					itemToAdd = new FlxUIInputText(10, previousItem.y + previousItem.height);
+					itemToAdd = new InputTextFix(10, previousItem.y + previousItem.height);
 
 					tab_group_events.add(label);
 					curEventParams.push(label);
 					
-					var ass:FlxUIInputText = cast itemToAdd;
+					var ass:InputTextFix = cast itemToAdd;
 					ass.maxLength = param.maxLetters;
 					ass.text = param.value != null ? param.value : param.defaultValue;
 				case 'number':
 					var label = new FlxText(10, previousItem.y - tab_group_events.y + previousItem.height + 10, param.paramName);
 					previousItem = label;
-					itemToAdd = new FlxUINumericStepper(10, previousItem.y + previousItem.height, .1, new FlxUIInputText(0, 0, 200));
+					itemToAdd = new FlxUINumericStepper(10, previousItem.y + previousItem.height, .1, new InputTextFix(0, 0, 200));
 
 					tab_group_events.add(label);
 					curEventParams.push(label);

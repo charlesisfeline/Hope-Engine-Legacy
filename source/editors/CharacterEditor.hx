@@ -7,12 +7,10 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
-import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu;
-import flixel.addons.ui.FlxUIInputText;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.graphics.FlxGraphic;
@@ -219,8 +217,8 @@ class CharacterEditor extends MusicBeatState
 		iconHealthy.cameras = [camHUD];
 	}
 
-	var characterName:FlxInputText;
-	var assetPath:FlxInputText;
+	var characterName:InputTextFix;
+	var assetPath:InputTextFix;
 	var scaleStepper:FlxUINumericStepper;
 	var antialiasingTick:FlxUICheckBox;
 	var defaultWidth:Float;
@@ -228,7 +226,7 @@ class CharacterEditor extends MusicBeatState
 	function addAssetStuff():Void
 	{
 		var characterNameLabel = new FlxText(10, 10, 0, "Character Name");
-		characterName = new FlxInputTextFix(10, characterNameLabel.y + characterNameLabel.height, 150, character.curCharacter, camHUD);
+		characterName = new InputTextFix(10, characterNameLabel.y + characterNameLabel.height, 150, character.curCharacter, camHUD);
 		characterName.callback = function(a:String, b:String)
 		{
 			character.curCharacter = a;
@@ -237,7 +235,7 @@ class CharacterEditor extends MusicBeatState
 		};
 
 		var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
-		assetPath = new FlxInputTextFix(10, assetPathLabel.y + assetPathLabel.height, 150, character.image, camHUD);
+		assetPath = new InputTextFix(10, assetPathLabel.y + assetPathLabel.height, 150, character.image, camHUD);
 
 		var reloadCharacter = new FlxButton(0, 0, "Reload Image", function()
 		{
@@ -277,12 +275,12 @@ class CharacterEditor extends MusicBeatState
 		UI_box.scrollFactor.set();
 	}
 
-	var animationName:FlxInputText;
+	var animationName:InputTextFix;
 	var animationDropdown:FlxUIDropDownMenu;
-	var animationIndices:FlxInputText;
-	var frameRate:FlxInputText;
-	var prefix:FlxInputText;
-	var postfix:FlxInputText;
+	var animationIndices:InputTextFix;
+	var frameRate:InputTextFix;
+	var prefix:InputTextFix;
+	var postfix:InputTextFix;
 	var isAnimLooped:FlxUICheckBox;
 	var isFlipX:FlxUICheckBox;
 	var isFlipY:FlxUICheckBox;
@@ -333,20 +331,20 @@ class CharacterEditor extends MusicBeatState
 		});
 
 		var animNameTitle = new FlxText(10, 50, 0, "Animation Name");
-		animationName = new FlxInputTextFix(10, animNameTitle.y + animNameTitle.height, Std.int(animationDropdown.width), camHUD);
+		animationName = new InputTextFix(10, animNameTitle.y + animNameTitle.height, Std.int(animationDropdown.width), camHUD);
 
 		var prefixTitle = new FlxText(animationName.width + 20, 50, 0, ".XML/.TXT Prefix");
-		prefix = new FlxInputTextFix(animationName.width + 20, animNameTitle.y + animNameTitle.height, 197, camHUD);
+		prefix = new InputTextFix(animationName.width + 20, animNameTitle.y + animNameTitle.height, 197, camHUD);
 
 		var indicesTitle = new FlxText(10, 80, 0, "Animation Indices");
-		animationIndices = new FlxInputTextFix(10, indicesTitle.y + indicesTitle.height, 200, camHUD);
+		animationIndices = new InputTextFix(10, indicesTitle.y + indicesTitle.height, 200, camHUD);
 
 		var fpsTitle = new FlxText(animationIndices.width + 20, 80, 0, "FPS");
-		frameRate = new FlxInputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10),
+		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10),
 			camHUD);
 
 		var postfixTitle = new FlxText(animationIndices.width + frameRate.width + 30, 80, 0, "Postfix");
-		postfix = new FlxInputTextFix(animationIndices.width
+		postfix = new InputTextFix(animationIndices.width
 			+ frameRate.width
 			+ 30, indicesTitle.y
 			+ indicesTitle.height,
@@ -525,9 +523,9 @@ class CharacterEditor extends MusicBeatState
 
 	var isDeathTick:FlxUICheckBox;
 	var facesLeftTick:FlxUICheckBox;
-	var initialAnimationText:FlxInputText;
+	var initialAnimationText:InputTextFix;
 	var charFlipX:FlxButton;
-	var color:FlxInputText;
+	var color:InputTextFix;
 	var singDurationStepper:FlxUINumericStepper;
 	var camFollowX:FlxUINumericStepper;
 	var camFollowY:FlxUINumericStepper;
@@ -535,7 +533,7 @@ class CharacterEditor extends MusicBeatState
 	function addMiscStuff():Void
 	{
 		var initialAnimationTitle = new FlxText(10, 10, 0, "Initial Animation");
-		initialAnimationText = new FlxInputTextFix(10, initialAnimationTitle.y + initialAnimationTitle.height, Std.int(animationDropdown.width),
+		initialAnimationText = new InputTextFix(10, initialAnimationTitle.y + initialAnimationTitle.height, Std.int(animationDropdown.width),
 			character.initAnim, camHUD);
 		initialAnimationText.callback = function(a:String, b:String)
 		{
@@ -565,7 +563,7 @@ class CharacterEditor extends MusicBeatState
 		charFlipX.x = UI_box.width - charFlipX.width - 10;
 
 		var colorLabel = new FlxText(10, 80, 0, "Health Bar Color (in HEX code)");
-		color = new FlxInputTextFix(10, colorLabel.y + colorLabel.height, 150, character.getColor().toWebString().replace("#", ""), camHUD);
+		color = new InputTextFix(10, colorLabel.y + colorLabel.height, 150, character.getColor().toWebString().replace("#", ""), camHUD);
 		color.callback = function(a:String, b:String)
 		{
 			character.healthColor = a;
@@ -1028,7 +1026,7 @@ class CharacterEditor extends MusicBeatState
 
 		var a = [];
 
-		forEachOfType(FlxInputText, function(inp:FlxInputText)
+		forEachOfType(InputTextFix, function(inp:InputTextFix)
 		{
 			a.push(inp.hasFocus);
 		}, true);
@@ -1286,46 +1284,5 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
-	}
-}
-
-// Shitty fix so that FlxInputText accounts for zooms
-class FlxInputTextFix extends FlxUIInputText
-{
-	var usedCamera:FlxCamera;
-
-	public function new(X:Float = 0, Y:Float = 0, Width:Int = 150, ?Text:String, size:Int = 8, TextColor:Int = FlxColor.BLACK,
-			BackgroundColor:Int = FlxColor.WHITE, EmbeddedFont:Bool = true, camera:FlxCamera)
-	{
-		super(X, Y, Width, Text, size, EmbeddedFont);
-		this.usedCamera = camera;
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-
-		#if FLX_MOUSE
-		if (FlxG.mouse.justPressed)
-		{
-			var hadFocus:Bool = hasFocus;
-			if (FlxG.mouse.getScreenPosition(usedCamera).x >= x
-				&& FlxG.mouse.getScreenPosition(usedCamera).x <= x + width
-				&& FlxG.mouse.getScreenPosition(usedCamera).y >= y
-				&& FlxG.mouse.getScreenPosition(usedCamera).y <= y + height)
-			{
-				caretIndex = getCaretIndex();
-				hasFocus = true;
-				if (!hadFocus && focusGained != null)
-					focusGained();
-			}
-			else
-			{
-				hasFocus = false;
-				if (hadFocus && focusLost != null)
-					focusLost();
-			}
-		}
-		#end
 	}
 }
