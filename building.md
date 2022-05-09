@@ -24,6 +24,7 @@
     - `haxelib git hscript https://github.com/skuqre/hscript`
     - `haxelib install actuate`
     - `haxelib install yaml`
+    - `haxelib install texter`
     - `haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc`
 <br>_This list may grow soon!_
 
