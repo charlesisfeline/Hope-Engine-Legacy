@@ -28,6 +28,7 @@ import openfl.net.FileReference;
 
 using StringTools;
 
+
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -226,7 +227,7 @@ class CharacterEditor extends MusicBeatState
 	function addAssetStuff():Void
 	{
 		var characterNameLabel = new FlxText(10, 10, 0, "Character Name");
-		characterName = new InputTextFix(10, characterNameLabel.y + characterNameLabel.height, 150, character.curCharacter, camHUD);
+		characterName = new InputTextFix(10, characterNameLabel.y + characterNameLabel.height, 150, character.curCharacter);
 		characterName.callback = function(a:String, b:String)
 		{
 			character.curCharacter = a;
@@ -235,7 +236,7 @@ class CharacterEditor extends MusicBeatState
 		};
 
 		var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
-		assetPath = new InputTextFix(10, assetPathLabel.y + assetPathLabel.height, 150, character.image, camHUD);
+		assetPath = new InputTextFix(10, assetPathLabel.y + assetPathLabel.height, 150, character.image);
 
 		var reloadCharacter = new FlxButton(0, 0, "Reload Image", function()
 		{
@@ -331,17 +332,16 @@ class CharacterEditor extends MusicBeatState
 		});
 
 		var animNameTitle = new FlxText(10, 50, 0, "Animation Name");
-		animationName = new InputTextFix(10, animNameTitle.y + animNameTitle.height, Std.int(animationDropdown.width), camHUD);
+		animationName = new InputTextFix(10, animNameTitle.y + animNameTitle.height, Std.int(animationDropdown.width));
 
 		var prefixTitle = new FlxText(animationName.width + 20, 50, 0, ".XML/.TXT Prefix");
-		prefix = new InputTextFix(animationName.width + 20, animNameTitle.y + animNameTitle.height, 197, camHUD);
+		prefix = new InputTextFix(animationName.width + 20, animNameTitle.y + animNameTitle.height, 197);
 
 		var indicesTitle = new FlxText(10, 80, 0, "Animation Indices");
-		animationIndices = new InputTextFix(10, indicesTitle.y + indicesTitle.height, 200, camHUD);
+		animationIndices = new InputTextFix(10, indicesTitle.y + indicesTitle.height, 200);
 
 		var fpsTitle = new FlxText(animationIndices.width + 20, 80, 0, "FPS");
-		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10),
-			camHUD);
+		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10));
 
 		var postfixTitle = new FlxText(animationIndices.width + frameRate.width + 30, 80, 0, "Postfix");
 		postfix = new InputTextFix(animationIndices.width
@@ -349,7 +349,7 @@ class CharacterEditor extends MusicBeatState
 			+ 30, indicesTitle.y
 			+ indicesTitle.height,
 			Std.int((animationDropdown.width / 2))
-			- 3, camHUD);
+			- 3);
 
 		isAnimLooped = new FlxUICheckBox(10, 115, null, null, "Is Animation Looped?", 75);
 		isFlipX = new FlxUICheckBox(60, 115, null, null, "Should Animation be X-Flipped?", 75);
@@ -534,7 +534,7 @@ class CharacterEditor extends MusicBeatState
 	{
 		var initialAnimationTitle = new FlxText(10, 10, 0, "Initial Animation");
 		initialAnimationText = new InputTextFix(10, initialAnimationTitle.y + initialAnimationTitle.height, Std.int(animationDropdown.width),
-			character.initAnim, camHUD);
+			character.initAnim);
 		initialAnimationText.callback = function(a:String, b:String)
 		{
 			character.initAnim = a;
@@ -563,7 +563,7 @@ class CharacterEditor extends MusicBeatState
 		charFlipX.x = UI_box.width - charFlipX.width - 10;
 
 		var colorLabel = new FlxText(10, 80, 0, "Health Bar Color (in HEX code)");
-		color = new InputTextFix(10, colorLabel.y + colorLabel.height, 150, character.getColor().toWebString().replace("#", ""), camHUD);
+		color = new InputTextFix(10, colorLabel.y + colorLabel.height, 150, character.getColor().toWebString().replace("#", ""));
 		color.callback = function(a:String, b:String)
 		{
 			character.healthColor = a;

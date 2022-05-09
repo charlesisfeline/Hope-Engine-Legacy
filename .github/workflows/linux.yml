@@ -37,6 +37,7 @@ jobs:
           haxelib install flixel-addons
           haxelib install yaml
           haxelib install actuate
+          haxelib install texter
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib list
           haxelib run lime build Project.xml linux 

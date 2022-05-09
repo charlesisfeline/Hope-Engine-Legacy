@@ -25,6 +25,7 @@ import openfl.net.FileReference;
 
 using StringTools;
 
+
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -97,6 +98,7 @@ class EventEditor extends MusicBeatState
 		eventIcon.updateHitbox();
 		eventIcon.x = fakeoutBox.x + fakeoutBox.width - gridCell.width;
 		eventIcon.y = fakeoutBox.y + fakeoutBox.height + 10;
+		eventIcon.antialiasing = true;
 		add(eventIcon);
 
 		eventTextPreview = new TrackedText(eventIcon.x, eventIcon.y, "");

@@ -27,6 +27,7 @@ import openfl.net.FileReference;
 
 using StringTools;
 
+
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;

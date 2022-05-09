@@ -134,6 +134,7 @@
 	<haxelib name="hscript" />
 
 	<haxelib name="actuate" />
+	<haxelib name="texter" />
 
 	<!--In case you want to use the ui package-->
 	<haxelib name="flixel-ui" />
