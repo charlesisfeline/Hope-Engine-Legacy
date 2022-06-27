@@ -138,7 +138,7 @@ class SplashState extends MusicBeatState
 	private function addText5():Void
 	{
 		// stuff that happens
-		botText.text = "Haxeflixel";
+		botText.text = "HaxeFlixel";
 	}
 
 	private function finishTween():Void
