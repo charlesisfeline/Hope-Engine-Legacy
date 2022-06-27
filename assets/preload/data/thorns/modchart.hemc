@@ -1,0 +1,42 @@
+function onStart()
+{
+    if (isStoryMode && !PlayStateClass.seenCutscene)
+    {
+        PlayState.inCutscene = true;
+        camHUD.visible = false;
+
+        var red = new FlxSprite();
+        red.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), 0xFFFF0000);
+        red.screenCenter();
+        add(red);
+
+        var senpaiTransforms = new FlxSprite();
+        senpaiTransforms.frames = Paths.getSparrowAtlas('weeb/senpaiCrazy');
+		senpaiTransforms.animation.addByPrefix('transform', 'Senpai Pre Explosion', 24, false);
+        senpaiTransforms.setGraphicSize(Std.int(senpaiTransforms.width * 6));
+        senpaiTransforms.scrollFactor.set();
+		senpaiTransforms.updateHitbox();
+		senpaiTransforms.screenCenter();
+        add(senpaiTransforms);
+
+        camGame.fade(0xFFFF0000, 2.2, true, function()
+        {
+            FlxG.camera.stopFX();
+            senpaiTransforms.animation.play("transform");
+
+            FlxG.sound.play(Paths.sound('Senpai_Dies'), 1, false, null, true, function() {
+                camHUD.visible = true;
+                FlxG.camera.stopFX();
+                PlayState.inCutscene = false;
+
+                remove(senpaiTransforms);
+                remove(red);
+            });
+
+            new FlxTimer().start(3.2, function(deadTime:FlxTimer)
+            {
+                FlxG.camera.fade(0xFFFFFFFF, 1.6, false);
+            });
+        });
+    }
+}

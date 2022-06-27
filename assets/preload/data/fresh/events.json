@@ -1,0 +1,150 @@
+{
+	"events": [
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "New GF Speed",
+								"defaultValue": null,
+								"paramID": "new_speed",
+								"maxLetters": null,
+								"value": 2,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/set_gf_speed"
+					}
+				],
+				"strumTime": 8000
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "New GF Speed",
+								"defaultValue": null,
+								"paramID": "new_speed",
+								"maxLetters": null,
+								"value": 1,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/set_gf_speed"
+					}
+				],
+				"strumTime": 24000
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "New GF Speed",
+								"defaultValue": null,
+								"paramID": "new_speed",
+								"maxLetters": null,
+								"value": 2,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/set_gf_speed"
+					}
+				],
+				"strumTime": 40000
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "New GF Speed",
+								"defaultValue": null,
+								"paramID": "new_speed",
+								"maxLetters": null,
+								"value": 1,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/set_gf_speed"
+					}
+				],
+				"strumTime": 56000
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

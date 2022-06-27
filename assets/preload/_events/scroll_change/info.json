@@ -1,0 +1,4 @@
+{
+	"eventDesc": "Change how fast the notes go.\nSetting it to 0 does not do what you expect it to do!",
+	"eventName": "Change Scroll Speed"
+}

@@ -1,0 +1,41 @@
+{
+	"params": [
+		{
+			"paramID": "change",
+			"defaultValue": 1,
+			"value": null,
+			"increment": null,
+			"paramName": "Change To",
+			"type": "number",
+			"maxLetters": null
+		},
+		{
+			"paramID": "duration",
+			"defaultValue": 0,
+			"value": null,
+			"increment": null,
+			"paramName": "Duration",
+			"type": "number",
+			"maxLetters": null
+		},
+		{
+			"paramID": "easing",
+			"defaultValue": "linear",
+			"value": null,
+			"increment": null,
+			"paramName": "Easing",
+			"type": "string",
+			"maxLetters": null
+		},
+		{
+			"paramID": "easing_direction",
+			"defaultValue": "",
+			"value": null,
+			"increment": null,
+			"paramName": "Easing Direction",
+			"type": "string",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}

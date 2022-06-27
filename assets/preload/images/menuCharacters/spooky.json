@@ -1,0 +1,28 @@
+{
+	"settings": {
+		"flipped": false,
+		"scale": 1
+	},
+	"animations": {
+		"danceLeft": {
+			"prefix": "idle0",
+			"fps": 12,
+			"indices": [
+				0,
+				2,
+				6
+			]
+		},
+		"danceRight": {
+			"prefix": "idle0",
+			"fps": 12,
+			"indices": [
+				8,
+				10,
+				12,
+				14
+			]
+		}
+	},
+	"character": "spooky"
+}

@@ -1,0 +1,32 @@
+{
+	"params": [
+		{
+			"paramID": "xpos",
+			"defaultValue": 0,
+			"value": null,
+			"increment": 0.01,
+			"paramName": "Move to X-position",
+			"type": "number",
+			"maxLetters": null
+		},
+		{
+			"paramID": "ypos",
+			"defaultValue": 0,
+			"value": null,
+			"increment": 0.01,
+			"paramName": "Move to Y-position",
+			"type": "number",
+			"maxLetters": null
+		},
+		{
+			"paramID": "reset",
+			"defaultValue": false,
+			"value": null,
+			"increment": null,
+			"paramName": "Stop forcing the camera?",
+			"type": "bool",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}

@@ -1,0 +1,143 @@
+{
+	"animations": [
+		{
+			"prefix": "BF IDLE",
+			"offset": [
+				0,
+				0
+			],
+			"name": "idle",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF UP NOTE",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF DOWN NOTE",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singDOWN",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF LEFT NOTE",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singLEFT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF RIGHT NOTE",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singRIGHT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF UP MISS",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singUPmiss",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF DOWN MISS",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singDOWNmiss",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF LEFT MISS",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singLEFTmiss",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF RIGHT MISS",
+			"offset": [
+				0,
+				0
+			],
+			"name": "singRIGHTmiss",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		}
+	],
+	"healthColor": "31B0D1",
+	"facesLeft": true,
+	"image": "characters/bfPixel",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		-200,
+		-200
+	],
+	"antialiasing": false,
+	"name": "bf-pixel",
+	"isDeath": false,
+	"scale": 6
+}

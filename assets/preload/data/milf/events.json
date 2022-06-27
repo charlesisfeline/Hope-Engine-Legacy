@@ -1,0 +1,781 @@
+{
+	"events": [
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 56333.3333333334
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 56666.6666666667
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 57000
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 57666.6666666667
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 58000
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 58333.3333333334
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 59000
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 59333.3333333334
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 59666.6666666667
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 60333.3333333334
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 60666.6666666667
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 61000
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 61666.6666666667
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 62000
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 62333.3333333334
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 63000
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 63333.3333333334
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 63666.6666666667
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 64333.3333333334
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 64666.6666666667
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 65000
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 65666.6666666667
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 66000
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Game zoom",
+								"defaultValue": 0.015,
+								"paramID": "camGame_zoom",
+								"maxLetters": null,
+								"value": 0.015,
+								"type": "number",
+								"increment": 0.001
+							},
+							{
+								"paramName": "HUD zoom",
+								"defaultValue": 0.03,
+								"paramID": "camHUD_zoom",
+								"maxLetters": null,
+								"value": 0.03,
+								"type": "number",
+								"increment": 0.001
+							}
+						],
+						"eventID": "hopeEngine/cam_zoom"
+					}
+				],
+				"strumTime": 66333.3333333334
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

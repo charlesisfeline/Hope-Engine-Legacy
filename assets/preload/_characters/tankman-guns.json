@@ -1,0 +1,35 @@
+{
+	"animations": [
+		{
+			"prefix": "TANK",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "tight",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "FFFFFF",
+	"facesLeft": false,
+	"image": "characters/tankman-cutscene-guns",
+	"singDuration": 4,
+	"initialAnimation": "tight",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"positionOffset": [
+		0,
+		-7
+	],
+	"antialiasing": true,
+	"name": "tankman-guns",
+	"isDeath": false,
+	"scale": 1
+}

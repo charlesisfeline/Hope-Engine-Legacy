@@ -1,0 +1,35 @@
+{
+	"animations": [
+		{
+			"prefix": "PICO",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "do",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "B7D855",
+	"facesLeft": false,
+	"image": "characters/pico-cutscene-stress1",
+	"singDuration": 4,
+	"initialAnimation": "do",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"positionOffset": [
+		-225,
+		-184
+	],
+	"antialiasing": true,
+	"name": "pico-stress1",
+	"isDeath": false,
+	"scale": 1
+}

@@ -1,0 +1,4 @@
+{
+	"eventDesc": "Move where the camera is looking at.\nRecommended to use for cutscenes and stuff like that.",
+	"eventName": "Move Camera"
+}

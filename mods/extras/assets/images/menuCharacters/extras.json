@@ -1,0 +1,19 @@
+{
+	"animations": {
+		"danceRight": null,
+		"danceLeft": null,
+		"hey": null,
+		"idle": {
+			"prefix": "extras",
+			"indices": null,
+			"fps": 12,
+			"offset": null,
+			"looped": false
+		}
+	},
+	"settings": {
+		"scale": 2.7,
+		"flipped": false
+	},
+	"character": "extras"
+}

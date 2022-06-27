@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="alert9Slice.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="alert frame idle0000" x="5" y="5" width="734" height="447" pivotX="0.05" pivotY="0" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0001" x="5" y="5" width="734" height="447" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0002" x="5" y="457" width="737" height="446" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0003" x="5" y="457" width="737" height="446" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0004" x="5" y="457" width="737" height="446" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0005" x="5" y="457" width="737" height="446" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0006" x="5" y="5" width="734" height="447" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+	<SubTexture name="alert frame idle0007" x="5" y="5" width="734" height="447" frameX="0" frameY="0" frameWidth="737" frameHeight="447"/>
+</TextureAtlas>

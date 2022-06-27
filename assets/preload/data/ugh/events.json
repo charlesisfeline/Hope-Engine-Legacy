@@ -1,0 +1,398 @@
+{
+	"events": [
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Character to play animation on (can be bf, gf, or dad)",
+								"defaultValue": "bf",
+								"paramID": "char",
+								"maxLetters": null,
+								"value": "dad",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Animation to play",
+								"defaultValue": "",
+								"paramID": "anim",
+								"maxLetters": null,
+								"value": "ugh",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Force the animation to play?",
+								"defaultValue": true,
+								"paramID": "force",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Reverse when played?",
+								"defaultValue": false,
+								"paramID": "reverse",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "(ADVANCED) Starting Frame",
+								"defaultValue": 0,
+								"paramID": "starting_frame",
+								"maxLetters": null,
+								"value": 0,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/play_animation"
+					}
+				],
+				"strumTime": 5625
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Character to play animation on (can be bf, gf, or dad)",
+								"defaultValue": "bf",
+								"paramID": "char",
+								"maxLetters": null,
+								"value": "dad",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Animation to play",
+								"defaultValue": "",
+								"paramID": "anim",
+								"maxLetters": null,
+								"value": "ugh",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Force the animation to play?",
+								"defaultValue": true,
+								"paramID": "force",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Reverse when played?",
+								"defaultValue": false,
+								"paramID": "reverse",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "(ADVANCED) Starting Frame",
+								"defaultValue": 0,
+								"paramID": "starting_frame",
+								"maxLetters": null,
+								"value": 0,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/play_animation"
+					}
+				],
+				"strumTime": 41625
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Character to play animation on (can be bf, gf, or dad)",
+								"defaultValue": "bf",
+								"paramID": "char",
+								"maxLetters": null,
+								"value": "dad",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Animation to play",
+								"defaultValue": "",
+								"paramID": "anim",
+								"maxLetters": null,
+								"value": "ugh",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Force the animation to play?",
+								"defaultValue": true,
+								"paramID": "force",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Reverse when played?",
+								"defaultValue": false,
+								"paramID": "reverse",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "(ADVANCED) Starting Frame",
+								"defaultValue": 0,
+								"paramID": "starting_frame",
+								"maxLetters": null,
+								"value": 0,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/play_animation"
+					}
+				],
+				"strumTime": 49125
+			}
+		],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Character to play animation on (can be bf, gf, or dad)",
+								"defaultValue": "bf",
+								"paramID": "char",
+								"maxLetters": null,
+								"value": "dad",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Animation to play",
+								"defaultValue": "",
+								"paramID": "anim",
+								"maxLetters": null,
+								"value": "ugh",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Force the animation to play?",
+								"defaultValue": true,
+								"paramID": "force",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Reverse when played?",
+								"defaultValue": false,
+								"paramID": "reverse",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "(ADVANCED) Starting Frame",
+								"defaultValue": 0,
+								"paramID": "starting_frame",
+								"maxLetters": null,
+								"value": 0,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/play_animation"
+					}
+				],
+				"strumTime": 50625
+			},
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Character to play animation on (can be bf, gf, or dad)",
+								"defaultValue": "bf",
+								"paramID": "char",
+								"maxLetters": null,
+								"value": "dad",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Animation to play",
+								"defaultValue": "",
+								"paramID": "anim",
+								"maxLetters": null,
+								"value": "ugh",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Force the animation to play?",
+								"defaultValue": true,
+								"paramID": "force",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Reverse when played?",
+								"defaultValue": false,
+								"paramID": "reverse",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "(ADVANCED) Starting Frame",
+								"defaultValue": 0,
+								"paramID": "starting_frame",
+								"maxLetters": null,
+								"value": 0,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/play_animation"
+					}
+				],
+				"strumTime": 50718.75
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Character to play animation on (can be bf, gf, or dad)",
+								"defaultValue": "bf",
+								"paramID": "char",
+								"maxLetters": null,
+								"value": "dad",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Animation to play",
+								"defaultValue": "",
+								"paramID": "anim",
+								"maxLetters": null,
+								"value": "ugh",
+								"type": "string",
+								"increment": null
+							},
+							{
+								"paramName": "Force the animation to play?",
+								"defaultValue": true,
+								"paramID": "force",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Reverse when played?",
+								"defaultValue": false,
+								"paramID": "reverse",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "(ADVANCED) Starting Frame",
+								"defaultValue": 0,
+								"paramID": "starting_frame",
+								"maxLetters": null,
+								"value": 0,
+								"type": "number",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/play_animation"
+					}
+				],
+				"strumTime": 77625
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

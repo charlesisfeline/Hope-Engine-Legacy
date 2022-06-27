@@ -1,0 +1,53 @@
+{
+    "name" : "Randomize Position Note",
+    "assetName" : "rndpos",
+    "canMiss" : true,
+    "canScore" : false,
+    "upSpriteOnly" : false,
+    "sprites" : {
+        "left" : {
+            "note" : {
+                "prefix" : "purple0"
+            },
+            "holdPiece" : {
+                "prefix" : "purple hold piece"
+            },
+            "holdEnd" : {
+                "prefix" : "pruple end hold"
+            }
+        },
+        "down" : {
+            "note" : {
+                "prefix" : "blue0"
+            },
+            "holdPiece" : {
+                "prefix" : "blue hold piece"
+            },
+            "holdEnd" : {
+                "prefix" : "blue hold end"
+            }
+        },
+        "up" : {
+            "note" : {
+                "prefix" : "green0"
+            },
+            "holdPiece" : {
+                "prefix" : "green hold piece"
+            },
+            "holdEnd" : {
+                "prefix" : "green hold end"
+            }
+        },
+        "right" : {
+            "note" : {
+                "prefix" : "red0"
+            },
+            "holdPiece" : {
+                "prefix" : "red hold piece"
+            },
+            "holdEnd" : {
+                "prefix" : "red hold end"
+            }
+        }
+    }
+}

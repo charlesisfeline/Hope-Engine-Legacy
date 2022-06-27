@@ -1,0 +1,33 @@
+// Hope Engine Note Types are kinda limited
+// I have 0 clue how HScript works as well
+
+// note: if you know what you're doing, feel free to modify
+
+
+function onNoteHit(note)
+{
+    // happens/executes when this specific note gets hit properly
+
+    var smoke = new FlxSprite(0, 0);
+    smoke.frames = Paths.getSparrowAtlas("Smoke");
+    smoke.animation.addByPrefix('kaboom', 'smoke', 24, false);
+    smoke.animation.finishCallback = function(name:String) { smoke.kill(); };
+
+    var strumNote = playerStrums.members[note.noteData];
+    smoke.x =  strumNote.x + (strumNote.staticWidth / 2) - (smoke.width / 2);
+    smoke.y =  strumNote.y + (strumNote.staticHeight / 2) - (smoke.height / 2);
+    
+    add(smoke);
+    smoke.cameras = [camHUD];
+    smoke.animation.play("kaboom");
+    FlxG.sound.play(Paths.sound("kaBOOM"));
+
+    PlayState.health -= 0.05;
+}
+
+function onNoteMiss(note)
+{
+    // happens/executes when this specific note is missed
+
+    setScore(getScore() + 350); // give em 350 score
+}

@@ -1,0 +1,115 @@
+{
+	"animations": [
+		{
+			"prefix": "PRETTY GOOD",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"name": "heh",
+			"offset": [
+				0,
+				16
+			]
+		},
+		{
+			"prefix": "Tankman Idle Dance",
+			"offset": [
+				0,
+				0
+			],
+			"name": "idle",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Tankman DOWN note",
+			"offset": [
+				62,
+				-111
+			],
+			"name": "singDOWN",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Tankman Right Note",
+			"offset": [
+				85,
+				-13
+			],
+			"name": "singLEFT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Tankman Note Left",
+			"offset": [
+				-21,
+				-32
+			],
+			"name": "singRIGHT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Tankman UP note",
+			"offset": [
+				48,
+				48
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "TANKMAN UGH",
+			"offset": [
+				-15,
+				-8
+			],
+			"name": "ugh",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": null,
+			"indices": []
+		}
+	],
+	"healthColor": "FFFFFF",
+	"facesLeft": true,
+	"image": "characters/tankman",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": true,
+	"name": "tankman",
+	"isDeath": false,
+	"scale": 1
+}

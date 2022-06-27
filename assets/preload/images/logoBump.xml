@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="logoBump.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="logo bumpin0000" x="5" y="5" width="939" height="703" pivotX="17.15" pivotY="12.85"/>
+	<SubTexture name="logo bumpin0001" x="5" y="5" width="939" height="703"/>
+	<SubTexture name="logo bumpin0002" x="949" y="5" width="911" height="683" frameX="-14" frameY="-10" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0003" x="949" y="5" width="911" height="683" frameX="-14" frameY="-10" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0004" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0005" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0006" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0007" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0008" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0009" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0010" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0011" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0012" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+	<SubTexture name="logo bumpin0013" x="5" y="713" width="905" height="679" frameX="-17" frameY="-12" frameWidth="939" frameHeight="703"/>
+</TextureAtlas>

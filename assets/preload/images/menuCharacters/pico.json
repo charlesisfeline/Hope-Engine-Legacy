@@ -1,0 +1,17 @@
+{
+	"settings": {
+		"flipped": true,
+		"scale": 1
+	},
+	"animations": {
+		"idle": {
+			"prefix": "idle",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		},
+		"danceLeft": null,
+		"danceRight": null
+	},
+	"character": "pico"
+}

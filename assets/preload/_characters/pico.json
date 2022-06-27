@@ -1,0 +1,82 @@
+{
+	"animations": [
+		{
+			"prefix": "Pico Idle Dance",
+			"offset": [
+				0,
+				0
+			],
+			"name": "idle",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "pico Up note0",
+			"offset": [
+				-29,
+				27
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico Note Right0",
+			"offset": [
+				52,
+				-1
+			],
+			"name": "singLEFT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico NOTE LEFT0",
+			"offset": [
+				-82,
+				-12
+			],
+			"name": "singRIGHT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico Down Note0",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singDOWN",
+			"offset": [
+				182,
+				-83
+			]
+		}
+	],
+	"healthColor": "B7D855",
+	"facesLeft": true,
+	"image": "characters/Pico_FNF_assetss",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"antialiasing": true,
+	"name": "pico",
+	"isDeath": false
+}

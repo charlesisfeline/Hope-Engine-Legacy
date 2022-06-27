@@ -1,0 +1,43 @@
+function onStart()
+{
+    // if you're going to modify the cutscene and don't know what you're doing, make a backup!
+    
+    if (isStoryMode && !PlayStateClass.seenCutscene)
+    {
+        PlayState.inCutscene = true;
+        camHUD.visible = false;
+
+        var void = new FlxSprite();
+        void.makeGraphic(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5), FlxColor("BLACK"));
+        void.screenCenter();
+        add(void);
+        void.cameras = [camMisc];
+
+        new FlxTimer().start(0.1, function(tmr:FlxTimer)
+        {
+            remove(void, true);
+
+            FlxG.sound.play(Paths.sound('Lights_Turn_On'));
+            camFollow.y = -2050;
+            camFollow.x += 200;
+            curCamPos.y = camFollow.y;
+            curCamPos.x = camFollow.x;
+            FlxG.camera.focusOn(curCamPos.getPosition());
+            FlxG.camera.zoom = 1.5;
+
+            new FlxTimer().start(0.8, function(tmr:FlxTimer)
+            {
+                camHUD.visible = true;
+                FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {
+                    ease: FlxEase.quadInOut,
+                    onComplete: function(twn:FlxTween)
+                    {
+                        PlayState.inCutscene = false;
+                    }
+                });
+            });
+        });
+    }
+
+    gf.visible = false;
+}

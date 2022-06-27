@@ -1,0 +1,328 @@
+var funnySound:FlxSound;
+var tankTalker1:Character;
+var tankTalker2:Character;
+
+var gfTankmen:Character;
+var gfTransforms:Character;
+var pico1:Character;
+var pico2:Character;
+var pico3:Character;
+
+var bfStandin:FlxSprite;
+
+var curCharacter:Character;
+
+// IT MAY BE IMPLEMENTED IN THE WORST WAY POSSIBLE
+// BUT YOU KNOW WHAT, JUST ROLL WITH IT
+
+function onStart()
+{
+    for (note in speakerNotes)
+    {
+        if (FlxG.random.bool(16))
+        {
+            var tank = new TankmenBG(20, 250, note.strumTime, note.noteData <= 2);
+            PlayState.insert(PlayState.members.indexOf(gf) - 2, tank);
+        }
+    }
+
+    if (Settings.videoCutscenes && isStoryMode && !PlayStateClass.seenCutscene)
+    {
+        playVideo("stressCutscene", "week7");
+        PlayStateClass.seenCutscene = true;
+        return;
+    }
+    
+    if (isStoryMode && !PlayStateClass.seenCutscene)
+    {
+        PlayState.inCutscene = true;
+        PlayState.isCamForced = true;
+        PlayState.camZooming = false;
+        camHUD.visible = false;
+
+        FlxG.camera.zoom = 1.1;
+
+        gf.alpha = 0.00001;
+        boyfriend.alpha = 0.00001;
+
+        gfTankmen = new Character(200, 80, "gf-tankmen");
+        gfTankmen.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(gf) + 1, gfTankmen);
+
+        bfStandin = new FlxSprite(850, 450).loadGraphic(Paths.image("bfStandin", "week7"));
+        bfStandin.antialiasing = true;
+        PlayState.insert(PlayState.members.indexOf(boyfriend) + 1, bfStandin);
+
+        gfTransforms = new Character(gf.x, gf.y, "gf-stress");
+        gfTransforms.x += gfTransforms.positionOffset[0] - 12;
+        gfTransforms.y += gfTransforms.positionOffset[1] + 8;
+        gfTransforms.alpha = 0.00001;
+        gfTransforms.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(gf) + 1, gfTransforms);
+
+        pico1 = new Character(gf.x, gf.y, "pico-stress1");
+        pico1.x += pico1.positionOffset[0] - 12;
+        pico1.y += pico1.positionOffset[1] + 8;
+        pico1.alpha = 0.00001;
+        pico1.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(gf) + 1, pico1);
+
+        pico2 = new Character(gf.x, gf.y, "pico-stress2");
+        pico2.x += pico2.positionOffset[0] - 12;
+        pico2.y += pico2.positionOffset[1] + 8;
+        pico2.alpha = 0.00001;
+        pico2.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(gf) + 1, pico2);
+
+        pico3 = new Character(gf.x, gf.y, "pico-stress3");
+        pico3.x += pico3.positionOffset[0] - 12;
+        pico3.y += pico3.positionOffset[1] + 8;
+        pico3.alpha = 0.00001;
+        pico3.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(gf) + 1, pico3);
+
+        tankTalker1 = new Character(dad.x, dad.y, "tankman-stress1");
+        tankTalker1.x += tankTalker1.positionOffset[0];
+        tankTalker1.y += tankTalker1.positionOffset[1];
+        tankTalker1.alpha = 0.00001;
+        tankTalker1.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(dad) + 1, tankTalker1);
+
+        tankTalker2 = new Character(dad.x, dad.y, "tankman-stress2");
+        tankTalker2.x += tankTalker2.positionOffset[0];
+        tankTalker2.y += tankTalker2.positionOffset[1];
+        tankTalker2.alpha = 0.00001;
+        tankTalker2.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(dad) + 1, tankTalker2);
+
+        curCharacter = dad;
+
+        var skipText = new FlxText(0, 0, 0, "Press BACKSPACE to skip cutscene.");
+		skipText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		skipText.borderSize = 3;
+		skipText.x = 5;
+		skipText.y = FlxG.height - skipText.height - 5;
+		add(skipText);
+
+        skipText.cameras = [camMisc];
+
+        new FlxTimer().start(0.5, function(tmr:FlxTimer) {
+            dad.visible = false;
+
+            funnySound = FlxG.sound.play(Paths.sound('stressCutscene', 'week7'));
+            curCharacter = dad;
+
+            tankTalker1.alpha = 1;
+            tankTalker1.playAnim("talk");
+
+            funnySound.onComplete = function() {
+                PlayStateClass.seenCutscene = true;
+                PlayState.inCutscene = false;
+                PlayState.isCamForced = false;
+                PlayState.camZooming = true;
+                camHUD.visible = true;
+                dad.visible = true;
+                gf.visible = true;
+                gf.alpha = 1;
+
+                remove(gfTransforms, true);
+                gfTransforms.kill();
+                gfTransforms.destroy();
+
+                remove(pico1, true);
+                pico1.kill();
+                pico1.destroy();
+
+                remove(pico2, true);
+                pico2.kill();
+                pico2.destroy();
+
+                remove(pico3, true);
+                pico3.kill();
+                pico3.destroy();
+
+                remove(tankTalker1, true);
+                tankTalker1.kill();
+                tankTalker1.destroy();
+
+                remove(tankTalker2, true);
+                tankTalker2.kill();
+                tankTalker2.destroy();
+
+                remove(skipText, true);
+                skipText.kill();
+                skipText.destroy();
+            }
+        });
+    }
+}
+
+var playedBeep:Bool = false;
+var picoArriving:Bool = false;
+var gfTransforming:Bool = false;
+var missed:Bool = false;
+var laughed:Bool = false;
+var skipped:Bool = false;
+
+function onUpdate(elapsed:Float)
+{
+    if (isStoryMode && !PlayStateClass.seenCutscene && !skipped && !Settings.videoCutscenes)
+    {
+        if (FlxG.keys.justPressed.BACKSPACE)
+        {
+            if (funnySound != null)
+            {
+                // cutscenes rely on the sound really lmao
+                skipped = true;
+                funnySound.time = funnySound.length - 10;
+            }
+        }
+
+        if (curCharacter != null && !missed && !laughed)
+        {
+            if (curCharacter == boyfriend)
+            {
+                PlayState.camFollow.x = curCharacter.getGraphicMidpoint().x - 100 + boyfriend.cameraOffset[0];
+                PlayState.camFollow.y = curCharacter.getGraphicMidpoint().y - 100 + boyfriend.cameraOffset[1];
+            }
+            else if (curCharacter == gf)
+            {
+                PlayState.camFollow.x = curCharacter.getGraphicMidpoint().x;
+                PlayState.camFollow.y = curCharacter.getGraphicMidpoint().y - 125;
+            }
+            else
+            {
+                PlayState.camFollow.x = curCharacter.getGraphicMidpoint().x + 150 + dad.cameraOffset[0];
+                PlayState.camFollow.y = curCharacter.getGraphicMidpoint().y - 100 + dad.cameraOffset[1];
+            }
+        }
+
+        if (gfTankmen != null && !gfTransforming)
+        {
+            if (gfTankmen.animation.curAnim != null)
+            {
+                if (gfTankmen.animation.curAnim.finished)
+                {
+                    if (gfTankmen.animation.curAnim.name == 'danceLeft')
+                        gfTankmen.playAnim("danceRight");
+                    else
+                        gfTankmen.playAnim("danceLeft");
+                }
+            }
+            else
+                gfTankmen.playAnim("danceLeft");
+        }
+
+        if (funnySound != null)
+        {
+            if (funnySound.time / 1000 >= 15.100 && !gfTransforming)
+            {
+                gfTransforming = true;
+                gfTransforms.alpha = 1;
+                gfTransforms.playAnim("p1");
+
+                FlxTween.tween(FlxG.camera, {zoom: 1.4}, 2.3, {ease: FlxEase.sineIn});
+
+                curCharacter = gf;
+
+                remove(gfTankmen, true);
+                gfTankmen.kill();
+                gfTankmen.destroy();
+            }
+
+            if (funnySound.time / 1000 >= 16.568 && gfTransforms.animation.curAnim.name == 'p1')
+                gfTransforms.playAnim("p2");
+
+            if (funnySound.time / 1000 >= 17.473 && !picoArriving)
+            {
+                picoArriving = true;
+
+                gfTransforms.alpha = 0.00001;
+
+                FlxG.camera.zoom = 0.8;
+
+                pico1.alpha = 1;
+                pico1.playAnim("do");
+
+                remove(bfStandin, true);
+                bfStandin.kill();
+                bfStandin.destroy();
+
+                boyfriend.alpha = 1;
+                boyfriend.playAnim("catch", true);
+            }
+
+            if (funnySound.time / 1000 >= 19.383 && tankTalker1.alpha == 1)
+            {
+                tankTalker1.alpha = 0.00001;
+                tankTalker2.alpha = 1;
+
+                curCharacter = dad;
+                tankTalker2.playAnim("talk");
+                boyfriend.dance();
+            }
+
+            if (funnySound.time / 1000 >= 19.383)
+                gf.dance();
+
+            if (funnySound.time / 1000 >= 31.126 && !missed && !laughed)
+            {
+                missed = true;
+                PlayState.camFollow.x = boyfriend.getGraphicMidpoint().x - 100 + boyfriend.cameraOffset[0];
+                PlayState.camFollow.y = boyfriend.getGraphicMidpoint().y - 100 + boyfriend.cameraOffset[1];
+                PlayState.curCamPos.x = boyfriend.getGraphicMidpoint().x - 100 + boyfriend.cameraOffset[0];
+                PlayState.curCamPos.y = boyfriend.getGraphicMidpoint().y - 100 + boyfriend.cameraOffset[1];
+                FlxG.camera.zoom = 1.3;
+                boyfriend.playAnim("singUPmiss");
+            }
+
+            if (missed && boyfriend.animation.curAnim.name == 'idle' && !laughed)
+            {
+                laughed = true;
+                FlxG.camera.zoom = 1.1;
+                PlayState.camFollow.x = dad.getGraphicMidpoint().x + 150 + dad.cameraOffset[0];
+                PlayState.camFollow.y = dad.getGraphicMidpoint().y - 100 + dad.cameraOffset[1];
+                PlayState.curCamPos.x = dad.getGraphicMidpoint().x + 150 + dad.cameraOffset[0];
+                PlayState.curCamPos.y = dad.getGraphicMidpoint().y - 100 + dad.cameraOffset[1];
+            }
+
+            if (picoArriving && PlayState.inCutscene)
+            {
+
+                if (pico1.animation.curAnim.finished && pico1.alpha == 1)
+                {
+                    pico1.alpha = 0.00001;
+                    pico2.alpha = 1;
+                    pico2.playAnim("do");
+                }
+    
+                if (pico2.animation.curAnim.finished && pico2.alpha == 1)
+                {
+                    pico2.alpha = 0.00001;
+                    pico3.alpha = 1;
+                    pico3.playAnim("do");
+                }
+
+                if (pico3.animation.curAnim.finished && pico3.alpha == 1)
+                {
+                    pico3.alpha = 0.00001;
+                    gf.alpha = 1;
+                    gf.dance();
+                }
+            }
+        }
+    }
+}
+
+function speakerNoteHit(note:Note)
+{
+    var animNum = 1;
+
+    if (note.noteData >= 2)
+        animNum = 3;
+
+    animNum += FlxG.random.int(0, 1);
+
+    gf.playAnim("shoot " + animNum, true);
+    gf.specialAnim = true;
+}

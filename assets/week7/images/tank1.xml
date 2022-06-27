@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="tank1.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="fg tankhead 5 instance 10000" x="5" y="5" width="472" height="113" frameX="0" frameY="-9" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10001" x="5" y="5" width="472" height="113" frameX="0" frameY="-9" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10002" x="5" y="123" width="468" height="116" frameX="-2" frameY="-6" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10003" x="5" y="123" width="468" height="116" frameX="-2" frameY="-6" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10004" x="5" y="244" width="460" height="120" frameX="-6" frameY="-2" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10005" x="5" y="244" width="460" height="120" frameX="-6" frameY="-2" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10006" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10007" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10008" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10009" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10010" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10011" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10012" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10013" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+	<SubTexture name="fg tankhead 5 instance 10014" x="5" y="369" width="459" height="122" frameX="-6" frameY="0" frameWidth="472" frameHeight="122"/>
+</TextureAtlas>

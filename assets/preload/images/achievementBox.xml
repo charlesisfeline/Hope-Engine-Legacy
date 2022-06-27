@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="achievementBox.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="box0000" x="5" y="5" width="262" height="241" pivotX="0.2" pivotY="0.2" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0001" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0002" x="272" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0003" x="272" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0004" x="539" y="5" width="262" height="242"/>
+	<SubTexture name="box0005" x="539" y="5" width="262" height="242"/>
+	<SubTexture name="box0006" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0007" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0008" x="272" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0009" x="272" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0010" x="539" y="5" width="262" height="242"/>
+	<SubTexture name="box0011" x="539" y="5" width="262" height="242"/>
+	<SubTexture name="box0012" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0013" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0014" x="5" y="252" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0015" x="5" y="252" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0016" x="272" y="252" width="262" height="242"/>
+	<SubTexture name="box0017" x="272" y="252" width="262" height="242"/>
+	<SubTexture name="box0018" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0019" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0020" x="5" y="252" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0021" x="5" y="252" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0022" x="272" y="252" width="262" height="242"/>
+	<SubTexture name="box0023" x="272" y="252" width="262" height="242"/>
+	<SubTexture name="box0024" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0025" x="5" y="5" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0026" x="5" y="252" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0027" x="5" y="252" width="262" height="241" frameX="0" frameY="0" frameWidth="262" frameHeight="242"/>
+	<SubTexture name="box0028" x="272" y="252" width="262" height="242"/>
+	<SubTexture name="box0029" x="272" y="252" width="262" height="242"/>
+</TextureAtlas>

@@ -1,0 +1,138 @@
+{
+	"animations": [
+		{
+			"prefix": "Parent Christmas Idle",
+			"offset": [
+				0,
+				0
+			],
+			"name": "idle",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Up Note Dad",
+			"offset": [
+				-42,
+				24
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Down Note Dad",
+			"offset": [
+				-41,
+				-23
+			],
+			"name": "singDOWN",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Left Note Dad",
+			"offset": [
+				-27,
+				20
+			],
+			"name": "singLEFT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Right Note Dad",
+			"offset": [
+				1,
+				-19
+			],
+			"name": "singRIGHT",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Up Note Mom",
+			"offset": [
+				-41,
+				28
+			],
+			"name": "singUP-alt",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Down Note Mom",
+			"offset": [
+				-40,
+				-25
+			],
+			"name": "singDOWN-alt",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Left Note Mom",
+			"offset": [
+				-28,
+				19
+			],
+			"name": "singLEFT-alt",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Parent Right Note Mom",
+			"offset": [
+				-1,
+				-21
+			],
+			"name": "singRIGHT-alt",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		}
+	],
+	"healthColor": "FFC6EF",
+	"facesLeft": false,
+	"image": "characters/mom_dad_christmas_assets",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"antialiasing": true,
+	"name": "parents-christmas",
+	"isDeath": false
+}

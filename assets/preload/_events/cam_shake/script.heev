@@ -1,0 +1,26 @@
+function trigger(params:Map<String, Dynamic>)
+{
+	var camGameInt:Float = params.get("camGame_int");
+	var camGameDur:Float = params.get("camGame_dur");
+	var camGameAxis:String = params.get("camGame_axis");
+
+	var camHUDInt:Float = params.get("camHUD_int");
+	var camHUDDur:Float = params.get("camHUD_dur");
+	var camHUDAxis:String = params.get("camHUD_axis");
+
+	// Kill me now
+	
+	if (camGameAxis.toLowerCase() == 'x')
+		FlxG.camera.shake(camGameInt, camGameDur, null, true, FlxAxes.X);
+	else if (camGameAxis.toLowerCase() == 'y')
+		FlxG.camera.shake(camGameInt, camGameDur, null, true, FlxAxes.Y);
+	else
+		FlxG.camera.shake(camGameInt, camGameDur, null, true, FlxAxes.XY);
+
+	if (camHUDAxis.toLowerCase() == 'x')
+		camHUD.shake(camHUDInt, camHUDDur, null, true, FlxAxes.X);
+	else if (camHUDAxis.toLowerCase() == 'y')
+		camHUD.shake(camHUDInt, camHUDDur, null, true, FlxAxes.Y);
+	else
+		camHUD.shake(camHUDInt, camHUDDur, null, true, FlxAxes.XY);
+}

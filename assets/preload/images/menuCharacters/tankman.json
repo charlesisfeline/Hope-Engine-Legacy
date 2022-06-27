@@ -1,0 +1,18 @@
+{
+	"animations": {
+		"danceRight": null,
+		"danceLeft": null,
+		"hey": null,
+		"idle": {
+			"prefix": "Tankman Idle Dance",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		}
+	},
+	"settings": {
+		"scale": 1,
+		"flipped": false
+	},
+	"character": "tankman"
+}

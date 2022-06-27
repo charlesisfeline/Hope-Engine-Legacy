@@ -1,0 +1,79 @@
+function trigger(params:Map<String, Dynamic>)
+{
+	// Self-explanatory.
+
+	// this script harrows me
+	// beware of large switch case
+
+	var easingStyle = params.get("easing");
+	var easingDirection = params.get("easing_direction");
+	var change = params.get("change");
+	var time = params.get("time");
+
+	var actualEase = FlxEase.linear;
+
+	switch (easingDirection.toLowerCase())
+	{
+		case "in":
+			switch (easingStyle.toLowerCase())
+			{
+				case "back": actualEase = FlxEase.backIn;
+				case "bounce": actualEase = FlxEase.bounceIn;
+				case "circ": actualEase = FlxEase.circIn;
+				case "cube": actualEase = FlxEase.cubeIn;
+				case "elastic": actualEase = FlxEase.elasticIn;
+				case "expo": actualEase = FlxEase.expoIn;
+				case "quad": actualEase = FlxEase.quadIn;
+				case "quart": actualEase = FlxEase.quartIn;
+				case "quint": actualEase = FlxEase.quintIn;
+				case "sine": actualEase = FlxEase.sineIn;
+				case "smoothstep": actualEase = FlxEase.smoothStepIn;
+				case "smootherstep": actualEase = FlxEase.smootherStepIn;
+			}
+		case "out":
+			switch (easingStyle.toLowerCase())
+			{
+				case "back": actualEase = FlxEase.backOut;
+				case "bounce": actualEase = FlxEase.bounceOut;
+				case "circ": actualEase = FlxEase.circOut;
+				case "cube": actualEase = FlxEase.cubeOut;
+				case "elastic": actualEase = FlxEase.elasticOut;
+				case "expo": actualEase = FlxEase.expoOut;
+				case "quad": actualEase = FlxEase.quadOut;
+				case "quart": actualEase = FlxEase.quartOut;
+				case "quint": actualEase = FlxEase.quintOut;
+				case "sine": actualEase = FlxEase.sineOut;
+				case "smoothstep": actualEase = FlxEase.smoothStepOut;
+				case "smootherstep": actualEase = FlxEase.smootherStepOut;
+			}
+
+		case "inout":
+			switch (easingStyle.toLowerCase())
+			{
+				case "back": actualEase = FlxEase.backInOut;
+				case "bounce": actualEase = FlxEase.bounceInOut;
+				case "circ": actualEase = FlxEase.circInOut;
+				case "cube": actualEase = FlxEase.cubeInOut;
+				case "elastic": actualEase = FlxEase.elasticInOut;
+				case "expo": actualEase = FlxEase.expoInOut;
+				case "quad": actualEase = FlxEase.quadInOut;
+				case "quart": actualEase = FlxEase.quartInOut;
+				case "quint": actualEase = FlxEase.quintInOut;
+				case "sine": actualEase = FlxEase.sineInOut;
+				case "smoothstep": actualEase = FlxEase.smoothStepInOut;
+				case "smootherstep": actualEase = FlxEase.smootherStepInOut;
+			}
+	}
+
+	if (time > 0)
+	{
+		FlxTween.num(PlayState.defaultCamZoom, PlayState.defaultCamZoom + change, time, {ease: actualEase}, function(v:Float) {
+			PlayState.defaultCamZoom = v;
+		});
+	}
+	else
+	{
+		FlxG.camera.zoom += change;
+		PlayState.defaultCamZoom += change;
+	}
+}

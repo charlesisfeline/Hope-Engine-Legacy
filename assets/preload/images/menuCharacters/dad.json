@@ -1,0 +1,18 @@
+{
+	"animations": {
+		"danceRight": null,
+		"danceLeft": null,
+		"hey": null,
+		"idle": {
+			"prefix": "idle0",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		}
+	},
+	"settings": {
+		"scale": 1,
+		"flipped": false
+	},
+	"character": "dad"
+}

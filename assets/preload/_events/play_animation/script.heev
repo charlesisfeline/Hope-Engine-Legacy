@@ -1,0 +1,71 @@
+function trigger(params:Map<String, Dynamic>)
+{
+    /**
+     * People don't really look at internals,
+     * so here's some shit about this event:
+     * 
+     * When this event was being made, I used
+     * a library called `texter`, which included
+     * an FlxInputText fork that can have Multiline,
+     * Right-to-left alignment, and other fixes
+     * like that.
+     * 
+     * When I was testing this event up, it just
+     * wasnt working at all. No animations were
+     * being played. The character just *froze*.
+     * 
+     * As a result, I almost had to put this event
+     * down and say "this event is impossible".
+     * 
+     * I took a second look at the library I used,
+     * and saw something weird.
+     * 
+     * The library was using an invisible character,
+     * `U+200b`. Which completely just breaks 
+     * everything.
+     * 
+     * The character would infest itself in strings
+     * that are used for STRICT equality checks 
+     * (like in the event editor, where if you typed 
+     * a parameter with the same ID, the fields would 
+     * be filled properly).
+     * 
+     * So I had to drop `texter` as a whole. Didn't
+     * know it used EMPTY characters in the first
+     * place.
+     * 
+     * ...not like I expected it to use them to begin
+     * with.
+     * 
+     * =============================================
+     * 
+     * You can toy with the event, if you know what
+     * you're doing!
+     */
+
+    var character:String = params.get("char");
+    var animation:String = params.get("anim");
+    var force:Bool = params.get("force");
+    var reverse:Bool = params.get("reverse");
+    var frame:Int = params.get("starting_frame");
+
+    // Somehow switch cases never work...
+
+    var lower:String = character.toLowerCase();
+    
+    if (lower == 'gf' || lower == 'girlfriend')
+    {
+        gf.specialAnim = true;
+        gf.playAnim(animation, force, reverse, frame);
+    }
+    else if (lower == 'dad')
+    {
+        dad.specialAnim = true;
+        dad.playAnim(animation, force, reverse, frame);
+    }
+    else
+    {
+        boyfriend.specialAnim = true;
+        boyfriend.playAnim(animation, force, reverse, frame);
+    }
+}

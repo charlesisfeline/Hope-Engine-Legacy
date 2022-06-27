@@ -1,0 +1,4 @@
+{
+	"eventDesc": "Change the default camera zoom.\nThe camera zoom goes back to this default value.\nYou can do zoom-ins with it, and other stuff.",
+	"eventName": "Add to Default Camera Zoom"
+}

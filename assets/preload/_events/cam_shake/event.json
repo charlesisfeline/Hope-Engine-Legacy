@@ -1,0 +1,59 @@
+{
+	"params": [
+		{
+			"paramName": "Game camera shake intensity",
+			"defaultValue": 0.05,
+			"paramID": "camGame_int",
+			"maxLetters": null,
+			"value": null,
+			"type": "number",
+			"increment": 0.01
+		},
+		{
+			"paramName": "Game camera shake duration",
+			"defaultValue": 0.5,
+			"paramID": "camGame_dur",
+			"maxLetters": null,
+			"value": null,
+			"type": "number",
+			"increment": 0.01
+		},
+		{
+			"paramID": "camGame_axis",
+			"defaultValue": "XY",
+			"value": null,
+			"increment": null,
+			"paramName": "Game camera axis to shake on (can be X, Y, or XY)",
+			"type": "string",
+			"maxLetters": null
+		},
+		{
+			"paramName": "HUD camera shake intensity",
+			"defaultValue": 0.05,
+			"paramID": "camHUD_int",
+			"maxLetters": null,
+			"value": null,
+			"type": "number",
+			"increment": 0.01
+		},
+		{
+			"paramName": "HUD camera shake duration",
+			"defaultValue": 0.5,
+			"paramID": "camHUD_dur",
+			"maxLetters": null,
+			"value": null,
+			"type": "number",
+			"increment": 0.01
+		},
+		{
+			"paramID": "camHUD_axis",
+			"defaultValue": "XY",
+			"value": null,
+			"increment": null,
+			"paramName": "HUD camera axis to shake on (can be X, Y, or XY)",
+			"type": "string",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}

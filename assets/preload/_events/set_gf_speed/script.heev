@@ -1,0 +1,5 @@
+function trigger(params:Map<String, Dynamic>)
+{
+    // That's about it really lmao
+    PlayState.gfSpeed = params.get("new_speed");
+}

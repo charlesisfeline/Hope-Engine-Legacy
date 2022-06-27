@@ -1,0 +1,5 @@
+"funkerin.otf" is a modified version of 
+https://github.com/FunkinModdingPlus/ModdingPlus/blob/master/assets/fonts/funkin.otf
+
+it's been modified to look more like how the Alphabet class makes it
+also so that dialogues dont null out (it's so buggy)

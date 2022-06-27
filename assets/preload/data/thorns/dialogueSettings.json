@@ -1,0 +1,16 @@
+{
+    "bgMusic": {
+        "name": "pixel/LunchboxScary",
+        "fadeIn": {
+            "from": 0,
+            "to": 0.8,
+            "duration": 1
+        }
+    },
+    "bg": {
+        "color": "000000",
+        "alpha": 0.7,
+        "duration": 1
+    },
+    "type": "pixel-spirit"
+}

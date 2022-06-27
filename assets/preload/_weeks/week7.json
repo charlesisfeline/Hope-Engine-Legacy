@@ -1,0 +1,14 @@
+{
+	"difficultyLock": null,
+	"weekName": "Tankman",
+	"tracks": [
+		"Ugh",
+		"Guns",
+		"Stress"
+	],
+	"characters": [
+		"tankman",
+		"gf",
+		"bf"
+	]
+}

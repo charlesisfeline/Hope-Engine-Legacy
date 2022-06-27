@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="checkboxAwesome.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="checkbox checked0000" x="0" y="0" width="154" height="142"/>
+	<SubTexture name="checkbox checked0001" x="164" y="0" width="154" height="142"/>
+	<SubTexture name="checkbox checked0002" x="328" y="0" width="154" height="142"/>
+	<SubTexture name="checkbox checked0003" x="0" y="152" width="154" height="142"/>
+	<SubTexture name="checkbox checked0004" x="164" y="152" width="154" height="142"/>
+	<SubTexture name="checkbox checked0005" x="328" y="152" width="154" height="142"/>
+	<SubTexture name="checkbox checked0006" x="0" y="304" width="154" height="142"/>
+	<SubTexture name="checkbox checked0007" x="164" y="304" width="154" height="142"/>
+	<SubTexture name="checkbox checked0008" x="328" y="304" width="154" height="142"/>
+	<SubTexture name="checkbox checked0009" x="0" y="456" width="154" height="142"/>
+	<SubTexture name="checkbox checked0010" x="164" y="456" width="154" height="142"/>
+	<SubTexture name="checkbox checked0011" x="328" y="456" width="154" height="142"/>
+</TextureAtlas>

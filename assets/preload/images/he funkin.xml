@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="he funkin.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="boyfried dooodle boiled0000" x="5" y="5" width="484" height="504" frameX="0" frameY="0" frameWidth="484" frameHeight="505"/>
+	<SubTexture name="boyfried dooodle boiled0001" x="5" y="5" width="484" height="504" frameX="0" frameY="0" frameWidth="484" frameHeight="505"/>
+	<SubTexture name="boyfried dooodle boiled0002" x="494" y="5" width="484" height="505"/>
+	<SubTexture name="boyfried dooodle boiled0003" x="494" y="5" width="484" height="505"/>
+	<SubTexture name="boyfried dooodle boiled0004" x="5" y="515" width="484" height="504" frameX="0" frameY="-1" frameWidth="484" frameHeight="505"/>
+	<SubTexture name="boyfried dooodle boiled0005" x="5" y="515" width="484" height="504" frameX="0" frameY="-1" frameWidth="484" frameHeight="505"/>
+	<SubTexture name="boyfried dooodle boiled0006" x="494" y="515" width="484" height="504" frameX="0" frameY="-1" frameWidth="484" frameHeight="505"/>
+	<SubTexture name="boyfried dooodle boiled0007" x="494" y="515" width="484" height="504" frameX="0" frameY="-1" frameWidth="484" frameHeight="505"/>
+</TextureAtlas>

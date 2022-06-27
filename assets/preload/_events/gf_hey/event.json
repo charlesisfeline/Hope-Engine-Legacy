@@ -1,0 +1,32 @@
+{
+	"params": [
+		{
+			"paramID": "gfHey",
+			"defaultValue": true,
+			"value": null,
+			"increment": null,
+			"paramName": "Should GF Hey?",
+			"type": "bool",
+			"maxLetters": null
+		},
+		{
+			"paramID": "bfHey",
+			"defaultValue": null,
+			"value": null,
+			"increment": null,
+			"paramName": "Should BF Hey?",
+			"type": "bool",
+			"maxLetters": null
+		},
+		{
+			"paramID": "dadHey",
+			"defaultValue": false,
+			"value": null,
+			"increment": null,
+			"paramName": "Should Dad Hey?",
+			"type": "bool",
+			"maxLetters": null
+		}
+	],
+	"eventID": "gf_hey"
+}

@@ -1,0 +1,103 @@
+[
+    {
+        "categoryName": "Friday Night Funkin'",
+        "categoryItems": [
+            {
+                "name": "ninjamuffin99",
+                "desc": "Programmer for the Funk",
+                "link": "https://twitter.com/ninja_muffin99",
+                "tint": "ff3333",
+                "icon": "ninjamuff"
+            },
+            {
+                "name": "Kawai Sprite",
+                "desc": "Musician for the Funk",
+                "link": "https://twitter.com/kawaisprite",
+                "tint": "0aade6",
+                "icon": "kawai"
+            },
+            {
+                "name": "PhantomArcade",
+                "desc": "Artist for the Funk",
+                "link": "https://twitter.com/phantomarcade3k",
+                "tint": "7EED56",
+                "icon": "dave"
+            },
+            {
+                "name": "EvilSk8r",
+                "desc": "Artist for the Funk",
+                "link": "https://twitter.com/evilsk8r",
+                "tint": "dedede",
+                "icon": "sk8r"
+            },
+            {
+                "name": "THE ORIGINAL GAME",
+                "desc": "Press ENTER to get redirected",
+                "link": "https://www.newgrounds.com/portal/view/770371"
+            },
+            {
+                "name": "FUNKIN' KICKSTARTER",
+                "desc": "Press ENTER to get redirected",
+                "link": "https://www.kickstarter.com/projects/funkin/friday-night-funkin-the-full-ass-game"
+            },
+            {
+                "name": "ITCH.IO PAGE",
+                "desc": "Press ENTER to get redirected",
+                "link": "https://ninja-muffin24.itch.io/funkin"
+            }
+        ]
+    },
+    {
+        "categoryName": "Kade Engine",
+        "categoryItems": [
+            {
+                "name": "KadeDev",
+                "desc": "Main Developer and Maintainer of Kade Engine\n(you should wishlist Average4k on steam)",
+                "link": "https://twitter.com/kade0912",
+                "tint": "00A368"
+            },
+            {
+                "name": "The contributors",
+                "desc": "People who contributed to Kade Engine\n(Press ENTER to get redirected)",
+                "link": "https://github.com/KadeDev/Kade-Engine/graphs/contributors"
+            },
+            {
+                "name": "GAMEBANANA PAGE",
+                "desc": "Press ENTER to get redirected",
+                "link": "https://gamebanana.com/mods/44291"
+            },
+            {
+                "name": "GITHUB REPO",
+                "desc": "Press ENTER to get redirected",
+                "link": "https://github.com/KadeDev/Kade-Engine"
+            }
+        ]
+    },
+    {
+        "categoryName": "MP4 Support",
+        "categoryItems": [
+            {
+                "name": "PolybiusProxy",
+                "desc": "MP4 Support. God overall.",
+                "link": "https://github.com/polybiusproxy"
+            },
+            {
+                "name": "GITHUB REPO",
+                "desc": "Press ENTER to get redirected",
+                "link": "https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support"
+            }
+        ]
+    },
+    {
+        "categoryName": "Hope Engine",
+        "categoryItems": [
+            {
+                "name": "skuqre",
+                "desc": "Maintainer of whatever the hell this is",
+                "link": "https://twitter.com/skuqre",
+                "tint": "ad34ff",
+                "icon": "skuqre"
+            }
+        ]
+    }
+]

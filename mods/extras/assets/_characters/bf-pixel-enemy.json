@@ -1,0 +1,87 @@
+{
+	"animations": [
+		{
+			"prefix": "BF IDLE",
+			"offset": [
+				-183,
+				-182
+			],
+			"name": "idle",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF UP NOTE",
+			"offset": [
+				-183,
+				-182
+			],
+			"name": "singUP",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF DOWN NOTE",
+			"offset": [
+				-183,
+				-182
+			],
+			"name": "singDOWN",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "BF RIGHT NOTE",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singLEFT",
+			"offset": [
+				-183,
+				-182
+			]
+		},
+		{
+			"prefix": "BF LEFT NOTE",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singRIGHT",
+			"offset": [
+				-183,
+				-182
+			]
+		}
+	],
+	"healthColor": "31B0D1",
+	"facesLeft": true,
+	"image": "characters/bfPixel",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": false,
+	"name": "bf-pixel-enemy",
+	"isDeath": false,
+	"scale": 6
+}

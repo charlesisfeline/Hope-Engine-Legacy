@@ -1,0 +1,135 @@
+var tankWatchtower:FunkSprite;
+var tankGround:FunkSprite;
+
+var tankBoppers:Array<FunkSprite> = [];
+
+function createBackground()
+{
+    // This happens BEFORE BF and GF get put.
+
+    var sky = new FunkSprite("tankSky", "week7", -400, -400, 0, 0);
+    add(sky);
+
+    var clouds = new FunkSprite("tankClouds", "week7", FlxG.random.int(-700, -100), FlxG.random.int(-20, 20), 0.1, 0.1);
+    clouds.velocity.x = FlxG.random.float(5, 15);
+    add(clouds);
+
+    var mountains = new FunkSprite("tankMountains", "week7", -300, -20, 0.2, 0.2);
+    mountains.setGraphicSize(Std.int(1.2 * mountains.width));
+    mountains.updateHitbox();
+    add(mountains);
+
+    var buildings = new FunkSprite("tankBuildings", "week7", -300, -20, 0.3, 0.3);
+    buildings.setGraphicSize(Std.int(1.1 * buildings.width));
+    buildings.updateHitbox();
+    add(buildings);
+
+    var ruins = new FunkSprite("tankRuins", "week7", -300, 0, 0.35, 0.35);
+    ruins.setGraphicSize(Std.int(1.1 * buildings.width));
+    ruins.updateHitbox();
+    add(ruins);
+
+    var leftSmoke = new FunkSprite("smokeLeft", "week7", -200, -100, 0.4, 0.4, ["left smoke"], true);
+    add(leftSmoke);
+
+    var rightSmoke = new FunkSprite("smokeRight", "week7", 1100, -100, 0.4, 0.4, ["right smoke"], true);
+    add(rightSmoke);
+
+    tankWatchtower = new FunkSprite("tankWatchtower", "week7", 100, 50, 0.5, 0.5, ["watchtower gradient color"]);
+    add(tankWatchtower);
+
+    tankGround = new FunkSprite("tankRolling", "week7", 300, 300, 0.35, 0.35, ["BG tank w lighting"], true);
+    add(tankGround);
+
+    var ground = new FunkSprite("tankGround", "week7", -420, -150);
+    ground.setGraphicSize(Std.int(1.15 * ground.width));
+    ground.updateHitbox();
+    add(ground);
+}
+
+function createForeground()
+{
+    // This happens AFTER BF and GF get put.
+    // Meaning sprites created here will be put INFRONT of the characters
+
+    // Bopping is all what they have as their animation, so no need to add the prefixes?
+
+    var tank0 = new FunkSprite("tank0", "week7", -500, 650, 1.7, 1.5, [""]);
+    tankBoppers.push(tank0);
+    add(tank0);
+
+    var tank1 = new FunkSprite("tank1", "week7", -300, 750, 2, .2, [""]);
+    tankBoppers.push(tank1);
+    add(tank1);
+
+    var tank2 = new FunkSprite("tank2", "week7", 450, 940, 1.5, 1.5, [""]);
+    tankBoppers.push(tank2);
+    add(tank2);
+
+    var tank3 = new FunkSprite("tank4", "week7", 1300, 900, 1.5, 1.5, [""]);
+    tankBoppers.push(tank3);
+    add(tank3);
+
+    var tank4 = new FunkSprite("tank5", "week7", 1620, 700, 1.5, 1.5, [""]);
+    tankBoppers.push(tank4);
+    add(tank4);
+
+    var tank5 = new FunkSprite("tank3", "week7", 1300, 1200, 3.5, 2.5, [""]);
+    tankBoppers.push(tank5);
+    add(tank5);
+}
+
+function beatHit(curBeat:Int)
+{
+    // This happens when a beat is hit.
+    // Useful for things like Philly lights, etc.
+
+    tankWatchtower.dance(true);
+
+    for (bopper in tankBoppers)
+        bopper.dance(true);
+}
+
+function stepHit(curStep:Int)
+{
+    // This happens when a step (1/4th of a beat) is hit.
+    // I don't actually know what this is useful for
+}
+
+var tankX = 400;
+var tankSpeed = FlxG.random.float(5, 7); 
+var tankAngle = FlxG.random.int(-90, 45);
+
+var lmao:FlxSound;
+var playedTease:Bool = false;
+var dead:Bool = false;
+
+function onUpdate(elapsed:Float)
+{
+    // This happens every frame.
+    // Useful for checking key presses, and other things
+
+    tankAngle += elapsed * tankSpeed;
+    tankGround.angle = (tankAngle - 90 + 15);
+    tankGround.x = (tankX + 1500 * Math.cos(Math.PI / 180 * (1 * tankAngle + 180)));
+    tankGround.y = (1300 + 1100 * Math.sin(Math.PI / 180 * (1 * tankAngle + 180)));
+
+    // only for tank man
+    if (FlxG.sound.music.playing && !playedTease && dead && dad.curCharacter == 'tankman')
+    {
+        playedTease = true;
+
+        FlxG.sound.music.fadeOut(0.2, 0.1);
+
+        lmao = FlxG.sound.play(Paths.soundRandom("gameover/JeffGameover-", 1, 25, "week7"));
+
+        lmao.onComplete = function() {
+            FlxG.sound.music.fadeIn(1, 0.1, 1);
+        }
+    }
+}
+
+function onDeathPost()
+{
+    dead = true;
+}
