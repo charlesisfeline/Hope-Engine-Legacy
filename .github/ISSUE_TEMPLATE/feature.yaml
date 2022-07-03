@@ -2,6 +2,8 @@ name: Feature or enhancement request
 description: File a feature to be added, or something to be enhanced
 title: "[FEATURE]: "
 labels: ["feature or enhancement"]
+assignees:
+  - skuqre
 body:
   - type: textarea
     id: description
