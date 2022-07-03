@@ -49,3 +49,5 @@ body:
         - Windows (32 bit or 86 bit, untested!!)
         - macOS (untested!!)
         - Linux (semi-tested)
+    validations:
+      required: true
