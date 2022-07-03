@@ -1,6 +1,6 @@
 name: Documentation issue
 description: Documentation missing? Documentation wrong? File an issue here!
-title: "[FEATURE]: "
+title: "[DOCS]: "
 labels: ["documentation"]
 assignees:
   - skuqre
