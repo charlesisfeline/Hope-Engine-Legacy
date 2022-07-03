@@ -1,0 +1,51 @@
+name: Bug Report
+description: File a bug report, can be either visuals, or crash inducing, or anything really.
+title: "[BUG]: "
+labels: ["bug"]
+assignees:
+  - skuqre
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug Description
+      description: It is best to keep it brief, but not *too* brief that one can't understand what the bug is. It's fine if the description is long though.
+      placeholder: Something happened with Settings.hx or something!!!
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Crash Logs / Command Prompt Logs
+      description: If it produced a crash log in the "crashLogs" folder, put it here! Otherwise, if you're creating with the source code, it is recommended to put the logs of your command prompt here!
+      render: shell
+    validations:
+      required: false
+  - type: dropdown
+    id: type
+    attributes:
+      label: Type of Hope Engine
+      description: What type of Hope Engine are you using?
+      options:
+        - Compiled (you mess with ".hemc", ".hent", ".hes" files and the like.)
+        - Source Code (you have a file called "Project.xml", and a folder full of ".hx" files called "source".)
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of Hope Engine are you using?
+      placeholder: v0.1.2
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      description: "What kinda computer are you on? (For source-code people: this will also define your platform target, since HaxeFlixel/Hope Engine compiles natively)"
+      options:
+        - Windows (64 bit)
+        - Windows (32 bit or 86 bit, untested!!)
+        - macOS (untested!!)
+        - Linux (semi-tested)
