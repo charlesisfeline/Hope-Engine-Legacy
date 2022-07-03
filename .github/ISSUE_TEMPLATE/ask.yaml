@@ -1,0 +1,13 @@
+name: Question
+description: Wanna ask something?
+title: "[QUESTION]: "
+labels: ["question"]
+assignees:
+  - skuqre
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What's your question?
+    validations:
+      required: true
