@@ -1,0 +1,21 @@
+name: Documentation Issue
+description: Documentation missing? Documentation wrong? File an issue here!
+title: "[DOCS]: "
+labels: ["documentation"]
+assignees:
+  - skuqre
+body:
+  - type: input
+    id: link
+    attributes:
+      label: Page with error's link
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What's the issue with this page?
+      description: Specify. Please.
+      placeholder: Uhh yeah this thing and that thing is...
+    validations:
+      required: true

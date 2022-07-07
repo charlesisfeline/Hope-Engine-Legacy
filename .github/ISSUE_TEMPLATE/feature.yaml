@@ -1,0 +1,15 @@
+name: Feature or enhancement request
+description: File a feature to be added, or something to be enhanced
+title: "[FEATURE]: "
+labels: ["feature or enhancement"]
+assignees:
+  - skuqre
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Feature Description
+      description: Let your writing fingers shine! I recommend you describe the feature you want clear!
+      placeholder: Something about PlayState needs more... "umph" to it, y'know?!
+    validations:
+      required: true
