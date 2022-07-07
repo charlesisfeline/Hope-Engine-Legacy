@@ -1,5 +1,6 @@
 package editors;
 
+import flixel.addons.ui.FlxInputText;
 import Character.Animation;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -231,7 +232,9 @@ class CharacterEditor extends MusicBeatState
 		{
 			character.curCharacter = a;
 			iconHealthy.changeIcon(a);
+			iconHealthy.animation.curAnim.curFrame = 0;
 			iconDeath.changeIcon(a);
+			iconDeath.animation.curAnim.curFrame = 1;
 		};
 
 		var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
@@ -340,6 +343,7 @@ class CharacterEditor extends MusicBeatState
 		animationIndices = new InputTextFix(10, indicesTitle.y + indicesTitle.height, 200);
 
 		var fpsTitle = new FlxText(animationIndices.width + 20, 80, 0, "FPS");
+		frameRate.filterMode = FlxInputText.ONLY_NUMERIC;
 		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10));
 
 		var postfixTitle = new FlxText(animationIndices.width + frameRate.width + 30, 80, 0, "Postfix");
@@ -658,7 +662,7 @@ class CharacterEditor extends MusicBeatState
 			openSubState(new ConfirmationPrompt("Yo, wait a sec!",
 				"Remember to save before you load a different character's JSON file! Your current changes will not be saved!", "Sure", "Nah", function()
 			{
-				FlxG.switchState(new editors.CharacterEditor(opponentTick.checked, characterDropdown.selectedLabel));
+				CustomTransition.switchTo(new editors.CharacterEditor(opponentTick.checked, characterDropdown.selectedLabel));
 			}, function()
 			{
 				FlxG.mouse.visible = camHUD.visible = true;
@@ -1105,7 +1109,7 @@ class CharacterEditor extends MusicBeatState
 			#if FILESYSTEM
 			if (fromEditors)
 			{
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 				fromEditors = false;
 			}
 			else
@@ -1138,8 +1142,8 @@ class CharacterEditor extends MusicBeatState
 				mousePastPos = [FlxG.mouse.getScreenPosition(camHUD).x, FlxG.mouse.getScreenPosition(camHUD).y];
 			}
 
-			camFollow.x = pastCameraPos[0] + (mousePastPos[0] - FlxG.mouse.getScreenPosition(camHUD).x);
-			camFollow.y = pastCameraPos[1] + (mousePastPos[1] - FlxG.mouse.getScreenPosition(camHUD).y);
+			camFollow.x = pastCameraPos[0] + ((mousePastPos[0] - FlxG.mouse.getScreenPosition(camHUD).x) / FlxG.camera.zoom);
+			camFollow.y = pastCameraPos[1] + ((mousePastPos[1] - FlxG.mouse.getScreenPosition(camHUD).y) / FlxG.camera.zoom);
 		}
 
 		if (FlxG.camera.zoom <= 0.2)

@@ -6,7 +6,9 @@ function trigger(params:Map<String, Dynamic>)
 	var bfHey:Bool = params.get("bfHey");
 	var dadHey:Bool = params.get("dadHey");
 
-	if (gfHey)
+	if (gfHey && (gf.animation.curAnim.name == 'danceLeft'
+		|| gf.animation.curAnim.name == 'danceRight'
+		|| gf.animation.curAnim.name == 'idle'))
 	{
 		gf.specialAnim = true;
 		gf.playAnim("hey", true);

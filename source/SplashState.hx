@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxSprite;
 import flixel.FlxG;
 import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
@@ -18,7 +19,7 @@ class SplashState extends MusicBeatState
 	private var _curPart:Int = 0;
 	private var _functions:Array<Void->Void>;
 
-	var notes:FlxSpriteGroup;
+	var logo:FlxSprite;
 
 	var topText:FlxText;
 	var botText:FlxText;
@@ -40,25 +41,21 @@ class SplashState extends MusicBeatState
 				new FlxTimer().start(time, timerCallback);
 			}
 
-			notes = new FlxSpriteGroup();
-			add(notes);
-
-			for (i in 0...4)
-			{
-				var note = new Note(0, i, null, false, "hopeEngine/normal");
-				note.x = Note.swagWidth * i;
-				note.y = 0;
-				note.visible = false;
-				notes.add(note);
-			}
-
-			notes.screenCenter();
+			logo = new FlxSprite().loadGraphic(Paths.image("haxeflixel", "preload"), true, 720, 720);
+			logo.animation.add('lgoo', [0, 1, 2, 3, 4], 0, false);
+			logo.animation.play('lgoo');
+			logo.scale.set(0.25, 0.25);
+			logo.updateHitbox();
+			logo.screenCenter();
+			logo.antialiasing = true;
+			logo.visible = false;
+			add(logo);
 
 			topText = new FlxText(0, 0, 0, "Made with");
 			topText.size = 32;
 			topText.alignment = CENTER;
 			topText.screenCenter(X);
-			topText.y = notes.y - topText.height - 8;
+			topText.y = logo.y - topText.height - 8;
 			add(topText);
 
 			topText.fieldWidth = topText.width;
@@ -69,7 +66,7 @@ class SplashState extends MusicBeatState
 			botText.size = 32;
 			botText.alignment = CENTER;
 			botText.screenCenter(X);
-			botText.y = notes.y + notes.height + 8;
+			botText.y = logo.y + logo.height + 8;
 			add(botText);
 
 			botText.fieldWidth = botText.width;
@@ -98,8 +95,8 @@ class SplashState extends MusicBeatState
 	{
 		_functions[_curPart]();
 
-		if (_curPart < 4)
-			notes.members[_curPart].visible = true;
+		logo.visible = true;
+		logo.animation.curAnim.curFrame = _curPart;
 
 		_curPart++;
 
@@ -107,7 +104,9 @@ class SplashState extends MusicBeatState
 		{
 			// What happens when the final sound/timer time passes
 			// change parameters to whatever you feel like
-			FlxG.camera.fade(FlxColor.BLACK, 3.25, false, finishTween);
+			new FlxTimer().start(0.25, function(_) {
+				FlxG.camera.fade(FlxColor.BLACK, 3.25, false, finishTween);
+			});
 		}
 	}
 
@@ -132,7 +131,7 @@ class SplashState extends MusicBeatState
 	private function addText4():Void
 	{
 		// stuff that happens
-		botText.text = "Haxeflix";
+		botText.text = "HaxeFlix";
 	}
 
 	private function addText5():Void
@@ -144,6 +143,6 @@ class SplashState extends MusicBeatState
 	private function finishTween():Void
 	{
 		// Switches to MenuState when the fadeout tween(in the timerCallback function) is finished
-		FlxG.switchState(new TitleState());
+		CustomTransition.switchTo(new TitleState());
 	}
 }

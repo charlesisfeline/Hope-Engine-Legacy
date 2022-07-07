@@ -133,6 +133,21 @@ class ChartingState extends MusicBeatState
 	var beatLinesShown:Bool = false;
 	var stepLinesShown:Bool = false;
 
+	var curQuant:Int = 3;
+	var mfinQuants:Array<Int> = [
+		4,
+		8,
+		12,
+		16,
+		20,
+		24,
+		32,
+		48,
+		64,
+		96,
+		192
+	];
+
 	override function create()
 	{
 		#if FILESYSTEM
@@ -939,7 +954,7 @@ class ChartingState extends MusicBeatState
 
 		var stepperSusLengthLabel = new FlxText(10, 10, 'Note Sustain Length');
 
-		stepperSusLength = new NumStepperFix(10, stepperSusLengthLabel.height + 10, Conductor.stepCrochet / 2, 0, 0, Math.POSITIVE_INFINITY);
+		stepperSusLength = new NumStepperFix(10, stepperSusLengthLabel.height + 10, Conductor.stepCrochet / 2, 0, 0, Math.POSITIVE_INFINITY, new InputTextFix(0, 0, 150));
 		stepperSusLength.value = 0;
 		stepperSusLength.name = 'note_susLength';
 
@@ -1340,17 +1355,12 @@ class ChartingState extends MusicBeatState
 	}
 
 	var writingNotes:Bool = false;
-	var doSnapShit:Bool = true;
 
 	var timeHovered:Float = 0;
 
 	override function update(elapsed:Float)
 	{
-		snapText.text = "Snap: 1/"
-			+ snap
-			+ " ("
-			+ (doSnapShit ? "Control to disable" : "Snap Disabled, Control to renable")
-			+ ")\nAdd Notes: 1-8 (or click)";
+		snapText.text = "Quantization (U | O): " + mfinQuants[curQuant] + "th";
 
 		curStep = recalculateSteps();
 
@@ -1400,9 +1410,6 @@ class ChartingState extends MusicBeatState
 				lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, currentPitch);
 		}
 		#end
-
-		if (FlxG.keys.justPressed.CONTROL)
-			doSnapShit = !doSnapShit;
 
 		Conductor.songPosition = FlxG.sound.music.time;
 
@@ -1577,8 +1584,7 @@ class ChartingState extends MusicBeatState
 					FlxG.log.add('added note');
 					addNote();
 				}
-
-				if (FlxG.mouse.x > eventsGrid.x
+				else if (FlxG.mouse.x > eventsGrid.x
 					&& FlxG.mouse.x < eventsGrid.x + eventsGrid.width
 					&& FlxG.mouse.y > eventsGrid.y
 					&& FlxG.mouse.y < eventsGrid.y + (GRID_SIZE * _song.notes[curSection].lengthInSteps))
@@ -1638,7 +1644,10 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.pressed.SHIFT)
 				dummyArrow.y = FlxG.mouse.y - (GRID_SIZE / 2);
 			else
-				dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
+			{
+				var shit = GRID_SIZE * (mfinQuants[curQuant] / 16);
+				dummyArrow.y = Math.floor(FlxG.mouse.y / shit) * shit;
+			}
 		}
 		else if (FlxG.mouse.x > eventsGrid.x
 			&& FlxG.mouse.x < eventsGrid.x + eventsGrid.width
@@ -1656,61 +1665,61 @@ class ChartingState extends MusicBeatState
 		else
 			dummyArrow.visible = false;
 
-		if (FlxG.keys.justPressed.ENTER)
+		if (!InputTextFix.isTyping)
 		{
-			lastSection = curSection;
-
-			PlayState.SONG = _song;
-			FlxG.sound.music.stop();
-			vocals.stop();
-			LoadingState.loadAndSwitchState(new PlayState());
-			FlxG.mouse.visible = false;
-		}
-
-		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
-		{
-			#if FILESYSTEM
-			if (fromEditors)
+			if (FlxG.keys.justPressed.ENTER)
 			{
-				FlxG.switchState(new EditorsState());
-				fromEditors = false;
+				lastSection = curSection;
+	
+				PlayState.SONG = _song;
+				FlxG.sound.music.stop();
+				vocals.stop();
+				LoadingState.loadAndSwitchState(new PlayState());
+				FlxG.mouse.visible = false;
 			}
-			#end
-		}
-
-		if (FlxG.keys.justPressed.E)
-		{
-			changeNoteSustain(Conductor.stepCrochet);
-		}
-		if (FlxG.keys.justPressed.Q)
-		{
-			changeNoteSustain(-Conductor.stepCrochet);
-		}
-
-		if (FlxG.keys.justPressed.TAB)
-		{
-			if (FlxG.keys.pressed.SHIFT)
+	
+			if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
 			{
-				UI_box.selected_tab -= 1;
-				if (UI_box.selected_tab < 0)
-					UI_box.selected_tab = 4;
+				#if FILESYSTEM
+				if (fromEditors)
+				{
+					CustomTransition.switchTo(new EditorsState());
+					fromEditors = false;
+				}
+				#end
 			}
-			else
+	
+			if (FlxG.keys.justPressed.E)
 			{
-				UI_box.selected_tab += 1;
-				if (UI_box.selected_tab > 4)
-					UI_box.selected_tab = 0;
+				changeNoteSustain(Conductor.stepCrochet);
 			}
-		}
+			if (FlxG.keys.justPressed.Q)
+			{
+				changeNoteSustain(-Conductor.stepCrochet);
+			}
+	
+			if (FlxG.keys.justPressed.TAB)
+			{
+				if (FlxG.keys.pressed.SHIFT)
+				{
+					UI_box.selected_tab -= 1;
+					if (UI_box.selected_tab < 0)
+						UI_box.selected_tab = 4;
+				}
+				else
+				{
+					UI_box.selected_tab += 1;
+					if (UI_box.selected_tab > UI_box.numTabs)
+						UI_box.selected_tab = 0;
+				}
+			}
+	
+			if (FlxG.keys.justPressed.G)
+			{
+				trace(Json.stringify(_song, null, "\t"));
+				trace(Json.stringify(_events, null, "\t"));
+			}
 
-		if (FlxG.keys.justPressed.G)
-		{
-			trace(Json.stringify(_song, null, "\t"));
-			trace(Json.stringify(_events, null, "\t"));
-		}
-
-		if (!typingShit.hasFocus)
-		{
 			if (FlxG.keys.pressed.CONTROL)
 			{
 				if (FlxG.keys.justPressed.Z && lastNote != null)
@@ -1724,9 +1733,6 @@ class ChartingState extends MusicBeatState
 
 			if (!FlxG.keys.pressed.CONTROL)
 			{
-				// I'm fucking tired.
-				// Weird bug happens when you try to increment it more than 1
-
 				var additive:Int = 1;
 				if (FlxG.keys.pressed.SHIFT)
 					additive = 4;
@@ -1749,6 +1755,8 @@ class ChartingState extends MusicBeatState
 				{
 					FlxG.sound.music.play();
 					vocals.play();
+
+					resyncVocals();
 				}
 			}
 
@@ -1776,10 +1784,7 @@ class ChartingState extends MusicBeatState
 
 					var ass:Float = 0;
 
-					if (doSnapShit)
-						ass = FlxG.sound.music.time - (FlxG.mouse.wheel * Conductor.stepCrochet);
-					else
-						ass = FlxG.sound.music.time - (FlxG.mouse.wheel * Conductor.stepCrochet * 0.4);
+					ass = FlxG.sound.music.time - (FlxG.mouse.wheel * Conductor.stepCrochet * (mfinQuants[curQuant] / 16));
 
 					if (ass < 0)
 						ass = 0;
@@ -1800,6 +1805,11 @@ class ChartingState extends MusicBeatState
 			else if (FlxG.keys.justPressed.L)
 				changePitch(0.25);
 
+			if (FlxG.keys.justPressed.U)
+				changeQuant(-1);
+			else if (FlxG.keys.justPressed.O)
+				changeQuant(1);
+
 			if (FlxG.keys.pressed.W || FlxG.keys.pressed.S || FlxG.keys.pressed.UP || FlxG.keys.pressed.DOWN)
 			{
 				var daTime:Float = 1000 * FlxG.elapsed * currentPitch;
@@ -1819,6 +1829,10 @@ class ChartingState extends MusicBeatState
 
 				vocals.time = FlxG.sound.music.time;
 			}
+		}
+		else
+		{
+			
 		}
 
 		_song.bpm = tempBpm;
@@ -1932,19 +1946,16 @@ class ChartingState extends MusicBeatState
 	{
 		if (_song.notes[sec] != null)
 		{
-			var uhh = curSection;
 			curSection = sec;
-
-			// updateGrid();
 
 			if (updateMusic)
 			{
 				FlxG.sound.music.pause();
 				vocals.pause();
 
-				FlxG.sound.music.time += (Conductor.stepCrochet * _song.notes[uhh].lengthInSteps) * (curSection - uhh);
+				FlxG.sound.music.time = Math.ceil(sectionStartTime());
 				vocals.time = FlxG.sound.music.time;
-				recalculateSteps();
+				updateCurStep();
 			}
 
 			updateGrid();
@@ -1953,7 +1964,6 @@ class ChartingState extends MusicBeatState
 
 		curSelectedEvent = null;
 		curSelectedNote = null;
-		Conductor.songPosition = FlxG.sound.music.time;
 	}
 
 	function copySection(?sectionNum:Int = 1)
@@ -2165,6 +2175,17 @@ class ChartingState extends MusicBeatState
 		_events.events.push([]);
 	}
 
+	function changeQuant(?huh:Int = 0)
+	{
+		curQuant += huh;
+
+		if (curQuant > mfinQuants.length - 1)
+			curQuant = 0;
+
+		if (curQuant < 0)
+			curQuant = mfinQuants.length - 1;
+	}
+
 	var currentPitch:Float = 1.0;
 
 	function changePitch(change:Float)
@@ -2361,7 +2382,6 @@ class ChartingState extends MusicBeatState
 	private function addEvent():Void
 	{
 		var strum = getStrumTime(dummyArrow.y) + sectionStartTime();
-		var event = currentEvent;
 
 		var eventsInStrum:Array<SwagEvent> = [];
 

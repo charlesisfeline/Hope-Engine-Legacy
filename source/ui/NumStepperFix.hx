@@ -219,7 +219,7 @@ class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 
 		if (TextField == null)
 		{
-			TextField = new FlxUIInputText(0, 0, 25);
+			TextField = new InputTextFix(0, 0, 25);
 		}
 		TextField.x = 0;
 		TextField.y = 0;

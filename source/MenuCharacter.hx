@@ -151,8 +151,6 @@ class MenuCharacter extends FlxSprite
 			updateHitbox();
 		}
 
-		trace(setting.scale);
-
 		if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)
 			animation.play("danceLeft");
 		else

@@ -1,1 +1,5 @@
 this file is here so that Git doesn't get mad when there's empty folders
+
+you can also try out videos with the video provided
+
+the video there is very important . dont delete it

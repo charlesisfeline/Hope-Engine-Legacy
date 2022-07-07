@@ -177,7 +177,7 @@ class MainMenuState extends MusicBeatState
 				changeItem(1);
 
 			if (controls.BACK)
-				FlxG.switchState(new TitleState());
+				CustomTransition.switchTo(new TitleState());
 
 			if (controls.ACCEPT)
 				acceptItem();
@@ -187,7 +187,7 @@ class MainMenuState extends MusicBeatState
 		if (FlxG.keys.justPressed.EIGHT)
 		{
 			if (FlxG.keys.pressed.SHIFT)
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 		}
 		#end
 
@@ -249,19 +249,19 @@ class MainMenuState extends MusicBeatState
 		switch (daChoice)
 		{
 			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
+				CustomTransition.switchTo(new StoryMenuState());
 			case 'freeplay':
-				FlxG.switchState(new FreeplayState());
+				CustomTransition.switchTo(new FreeplayState());
 			case 'credits':
-				FlxG.switchState(new CreditsState());
+				CustomTransition.switchTo(new CreditsState());
 			#if FILESYSTEM
 			case 'mods':
-				FlxG.switchState(new ModLoadingState());
+				CustomTransition.switchTo(new ModLoadingState());
 			#end
 			case 'achievements':
-				FlxG.switchState(new AchievementState());
+				CustomTransition.switchTo(new AchievementState());
 			case 'options':
-				FlxG.switchState(new options.OptionsState());
+				CustomTransition.switchTo(new options.OptionsState());
 		}
 	}
 

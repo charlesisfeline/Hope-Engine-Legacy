@@ -52,6 +52,11 @@ class EventEditor extends MusicBeatState
 
 	override function create()
 	{
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		Paths.clearCustomSoundCache();
+		#end
+		
 		#if desktop
 		DiscordClient.changePresence("Events Editor");
 		#end
@@ -495,12 +500,12 @@ class EventEditor extends MusicBeatState
 			#if FILESYSTEM
 			if (fromEditors)
 			{
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 				fromEditors = false;
 			}
 			else
 			#end
-				FlxG.switchState(new StoryMenuState());
+				CustomTransition.switchTo(new StoryMenuState());
 		}
 	}
 

@@ -25,13 +25,10 @@ class RatingPosSubstate extends MusicBeatSubstate
 
 	var rate:FlxSprite;
 	var comb:FlxSprite;
-	var combSpr:FlxObject;
+	var combSpr:FlxSprite;
 
 	var playStrums:FlxTypedSpriteGroup<StaticArrow>;
 	var oppoStrums:FlxTypedSpriteGroup<StaticArrow>;
-
-	var comboSpr1:FlxSprite;
-	var comboSpr2:FlxSprite;
 
 	public function new()
 	{
@@ -53,15 +50,15 @@ class RatingPosSubstate extends MusicBeatSubstate
 		add(info);
 
 		cPos = new FlxText();
-		cPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		cPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(cPos);
 
 		rPos = new FlxText();
-		rPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		rPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(rPos);
 
 		csPos = new FlxText();
-		csPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		csPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(csPos);
 
 		createArrows();
@@ -73,30 +70,11 @@ class RatingPosSubstate extends MusicBeatSubstate
 		rate.antialiasing = true;
 		add(rate);
 
-		combSpr = new FlxObject();
+		combSpr = new FlxSprite().loadGraphic(Paths.image('combo', 'shared'));
 		combSpr.setPosition(Settings.comboSprPos[0], Settings.comboSprPos[1]);
+		combSpr.setGraphicSize(Std.int(combSpr.width * 0.7));
+		combSpr.updateHitbox();
 		add(combSpr);
-
-		comboSpr1 = new FlxSprite().loadGraphic(Paths.image('comboBreak1'));
-		comboSpr1.x = combSpr.x;
-		comboSpr1.y = combSpr.y;
-		add(comboSpr1);
-
-		comboSpr2 = new FlxSprite().loadGraphic(Paths.image('comboBreak2'));
-		comboSpr2.x = combSpr.x;
-		comboSpr2.y = combSpr.y;
-		add(comboSpr2);
-
-		comboSpr1.setGraphicSize(Std.int(comboSpr1.width * 0.7));
-		comboSpr1.antialiasing = true;
-
-		comboSpr2.setGraphicSize(Std.int(comboSpr2.width * 0.7));
-		comboSpr2.antialiasing = true;
-
-		comboSpr1.updateHitbox();
-		comboSpr2.updateHitbox();
-
-		combSpr.setSize(comboSpr1.width, comboSpr1.height);
 
 		comb = new Count(0, 0, FlxG.random.int(0, 999, [69, 420, 690]) + "");
 		comb.setPosition(Settings.comboPos[0], Settings.comboPos[1]);
@@ -159,9 +137,18 @@ class RatingPosSubstate extends MusicBeatSubstate
 
 		playStrums.y = 50;
 		if (Settings.downscroll)
+		{
 			playStrums.y = FlxG.height - 50 - playStrums.height - 1;
+			info.y = (FlxG.height * 0.2) - info.height;
+		}
 
 		oppoStrums.y = playStrums.y;
+
+		if (Settings.middleScroll)
+		{
+			playStrums.screenCenter(X);
+			oppoStrums.visible = false;
+		}
 	}
 
 	var mousePastPos:Array<Float> = [];
@@ -273,8 +260,5 @@ class RatingPosSubstate extends MusicBeatSubstate
 			comb.setPosition(Settings.comboPos[0], Settings.comboPos[1]);
 			combSpr.setPosition(Settings.comboSprPos[0], Settings.comboSprPos[1]);
 		}
-
-		comboSpr1.setPosition(combSpr.x, combSpr.y);
-		comboSpr2.setPosition(combSpr.x, combSpr.y);
 	}
 }

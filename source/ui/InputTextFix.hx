@@ -9,6 +9,7 @@ using StringTools;
 
 class InputTextFix extends FlxUIInputText
 {	
+	public static var isTyping:Bool = false;
 	public static var texts:Array<InputTextFix> = [];
 	
 	public function new(X:Float = 0, Y:Float = 0, Width:Int = 150, ?Text:String, size:Int = 8, TextColor:Int = FlxColor.BLACK,
@@ -97,6 +98,8 @@ class InputTextFix extends FlxUIInputText
 		for (fix in texts)
 			a.push(fix.hasFocus);
 
+		isTyping = a.contains(true);
+		
 		if (a.contains(true))
 		{
 			FlxG.sound.volumeDownKeys = null;

@@ -56,6 +56,11 @@ class DialogueEditor extends MusicBeatState
 
 	override function create()
 	{
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		Paths.clearCustomSoundCache();
+		#end
+		
 		var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.color = 0x2e2e2e;
 		bg.scrollFactor.set();
@@ -446,12 +451,12 @@ class DialogueEditor extends MusicBeatState
 			#if FILESYSTEM
 			if (fromEditors)
 			{
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 				fromEditors = false;
 			}
 			else
 			#end
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		}
 
 		dialogs.forEachAlive(function(text:FlxText)

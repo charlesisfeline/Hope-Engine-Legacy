@@ -39,6 +39,11 @@ class PositionOffsetEditor extends MusicBeatState
 
 	override function create()
 	{
+        #if FILESYSTEM
+		Paths.destroyCustomImages();
+		Paths.clearCustomSoundCache();
+		#end
+        
         var bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
 		bg.scrollFactor.set();
 		add(bg);
@@ -174,12 +179,12 @@ class PositionOffsetEditor extends MusicBeatState
             #if FILESYSTEM
             if (fromEditors)
             {
-                FlxG.switchState(new EditorsState());
+                CustomTransition.switchTo(new EditorsState());
                 fromEditors = false;
             }
             else
             #end
-            FlxG.switchState(new MainMenuState());
+            CustomTransition.switchTo(new MainMenuState());
         }
 
         if (FlxG.keys.justPressed.J)
@@ -203,9 +208,9 @@ class PositionOffsetEditor extends MusicBeatState
             // no, the other way does not work and confuses me
             // believe me ive tried
             if (FlxG.keys.pressed.SHIFT)
-                FlxG.switchState(new PositionOffsetEditor(characters[curSelected], characters[curSelected2], true));
+                CustomTransition.switchTo(new PositionOffsetEditor(characters[curSelected], characters[curSelected2], true));
             else
-                FlxG.switchState(new PositionOffsetEditor(characters[curSelected], characters[curSelected2], false));
+                CustomTransition.switchTo(new PositionOffsetEditor(characters[curSelected], characters[curSelected2], false));
         }
 	}
 }

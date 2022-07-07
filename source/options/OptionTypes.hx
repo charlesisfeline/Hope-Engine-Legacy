@@ -83,7 +83,7 @@ class StateCategory extends OptionCategory
 
 	override function press()
 	{
-		FlxG.switchState(state);
+		CustomTransition.switchTo(state);
 	}
 }
 
@@ -99,7 +99,7 @@ class StateOption extends Option
 
 	override function press()
 	{
-		FlxG.switchState(state);
+		CustomTransition.switchTo(state);
 	}
 }
 

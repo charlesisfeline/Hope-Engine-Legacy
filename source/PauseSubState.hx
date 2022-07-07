@@ -280,7 +280,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					resume();
 				case "Restart Song":
-					FlxG.resetState();
+					CustomTransition.switchTo(Type.createInstance(Type.getClass(FlxG.state), []));
 				case "Exit to menu":
 					exitToMenu();
 				case "Toggle Botplay":
@@ -293,7 +293,7 @@ class PauseSubState extends MusicBeatSubstate
 						FlxTransitionableState.skipNextTransIn = false;
 						FlxTransitionableState.skipNextTransOut = false;
 						PlayState.startAt = curTime;
-						FlxG.resetState();
+						CustomTransition.switchTo(Type.createInstance(Type.getClass(FlxG.state), []));
 					}
 			}
 		}
@@ -332,9 +332,9 @@ class PauseSubState extends MusicBeatSubstate
 		Conductor.changeBPM(102);
 		
 		if (PlayState.isStoryMode)
-			FlxG.switchState(new StoryMenuState());
+			CustomTransition.switchTo(new StoryMenuState());
 		else
-			FlxG.switchState(new FreeplayState());
+			CustomTransition.switchTo(new FreeplayState());
 		
 		PlayState.openedCharting = false;
 		PlayState.startAt = 0;

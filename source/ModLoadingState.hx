@@ -131,7 +131,7 @@ class ModLoadingState extends MusicBeatState
 			Paths.setCurrentMod(prevMod);
 			#end
 
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 			FlxG.mouse.visible = false;
 		}
 

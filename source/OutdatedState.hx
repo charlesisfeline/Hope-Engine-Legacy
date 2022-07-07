@@ -39,6 +39,6 @@ class OutdatedState extends MusicBeatState
 			fancyOpenURL('https://github.com/skuqre/Hope-Engine/releases/latest/');
 
 		if (FlxG.keys.justPressed.ESCAPE)
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 	}
 }

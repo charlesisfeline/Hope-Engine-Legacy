@@ -1,19 +1,19 @@
 package;
 
+import scripts.ScriptConsole;
+import lime.app.Application;
+import haxe.CallStack;
+import openfl.events.UncaughtErrorEvent;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
-import flixel.addons.plugin.screengrab.FlxScreenGrab;
-import flixel.input.keyboard.FlxKey;
 import flixel.tweens.FlxTween;
 import modifiers.Modifiers;
 import openfl.Assets;
 import openfl.Lib;
-import openfl.display.PNGEncoderOptions;
 import openfl.display.Sprite;
 import openfl.events.Event;
-import openfl.utils.ByteArray;
 import stats.CustomFPS;
 import stats.CustomMEM;
 
@@ -26,6 +26,8 @@ import sys.io.File;
 
 class Main extends Sprite
 {
+	public static var console:ScriptConsole;
+
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
@@ -90,17 +92,8 @@ class Main extends Sprite
 
 		// FlxGraphic.defaultPersist = true;
 		addChild(game);
-
-		#if !mobile
-		fpsCounter = new CustomFPS(10, 3, 0xFFFFFF);
-		addChild(fpsCounter);
-
-		#if debug
-		var ramCount = new CustomMEM(10, 16, 0xffffff);
-		addChild(ramCount);
-		#end
-
-		toggleFPS(Settings.fps);
+		CustomTransition.init();
+		addChild(CustomTransition.trans);
 
 		FlxG.fixedTimestep = false;
 		FlxG.mouse.useSystemCursor = true;
@@ -112,10 +105,23 @@ class Main extends Sprite
 		Achievements.init();
 		Modifiers.init();
 		signalsShit();
-		#end
 
 		// WHAT????
 		openfl.Assets.cache.enabled = !Settings.cacheImages && !Settings.cacheMusic;
+		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, crash);
+
+		// init console :)
+		console = new ScriptConsole();
+		addChild(console);
+
+		fpsCounter = new CustomFPS(10, 3, 0xFFFFFF);
+		addChild(fpsCounter);
+		toggleFPS(Settings.fps);
+
+		#if debug
+		var ramCount = new CustomMEM(10, 16, 0xffffff);
+		addChild(ramCount);
+		#end
 
 		MainMenuState.hopeEngineVer = Assets.getText('version.awesome');
 	}
@@ -169,5 +175,48 @@ class Main extends Sprite
 	{
 		FlxTween.cancelTweensOf(FlxG.sound, ["volume"]);
 		FlxTween.tween(FlxG.sound, {volume: lmao}, 0.5);
+	}
+
+	// hi izzy engine
+	// gedehari is a swag guy like fr
+	// never would i discover what the hell this is
+	static function crash(err:UncaughtErrorEvent):Void
+	{
+		if (!FileSystem.exists("crashLogs"))
+			FileSystem.createDirectory("crashLogs");
+
+		var curTime = Date.now().toString();
+		curTime = curTime.replace(":", " ");
+		curTime = curTime.replace(" ", "_");
+
+		var path = "crashLogs/hopeCrash_" + curTime + ".txt";
+
+		var stack = CallStack.exceptionStack(true);
+		stack.reverse();
+		var calls = "";
+
+		for (call in stack)
+		{
+			switch (call)
+			{
+				case FilePos(s, file, line, column):
+					calls += file + " (line " + line + ")\n";
+				default:
+					trace("This needs to be here?! " + call);
+			}
+		}
+
+		var saved:Bool = false;
+
+		if (stack.length > 0)
+		{
+			File.saveContent(path, calls + "\nError: " + err.error);
+			saved = true;
+		}
+
+		calls += "\n" + err.error + "\n\n" + (saved ? "Log has been saved in the crash logs folder." : "There was no call stack, so nothing was saved.") +'\nIf error persists, report on the GitHub: https://github.com/skuqre/Hope-Engine';
+
+		Application.current.window.alert(calls, "Error!");
+		Application.current.window.close();
 	}
 }

@@ -61,7 +61,7 @@ class GitarooPause extends MusicBeatState
 				LoadingState.loadAndSwitchState(new PlayState());
 			else
 			{
-				FlxG.switchState(new MainMenuState());
+				CustomTransition.switchTo(new MainMenuState());
 				PlayState.openedCharting = false;
 				PlayState.startAt = 0;
 				Settings.botplay = false;

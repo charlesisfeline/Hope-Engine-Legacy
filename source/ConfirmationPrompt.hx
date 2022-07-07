@@ -108,7 +108,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 			var daAlpha = spr.alpha;
 			spr.alpha = 0;
-			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2, alpha: daAlpha}, 0.3, {ease: FlxEase.backOut});
+			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2}, 0.3, {ease: FlxEase.backOut});
+			FlxTween.tween(spr, {alpha: daAlpha}, 0.3);
 		});
 	}
 

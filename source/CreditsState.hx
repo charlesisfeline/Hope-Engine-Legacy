@@ -143,7 +143,7 @@ class CreditsState extends MusicBeatState
 
 		if (controls.BACK)
 		{
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		}
 	}
 

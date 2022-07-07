@@ -207,7 +207,7 @@ class AchievementState extends MusicBeatState
 			changeSelection(1);
 
 		if (controls.BACK)
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 
 		for (achLabel in grpAchievements.members)
 			achLabel.x = FlxMath.lerp(achLabel.x, (achLabel.targetY * 20) + 315, Helper.boundTo(elapsed * 9.6, 0, 1));

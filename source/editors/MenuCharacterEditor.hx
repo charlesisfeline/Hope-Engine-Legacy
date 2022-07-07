@@ -81,6 +81,11 @@ class MenuCharacterEditor extends MusicBeatState
 
 	override function create() 
 	{
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		Paths.clearCustomSoundCache();
+		#end
+		
 		#if desktop
 		DiscordClient.changePresence("Menu Character Editor");
 		#end
@@ -676,11 +681,11 @@ class MenuCharacterEditor extends MusicBeatState
 			if (fromEditors)
 			{
 				fromEditors = false;
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 			}
 			else
 			#end
-				FlxG.switchState(new StoryMenuState());
+				CustomTransition.switchTo(new StoryMenuState());
 		}
 
 		if (FlxG.keys.pressed.CONTROL)
@@ -747,7 +752,7 @@ class MenuCharacterEditor extends MusicBeatState
 				path = _file.__path;
 		}
 
-		FlxG.switchState(new MenuCharacterEditor(cast Json.parse(File.getContent(path).trim())));
+		CustomTransition.switchTo(new MenuCharacterEditor(cast Json.parse(File.getContent(path).trim())));
 		#else
 		trace("File couldn't be loaded! You aren't on Desktop, are you?");
 		#end

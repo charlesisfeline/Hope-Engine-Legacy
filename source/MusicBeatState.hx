@@ -27,7 +27,7 @@ class MusicBeatState extends FlxUIState
 	private static var assets:Array<FlxSprite> = [];
 	private static var toDestroy:Array<FlxSprite> = [];
 
-	var usesMouse:Bool = false;
+	public var usesMouse:Bool = false;
 
 	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
 	{

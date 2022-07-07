@@ -1,5 +1,6 @@
 package achievements;
 
+import lime.app.Application;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -8,7 +9,6 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import haxe.Json;
-import lime.app.Application;
 
 using StringTools;
 

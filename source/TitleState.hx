@@ -43,6 +43,7 @@ class TitleState extends MusicBeatState
 	var wackyImage:FlxSprite;
 
 	var code:Array<FlxKey> = [H, O, P, E];
+	var code2:Array<FlxKey> = [P, R, I, N, G, L, E, S];
 	var typed:Array<FlxKey> = [];
 
 	// version
@@ -61,7 +62,7 @@ class TitleState extends MusicBeatState
 		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/assets/skins"))
 		{
 			if (skinName.trim() == 'default')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
@@ -71,14 +72,14 @@ class TitleState extends MusicBeatState
 		for (mod in FileSystem.readDirectory(Sys.getCwd() + "/mods"))
 		{
 			if (mod.trim().toLowerCase() == 'hopeengine')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
 					}));
 
 			if (mod.trim().toLowerCase() == 'none')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
@@ -132,17 +133,17 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
-			diamond.persist = true;
-			diamond.destroyOnNoUse = false;
+			// var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
+			// diamond.persist = true;
+			// diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, -1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
-			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
+			// FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, -1),
+			// 	{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
+			// FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1),
+			// 	{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
 
-			transIn = FlxTransitionableState.defaultTransIn;
-			transOut = FlxTransitionableState.defaultTransOut;
+			// transIn = FlxTransitionableState.defaultTransIn;
+			// transOut = FlxTransitionableState.defaultTransOut;
 
 			// HAD TO MODIFY SOME BACKEND SHIT
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
@@ -168,7 +169,7 @@ class TitleState extends MusicBeatState
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 			});
 
-			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/master/version.awesome');
+			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/main/version.awesome');
 
 			http.onData = function(data:String)
 			{
@@ -290,7 +291,7 @@ class TitleState extends MusicBeatState
 			FlxG.fullscreen = !FlxG.fullscreen;
 
 		if (FlxG.keys.justPressed.G)
-			FlxG.switchState(new hopeUI.HopeTitle());
+			CustomTransition.switchTo(new hopeUI.HopeTitle());
 
 		if (FlxG.keys.justPressed.F3)
 		{
@@ -313,9 +314,7 @@ class TitleState extends MusicBeatState
 
 			for (key in typed)
 			{
-				var curKey = code[cur];
-
-				if (key != curKey)
+				if (key != code[cur] && key != code2[cur])
 				{
 					for (k in typed)
 						typed.remove(k);
@@ -326,7 +325,7 @@ class TitleState extends MusicBeatState
 				cur++;
 			}
 
-			if (typed.length == code.length)
+			if (typed == code)
 			{
 				FlxG.sound.music.volume = 0;
 				var a = FlxG.sound.play(Paths.sound("titleShoot"), 0.6).length / 1000;
@@ -335,8 +334,14 @@ class TitleState extends MusicBeatState
 				FlxG.camera.fade(0xff000000, a);
 				new FlxTimer().start(a, function(tmr:FlxTimer)
 				{
-					FlxG.switchState(new HopeTitle());
+					CustomTransition.switchTo(new HopeTitle());
 				});
+			}
+
+			if (typed == code2)
+			{
+				trace("Ninja muffin eating pringles");
+				new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
 			}
 		}
 
@@ -392,14 +397,14 @@ class TitleState extends MusicBeatState
 					if (MainMenuState.hopeEngineVer.trim() < requestedVersion.trim())
 					{
 						trace("\noutdated lmao! currently at: " + MainMenuState.hopeEngineVer.trim() + "\nlatest: " + requestedVersion.trim());
-						FlxG.switchState(new OutdatedState());
+						CustomTransition.switchTo(new OutdatedState());
 					}
 					else
-						FlxG.switchState(new MainMenuState());
+						CustomTransition.switchTo(new MainMenuState());
 				}
 				else
 				#end
-				FlxG.switchState(new MainMenuState());
+				CustomTransition.switchTo(new MainMenuState());
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}

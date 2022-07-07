@@ -70,11 +70,15 @@ class GameOverSubstate extends MusicBeatSubstate
 
 		if (PlayState.instance != null)
 		{
+			PlayState.instance.interpVariables(PlayState.instance.stageInterp);
+
 			if (PlayState.instance.stageInterp.variables.get("onDeathPost") != null)
 				PlayState.instance.stageInterp.variables.get("onDeathPost")();
 	
 			if (PlayState.instance.executeModchart)
 			{
+				PlayState.instance.interpVariables(PlayState.instance.interp);
+
 				if (PlayState.instance.interp.variables.get("onDeathPost") != null)
 					PlayState.instance.interp.variables.get("onDeathPost")();
 			}
@@ -102,11 +106,11 @@ class GameOverSubstate extends MusicBeatSubstate
 
 			if (PlayState.instance.stageInterp.variables.get("onUpdate") != null)
 				PlayState.instance.stageInterp.variables.get("onUpdate")(elapsed);
-
-			PlayState.instance.interpVariables(PlayState.instance.interp);
 	
 			if (PlayState.instance.executeModchart)
 			{
+				PlayState.instance.interpVariables(PlayState.instance.interp);
+
 				if (PlayState.instance.interp.variables.get("onUpdate") != null)
 					PlayState.instance.interp.variables.get("onUpdate")(elapsed);
 			}
@@ -188,9 +192,9 @@ class GameOverSubstate extends MusicBeatSubstate
 			FlxG.camera.fade(FlxColor.BLACK, 2, false, function()
 			{
 				if (PlayState.isStoryMode)
-					FlxG.switchState(new StoryMenuState());
+					CustomTransition.switchTo(new StoryMenuState());
 				else
-					FlxG.switchState(new FreeplayState());
+					CustomTransition.switchTo(new FreeplayState());
 
 				FlxG.sound.playMusic(Paths.music('freakyMenu'), 0.7);
 				Conductor.changeBPM(102);

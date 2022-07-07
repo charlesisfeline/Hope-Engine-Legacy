@@ -54,7 +54,7 @@ class HopeTitle extends MusicBeatState
 		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/assets/skins"))
 		{
 			if (skinName.trim() == 'default')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
@@ -64,14 +64,14 @@ class HopeTitle extends MusicBeatState
 		for (mod in FileSystem.readDirectory(Sys.getCwd() + "/mods"))
 		{
 			if (mod.trim().toLowerCase() == 'hopeengine')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
 					}));
 
 			if (mod.trim().toLowerCase() == 'none')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
@@ -253,14 +253,14 @@ class HopeTitle extends MusicBeatState
 					if (MainMenuState.hopeEngineVer.trim() < requestedVersion.trim())
 					{
 						trace("\noutdated lmao! currently at: " + MainMenuState.hopeEngineVer.trim() + "\nlatest: " + requestedVersion.trim());
-						FlxG.switchState(new OutdatedState());
+						CustomTransition.switchTo(new OutdatedState());
 					}
 					else
-						FlxG.switchState(new hopeUI.HopeMainMenu());
+						CustomTransition.switchTo(new hopeUI.HopeMainMenu());
 				}
 				else
 				#end
-				FlxG.switchState(new hopeUI.HopeMainMenu());
+				CustomTransition.switchTo(new hopeUI.HopeMainMenu());
 			});
 		}
 

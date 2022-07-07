@@ -166,7 +166,7 @@ class HopeMainMenu extends MusicBeatState
 		switch (lma)
 		{
 			case "story mode":
-				FlxG.switchState(new StoryMenuState());
+				CustomTransition.switchTo(new StoryMenuState());
 		}
 	}
 
@@ -193,7 +193,7 @@ class HopeMainMenu extends MusicBeatState
 				changeItem(1);
 
 			if (controls.BACK)
-				FlxG.switchState(new HopeTitle());
+				CustomTransition.switchTo(new HopeTitle());
 
 			if (controls.ACCEPT)
 				selectItem();

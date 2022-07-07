@@ -40,9 +40,11 @@
 
 	<classpath name="source" />
 
+	<assets path="assets/embed" embed="true" />
+
 	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
 
-	<define name="VIDEOS_ALLOWED" if="web || windows" />
+	<define name="VIDEOS_ALLOWED" if="web || windows || linux" />
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
@@ -60,6 +62,9 @@
 	<define name="CUSTOM_SPLASH_SCREEN" />
 
 	<define name="UNLOCK_ALL_WEEKS" />
+
+	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
+	<haxedef name="HXCPP_STACK_LINE" if="release" />
 	
 	<section if="PRELOAD_ALL">
 		<library name="songs"    preload="true" />
@@ -141,7 +146,7 @@
 	<!-- <haxelib name="newgrounds"/> -->
 	<!-- <haxelib name="faxe" if='switch'/> -->
 	<haxelib name="yaml"/>
-	<haxelib name="hxCodec"/>
+	<haxelib name="hxCodec" if="VIDEOS_ALLOWED"/>
 	<haxelib name="discord_rpc" if="desktop"/>
 
 	<!-- <haxelib name="hxcpp-debug-server" if="desktop"/> -->

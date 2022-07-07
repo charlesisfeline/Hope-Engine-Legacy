@@ -5,24 +5,7 @@ import modifiers.Modifiers;
 class Ratings
 {
 	public static var ranks:Array<String> = [
-		"PERFECT!",
-		"ALMOST THERE!",
-		"A TAD BIT THERE!",
-		"SS+",
-		"SS",
-		"SS-",
-		"S+",
-		"S",
-		"S-",
-		"A+",
-		"A",
-		"A-",
-		"B",
-		"C",
-		"D",
-		"E",
-		"F",
-		"N/A"
+		"PERFECT!", "ALMOST THERE!", "A TAD BIT THERE!", "SS+", "SS", "SS-", "S+", "S", "S-", "A+", "A", "A-", "B", "C", "D", "E", "F", "N/A"
 	];
 
 	public static function GenerateLetterRank(accuracy:Float, isNumberRank:Bool = false)
@@ -79,15 +62,10 @@ class Ratings
 
 		letterRanking = " " + letterRanking;
 
-		if (PlayState.sickButNotReally == 0
-			&& PlayState.goods == 0
-			&& PlayState.bads == 0
-			&& PlayState.shits == 0
-			&& PlayState.misses == 0)
+		if (PlayState.sickButNotReally == 0 && PlayState.goods == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.misses == 0)
 			letterRanking = " PURE PERFECT!";
 
-		if (PlayState.songScore == 0
-			&& PlayState.accuracy == 0)
+		if (PlayState.songScore == 0 && PlayState.accuracy == 0)
 		{
 			ranking = "Nothing";
 			letterRanking = "";
@@ -102,6 +80,9 @@ class Ratings
 	}
 
 	public static var modifier:Float = 1;
+	public static var windows:Array<Array<Float>> = [[-166, 166], [-135, 135], [-90, 90], [-45, 45]];
+
+	public static var ratings:Array<String> = ["shit", "bad", "good", "sick"];
 
 	public static function CalculateRating(noteDiff:Float, ?customSafeZone:Float):String
 	{
@@ -112,30 +93,44 @@ class Ratings
 
 		customTimeScale *= modifier;
 
-		if (noteDiff > 166 * customTimeScale)
-			return "miss";
-		if (noteDiff > 135 * customTimeScale)
-			return "shit";
-		else if (noteDiff > 90 * customTimeScale)
-			return "bad";
-		else if (noteDiff > 45 * customTimeScale)
-			return "good";
-		else if (noteDiff < -45 * customTimeScale)
-			return "good";
-		else if (noteDiff < -90 * customTimeScale)
-			return "bad";
-		else if (noteDiff < -135 * customTimeScale)
-			return "shit";
-		else if (noteDiff < -166 * customTimeScale)
-			return "miss";
-		return "sick";
+		/*
+			135 > x > 166 = miss
+			90 > x > 135 = shit
+			45 > x > 90 = good
+			0 > x > 45 = sick
+		 */
+
+		var indexLol:Null<Int> = null;
+
+		for (i in 0...windows.length)
+		{
+			var time = windows[i];
+			var nextTime = windows[i + 1] != null ? windows[i + 1] : [0.0, 0.0];
+
+			if (noteDiff < 0)
+			{
+				if (noteDiff >= time[0] * customTimeScale && noteDiff <= nextTime[0] * customTimeScale)
+					indexLol = i;
+			}
+			else
+			{
+				if (noteDiff <= time[1] * customTimeScale && noteDiff >= nextTime[1] * customTimeScale)
+					indexLol = i;
+			}
+		}
+
+		if (indexLol != null)
+			return ratings[indexLol];
+
+		// flat out give up
+		return 'miss';
 	}
 
 	public static function CalculateRanking(score:Int, scoreDef:Int, nps:Int, maxNPS:Int, accuracy:Float):String
 	{
 		var multiplier:Float = 1;
 
-		for (key => value in Modifiers.modifiers) 
+		for (key => value in Modifiers.modifiers)
 		{
 			if (value != Modifiers.modifierDefaults.get(key))
 			{
@@ -146,7 +141,8 @@ class Ratings
 			}
 		}
 
-		return 'Score: ${(Conductor.safeFrames != 10 ? Std.int(score * multiplier) + " (" + Std.int(scoreDef * multiplier) + ")" : "" + Std.int(score * multiplier))} |'
+		return
+			'Score: ${(Conductor.safeFrames != 10 ? Std.int(score * multiplier) + " (" + Std.int(scoreDef * multiplier) + ")" : "" + Std.int(score * multiplier))} |'
 			+ ' Misses: ${PlayState.misses} |'
 			+ ' Accuracy: ${(Settings.botplay && !PlayState.instance.devBot ? "?" : Helper.completePercent(accuracy, 2) + "%")} |'
 			+ ' ${GenerateLetterRank(accuracy)}';

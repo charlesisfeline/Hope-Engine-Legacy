@@ -26,8 +26,10 @@ typedef NoteJSON =
 	var canScore:Null<Bool>;
 	var canMiss:Null<Bool>;
 	var offsetMultiplier:Null<Array<Float>>;
+	var scrollMultiplier:Null<Float>;
 	var scale:Null<Float>;
 	var noNoteSplash:Null<Bool>;
+	var noHolds:Null<Bool>;
 
 	var positionLockX:Null<Bool>;
 	var positionLockY:Null<Bool>;
@@ -294,6 +296,8 @@ class Note extends FlxSprite
 		this.canScore = (noteJSON.canScore != null ? noteJSON.canScore : true);
 		this.canMiss = (noteJSON.canMiss != null ? noteJSON.canMiss : false);
 		this.offsetMultiplier = (noteJSON.offsetMultiplier != null ? noteJSON.offsetMultiplier : [1, 1]);
+		this.scrollMultiplier = (noteJSON.scrollMultiplier != null ? noteJSON.scrollMultiplier : 1);
+		this.noHolds = (noteJSON.noHolds != null ? noteJSON.noHolds : false);
 		this.setScale = (noteJSON.scale != null ? noteJSON.scale : 1);
 		this.noNoteSplash = (noteJSON.noNoteSplash != null ? noteJSON.noNoteSplash : false);
 
@@ -329,6 +333,16 @@ class Note extends FlxSprite
 					noteJSON.sprites.up.note.flipX, noteJSON.sprites.up.note.flipY);
 				animation.play('Scroll');
 			}
+
+			if (isSustainNote)
+			{
+				if (animation.curAnim.name.endsWith("end"))
+					animOffset = noteJSON.sprites.up.holdEnd.offset;
+				else if (animation.curAnim.name.endsWith("hold"))
+					animOffset = noteJSON.sprites.up.holdPiece.offset;
+			}
+			else
+				animOffset = noteJSON.sprites.up.note.offset;
 		}
 		else
 		{
@@ -442,7 +456,6 @@ class Note extends FlxSprite
 			unblandNote(noteJSON.unblandWhat);
 
 		updateHitbox();
-
 		setGraphicSize(Std.int(width * this.setScale));
 
 		if (noteType != "hopeEngine/normal") // huh, normal notes have an offset of their own...

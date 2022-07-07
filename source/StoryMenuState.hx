@@ -320,14 +320,14 @@ class StoryMenuState extends MusicBeatState
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		}
 
 		#if FILESYSTEM
 		if (FlxG.keys.justPressed.SEVEN && !movedBack && !selectedWeek)
 		{
 			movedBack = true;
-			FlxG.switchState(new editors.WeekEditor());
+			CustomTransition.switchTo(new editors.WeekEditor());
 		}
 		#end
 

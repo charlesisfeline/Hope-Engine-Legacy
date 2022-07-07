@@ -317,8 +317,9 @@ class FreeplayState extends MusicBeatState
 		if (controls.BACK)
 		{
 			exiting = true;
+			FlxG.sound.play(Paths.sound('cancelMenu'));
 			vocals.fadeOut(0.5, 0);
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		}
 
 		if (FlxG.keys.justPressed.SPACE)

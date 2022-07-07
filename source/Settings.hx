@@ -30,6 +30,7 @@ class Settings
 	public static var posBarType:Int = 0;
 	public static var hitsoundType:Int = 0;
 	public static var hitsoundVolume:Float = 0;
+	public static var consistencyBar:Bool = false;
 
 	public static var flashing:Bool = true;
 	public static var distractions:Bool = true;
@@ -79,6 +80,7 @@ class Settings
 		posBarType = FlxG.save.data.posBarType;
 		hitsoundType = FlxG.save.data.hitsoundType;
 		hitsoundVolume = FlxG.save.data.hitsoundVolume;
+		consistencyBar = FlxG.save.data.consistencyBar;
 
 		///////////////////////////////////
 
@@ -134,6 +136,7 @@ class Settings
 		FlxG.save.data.posBarType = posBarType;
 		FlxG.save.data.hitsoundType = hitsoundType;
 		FlxG.save.data.hitsoundVolume = hitsoundVolume;
+		FlxG.save.data.consistencyBar = consistencyBar;
 
 		///////////////////////////////////
 
@@ -231,6 +234,9 @@ class Settings
 
 		if (FlxG.save.data.hitsoundVolume == null)
 			FlxG.save.data.hitsoundVolume = hitsoundVolume;
+
+		if (FlxG.save.data.consistencyBar == null)
+			FlxG.save.data.consistencyBar = consistencyBar;
 
 		///////////////////////////////////
 

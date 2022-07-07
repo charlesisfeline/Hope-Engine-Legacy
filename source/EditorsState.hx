@@ -158,12 +158,15 @@ class EditorsState extends MusicBeatState
 			case "Menu Character Editor":
 				MenuCharacterEditor.fromEditors = true;
 				state = new MenuCharacterEditor();
+			case "Note Type Editor":
+				NoteTypeEditor.fromEditors = true;
+				state = new NoteTypeEditor();
 			case "Position Offset Editor":
 				PositionOffsetEditor.fromEditors = true;
 				state = new PositionOffsetEditor();
 		}
 
-		FlxG.switchState(state);
+		CustomTransition.switchTo(state);
 	}
 
 	override function update(elapsed:Float)
@@ -171,7 +174,7 @@ class EditorsState extends MusicBeatState
 		super.update(elapsed);
 
 		if (controls.BACK)
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		if (controls.ACCEPT)
 			select();
 
