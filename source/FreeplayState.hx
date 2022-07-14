@@ -57,6 +57,21 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("FreeplayState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("FreeplayState", FREEPLAY));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Freeplay Menu", null);
 		#end
@@ -254,14 +269,14 @@ class FreeplayState extends MusicBeatState
 		for (songLabel in grpSongs)
 			songLabel.x = FlxMath.lerp(songLabel.x, (songLabel.targetY * 20) + 90, Helper.boundTo(elapsed * 9.6, 0, 1));
 
-		if (controls.UP || controls.DOWN)
+		if (controls.UI_UP || controls.UI_DOWN)
 		{
 			if (holdTime > maxThing)
 			{
-				if (controls.UP)
+				if (controls.UI_UP)
 					changeSelection(-1);
 
-				if (controls.DOWN)
+				if (controls.UI_DOWN)
 					changeSelection(1);
 
 				FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
@@ -270,13 +285,13 @@ class FreeplayState extends MusicBeatState
 			}
 			else
 			{
-				if (controls.UP_P)
+				if (controls.UI_UP_P)
 				{
 					changeSelection(-1);
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
 				}
 
-				if (controls.DOWN_P)
+				if (controls.UI_DOWN_P)
 				{
 					changeSelection(1);
 					FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
@@ -309,12 +324,12 @@ class FreeplayState extends MusicBeatState
 				openSubState(new ModifierSubstate());
 		}
 
-		if (controls.LEFT_P)
+		if (controls.UI_LEFT_P)
 			changeDiff(-1);
-		if (controls.RIGHT_P)
+		if (controls.UI_RIGHT_P)
 			changeDiff(1);
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 		{
 			exiting = true;
 			FlxG.sound.play(Paths.sound('cancelMenu'));
@@ -325,7 +340,7 @@ class FreeplayState extends MusicBeatState
 		if (FlxG.keys.justPressed.SPACE)
 			playMusic();
 
-		if (controls.ACCEPT && !FlxG.keys.justPressed.SPACE)
+		if (controls.UI_ACCEPT && !FlxG.keys.justPressed.SPACE)
 		{
 			var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
 			var songLowercase = songs[curSelected].songName.replace(" ", "-").toLowerCase();

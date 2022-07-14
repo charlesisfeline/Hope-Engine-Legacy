@@ -670,13 +670,15 @@ class MenuCharacterEditor extends MusicBeatState
 	}
 
 	var danced:Bool = true;
+	var backing:Bool = false;
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 		{
+			backing = true;
 			#if FILESYSTEM
 			if (fromEditors)
 			{

@@ -106,6 +106,13 @@ class Main extends Sprite
 		Modifiers.init();
 		signalsShit();
 
+		if (Paths.exists('mods/${FlxG.save.data.priority}'))
+			Paths.priorityMod = FlxG.save.data.priority;
+		else
+			FlxG.save.data.priority = Paths.priorityMod = "hopeEngine";
+
+		FlxG.save.flush();
+
 		// WHAT????
 		openfl.Assets.cache.enabled = !Settings.cacheImages && !Settings.cacheMusic;
 		openfl.Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, crash);
@@ -214,7 +221,10 @@ class Main extends Sprite
 			saved = true;
 		}
 
-		calls += "\n" + err.error + "\n\n" + (saved ? "Log has been saved in the crash logs folder." : "There was no call stack, so nothing was saved.") +'\nIf error persists, report on the GitHub: https://github.com/skuqre/Hope-Engine';
+		calls += "\n" + err.error + "\n\n" 
+			   + (saved ? "Log has been saved in the crash logs folder." : "There was no call stack, so nothing was saved.") 
+			   + "\nHope Engine is in a very early stage, bugs are just about to be expected."
+			   + '\nIf error persists, report on the GitHub: https://github.com/skuqre/Hope-Engine';
 
 		Application.current.window.alert(calls, "Error!");
 		Application.current.window.close();

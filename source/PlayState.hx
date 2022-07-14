@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.keyboard.FlxKey;
 import scripts.ScriptEssentials;
 import scripts.ScriptConsole;
 import ui.ConsistencyBar;
@@ -53,6 +54,7 @@ import Sys;
 import sys.FileSystem;
 import sys.io.File;
 #end
+
 #if desktop
 import Discord.DiscordClient;
 #end
@@ -145,6 +147,10 @@ class PlayState extends MusicBeatState
 	public static var pfBackgrounds:FlxTypedGroup<FlxSprite>;
 	public static var consistencyBar:ConsistencyBar;
 
+	/*
+	public static var keyDisplays:FlxSpriteGroup;
+	*/
+
 	private var curSong:String = "";
 
 	// scores, and other stats
@@ -227,6 +233,8 @@ class PlayState extends MusicBeatState
 	private var botPlayState:FlxText;
 	var botplayTween:FlxTween;
 
+	public var healthbarDirection:FlxBarFillDirection = RIGHT_TO_LEFT;
+
 	// API stuff
 	public function addObject(object:FlxBasic)
 	{
@@ -269,6 +277,17 @@ class PlayState extends MusicBeatState
 	override public function create()
 	{
 		instance = this;
+
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("PlayState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("PlayState", PLAYSTATE));
+				return;
+			}
+		}
+
 		Modifiers.stateCreation();
 
 		rpcSong = SONG.song + " (" + CoolUtil.difficultyFromInt(storyDifficulty) + ") ";
@@ -325,17 +344,17 @@ class PlayState extends MusicBeatState
 
 		// pre lowercasing the song name (create)
 		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
-
-		// We out here using hscript modcharts
-		executeModchart = Paths.exists(Paths.modchart(songLowercase + "/modchart"));
+		
 
 		#if FILESYSTEM
-		if (Paths.currentMod != null && Paths.currentMod.length > 0 && !executeModchart)
+		if (Paths.currentMod != null && Paths.currentMod.length > 0)
 		{
 			executeModchart = FileSystem.exists(Paths.modModchart(songLowercase + "/modchart"));
 			trace("EXECUTING A MOD'S MODCHART: " + executeModchart + "\nMODCHART PATH: " + Paths.modModchart(songLowercase + "/modchart"));
 		}
+		else
 		#end
+		executeModchart = Paths.exists(Paths.modchart(songLowercase + "/modchart"));
 
 		if (executeModchart)
 		{
@@ -357,7 +376,20 @@ class PlayState extends MusicBeatState
 
 			ast = parser.parseString(modchart);
 			interpVariables(interp);
-			interp.execute(ast);
+
+			try
+			{
+				interp.execute(ast);
+			}
+			catch (e:Dynamic)
+			{
+				Main.console.add(e, PLAYSTATE);
+			}
+
+			interpVariables(interp);
+
+			if (interp.variables.get("onPreCreate") != null)
+				interp.variables.get("onPreCreate")();
 		}
 
 		trace(executeModchart ? "Modchart exists!" : "Modchart doesn't exist, tried path " + Paths.modchart(songLowercase + "/modchart"));
@@ -435,7 +467,15 @@ class PlayState extends MusicBeatState
 
 		stageInterp = new Interp();
 		interpVariables(stageInterp);
-		stageInterp.execute(ast);
+
+		try
+		{
+			stageInterp.execute(ast);
+		}
+		catch (e:Dynamic)
+		{
+			Main.console.add(e, PLAYSTATE);
+		}
 
 		if (stageInterp.variables.get("createBackground") != null)
 			stageInterp.variables.get("createBackground")();
@@ -585,7 +625,7 @@ class PlayState extends MusicBeatState
 
 		add(healthBarBG);
 
-		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
+		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, healthbarDirection, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
 		healthBar.scrollFactor.set();
 
@@ -1334,7 +1374,15 @@ class PlayState extends MusicBeatState
 				var daInterp = new Interp();
 				var daAst = parser.parseString(noteHENT);
 				interpVariables(daInterp);
-				daInterp.execute(daAst);
+
+				try
+				{
+					daInterp.execute(daAst);
+				}
+				catch (e:Dynamic)
+				{
+					Main.console.add(e, PLAYSTATE);
+				}
 
 				loadedNoteTypeInterps.set(noteType, daInterp);
 
@@ -1376,7 +1424,15 @@ class PlayState extends MusicBeatState
 				var daInterp = new Interp();
 				var daAst = parser.parseString(heev);
 				interpVariables(daInterp);
-				daInterp.execute(daAst);
+
+				try
+				{
+					daInterp.execute(daAst);
+				}
+				catch (e:Dynamic)
+				{
+					Main.console.add(e, PLAYSTATE);
+				}
 
 				loadedEventInterps.set(eventID, daInterp);
 
@@ -1656,6 +1712,56 @@ class PlayState extends MusicBeatState
 
 			strumLineNotes.add(babyArrow);
 		}
+
+		/*
+		if (keyDisplays == null)
+		{
+			keyDisplays = new FlxSpriteGroup();
+			add(keyDisplays);
+			keyDisplays.cameras = [camHUD];
+
+			var a = ["left", "down", "up", "right"];
+			for (i in 0...4)
+			{
+				var item = a[i];
+
+				var display = new FlxSprite(keyDisplays.width);
+				display.frames = Paths.getSparrowAtlas("keyDisplays", "shared");
+				display.animation.addByPrefix("idle", item, 24);
+				display.animation.play("idle");
+				display.setGraphicSize(Std.int(display.width * 0.7));
+				display.updateHitbox();
+				display.antialiasing = true;
+				if (keyDisplays.length > 1 && Settings.downscroll)
+					display.y = keyDisplays.height - display.height;
+				if (!Settings.downscroll)
+					display.y = 0;
+				display.flipY = !Settings.downscroll;
+
+
+				var texts:Array<String> = [];
+				var a:Array<FlxKey> = cast FlxG.save.data.controls[i];
+				for (k in a) 
+					texts.push(k.toString());
+				var key = new FlxText(display.x, 0, display.width, texts.join('\n'));
+				key.setFormat(Paths.font("vcr.ttf"), 22, FlxColor.BLACK, CENTER, FlxTextBorderStyle.OUTLINE);
+				key.antialiasing = true;
+
+				if (Settings.downscroll)
+					key.angle = i > 1 ? 5 : -5;
+				else
+					key.angle = i > 1 ? -5 : 5;
+
+				if (Settings.downscroll)
+					key.y = display.y + 20;
+				else
+					key.y = display.y + display.height - 20 - key.height;
+
+				keyDisplays.add(display);
+				keyDisplays.add(key);
+			}
+		}
+		*/
 	}
 
 	override function openSubState(SubState:FlxSubState)
@@ -1966,7 +2072,7 @@ class PlayState extends MusicBeatState
 		var npsShit = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "");
 		scoreTxt.text = npsShit + Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
 
-		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause && !inCutscene)
+		if (controls.PAUSE && startedCountdown && canPause && !inCutscene)
 		{
 			persistentUpdate = false;
 			persistentDraw = true;
@@ -2243,6 +2349,11 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("stepShit", curStep);
 		FlxG.watch.addQuick("sectionShit", Std.int(curStep / 16));
 
+		if (FlxG.sound.music.time / FlxG.sound.music.length >= 0.97)
+		{
+			health = 0;
+		}
+
 		if (health <= 0)
 		{
 			if (stageInterp.variables.get("onDeath") != null)
@@ -2260,30 +2371,26 @@ class PlayState extends MusicBeatState
 			persistentDraw = false;
 			paused = true;
 
+			var time = FlxG.sound.music.time;
+
 			vocals.stop();
 			FlxG.sound.music.stop();
 
 			var bfPos = boyfriend.getScreenPosition(camMisc);
 			openSubState(new GameOverSubstate(bfPos.x, bfPos.y, curCamPos));
-			
-			/**
-			 * TO DO: MAKE SO CLOSE ACTUALLY WORK LMAO
-			 */
-			// if (time / FlxG.sound.music.length >= 0.98)
-			// {
-			// 	// Achievements.camera = camMisc;
-			// 	GameOverSubstate.addTime = 9;
-			// 	new FlxTimer().start(2, function(tmr:FlxTimer) {
-			// 		Achievements.give("so_close");
-			// 	});
-			// }
+
+			if (time / FlxG.sound.music.length >= 0.95)
+			{
+				Achievements.camera = camMisc;
+				Achievements.give("so_close");
+			}
 
 			#if desktop
 			DiscordClient.changePresence(rpcDeath, rpcLocation);
 			#end
 		}
 
-		if (FlxG.keys.pressed.R && Settings.resetButton)
+		if (controls.RESET && Settings.resetButton)
 			health = 0;
 
 		if (startAt == 0)
@@ -2308,6 +2415,8 @@ class PlayState extends MusicBeatState
 		if (FlxG.keys.justPressed.B)
 			Settings.botplay = devBot = !Settings.botplay;
 		#end
+
+		Modifiers.postUpdate(elapsed);
 	}
 
 	public var devBot:Bool = false;
@@ -3061,6 +3170,18 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
+
+		/*
+		if (keyDisplays != null)
+		{
+			keyDisplays.x = playerStrums.x + ((Note.swagWidth * 4) / 2) - (keyDisplays.width / 2);
+		
+			if (Settings.downscroll)
+				keyDisplays.y = strumLine.y - (Note.swagWidth / 2) - keyDisplays.height;
+			else
+				keyDisplays.y = strumLine.y + (Note.swagWidth / 2);
+		}
+		*/
 	}
 
 	private function keyShit():Void // I've invested in emma stocks
@@ -3559,6 +3680,7 @@ class PlayState extends MusicBeatState
 		// state funcs
 		funnyInterp.variables.set("add", add);
 		funnyInterp.variables.set("remove", remove);
+		funnyInterp.variables.set("insert", insert);
 
 		// characters
 		funnyInterp.variables.set("boyfriend", boyfriend);

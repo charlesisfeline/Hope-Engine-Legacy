@@ -291,6 +291,9 @@ class Settings
 		if (FlxG.save.data.windowSettings == null)
 			FlxG.save.data.windowSettings = new Map<Dynamic, Dynamic>();
 
+		if (FlxG.save.data.priority == null)
+			FlxG.save.data.priority = "hopeEngine";
+
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
@@ -301,7 +304,8 @@ class Settings
 		load();
 		save();
 
-		FlxG.updateFramerate = FlxG.drawFramerate = fpsCap;
+		FlxG.updateFramerate = Settings.fpsCap;
+		FlxG.drawFramerate = Settings.fpsCap;
 		FlxG.autoPause = autopause;
 
 		if (Settings.persistentVolume)

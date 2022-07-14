@@ -137,7 +137,7 @@ class ModifierSaveSubstate extends MusicBeatSubstate
 	{
 		super.update(elapsed);
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 		{
 			forEachOfType(FlxSprite, function(spr:FlxSprite) {
 				FlxTween.tween(spr, {alpha: 0}, 0.4, { ease: FlxEase.expoInOut });
@@ -148,10 +148,10 @@ class ModifierSaveSubstate extends MusicBeatSubstate
 			});
 		}
 
-		if (controls.UP_P)
+		if (controls.UI_UP_P)
             changeSelection(-1);
 
-        if (controls.DOWN_P)
+        if (controls.UI_DOWN_P)
             changeSelection(1);
 	}
 }

@@ -26,6 +26,21 @@ class SplashState extends MusicBeatState
 
 	override public function create():Void
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("SplashState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("SplashState", SPLASH));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		new FlxTimer().start(1.5, function(tmr:FlxTimer)
 		{
 			FlxG.fixedTimestep = false;

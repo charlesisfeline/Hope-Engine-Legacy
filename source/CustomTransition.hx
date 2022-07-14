@@ -1,9 +1,7 @@
 package;
 
-import lime.app.Application;
 import motion.easing.Sine;
 import flixel.addons.transition.FlxTransitionableState;
-import motion.easing.Quad;
 import flixel.util.FlxTimer;
 import motion.Actuate;
 import openfl.Assets;
@@ -22,7 +20,7 @@ class CustomTransition
 
     static var fade:Float = 0.5;
 
-    public static function switchTo(to:FlxState, ?time:Float = 0.5)
+    public static function switchTo(to:FlxState, ?time:Float = 0.5):Void
     {
         if (changing) return;
         changing = true;
@@ -44,6 +42,11 @@ class CustomTransition
                 changing = false;
             }
         });
+    }
+
+    public static function reset():Void
+    {
+        switchTo(Type.createInstance(Type.getClass(FlxG.state), []));
     }
 
     static function fadeOut():Void

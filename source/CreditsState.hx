@@ -26,6 +26,21 @@ class CreditsState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("CreditsState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("CreditsState", CREDITS));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Credits", null);
 		#end
@@ -121,27 +136,27 @@ class CreditsState extends MusicBeatState
 
 		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, Helper.boundTo(elapsed * 9.6, 0, 1));
 
-		if (controls.UP_P)
+		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
 			if (alphabets.members[curSelected].isBold)
 				changeSelection(-1);
 		}
 
-		if (controls.DOWN_P)
+		if (controls.UI_DOWN_P)
 		{
 			changeSelection(1);
 			if (alphabets.members[curSelected].isBold)
 				changeSelection(1);
 		}
 
-		if (controls.ACCEPT)
+		if (controls.UI_ACCEPT)
 		{
 			if (allTheShit[curSelected][2] != "")
 				fancyOpenURL(allTheShit[curSelected][2]);
 		}
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 		{
 			CustomTransition.switchTo(new MainMenuState());
 		}

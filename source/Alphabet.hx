@@ -4,7 +4,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
-import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 using StringTools;
@@ -70,6 +69,7 @@ class Alphabet extends FlxSpriteGroup
 
 		var xPos:Float = 0;
 		var curRow:Int = 0;
+
 		for (character in splitWords)
 		{
 			if (character == " ")
@@ -84,16 +84,10 @@ class Alphabet extends FlxSpriteGroup
 				curRow++;
 			}
 
-			#if (haxe >= "4.0.0")
 			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
-			#else
-			var isNumber:Bool = AlphaCharacter.numbers.indexOf(character) != -1;
-			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(character) != -1;
-			#end
 
 			if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1 || isNumber || isSymbol)
-				// if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
 			{
 				if (lastSprite != null && !xPosResetted)
 				{
@@ -162,10 +156,16 @@ class Alphabet extends FlxSpriteGroup
 	{
 		if (value != text)
 		{
-			text = value;
+			text = value.trim();
+			_finalText = text;
+			lastSprite = null;
 
 			clear();
 			addText();
+
+			color = 0xFFFFFFFF;
+			if (!isBold)
+				color = 0xFF000000;
 		}
 
 		return value;
@@ -233,7 +233,7 @@ class AlphaCharacter extends FlxSprite
 			case "," | "_" | ".":
 				y += 45;
 			case "-":
-				y += 30;
+				y += 20;
 			case "+":
 				y += 14;
 		}
@@ -288,7 +288,7 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, 'exclamation point', 24);
 				animation.play(letter);
 			case '_':
-				animation.addByPrefix(letter, '_', 24);
+				animation.addByPrefix(letter, '-', 24);
 				animation.play(letter);
 				y += 40;
 			case "#":
@@ -315,7 +315,7 @@ class AlphaCharacter extends FlxSprite
 			case "-":
 				animation.addByPrefix(letter, '-', 24);
 				animation.play(letter);
-				y += 35;
+				y += 20;
 			case '"':
 				animation.addByPrefix(letter, '"', 24);
 				animation.play(letter);

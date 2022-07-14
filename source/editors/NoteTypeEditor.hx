@@ -206,6 +206,7 @@ class NoteTypeEditor extends MusicBeatState
 		standardLoad.cameras = [camHUD];
 
 		generateNotes();
+		updateNotes();
 
 		addAssetsStuff();
 		addAnimStuff();
@@ -400,9 +401,9 @@ class NoteTypeEditor extends MusicBeatState
 			babyArrow.setPosition(holdStrums.members[i].x, holdStrums.members[i].y);
 			origHoldOffsets[i] = [babyArrow.offset.x, babyArrow.offset.y];
 			if (_note.upSpriteOnly)
-				babyArrow.offset.set(babyArrow.offset.x + animOffsets[2][0], babyArrow.offset.y + animOffsets[2][1]);
+				babyArrow.offset.set(babyArrow.offset.x + animHoldOffsets[2][0], babyArrow.offset.y + animHoldOffsets[2][1]);
 			else
-				babyArrow.offset.set(babyArrow.offset.x + animOffsets[i][0], babyArrow.offset.y + animOffsets[i][1]);
+				babyArrow.offset.set(babyArrow.offset.x + animHoldOffsets[i][0], babyArrow.offset.y + animHoldOffsets[i][1]);
 			holds.add(babyArrow);
 
 			var babyArrow:FlxSprite = new FlxSprite(0, 0);
@@ -416,9 +417,9 @@ class NoteTypeEditor extends MusicBeatState
 			babyArrow.setPosition(holdEndStrums.members[i].x, holdEndStrums.members[i].y);
 			origEndsOffsets[i] = [babyArrow.offset.x, babyArrow.offset.y];
 			if (_note.upSpriteOnly)
-				babyArrow.offset.set(babyArrow.offset.x + animOffsets[2][0], babyArrow.offset.y + animOffsets[2][1]);
+				babyArrow.offset.set(babyArrow.offset.x + animEndsOffsets[2][0], babyArrow.offset.y + animEndsOffsets[2][1]);
 			else
-				babyArrow.offset.set(babyArrow.offset.x + animOffsets[i][0], babyArrow.offset.y + animOffsets[i][1]);
+				babyArrow.offset.set(babyArrow.offset.x + animEndsOffsets[i][0], babyArrow.offset.y + animEndsOffsets[i][1]);
 			holdEnds.add(babyArrow);
 		}
 	}
@@ -692,6 +693,15 @@ class NoteTypeEditor extends MusicBeatState
 			end.animation.addByPrefix('a', endPiece.prefix, endPiece.frameRate, endPiece.looped, endPiece.flipX, endPiece.flipY);
 			end.animation.play("a");
 			end.updateHitbox();
+
+			animOffsets[i][0] = notePiece.offset[0];
+			animOffsets[i][1] = notePiece.offset[1];
+
+			animHoldOffsets[i][0] = holdPiece.offset[0];
+			animHoldOffsets[i][1] = holdPiece.offset[1];
+
+			animEndsOffsets[i][0] = endPiece.offset[0];
+			animEndsOffsets[i][1] = endPiece.offset[1];
 		}
 	}
 
@@ -1173,6 +1183,7 @@ class NoteTypeEditor extends MusicBeatState
 	var mousePastPos:Array<Float> = [];
 
 	var broken:String = "";
+	var backing:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -1292,8 +1303,9 @@ class NoteTypeEditor extends MusicBeatState
 			else
 				camFollow.velocity.x = 0;
 
-			if (controls.BACK)
+			if (controls.UI_BACK && !backing)
 			{
+				backing = true;
 				#if FILESYSTEM
 				if (fromEditors)
 				{

@@ -31,11 +31,6 @@ class OptionsState extends MusicBeatState
 	var categories:Array<OptionCategory> = [
 		new OptionCategory("Gameplay", [
 			new OptionSubCategoryTitle("Gameplay"),
-			new PressOption("Keybinds", "Change how YOU play.", function()
-				{
-					FlxG.state.openSubState(new KeybindSubstate());
-					acceptInput = false;
-				}),
 			new ToggleOption("Downscroll", "Change the scroll direction from up to down (and vice versa)", "downscroll"),
 			new ToggleOption("Ghost Tapping", "If activated, pressing while there's no notes to hit won't give you a miss penalty.", "ghostTapping"),
 			new ToggleOption("Middlescroll", "Put the notes in the middle.", "middleScroll"),
@@ -50,7 +45,8 @@ class OptionsState extends MusicBeatState
 			#if FILESYSTEM
 			new ValueOptionInt("FPS Cap", "The maximum FPS the game can have", "fpsCap", Application.current.window.displayMode.refreshRate, 290, 1, 10, function()
 				{
-					FlxG.updateFramerate = FlxG.drawFramerate = Settings.fpsCap;
+					FlxG.updateFramerate = Settings.fpsCap;
+					FlxG.drawFramerate = Settings.fpsCap;
 				}, 60, " FPS"),
 			#end
 			new ValueOptionFloat("Hitsound Volume", "Change how loud or soft the hitsound plays.", "hitsoundVolume", 0, 100, 0.1, 100, function() 
@@ -64,6 +60,7 @@ class OptionsState extends MusicBeatState
 			new ValueOptionFloat("Scroll Speed", "Change your scroll speed.\n(1 = chart-dependent)", "scrollSpeed", 1, Math.POSITIVE_INFINITY, 0.1, 10, null, 1, "", 2),
 			new ToggleOption("Reset Button", "If activated, pressing R while in a song will cause a game over.", "resetButton"),
 		]),
+		new StateCategory("Controls", new KeybindsState()),
 		new OptionCategory("Accessibility", [
 			new OptionSubCategoryTitle("Accessibility"),
 			new ToggleOption("Flashing Lights", "If activated, flashing lights will appear.", "flashing"),
@@ -174,6 +171,21 @@ class OptionsState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("OptionsState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("OptionsState", OPTIONS));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Options Menu");
 		#end
@@ -259,21 +271,21 @@ class OptionsState extends MusicBeatState
 
 		if (acceptInput)
 		{
-			if (controls.UP_P)
+			if (controls.UI_UP_P)
 			{
 				changeSelection(-1);
 				if (highlightedAlphabet.isBold && inCat)
 					changeSelection(-1);
 			}
 
-			if (controls.DOWN_P)
+			if (controls.UI_DOWN_P)
 			{
 				changeSelection(1);
 				if (highlightedAlphabet.isBold && inCat)
 					changeSelection(1);
 			}
 
-			if (controls.BACK)
+			if (controls.UI_BACK)
 			{
 				if (!inCat)
 				{
@@ -299,25 +311,25 @@ class OptionsState extends MusicBeatState
 					|| displayOptions.members[curSelected] is StateOption
 					|| displayOptions.members[curSelected] is PressOption)
 				{
-					if (controls.ACCEPT)
+					if (controls.UI_ACCEPT)
 						displayOptions.members[curSelected].press();
 				}
 				else if (displayOptions.members[curSelected] is ValueOptionFloat || displayOptions.members[curSelected] is ValueOptionInt)
 				{
-					if (controls.LEFT || controls.RIGHT)
+					if (controls.UI_LEFT || controls.UI_RIGHT)
 					{
 						if (holdTimer > Main.globalMaxHoldTime)
 						{
-							if (controls.LEFT)
+							if (controls.UI_LEFT)
 								displayOptions.members[curSelected].left_H();
-							if (controls.RIGHT)
+							if (controls.UI_RIGHT)
 								displayOptions.members[curSelected].right_H();
 						}
 						else
 						{
-							if (controls.LEFT_P)
+							if (controls.UI_LEFT_P)
 								displayOptions.members[curSelected].left_H();
-							if (controls.RIGHT_P)
+							if (controls.UI_RIGHT_P)
 								displayOptions.members[curSelected].right_H();
 
 							holdTimer += elapsed;
@@ -328,9 +340,9 @@ class OptionsState extends MusicBeatState
 				}
 				else if (displayOptions.members[curSelected] is SelectionOption)
 				{
-					if (controls.LEFT_P)
+					if (controls.UI_LEFT_P)
 						displayOptions.members[curSelected].left();
-					if (controls.RIGHT_P)
+					if (controls.UI_RIGHT_P)
 						displayOptions.members[curSelected].right();
 				}
 
@@ -340,7 +352,7 @@ class OptionsState extends MusicBeatState
 			}
 			else
 			{
-				if (controls.ACCEPT)
+				if (controls.UI_ACCEPT)
 				{
 					var thing = displayCategories.members[curSelected];
 

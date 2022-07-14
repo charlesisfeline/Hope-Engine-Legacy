@@ -172,10 +172,10 @@ class PauseSubState extends MusicBeatSubstate
 			skipText.text = '< ${FlxStringUtil.formatTime(curTime / 1000)} / ${FlxStringUtil.formatTime(FlxG.sound.music.length / 1000)} >';
 		}
 
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
-		var backed = controls.BACK;
+		var upP = controls.UI_UP_P;
+		var downP = controls.UI_DOWN_P;
+		var accepted = controls.UI_ACCEPT;
+		var backed = controls.UI_BACK;
 
 		if (upP)
 		{
@@ -202,18 +202,18 @@ class PauseSubState extends MusicBeatSubstate
 			if (FlxG.keys.pressed.SHIFT)
 				multi = 1;
 
-			if (controls.LEFT_P)
+			if (controls.UI_LEFT_P)
 				changeOffset(-1 * multi);
-			else if (controls.RIGHT_P)
+			else if (controls.UI_RIGHT_P)
 				changeOffset(1 * multi);
 
-			if (controls.LEFT || controls.RIGHT)
+			if (controls.UI_LEFT || controls.UI_RIGHT)
 			{
 				if (holdTimer > Main.globalMaxHoldTime)
 				{
-					if (controls.LEFT)
+					if (controls.UI_LEFT)
 						changeOffset(-1 * multi);
-					else if (controls.RIGHT)
+					else if (controls.UI_RIGHT)
 						changeOffset(1 * multi);
 				}
 				else
@@ -222,7 +222,7 @@ class PauseSubState extends MusicBeatSubstate
 			else
 				holdTimer = 0;
 
-			if (controls.RESET)
+			if (controls.UI_RESET)
 			{
 				if (FlxG.keys.pressed.ALT)
 				{
@@ -241,18 +241,18 @@ class PauseSubState extends MusicBeatSubstate
 		{
 			if (menuItems[curSelected] == 'Skip To')
 			{
-				if (controls.LEFT_P)
+				if (controls.UI_LEFT_P)
 					curTime -= 1000;
-				else if (controls.RIGHT_P)
+				else if (controls.UI_RIGHT_P)
 					curTime += 1000;
 	
-				if (controls.LEFT || controls.RIGHT)
+				if (controls.UI_LEFT || controls.UI_RIGHT)
 				{
 					if (holdTimer > Main.globalMaxHoldTime)
 					{
-						if (controls.LEFT)
+						if (controls.UI_LEFT)
 							curTime -= 1000;
-						else if (controls.RIGHT)
+						else if (controls.UI_RIGHT)
 							curTime += 1000;
 					}
 					else
@@ -266,7 +266,7 @@ class PauseSubState extends MusicBeatSubstate
 				if (curTime < 0)
 					curTime = FlxG.sound.music.length;
 
-				if (controls.RESET)
+				if (controls.UI_RESET)
 					curTime = origTime;
 			}
 		}
@@ -280,7 +280,7 @@ class PauseSubState extends MusicBeatSubstate
 				case "Resume":
 					resume();
 				case "Restart Song":
-					CustomTransition.switchTo(Type.createInstance(Type.getClass(FlxG.state), []));
+					CustomTransition.reset();
 				case "Exit to menu":
 					exitToMenu();
 				case "Toggle Botplay":
@@ -293,7 +293,7 @@ class PauseSubState extends MusicBeatSubstate
 						FlxTransitionableState.skipNextTransIn = false;
 						FlxTransitionableState.skipNextTransOut = false;
 						PlayState.startAt = curTime;
-						CustomTransition.switchTo(Type.createInstance(Type.getClass(FlxG.state), []));
+						CustomTransition.reset();
 					}
 			}
 		}

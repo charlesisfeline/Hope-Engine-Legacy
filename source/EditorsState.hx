@@ -44,7 +44,20 @@ class EditorsState extends MusicBeatState
 
 	override function create()
 	{
-		Paths.setCurrentMod(null);
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("EditorsState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("EditorsState", EDITORS));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
 
 		#if desktop
 		DiscordClient.changePresence("Editors Menu");
@@ -173,19 +186,19 @@ class EditorsState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 			CustomTransition.switchTo(new MainMenuState());
-		if (controls.ACCEPT)
+		if (controls.UI_ACCEPT)
 			select();
 
-		if (controls.UP_P)
+		if (controls.UI_UP_P)
 			changeSelection(-1);
-		if (controls.DOWN_P)
+		if (controls.UI_DOWN_P)
 			changeSelection(1);
 
-		if (controls.LEFT_P)
+		if (controls.UI_LEFT_P)
 			changeMod(-1);
-		if (controls.RIGHT_P)
+		if (controls.UI_RIGHT_P)
 			changeMod(1);
 
 		for (opt in grpOptions)

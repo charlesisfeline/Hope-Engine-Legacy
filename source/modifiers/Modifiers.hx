@@ -145,8 +145,18 @@ class Modifiers
             PlayState.cpuStrums.x = playX;
             PlayState.playerStrums.x = oppoX;
 
-            PlayState.instance.healthBar.fillDirection = LEFT_TO_RIGHT;
-            PlayState.instance.healthBar.createFilledBar(PlayState.boyfriend.getColor(), PlayState.dad.getColor());
+            
+            if (PlayState.instance.healthBar.fillDirection == RIGHT_TO_LEFT)
+            {
+                PlayState.instance.healthBar.fillDirection = LEFT_TO_RIGHT;
+                PlayState.instance.healthBar.createFilledBar(PlayState.boyfriend.getColor(), PlayState.dad.getColor());
+            }
+            else if (PlayState.instance.healthBar.fillDirection == LEFT_TO_RIGHT)
+            {
+                PlayState.instance.healthBar.fillDirection = RIGHT_TO_LEFT;
+                PlayState.instance.healthBar.createFilledBar(PlayState.dad.getColor(), PlayState.boyfriend.getColor());
+            }
+            PlayState.instance.healthBar.updateFilledBar();
         }
     }
 
@@ -207,6 +217,22 @@ class Modifiers
                 }
             }
             #end
+        }
+    }
+
+    public static function postUpdate(elapsed:Float)
+    {
+        if (modifiers["p2_side"])
+        {
+            if (PlayState.instance.healthBar.percent < 20)
+                PlayState.instance.iconP2.animation.curAnim.curFrame = 1;
+            else
+                PlayState.instance.iconP2.animation.curAnim.curFrame = 0;
+    
+            if (PlayState.instance.healthBar.percent > 80)
+                PlayState.instance.iconP1.animation.curAnim.curFrame = 1;
+            else
+                PlayState.instance.iconP1.animation.curAnim.curFrame = 0;
         }
     }
 

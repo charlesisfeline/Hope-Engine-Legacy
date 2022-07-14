@@ -1,5 +1,6 @@
 package;
 
+import flixel.util.FlxTimer;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -62,8 +63,6 @@ class DialogueSubstate extends MusicBeatSubstate
 	public static var instance:DialogueSubstate;
 
 	public var sounds(default, set):Array<FlxSound>;
-
-	public var pissCamera:FlxCamera;
 
 	public var splitName:Array<String>;
 	public var dialogueList:Array<String> = [];
@@ -135,12 +134,7 @@ class DialogueSubstate extends MusicBeatSubstate
 			}
 		}
 
-		pissCamera = new FlxCamera();
-		pissCamera.bgColor.alphaFloat = 0;
-		FlxG.cameras.add(pissCamera);
-
 		bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5));
-		bg.cameras = [pissCamera];
 		bg.alpha = 0;
 		bg.screenCenter();
 		add(bg);
@@ -266,14 +260,11 @@ class DialogueSubstate extends MusicBeatSubstate
 			typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 
-		typedText.cameras = [pissCamera];
-
 		dialogueBox.scrollFactor.set();
 		dialogueBox.y = FlxG.height * 0.5;
 		dialogueBox.animation.play("normal open");
 		dialogueBox.screenCenter(X);
 		add(dialogueBox);
-		dialogueBox.cameras = [pissCamera];
 
 		add(typedText);
 
@@ -283,8 +274,6 @@ class DialogueSubstate extends MusicBeatSubstate
 		skipText.x = 5;
 		skipText.y = FlxG.height - skipText.height - 5;
 		add(skipText);
-
-		skipText.cameras = [pissCamera];
 
 		if (PlayState.instance != null)
 			FlxTween.tween(PlayState.instance.camHUD, {alpha: 0}, 0.5);
@@ -349,18 +338,19 @@ class DialogueSubstate extends MusicBeatSubstate
 								PlayState.instance.inCutscene = false;
 							}
 
-							FlxTween.tween(pissCamera, {alpha: 0}, 1, {
-								onComplete: function(twn:FlxTween)
-								{
-									FlxG.cameras.remove(pissCamera, true);
-									close();
-
-									if (PlayState.instance != null)
-										PlayState.seenCutscene = true;
-
-									if (onComplete != null)
-										onComplete();
-								}
+							forEachOfType(FlxSprite, function(spr:FlxSprite) {
+								FlxTween.tween(spr, {alpha: 0}, 1);
+							}, true);
+			
+							new FlxTimer().start(1, function(twn:FlxTimer)
+							{
+								close();
+			
+								if (PlayState.instance != null)
+									PlayState.seenCutscene = true;
+			
+								if (onComplete != null)
+									onComplete();
 							});
 						}
 					}
@@ -395,18 +385,19 @@ class DialogueSubstate extends MusicBeatSubstate
 					PlayState.instance.inCutscene = false;
 				}
 
-				FlxTween.tween(pissCamera, {alpha: 0}, 1, {
-					onComplete: function(twn:FlxTween)
-					{
-						FlxG.cameras.remove(pissCamera, true);
-						close();
+				forEachOfType(FlxSprite, function(spr:FlxSprite) {
+					FlxTween.tween(spr, {alpha: 0}, 1);
+				}, true);
 
-						if (PlayState.instance != null)
-							PlayState.seenCutscene = true;
+				new FlxTimer().start( 1, function(twn:FlxTimer)
+				{
+					close();
 
-						if (onComplete != null)
-							onComplete();
-					}
+					if (PlayState.instance != null)
+						PlayState.seenCutscene = true;
+
+					if (onComplete != null)
+						onComplete();
 				});
 			}
 		}
@@ -430,7 +421,7 @@ class DialogueSubstate extends MusicBeatSubstate
 
 		if (speakerPosition == "left")
 		{
-			thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
+			thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase()));
 			thatFuckerOnTheRight = new FlxSprite();
 
 			thatFuckerOnTheLeft.antialiasing = true;
@@ -454,12 +445,11 @@ class DialogueSubstate extends MusicBeatSubstate
 				thatFuckerOnTheLeft.y = dialogueBox.y - thatFuckerOnTheLeft.height + 80;
 			}
 
-			thatFuckerOnTheLeft.cameras = [pissCamera];
 			portraitGroup.add(thatFuckerOnTheLeft);
 		}
 		else if (speakerPosition == "right")
 		{
-			thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
+			thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase()));
 			thatFuckerOnTheLeft = new FlxSprite();
 
 			// since all sprites look to the right,
@@ -486,7 +476,6 @@ class DialogueSubstate extends MusicBeatSubstate
 				thatFuckerOnTheRight.y = dialogueBox.y - thatFuckerOnTheRight.height + 80;
 			}
 
-			thatFuckerOnTheRight.cameras = [pissCamera];
 			portraitGroup.add(thatFuckerOnTheRight);
 		}
 

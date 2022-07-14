@@ -7,8 +7,6 @@ import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.TransitionData;
 import flixel.graphics.FlxGraphic;
-import flixel.group.FlxGroup;
-import flixel.input.gamepad.FlxGamepad;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRect;
@@ -19,11 +17,6 @@ import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.app.Application;
 import openfl.Assets;
-import openfl.filters.BitmapFilter;
-import openfl.filters.ColorMatrixFilter;
-import openfl.filters.ShaderFilter;
-import shaders.Grain;
-import shaders.Mosaic;
 
 using StringTools;
 
@@ -124,17 +117,17 @@ class HopeTitle extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
-			diamond.persist = true;
-			diamond.destroyOnNoUse = false;
+			// var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
+			// diamond.persist = true;
+			// diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(TILES, FlxColor.BLACK, 0.5, new FlxPoint(1, 1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(0, 0, FlxG.width, FlxG.height));
-			FlxTransitionableState.defaultTransOut = new TransitionData(TILES, FlxColor.BLACK, 0.5, new FlxPoint(1, 1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(0, 0, FlxG.width, FlxG.height));
+			// FlxTransitionableState.defaultTransIn = new TransitionData(TILES, FlxColor.BLACK, 0.5, new FlxPoint(1, 1),
+			// 	{asset: diamond, width: 32, height: 32}, new FlxRect(0, 0, FlxG.width, FlxG.height));
+			// FlxTransitionableState.defaultTransOut = new TransitionData(TILES, FlxColor.BLACK, 0.5, new FlxPoint(1, 1),
+			// 	{asset: diamond, width: 32, height: 32}, new FlxRect(0, 0, FlxG.width, FlxG.height));
 
-			transIn = FlxTransitionableState.defaultTransIn;
-			transOut = FlxTransitionableState.defaultTransOut;
+			// transIn = FlxTransitionableState.defaultTransIn;
+			// transOut = FlxTransitionableState.defaultTransOut;
 
 			#if FILESYSTEM
 			var prevMod = Paths.currentMod;
@@ -231,7 +224,7 @@ class HopeTitle extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		if (controls.ACCEPT && !transitioning && skippedIntro)
+		if (controls.UI_ACCEPT && !transitioning && skippedIntro)
 		{
 			FlxG.camera.flash(FlxColor.WHITE, 1, true);
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
@@ -264,7 +257,7 @@ class HopeTitle extends MusicBeatState
 			});
 		}
 
-		if (controls.ACCEPT && !skippedIntro && initialized)
+		if (controls.UI_ACCEPT && !skippedIntro && initialized)
 			skipIntro();
 
 		var lma = Helper.boundTo(1 - (elapsed * 3.125), 0, 1);

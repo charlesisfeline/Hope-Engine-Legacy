@@ -23,18 +23,37 @@ import sys.io.File;
 
 class ModLoadingState extends MusicBeatState
 {
+	public static var instance:ModLoadingState;
 	var selector:FlxText;
+
 	static var curSelected:Int = 0;
 
 	var scrollBarBG:FlxSprite;
 	var scrollThing:FlxSprite;
 
-	var modGroup:FlxTypedGroup<FlxSprite>;
+	public var modGroup:FlxTypedGroup<FlxSprite>;
 	var camFollow:FlxObject;
 	var camPos:FlxObject;
 
 	override function create()
 	{
+		instance = this;
+
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("ModLoadingState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("ModLoadingState", MODSMENU));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		FlxG.mouse.visible = true;
 		usesMouse = true;
 
@@ -55,7 +74,10 @@ class ModLoadingState extends MusicBeatState
 
 		for (mod in FileSystem.readDirectory("mods"))
 		{
-			var modInfo = Yaml.parse(File.getContent(Paths.modInfoFile(mod)));
+			var modInfo:Dynamic = Yaml.parse("name: No mod info file!\nicon-antialiasing: true"); 
+
+			if (Paths.exists(Paths.modInfoFile(mod)))
+				modInfo = cast Yaml.parse(File.getContent(Paths.modInfoFile(mod)));
 
 			var pain = new ModWidget(0, 0, mod, modInfo.get("name"), modInfo.get("description"), modInfo.get("version"),
 				Helper.toBool(modInfo.get("icon-antialiasing")));
@@ -78,6 +100,12 @@ class ModLoadingState extends MusicBeatState
 			pain.ID = modGroup.length;
 			modGroup.add(pain);
 		}
+		else
+		{
+			if (modGroup.members[curSelected] == null)
+				curSelected = 0;
+		}
+
 
 		FlxG.camera.follow(camPos, LOCKON, 1);
 		camPos.x = FlxG.width / 2;
@@ -116,7 +144,7 @@ class ModLoadingState extends MusicBeatState
 		camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
 		camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 		{
 			#if FILESYSTEM
 			var prevMod = Paths.currentMod;
@@ -135,10 +163,10 @@ class ModLoadingState extends MusicBeatState
 			FlxG.mouse.visible = false;
 		}
 
-		if (controls.UP_P)
+		if (controls.UI_UP_P)
 			changeItem(-1);
 
-		if (controls.DOWN_P)
+		if (controls.UI_DOWN_P)
 			changeItem(1);
 
 		if (FlxG.mouse.wheel != 0)
@@ -253,17 +281,19 @@ class ModWidget extends FlxSpriteGroup
 		daSwitch.label.color = 0xFF000000;
 		add(daSwitch);
 
-		prioritySwitch = new FlxUIButton(0, 0, '');
+		prioritySwitch = new FlxUIButton(0, 0, 'Prioritize?');
 		prioritySwitch.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
-		prioritySwitch.resize(50, 30);
+		prioritySwitch.resize(100, 30);
 		prioritySwitch.updateHitbox();
-		prioritySwitch.label.resize(50, 24);
-		prioritySwitch.label.offset.y = 5;
+		prioritySwitch.label.resize(100, 24);
 		prioritySwitch.x = daSwitch.x - prioritySwitch.width - 10;
 		prioritySwitch.y = modDescBG.y + modDescBG.height - prioritySwitch.height - 10;
-		// add(prioritySwitch);
+		prioritySwitch.label.offset.y = 3;
+		prioritySwitch.label.color = 0xFF000000;
+		add(prioritySwitch);
 
 		buttonToggle(true);
+		updatePriority();
 	}
 
 	override function update(elapsed:Float)
@@ -272,12 +302,44 @@ class ModWidget extends FlxSpriteGroup
 
 		if (daSwitch.justPressed)
 			buttonToggle();
+
+		if (prioritySwitch.justPressed)
+			priorityToggle();
+	}
+
+	function priorityToggle():Void
+	{
+		if (Paths.priorityMod == modRepping)
+			FlxG.save.data.priority = Paths.priorityMod = "hopeEngine";
+		else
+			FlxG.save.data.priority = Paths.priorityMod = modRepping;
+
+		FlxG.save.flush();
+
+		for (mod in ModLoadingState.instance.modGroup.members)
+		{
+			var s:ModWidget = cast mod;
+			s.updatePriority();
+		}
+	}
+
+	public function updatePriority():Void
+	{
+		if (modRepping == Paths.priorityMod)
+		{
+			prioritySwitch.color = 0xFF00FF00;
+			prioritySwitch.label.text = "Priority!";
+		}
+		else
+		{
+			prioritySwitch.color = 0xFFFF0000;
+			prioritySwitch.label.text = "Prioritize?";
+		}
 	}
 
 	function buttonToggle(init:Bool = false):Void
 	{
 		var loadModFile:String = Paths.loadModFile(modRepping);
-		var yaml = Yaml.parse(File.getContent(loadModFile));
 
 		if (FileSystem.exists(loadModFile))
 		{
@@ -286,14 +348,12 @@ class ModWidget extends FlxSpriteGroup
 				if (Paths.checkModLoad(modRepping))
 				{
 					Yaml.write(loadModFile, {
-						'mod-priority': yaml.get('mod-priority'),
 						'load': false
 					});
 				}
 				else
 				{
 					Yaml.write(loadModFile, {
-						'mod-priority': yaml.get('mod-priority'),
 						'load': true
 					});
 				}
@@ -302,7 +362,6 @@ class ModWidget extends FlxSpriteGroup
 		else
 		{
 			Yaml.write(loadModFile, {
-				'mod-priority': yaml.get('mod-priority'),
 				'load': false
 			});
 		}
@@ -324,7 +383,5 @@ class ModWidget extends FlxSpriteGroup
 			daSwitch.label.text = "ON";
 		}
 	}
-
-	function priorityToggle(init:Bool = false):Void {}
 }
 #end

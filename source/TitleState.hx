@@ -3,15 +3,8 @@ package;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
-import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.input.keyboard.FlxKey;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import hopeUI.HopeTitle;
@@ -28,6 +21,7 @@ using StringTools;
 #if desktop
 import Discord.DiscordClient;
 #end
+
 #if FILESYSTEM
 import sys.FileSystem;
 #end
@@ -42,15 +36,26 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 	var wackyImage:FlxSprite;
 
-	var code:Array<FlxKey> = [H, O, P, E];
-	var code2:Array<FlxKey> = [P, R, I, N, G, L, E, S];
-	var typed:Array<FlxKey> = [];
-
 	// version
 	public static var requestedVersion:Null<String> = null;
 
 	override public function create():Void
 	{	
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("TitleState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("TitleState", TITLESTATE));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+		
 		#if FILESYSTEM
 		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
 			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
@@ -279,6 +284,8 @@ class TitleState extends MusicBeatState
 	var curFilter:Int = 0;
 	var swing:Bool = FlxG.random.bool(0.004);
 
+	var typed:String = "";
+
 	override function update(elapsed:Float)
 	{
 		if (swing)
@@ -289,9 +296,6 @@ class TitleState extends MusicBeatState
 
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
-
-		if (FlxG.keys.justPressed.G)
-			CustomTransition.switchTo(new hopeUI.HopeTitle());
 
 		if (FlxG.keys.justPressed.F3)
 		{
@@ -306,46 +310,7 @@ class TitleState extends MusicBeatState
 			FlxG.game.setFilters(hahaArray[curFilter]);
 		}
 
-		if (FlxG.keys.anyJustPressed([ANY]))
-		{
-			typed.push(cast FlxG.keys.firstJustPressed());
-
-			var cur = 0;
-
-			for (key in typed)
-			{
-				if (key != code[cur] && key != code2[cur])
-				{
-					for (k in typed)
-						typed.remove(k);
-
-					break;
-				}
-
-				cur++;
-			}
-
-			if (typed == code)
-			{
-				FlxG.sound.music.volume = 0;
-				var a = FlxG.sound.play(Paths.sound("titleShoot"), 0.6).length / 1000;
-
-				FlxG.camera.flash(FlxColor.WHITE, a, true);
-				FlxG.camera.fade(0xff000000, a);
-				new FlxTimer().start(a, function(tmr:FlxTimer)
-				{
-					CustomTransition.switchTo(new HopeTitle());
-				});
-			}
-
-			if (typed == code2)
-			{
-				trace("Ninja muffin eating pringles");
-				new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
-			}
-		}
-
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.UI_ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -371,7 +336,40 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.R)
 		{
 			if (FlxG.keys.pressed.CONTROL)
+			{
 				FlxG.resetGame();
+				initialized = false;
+			}
+		}
+
+		if (FlxG.keys.justPressed.ANY)
+		{
+			var a:Array<Bool> = [];
+			var acceptableWords:Array<String> = [
+				"hope",
+				"pringles"
+			];
+
+			typed += FlxG.keys.getIsDown()[0].ID.toString();
+			typed = typed.trim().toLowerCase();
+
+			for (word in acceptableWords)
+				a.push(word.startsWith(typed));
+
+			if (a.contains(true))
+			{
+				switch (typed.trim().toLowerCase())
+				{
+					case 'hope':
+						CustomTransition.switchTo(new HopeTitle());
+					#if VIDEOS_ALLOWED
+					case 'pringles':
+						new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
+					#end
+				}
+			}
+			else
+				typed = '';
 		}
 
 		if (pressedEnter && !transitioning && skippedIntro)

@@ -183,7 +183,7 @@ class RatingPosSubstate extends MusicBeatSubstate
 		cPos.setPosition(16, csPos.y - cPos.height);
 		rPos.setPosition(16, cPos.y - rPos.height);
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 		{
 			FlxG.mouse.visible = false;
 

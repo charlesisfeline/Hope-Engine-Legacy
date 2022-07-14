@@ -186,16 +186,16 @@ class HopeMainMenu extends MusicBeatState
 
 		if (!selected)
 		{
-			if (controls.UP_P)
+			if (controls.UI_UP_P)
 				changeItem(-1);
 
-			if (controls.DOWN_P)
+			if (controls.UI_DOWN_P)
 				changeItem(1);
 
-			if (controls.BACK)
+			if (controls.UI_BACK)
 				CustomTransition.switchTo(new HopeTitle());
 
-			if (controls.ACCEPT)
+			if (controls.UI_ACCEPT)
 				selectItem();
 		}
 

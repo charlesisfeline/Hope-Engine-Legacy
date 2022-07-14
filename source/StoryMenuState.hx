@@ -61,6 +61,21 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("StoryMenuState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("StoryMenuState", STORYMENU));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Story Menu");
 		#end
@@ -107,17 +122,22 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && Paths.checkModLoad(i))
 			{
-				for (jsonName in CoolUtil.coolStringFile(File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt")))
-				{
-					var path = Sys.getCwd() + "mods/" + i + "/assets/_weeks/" + jsonName + ".json";
-					var week:Week = cast Json.parse(File.getContent(path));
+				var content = File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt");
 
-					weekData.push(week.tracks);
-					weekNames.push(week.weekName);
-					weekCharacters.push(week.characters);
-					weekJsonNames.push(jsonName);
-					weekMods.push(i);
-					weekDifficultyLock.push(week.difficultyLock);
+				if (content.trim().length > 0)
+				{
+					for (jsonName in CoolUtil.coolStringFile(content))
+					{
+						var path = Sys.getCwd() + "mods/" + i + "/assets/_weeks/" + jsonName + ".json";
+						var week:Week = cast Json.parse(File.getContent(path));
+	
+						weekData.push(week.tracks);
+						weekNames.push(week.weekName);
+						weekCharacters.push(week.characters);
+						weekJsonNames.push(jsonName);
+						weekMods.push(i);
+						weekDifficultyLock.push(week.difficultyLock);
+					}
 				}
 			}
 		}
@@ -279,25 +299,25 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
-				if (controls.UP_P)
+				if (controls.UI_UP_P)
 					changeWeek(-1);
 
-				if (controls.DOWN_P)
+				if (controls.UI_DOWN_P)
 					changeWeek(1);
 
-				if (controls.RIGHT)
+				if (controls.UI_RIGHT)
 					rightArrow.animation.play('press');
 				else
 					rightArrow.animation.play('idle');
 
-				if (controls.LEFT)
+				if (controls.UI_LEFT)
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P && weekDifficultyLock[curWeek] == null)
+				if (controls.UI_RIGHT_P && weekDifficultyLock[curWeek] == null)
 					changeDifficulty(1);
-				if (controls.LEFT_P && weekDifficultyLock[curWeek] == null)
+				if (controls.UI_LEFT_P && weekDifficultyLock[curWeek] == null)
 					changeDifficulty(-1);
 
 				if (weekDifficultyLock[curWeek] != null)
@@ -312,11 +332,11 @@ class StoryMenuState extends MusicBeatState
 				}
 			}
 
-			if (controls.ACCEPT)
+			if (controls.UI_ACCEPT)
 				selectWeek();
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
+		if (controls.UI_BACK && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;

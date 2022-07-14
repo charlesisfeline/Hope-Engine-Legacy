@@ -1357,6 +1357,7 @@ class ChartingState extends MusicBeatState
 	var writingNotes:Bool = false;
 
 	var timeHovered:Float = 0;
+	var backing:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -1645,7 +1646,7 @@ class ChartingState extends MusicBeatState
 				dummyArrow.y = FlxG.mouse.y - (GRID_SIZE / 2);
 			else
 			{
-				var shit = GRID_SIZE * (mfinQuants[curQuant] / 16);
+				var shit = GRID_SIZE * (16 / mfinQuants[curQuant]);
 				dummyArrow.y = Math.floor(FlxG.mouse.y / shit) * shit;
 			}
 		}
@@ -1678,8 +1679,9 @@ class ChartingState extends MusicBeatState
 				FlxG.mouse.visible = false;
 			}
 	
-			if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+			if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 			{
+				backing = true;
 				#if FILESYSTEM
 				if (fromEditors)
 				{
@@ -1784,7 +1786,7 @@ class ChartingState extends MusicBeatState
 
 					var ass:Float = 0;
 
-					ass = FlxG.sound.music.time - (FlxG.mouse.wheel * Conductor.stepCrochet * (mfinQuants[curQuant] / 16));
+					ass = FlxG.sound.music.time - (FlxG.mouse.wheel * Conductor.stepCrochet * (16 / mfinQuants[curQuant]));
 
 					if (ass < 0)
 						ass = 0;

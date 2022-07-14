@@ -414,6 +414,8 @@ class DialogueEditor extends MusicBeatState
 		}
 	}
 
+	var backing:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -446,8 +448,9 @@ class DialogueEditor extends MusicBeatState
 
 		deleteButtons.y = dialogs.y;
 
-		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 		{
+			backing = true;
 			#if FILESYSTEM
 			if (fromEditors)
 			{

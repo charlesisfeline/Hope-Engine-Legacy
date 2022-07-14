@@ -197,7 +197,7 @@ class ModifierSubstate extends MusicBeatSubstate
     {
         super.update(elapsed);
 
-        if (controls.BACK)
+        if (controls.UI_BACK)
         {
             forEachOfType(FlxSprite, function(spr:FlxSprite) {
                 FlxTween.tween(spr, {alpha: 0}, 0.4, { ease: FlxEase.expoInOut });
@@ -208,26 +208,26 @@ class ModifierSubstate extends MusicBeatSubstate
             });
         }
 
-        if (controls.UP_P)
+        if (controls.UI_UP_P)
             changeSelection(-1);
 
-        if (controls.DOWN_P)
+        if (controls.UI_DOWN_P)
             changeSelection(1);
 
         if (Modifiers.modifiers[modifiersAvailable[curSelected]] is Float)
         {
-            if (controls.LEFT_P && Modifiers.modifiers[modifiersAvailable[curSelected]] > 1)
+            if (controls.UI_LEFT_P && Modifiers.modifiers[modifiersAvailable[curSelected]] > 1)
                 changeModifier(-Modifiers.modifierIncrements[modifiersAvailable[curSelected]]);
     
-            if (controls.RIGHT_P)
+            if (controls.UI_RIGHT_P)
                 changeModifier(Modifiers.modifierIncrements[modifiersAvailable[curSelected]]);
         }
         else if (Modifiers.modifiers[modifiersAvailable[curSelected]] is Bool)
         {
-            if (controls.LEFT_P)
+            if (controls.UI_LEFT_P)
                 changeModifier(-1);
     
-            if (controls.RIGHT_P)
+            if (controls.UI_RIGHT_P)
                 changeModifier(1);
         }
     }

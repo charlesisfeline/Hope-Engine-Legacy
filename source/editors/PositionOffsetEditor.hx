@@ -150,6 +150,8 @@ class PositionOffsetEditor extends MusicBeatState
         charChange2.y = FlxG.height - charChange.height - 10;
     }
 
+    var backing:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -162,20 +164,21 @@ class PositionOffsetEditor extends MusicBeatState
         if (FlxG.keys.pressed.SHIFT)
             mult = 10;
 
-        if (controls.LEFT_P)
+        if (controls.UI_LEFT_P)
             deathCharacter.positionOffset[0] -= mult;
 
-        if (controls.RIGHT_P)
+        if (controls.UI_RIGHT_P)
             deathCharacter.positionOffset[0] += mult;
 
-        if (controls.UP_P)
+        if (controls.UI_UP_P)
             deathCharacter.positionOffset[1] -= mult;
 
-        if (controls.DOWN_P)
+        if (controls.UI_DOWN_P)
             deathCharacter.positionOffset[1] += mult;
 
-        if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+        if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
         {
+            backing = true;
             #if FILESYSTEM
             if (fromEditors)
             {
@@ -203,7 +206,7 @@ class PositionOffsetEditor extends MusicBeatState
                 changeChar(1);
         }
 
-        if (controls.ACCEPT)
+        if (controls.UI_ACCEPT)
         {
             // no, the other way does not work and confuses me
             // believe me ive tried

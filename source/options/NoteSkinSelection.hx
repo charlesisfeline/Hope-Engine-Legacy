@@ -382,13 +382,13 @@ class NoteSkinSelection extends MusicBeatSubstate
 				});
 			}
 
-			if (FlxG.keys.justPressed.LEFT)
+			if (controls.UI_LEFT_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
-			if (FlxG.keys.justPressed.RIGHT)
+			if (controls.UI_RIGHT_P)
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);

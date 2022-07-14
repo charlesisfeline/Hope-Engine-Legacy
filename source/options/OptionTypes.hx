@@ -83,7 +83,7 @@ class StateCategory extends OptionCategory
 
 	override function press()
 	{
-		CustomTransition.switchTo(state);
+		CustomTransition.switchTo(Type.createInstance(Type.getClass(state), []));
 	}
 }
 

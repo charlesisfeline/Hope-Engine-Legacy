@@ -485,6 +485,8 @@ class EventEditor extends MusicBeatState
 		descInput.callback("", "");
 	}
 
+	var backing:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -495,8 +497,9 @@ class EventEditor extends MusicBeatState
 			trace(Json.stringify(_event, null, "\t"));
 		}
 
-		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 		{
+			backing = true;
 			#if FILESYSTEM
 			if (fromEditors)
 			{

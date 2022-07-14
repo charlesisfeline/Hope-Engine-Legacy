@@ -24,11 +24,20 @@ enum abstract ConsolePrefix(String) to String
 {
 	var GAME = "Hope Engine";
 	var CONSOLE = "Console";
+	var EXECUTE = "Execute";
 	var PLAYSTATE = "PlayState";
+	var TITLESTATE = "TitleState";
 	var FREEPLAY = "FreeplayState";
 	var STORYMENU = "StoryMenuState";
+	var MODSMENU = "ModLoadingState";
+	var ACHIEVEMENTS = "AchievementState";
+	var CREDITS = "CreditsMenu";
+	var EDITORS = "EditorsState";
+	var BINDS = "KeybindsState";
 	var MAINMENU = "MainMenuState";
-	var OPTIONS = "OptionsState"; // if you remake a new options state you are a trooper and i respect you
+	var OPTIONS = "OptionsState";
+	var SPLASH = "SplashState";
+	// if you have remade a complicated menu like the options menu or the fucking PLAYSTATE itself, I will respect you 100%
 }
 
 class ScriptConsole extends Sprite
@@ -254,7 +263,7 @@ class ScriptConsole extends Sprite
 		commandLine.text = "";
 
 		var ast = parser.parseString(hscript);
-		add(hscript, CONSOLE);
+		add(hscript, EXECUTE);
 		ScriptEssentials.imports(interp);
 
 		try

@@ -75,7 +75,7 @@ class WarningState extends MusicBeatState
 		else
 			wait += elapsed;
 
-		if (controls.ACCEPT && pressEnter.visible)
+		if (controls.UI_ACCEPT && pressEnter.visible)
 		{
 			if (finishCallback != null)
 				finishCallback();

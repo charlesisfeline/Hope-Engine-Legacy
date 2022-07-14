@@ -343,8 +343,8 @@ class CharacterEditor extends MusicBeatState
 		animationIndices = new InputTextFix(10, indicesTitle.y + indicesTitle.height, 200);
 
 		var fpsTitle = new FlxText(animationIndices.width + 20, 80, 0, "FPS");
-		frameRate.filterMode = FlxInputText.ONLY_NUMERIC;
 		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10));
+		frameRate.filterMode = FlxInputText.ONLY_NUMERIC;
 
 		var postfixTitle = new FlxText(animationIndices.width + frameRate.width + 30, 80, 0, "Postfix");
 		postfix = new InputTextFix(animationIndices.width
@@ -912,10 +912,16 @@ class CharacterEditor extends MusicBeatState
 		if (character.animation.curAnim != null)
 			lastAnim = character.animation.curAnim.name;
 
-		if (!Paths.exists(Paths.getPath('shared/images/' + character.image + '.png', IMAGE, null)))
+		if (Paths.image(character.image) is String)
 		{
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
-			return;
+			var s:String = cast Paths.image(character.image);
+			s = s.split(":")[1].trim();
+
+			if (!Paths.exists(s))
+			{
+				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
+				return;
+			}
 		}
 
 		if (Paths.exists(Paths.getPath('shared/images/' + character.image + '.txt', TEXT, null)))
@@ -925,7 +931,7 @@ class CharacterEditor extends MusicBeatState
 			if (FlxG.keys.pressed.ALT) // for debugging other assets... lmao
 				character.frames = Paths.getSparrowAtlas(character.image, "preload");
 			else
-				character.frames = Paths.getSparrowAtlas(character.image, "shared");
+				character.frames = Paths.getSparrowAtlas(character.image);
 		}
 
 		if (character.animationsArray != null && character.animationsArray.length > 0)
@@ -1042,6 +1048,7 @@ class CharacterEditor extends MusicBeatState
 	var isTyping:Bool = false;
 	var isEyedropping:Bool = false;
 	var multiplier:Float = 1; // makin this global
+	var backing:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -1104,8 +1111,9 @@ class CharacterEditor extends MusicBeatState
 			ghostCharacter.antialiasing = character.antialiasing;
 		healthBarColor.color = character.getColor();
 
-		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 		{
+			backing = true;
 			#if FILESYSTEM
 			if (fromEditors)
 			{

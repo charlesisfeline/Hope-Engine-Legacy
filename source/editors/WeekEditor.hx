@@ -1,5 +1,6 @@
 package editors;
 
+import flixel.graphics.FlxGraphic;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -235,7 +236,7 @@ class WeekEditor extends MusicBeatState
 		{
 			weekJSONName = weekJSONNameInput.text;
 
-			if (Paths.exists(Paths.image('storymenu/' + weekJSONName)))
+			if (Paths.exists(Paths.image('storymenu/' + weekJSONName)) || Paths.image('storymenu/' + weekJSONName) is FlxGraphic)
 			{
 				var uhh = grpWeekText.members[0];
 
@@ -545,6 +546,7 @@ class WeekEditor extends MusicBeatState
 
 	var isTyping:Bool = false;
 	var isVisible:Bool = true;
+	var backing:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -574,8 +576,9 @@ class WeekEditor extends MusicBeatState
 			FlxG.sound.volumeDownKeys = [MINUS, NUMPADMINUS];
 			FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
-			if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+			if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 			{
+				backing = true;
 				#if FILESYSTEM
 				if (fromEditors)
 				{
@@ -595,22 +598,22 @@ class WeekEditor extends MusicBeatState
 					loadJSON();
 			}
 
-			if (controls.RIGHT_P && _week.difficultyLock == null)
+			if (controls.UI_RIGHT_P && _week.difficultyLock == null)
 				changeDifficulty(1);
-			if (controls.LEFT_P && _week.difficultyLock == null)
+			if (controls.UI_LEFT_P && _week.difficultyLock == null)
 				changeDifficulty(-1);
 
-			if (controls.RIGHT)
+			if (controls.UI_RIGHT)
 				rightArrow.animation.play('press');
 			else
 				rightArrow.animation.play('idle');
 
-			if (controls.LEFT)
+			if (controls.UI_LEFT)
 				leftArrow.animation.play('press');
 			else
 				leftArrow.animation.play('idle');
 
-			if (controls.ACCEPT || controls.UP_P || controls.DOWN_P)
+			if (controls.UI_ACCEPT || controls.UI_UP_P || controls.UI_DOWN_P)
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.3);
 
 			if (FlxG.keys.justPressed.F1)

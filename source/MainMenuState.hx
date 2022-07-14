@@ -52,18 +52,31 @@ class MainMenuState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("MainMenuState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("MainMenuState", MAINMENU));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-
-		Paths.setCurrentMod(null); // this menu is unmoddable
 
 		#if FILESYSTEM
 		Paths.destroyCustomImages();
 		Paths.clearCustomSoundCache();
 		#end
 
-		if (!FlxG.sound.music.playing)
+		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			Conductor.changeBPM(102);
@@ -170,16 +183,16 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			if (controls.UP_P)
+			if (controls.UI_UP_P)
 				changeItem(-1);
 
-			if (controls.DOWN_P)
+			if (controls.UI_DOWN_P)
 				changeItem(1);
 
-			if (controls.BACK)
+			if (controls.UI_BACK)
 				CustomTransition.switchTo(new TitleState());
 
-			if (controls.ACCEPT)
+			if (controls.UI_ACCEPT)
 				acceptItem();
 		}
 

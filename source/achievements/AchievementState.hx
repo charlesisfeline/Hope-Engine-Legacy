@@ -35,6 +35,21 @@ class AchievementState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("AchievementState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("AchievementState", ACHIEVEMENTS));
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Achievements Menu");
 		#end
@@ -200,13 +215,13 @@ class AchievementState extends MusicBeatState
 	{
 		super.update(elapsed);
 
-		if (controls.UP_P)
+		if (controls.UI_UP_P)
 			changeSelection(-1);
 
-		if (controls.DOWN_P)
+		if (controls.UI_DOWN_P)
 			changeSelection(1);
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 			CustomTransition.switchTo(new MainMenuState());
 
 		for (achLabel in grpAchievements.members)

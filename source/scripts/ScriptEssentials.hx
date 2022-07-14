@@ -21,6 +21,7 @@ import flixel.graphics.frames.FlxAtlasFrames;
 import lime.app.Application;
 import flixel.addons.display.FlxBackdrop;
 import hscript.Interp;
+import flixel.ui.FlxBar.FlxBarFillDirection;
 
 using StringTools;
 
@@ -93,6 +94,10 @@ class ScriptEssentials
 		});
 		interp.variables.set("print", function(e:Dynamic) {
 			Main.console.add(e, CONSOLE);
+		});
+		interp.variables.set("FlxBarFillDirection", {
+			LEFT_TO_RIGHT: LEFT_TO_RIGHT,
+			RIGHT_TO_LEFT: RIGHT_TO_LEFT
 		});
 	}
 
