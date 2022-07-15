@@ -2349,11 +2349,6 @@ class PlayState extends MusicBeatState
 		FlxG.watch.addQuick("stepShit", curStep);
 		FlxG.watch.addQuick("sectionShit", Std.int(curStep / 16));
 
-		if (FlxG.sound.music.time / FlxG.sound.music.length >= 0.97)
-		{
-			health = 0;
-		}
-
 		if (health <= 0)
 		{
 			if (stageInterp.variables.get("onDeath") != null)

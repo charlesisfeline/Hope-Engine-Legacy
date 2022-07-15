@@ -71,9 +71,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (PlayState.instance != null)
 		{
 			PlayState.instance.interpVariables(PlayState.instance.stageInterp);
-			PlayState.instance.interp.variables.set("add", add);
-			PlayState.instance.interp.variables.set("remove", remove);
-			PlayState.instance.interp.variables.set("insert", insert);
+			PlayState.instance.stageInterp.variables.set("add", add);
+			PlayState.instance.stageInterp.variables.set("remove", remove);
+			PlayState.instance.stageInterp.variables.set("insert", insert);
 
 			if (PlayState.instance.stageInterp.variables.get("onDeathPost") != null)
 				PlayState.instance.stageInterp.variables.get("onDeathPost")();
@@ -109,9 +109,9 @@ class GameOverSubstate extends MusicBeatSubstate
 		if (PlayState.instance != null)
 		{
 			PlayState.instance.interpVariables(PlayState.instance.stageInterp);
-			PlayState.instance.interp.variables.set("add", add);
-			PlayState.instance.interp.variables.set("remove", remove);
-			PlayState.instance.interp.variables.set("insert", insert);
+			PlayState.instance.stageInterp.variables.set("add", add);
+			PlayState.instance.stageInterp.variables.set("remove", remove);
+			PlayState.instance.stageInterp.variables.set("insert", insert);
 
 			if (PlayState.instance.stageInterp.variables.get("onUpdate") != null)
 				PlayState.instance.stageInterp.variables.get("onUpdate")(elapsed);
