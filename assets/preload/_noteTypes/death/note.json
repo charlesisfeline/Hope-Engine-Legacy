@@ -1,0 +1,63 @@
+{
+	"scaleLockX": true,
+	"scaleLockY": true,
+	"assetName": "DEATH",
+	"angleLock": true,
+	"alphaLock": true,
+	"positionLockX": true,
+	"positionLockY": true,
+	"canScore": false,
+	"offsetMultiplier": [
+		1,
+		1
+	],
+	"visibleLock": true,
+	"unblandWhat": "direction",
+	"noHolds": false,
+	"scrollMultiplier": 1,
+	"name": "Death Note",
+	"upSpriteOnly": true,
+	"sprites": {
+		"right": null,
+		"up": {
+			"holdEnd": {
+				"prefix": "hold end",
+				"flipX": null,
+				"flipY": null,
+				"frameRate": null,
+				"offset": [
+					0,
+					0
+				],
+				"looped": null
+			},
+			"note": {
+				"prefix": "note",
+				"flipX": null,
+				"flipY": null,
+				"frameRate": null,
+				"offset": [
+					0,
+					0
+				],
+				"looped": null
+			},
+			"holdPiece": {
+				"prefix": "hold piece",
+				"flipX": null,
+				"flipY": null,
+				"frameRate": null,
+				"offset": [
+					0,
+					0
+				],
+				"looped": null
+			}
+		},
+		"down": null,
+		"left": null
+	},
+	"canMiss": true,
+	"noNoteSplash": true,
+	"scale": 1
+}
