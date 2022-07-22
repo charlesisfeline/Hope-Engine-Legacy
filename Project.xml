@@ -44,7 +44,7 @@
 
 	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
 
-	<define name="VIDEOS_ALLOWED" if="web || windows || linux" />
+	<define name="VIDEOS_ALLOWED" if="web || windows" />
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
