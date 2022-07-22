@@ -317,14 +317,15 @@ class DialogueSubstate extends MusicBeatSubstate
 			}
 		}
 
-		if (FlxG.keys.justPressed.ANY && started)
+		if (FlxG.keys.justPressed.ANY)
 		{
 			if (started)
 			{
 				if (!useAlphabet)
 					FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
-				if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length)
+				if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length ||
+					typedText.text.length >= ~/<[a-z]+>/g.replace(dialogueList[0], "").length)
 				{
 					if (dialogueList[1] == null && dialogueList[0] != null)
 					{
@@ -361,9 +362,7 @@ class DialogueSubstate extends MusicBeatSubstate
 					}
 				}
 				else
-				{
 					typedText.skip();
-				}
 			}
 
 			if (!started)
@@ -483,6 +482,10 @@ class DialogueSubstate extends MusicBeatSubstate
 		{
 			typedText.visible = true;
 			typedText.resetText(dialogueList[0]);
+
+			if (customColorFormatMarkers.length > 0)
+				typedText.applyMarkup(dialogueList[0], customColorFormatMarkers);
+
 			typedText.start(0.05, true);
 		}
 		else

@@ -310,10 +310,10 @@ class FreeplayState extends MusicBeatState
 
 			if (FlxG.keys.pressed.SHIFT)
 			{
-				if (Modifiers.modifierScores.exists(songs[curSelected].songName))
+				if (Modifiers.modifierScores.exists(Paths.currentMod + ":" + songs[curSelected].songName))
 				{
-					if (Modifiers.modifierScores.get(songs[curSelected].songName).length > 0)
-						openSubState(new ModifierSaveSubstate(songs[curSelected].songName));
+					if (Modifiers.modifierScores.get(Paths.currentMod + ":" + songs[curSelected].songName).length > 0)
+						openSubState(new ModifierSaveSubstate(Paths.currentMod + ":" + songs[curSelected].songName));
 					else
 						FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
 				}
@@ -358,10 +358,17 @@ class FreeplayState extends MusicBeatState
 				PlayState.isStoryMode = false;
 				PlayState.storyDifficulty = curDifficulty;
 				PlayState.storyWeek = songs[curSelected].week;
-				LoadingState.loadAndSwitchState(new PlayState());
+
+				if (FlxG.keys.pressed.CONTROL)
+				{
+					LoadingState.loadAndSwitchState(new editors.ChartingState());
+					PlayState.openedCharting = true;
+				}
+				else
+					LoadingState.loadAndSwitchState(new PlayState());
 			}
-		else
-			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
+			else
+				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
 		}
 	}
 
@@ -442,9 +449,9 @@ class FreeplayState extends MusicBeatState
 
 		modifierTextBG.visible = modifierText.visible = false;
 
-		if (Modifiers.modifierScores.exists(songs[curSelected].songName))
+		if (Modifiers.modifierScores.exists(Paths.currentMod + ":" + songs[curSelected].songName))
 		{
-			if (Modifiers.modifierScores.get(songs[curSelected].songName).length > 0)
+			if (Modifiers.modifierScores.get(Paths.currentMod + ":" + songs[curSelected].songName).length > 0)
 				modifierTextBG.visible = modifierText.visible = true;
 		}
 

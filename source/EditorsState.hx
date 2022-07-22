@@ -29,7 +29,8 @@ class EditorsState extends MusicBeatState
 		"Menu Character Editor",
 		"Note Type Editor",
 		"Event Editor",
-		"Position Offset Editor"
+		"Position Offset Editor",
+		"Credits Editor"
 	];
 
 	var grpOptions:FlxTypedGroup<Alphabet>;
@@ -156,6 +157,8 @@ class EditorsState extends MusicBeatState
 			case "Chart Editor":
 				ChartingState.fromEditors = true;
 				state = new ChartingState();
+				LoadingState.loadAndSwitchState(state);
+				return;
 			case "Character Editor":
 				CharacterEditor.fromEditors = true;
 				state = new CharacterEditor();
@@ -177,6 +180,9 @@ class EditorsState extends MusicBeatState
 			case "Position Offset Editor":
 				PositionOffsetEditor.fromEditors = true;
 				state = new PositionOffsetEditor();
+			case "Credits Editor":
+				CreditsEditor.fromEditors = true;
+				state = new CreditsEditor();
 		}
 
 		CustomTransition.switchTo(state);

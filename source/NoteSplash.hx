@@ -1,5 +1,6 @@
 package;
 
+import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 
@@ -7,7 +8,6 @@ using StringTools;
 
 class NoteSplash extends FlxSprite
 {
-	public var noteData:Int = 0;
 	public var strumNote:StaticArrow;
 	public var actualAlpha:Float = 0.6;
 
@@ -21,19 +21,37 @@ class NoteSplash extends FlxSprite
 
 	public var onFinish:Void->Void;
 
-	public function new(noteData:Int, ?skin:FlxAtlasFrames, ?onFinish:Void->Void)
+	public var skin:FlxAtlasFrames;
+
+	public function new(?skin:FlxAtlasFrames)
 	{
 		super();
 
-		this.onFinish = onFinish;
-
-		this.noteData = noteData;
+		this.skin = skin;
 		frames = skin;
 
 		alpha = 0.6;
+	}
 
-		animation.addByPrefix("splash", dirs[noteData] + " splash", 24, false);
-		animation.play("splash");
+	public function splash(noteData:Int, ?onFinish:Void->Void):Void
+	{
+		this.onFinish = onFinish;
+
+		frames = skin;
+
+		for (i in 0...4)
+		{
+			animation.addByPrefix("splash 1 " + i, dirs[i] + " splash 1", 24, false);
+			animation.addByPrefix("splash 2 " + i, dirs[i] + " splash 2", 24, false);
+		}
+
+		var randy = FlxG.random.int(1, 2);
+
+		if (animation.getByName("splash " + randy + " " + noteData) == null)
+			animation.addByPrefix("splash " + randy + " " + noteData, dirs[noteData] + " splash", 24, false);
+
+		animation.play("splash " + randy + " " + noteData);
+		centerOffsets();
 	}
 
 	override function update(elapsed:Float)

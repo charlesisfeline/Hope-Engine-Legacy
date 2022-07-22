@@ -132,6 +132,7 @@ class Main extends Sprite
 
 		MainMenuState.hopeEngineVer = Assets.getText('version.awesome');
 	}
+	
 	var game:FlxGame;
 	var fpsCounter:CustomFPS;
 
@@ -166,6 +167,12 @@ class Main extends Sprite
 						FreeplayState.vocals.pause();
 				}
 			}
+		});
+
+		Application.current.onExit.add(function(exitCode)
+		{
+			if (CustomState.window != null)
+				CustomState.window.close();
 		});
 	}
 

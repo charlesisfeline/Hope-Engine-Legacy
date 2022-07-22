@@ -37,7 +37,7 @@ typedef Animation =
 
 	var frameRate:Null<Int>;
 	var loopedAnim:Null<Bool>;
-	var offset:Array<Int>;
+	var offset:Array<Float>;
 	var indices:Array<Int>;
 	var postfix:String;
 	var flipX:Null<Bool>;
@@ -46,7 +46,7 @@ typedef Animation =
 
 class Character extends FlxSprite
 {
-	public var animOffsets:Map<String, Array<Dynamic>>;
+	public var animOffsets:Map<String, Array<Float>>;
 
 	public var isPlayer:Bool = false; // if they are a player
 	public var isDeath:Bool = false; // if they are a character that shows up on the gameover screen
@@ -73,7 +73,7 @@ class Character extends FlxSprite
 	{
 		super(x, y);
 
-		animOffsets = new Map<String, Array<Dynamic>>();
+		animOffsets = new Map<String, Array<Float>>();
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 

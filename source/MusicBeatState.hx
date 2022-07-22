@@ -1,5 +1,6 @@
 package;
 
+import lime.utils.Assets;
 import Conductor.BPMChangeEvent;
 import flixel.FlxBasic;
 import flixel.FlxG;
@@ -24,77 +25,7 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	private static var assets:Array<FlxSprite> = [];
-	private static var toDestroy:Array<FlxSprite> = [];
-
 	public var usesMouse:Bool = false;
-
-	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
-	{
-		if (Std.isOfType(Object, FlxSprite))
-		{
-			var spr:FlxSprite = cast(Object, FlxSprite);
-
-			if (spr.graphic != null)
-			{
-				assets.push(spr);
-			}
-		}
-
-		var result = super.add(Object);
-		return result;
-	}
-
-	public function clean()
-	{
-		for (i in assets)
-		{
-			assets.remove(i);
-			remove(i, true);
-			toDestroy.push(i);
-		}
-	}
-
-	public function new()
-	{
-		#if !html5
-		if (!Settings.cacheMusic)
-		{
-			for (sound in Paths.trackedSoundKeys)
-			{
-				OpenFlAssets.cache.clear(sound);
-				Paths.trackedSoundKeys.remove(sound);
-			}
-		}
-		#end
-
-		if (!Settings.cacheImages)
-		{
-			for (image in Paths.trackedImageKeys)
-			{
-				OpenFlAssets.cache.clear(image);
-				Paths.trackedImageKeys.remove(image);
-			}
-		}
-
-		super();
-		clean();
-	}
-
-	override function create()
-	{
-		FlxG.mouse.visible = false;
-		
-		for (i in toDestroy)
-		{
-			i.destroy();
-			toDestroy.remove(i);
-		}
-
-		super.create();
-
-		openfl.system.System.gc();
-	}
 
 	override function update(elapsed:Float)
 	{
@@ -156,5 +87,58 @@ class MusicBeatState extends FlxUIState
 		#else
 		FlxG.openURL(schmancy);
 		#end
+	}
+
+	override function destroy()
+	{
+		#if !html5
+		if (!Settings.cacheMusic)
+		{
+			for (sound in Paths.trackedSoundKeys)
+			{
+				OpenFlAssets.cache.clear(sound);
+				Paths.trackedSoundKeys.remove(sound);
+			}
+
+			Assets.cache.clear("assets/songs");
+		}
+		#end
+
+		if (!Settings.cacheImages)
+		{
+			for (image in Paths.trackedImageKeys)
+			{
+				OpenFlAssets.cache.clear(image);
+				Paths.trackedImageKeys.remove(image);
+			}
+
+			forEachAlive(function(basic:FlxBasic) {
+				remove(basic);
+	
+				if (basic is FlxSprite)
+				{
+					var spr:FlxSprite = cast basic;
+	
+					if (spr.graphic != null)
+					{
+						if (FlxG.bitmap.get(spr.graphic.key) != null)
+						{
+							FlxG.bitmap.removeByKey(spr.graphic.key);
+							Assets.cache.clear(spr.graphic.key);
+						}
+					}
+				}
+	
+				basic.kill();
+				basic.destroy();
+			}, true);
+		}
+
+		super.destroy();
+
+		if (!Settings.cacheImages)
+			FlxG.bitmap.clearCache();
+
+		openfl.system.System.gc();
 	}
 }

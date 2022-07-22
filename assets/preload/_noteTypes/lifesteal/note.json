@@ -1,0 +1,115 @@
+{
+	"canScore": false,
+	"scaleLockX": true,
+	"noHolds": false,
+	"offsetMultiplier": [
+		0.5,
+		0.5
+	],
+	"positionLockX": true,
+	"scaleLockY": true,
+	"positionLockY": true,
+	"unblandWhat": null,
+	"alphaLock": true,
+	"noNoteSplash": false,
+	"assetName": "lifesteal",
+	"name": "Randomize Position Note",
+	"upSpriteOnly": false,
+	"canMiss": true,
+	"visibleLock": true,
+	"sprites": {
+		"right": {
+			"holdEnd": {
+				"prefix": "red hold end",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"note": {
+				"prefix": "red0",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"holdPiece": {
+				"prefix": "red hold piece",
+				"offset": [
+					0,
+					0
+				]
+			}
+		},
+		"down": {
+			"holdEnd": {
+				"prefix": "blue hold end",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"note": {
+				"prefix": "blue0",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"holdPiece": {
+				"prefix": "blue hold piece",
+				"offset": [
+					0,
+					0
+				]
+			}
+		},
+		"up": {
+			"holdEnd": {
+				"prefix": "green hold end",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"note": {
+				"prefix": "green0",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"holdPiece": {
+				"prefix": "green hold piece",
+				"offset": [
+					0,
+					0
+				]
+			}
+		},
+		"left": {
+			"holdEnd": {
+				"prefix": "pruple end hold",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"note": {
+				"prefix": "purple0",
+				"offset": [
+					0,
+					0
+				]
+			},
+			"holdPiece": {
+				"prefix": "purple hold piece",
+				"offset": [
+					0,
+					0
+				]
+			}
+		}
+	},
+	"angleLock": true
+}

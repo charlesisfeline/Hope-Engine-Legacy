@@ -1,5 +1,6 @@
 package options;
 
+import modifiers.Modifiers;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -149,6 +150,17 @@ class OptionsState extends MusicBeatState
 						"Nah.", function()
 					{
 						Achievements.takeAll();
+					}, null));
+				}),
+			new PressOption("Erase Modifier Saves", "Remove MODIFIER saves.\n(Prompted, be careful!)", function()
+				{
+					FlxG.state.openSubState(new ConfirmationPrompt("HEY!", "Are you sure you want to delete ALL MODIFIER SAVES?\nThis is IRREVERSIBLE!", "Yeah!",
+						"Nah.", function()
+					{
+						FlxG.save.data.modifierScores = null;
+						Modifiers.modifierScores = [];
+						Modifiers.init();
+						FlxG.save.flush();
 					}, null));
 				}),
 			new PressOption("Erase Data", "Remove ALL data.\n(Prompted, be careful!)", function()

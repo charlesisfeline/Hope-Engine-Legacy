@@ -11,9 +11,11 @@ import scripts.ScriptEssentials;
 import sys.io.File;
 import sys.FileSystem;
 
-class CustomState extends MusicBeatState
+// DOESN'T WORK YET!!
+
+class CustomSubState extends MusicBeatSubstate
 {
-	public static var instance:CustomState;
+	public static var instance:CustomSubState;
 	public static var openedConsole:Bool = false;
 	public static var window:Window;
 
@@ -21,28 +23,31 @@ class CustomState extends MusicBeatState
 	public var parser:Parser;
 	public var script:String;
 
-	public var state:ConsolePrefix;
+	public var substate:ConsolePrefix;
 	public var scriptPath:String;
 
-	public function new(scriptPath:String, state:ConsolePrefix)
+	public function new(scriptPath:String, substate:ConsolePrefix)
 	{
 		super();
 
-		this.state = state;
+		this.substate = substate;
 		this.scriptPath = scriptPath;
 
 		try
 		{
 			script = File.getContent(Paths.state(scriptPath));
+
+			justDo();
 		}
 		catch (e)
 		{
-			Main.console.add(e.toString(), state);
+			Main.console.add(e.toString(), substate);
 		}
 	}
 
-	override function create()
+	function justDo()
 	{
+
 		instance = this;
 		parser = new Parser();
 		parser.allowTypes = true;
@@ -63,7 +68,7 @@ class CustomState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Main.console.add(e, state);
+			Main.console.add(e, substate);
 		}
 
 		super.create();
@@ -82,11 +87,11 @@ class CustomState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Main.console.add(e, state);
+			Main.console.add(e, substate);
 		}
 
 		if (FlxG.keys.justPressed.F5)
-			CustomTransition.switchTo(new CustomState(scriptPath, state));
+			CustomTransition.switchTo(new CustomState(scriptPath, substate));
 
 		if (FlxG.keys.justPressed.F4 && !openedConsole)
 		{
@@ -100,7 +105,7 @@ class CustomState extends MusicBeatState
 				y: lime.app.Application.current.window.y - 120
 			}
 			window = lime.app.Application.current.createWindow(attr);
-			var edit = new ScriptEditor(script, state, window.width, window.height, scriptPath);
+			var edit = new ScriptEditor(script, substate, window.width, window.height, scriptPath);
 			window.stage.addChild(edit);
 			window.onClose.add(function() {
 				openedConsole = false;
@@ -127,7 +132,7 @@ class CustomState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Main.console.add(e, state);
+			Main.console.add(e, substate);
 		}
 	}
 
@@ -142,7 +147,7 @@ class CustomState extends MusicBeatState
 		}
 		catch (e)
 		{
-			Main.console.add(e, state);
+			Main.console.add(e, substate);
 		}
 	}
 
@@ -151,7 +156,7 @@ class CustomState extends MusicBeatState
 		ScriptEssentials.imports(interp);
 		interp.variables.set("print", function(e:Dynamic)
 		{
-			Main.console.add(e, state);
+			Main.console.add(e, substate);
 		});
 		interp.variables.set("curStep", curStep);
 		interp.variables.set("curBeat", curBeat);

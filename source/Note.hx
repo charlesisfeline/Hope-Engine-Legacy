@@ -25,7 +25,7 @@ typedef NoteJSON =
 	var upSpriteOnly:Null<Bool>;
 	var canScore:Null<Bool>;
 	var canMiss:Null<Bool>;
-	var offsetMultiplier:Null<Array<Float>>;
+	var offsetMultiplier:Null<Array<Null<Float>>>;
 	var scrollMultiplier:Null<Float>;
 	var scale:Null<Float>;
 	var noNoteSplash:Null<Bool>;

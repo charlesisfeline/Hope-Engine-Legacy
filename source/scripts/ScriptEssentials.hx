@@ -25,6 +25,11 @@ import flixel.ui.FlxBar.FlxBarFillDirection;
 
 using StringTools;
 
+#if VIDEOS_ALLOWED
+import vlc.MP4Sprite;
+import vlc.MP4Handler;
+#end
+
 class ScriptEssentials
 {
 	public static function imports(interp:Interp):Void
@@ -60,6 +65,11 @@ class ScriptEssentials
 		interp.variables.set("FlxG", FlxG);
 		interp.variables.set("Std", Std);
 		interp.variables.set("Lib", Lib);
+
+		#if VIDEOS_ALLOWED
+		interp.variables.set("VideoSprite", MP4Sprite);
+		interp.variables.set("VideoHandler", MP4Handler);
+		#end
 
 		interp.variables.set("import", function(classPath:String)
 		{
@@ -110,6 +120,12 @@ class ScriptEssentials
 		}
 
 		var classLol = Type.resolveClass(classPath);
+
+		if (classLol == null)
+		{
+			Main.console.add("Import " + classPath + " does not exist!");
+			return;
+		}
 		var className = Type.getClassName(classLol).split(".").pop().trim();
 
         interp.variables.set(className, classLol);

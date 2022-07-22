@@ -65,9 +65,19 @@ class CharacterEditor extends MusicBeatState
 
 	var gridBG:FlxSprite;
 
-	var instructionsText:String = "Hotkeys:" + "\nCTRL + S: Save character file" + "\n\nCharacter:" + "\nArrow Keys: Change offset"
-		+ "\nI, K: Cycle through animations" + "\n\nCamera:" + "\nW, A, S, D, Right Click: Move around" + "\nQ, E, Mouse wheel: Control zoom"
-		+ "\nR: Reset position and zoom" + "\n\nUI:" + "\nALT: Hide/Unhide instructions" + "\nF1: Hide/Unhide UI";
+	var instructionsText:String = "Hotkeys:" 
+								+ "\nCTRL + S: Save character file" 
+								+ "\n\nCharacter:" 
+								+ "\nArrow Keys: Change Animation Offset"
+								+ "\nT: Reset Animation Offset to [0, 0]"
+								+ "\nI, K: Cycle through animations"
+								+ "\n\nCamera:" 
+								+ "\nW, A, S, D, Right Click: Move around" 
+								+ "\nQ, E, Mouse wheel: Control zoom"
+								+ "\nR: Reset position and zoom" 
+								+ "\n\nUI:" 
+								+ "\nALT: Hide/Unhide instructions" 
+								+ "\nF1: Hide/Unhide UI";
 
 	public function new(isDad:Bool = false, char:String = 'bf')
 	{
@@ -425,7 +435,7 @@ class CharacterEditor extends MusicBeatState
 			if (character.animationsArray[curAnim] != null)
 				lastAnim = character.animationsArray[curAnim].name;
 
-			var lastOffsets:Array<Int> = [0, 0];
+			var lastOffsets:Array<Float> = [0, 0];
 			for (anim in character.animationsArray)
 			{
 				if (animationName.text == anim.name)
@@ -1209,6 +1219,20 @@ class CharacterEditor extends MusicBeatState
 			{
 				camFollow.screenCenter();
 				FlxG.camera.zoom = 0;
+			}
+
+			if (FlxG.keys.justPressed.T)
+			{
+				character.animOffsets.set(character.animationsArray[curAnim].name, [0, 0]);
+
+				character.animationsArray[curAnim].offset = [
+					character.animOffsets.get(character.animationsArray[curAnim].name)[0],
+					character.animOffsets.get(character.animationsArray[curAnim].name)[1]
+				];
+
+				genBoyOffsets();
+
+				character.playAnim(character.animationsArray[curAnim].name);
 			}
 
 			if (FlxG.keys.justPressed.K || FlxG.keys.justPressed.I || FlxG.keys.justPressed.SPACE)

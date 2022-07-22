@@ -197,6 +197,9 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 		// header.button.onUp.callback = onDropdown;
 		FlxMouseEventManager.add(header, null, function(a:FlxUIDropDownHeader) { onDropdown(); }, null, null, true);
 		add(header);
+
+
+		dropPanel.y = header.y + header.height;
 	}
 
 	private function updateButtonPositions():Void
@@ -405,7 +408,10 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 	{
 		super.update(elapsed);
 
-		if (FlxG.mouse.wheel != 0 && scrollable)
+		var m = FlxG.mouse.getScreenPosition(camera);
+		var s = getScreenPosition(camera);
+
+		if (FlxG.mouse.wheel != 0 && scrollable && (m.x >= s.x && m.x <= s.x + width) && (m.y >= s.y && m.y <= s.y + height))
 			dropPanel.y += (dropPanel.height / list.length) * FlxG.mouse.wheel;
 
 		if (dropPanel.y > header.y + header.height)
@@ -420,9 +426,6 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 		#if FLX_MOUSE
 		if (FlxG.mouse.justPressed)
 		{
-            var m = FlxG.mouse.getScreenPosition(camera);
-		    var s = getScreenPosition(camera);
-
 			if ((m.x >= s.x && m.x <= s.x + width) && (m.y >= s.y && m.y <= s.y + height))
 			{
 				// too lazy to write the inverse of the condition above so i will put this overly long sentence to compensate for this problem :)

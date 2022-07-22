@@ -255,12 +255,12 @@ class Modifiers
         }
 
         if (!modifierScores.exists(songName))
-            modifierScores.set(songName, []);
+            modifierScores.set(Paths.currentMod + ":" + songName, []);
 
-        var copy:Null<Array<ModifierSave>> = modifierScores.get(songName).copy();
+        var copy:Null<Array<ModifierSave>> = modifierScores.get(Paths.currentMod + ":" + songName).copy();
         copy.push(save);
 
-        modifierScores.set(songName, copy);
+        modifierScores.set(Paths.currentMod + ":" + songName, copy);
         FlxG.save.data.modifierScores = modifierScores;
         FlxG.save.flush();
     }

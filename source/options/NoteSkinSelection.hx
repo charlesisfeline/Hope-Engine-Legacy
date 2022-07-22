@@ -309,13 +309,15 @@ class NoteSkinSelection extends MusicBeatSubstate
 			{
 				if (Settings.noteSplashes)
 				{
-					var splash = new NoteSplash(curBeat % 4, splashSparrow);
+					var splash = new NoteSplash(splashSparrow);
 					var strumNote = registeredPreviews[curSelected].members[curBeat % 4];
 
 					splash.x = strumNote.x + (strumNote.width / 2) - (splash.width / 2);
 					splash.y = strumNote.y + (strumNote.height / 2) - (splash.height / 2);
 
 					add(splash);
+
+					splash.splash(curBeat % 4);
 				}
 			}
 		}

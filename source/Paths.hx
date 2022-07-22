@@ -484,6 +484,11 @@ class Paths
 
 	inline static public function font(key:String)
 	{
+		#if FILESYSTEM
+		if (FileSystem.exists(modFont(key)))
+			return modFont(key);
+		#end
+
 		return 'assets/fonts/$key';
 	}
 
@@ -617,6 +622,11 @@ class Paths
 	inline static public function modJson(key:String)
 	{
 		return 'mods/$currentMod/assets/data/$key.json';
+	}
+
+	inline static public function modFont(key:String)
+	{
+		return 'mods/$currentMod/assets/fonts/$key';
 	}
 
 	inline static public function modVideo(key:String)

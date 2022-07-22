@@ -37,7 +37,9 @@ enum abstract ConsolePrefix(String) to String
 	var MAINMENU = "MainMenuState";
 	var OPTIONS = "OptionsState";
 	var SPLASH = "SplashState";
+	var PAUSEMENU = "PauseSubState";
 	// if you have remade a complicated menu like the options menu or the fucking PLAYSTATE itself, I will respect you 100%
+	// ykw remake ADOFAI in Funkin' it would be funny lmao
 }
 
 class ScriptConsole extends Sprite

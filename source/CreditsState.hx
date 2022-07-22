@@ -1,5 +1,6 @@
 package;
 
+import editors.CreditsEditor;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
@@ -13,6 +14,27 @@ import lime.utils.Assets;
 #if desktop
 import Discord.DiscordClient;
 #end
+#if FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+typedef CreditCategory =
+{
+	var categoryName:String;
+	var categoryItems:Array<Credit>;
+}
+
+typedef Credit =
+{
+	var name:String;
+	var desc:String;
+	@:optional var link:Null<String>;
+	@:optional var tint:Null<String>;
+	@:optional var icon:Null<String>;
+	@:optional var iconAntialiasing:Null<Bool>;
+	@:optional @:noCompletion var funnyMod:String;
+}
 
 class CreditsState extends MusicBeatState
 {
@@ -73,7 +95,37 @@ class CreditsState extends MusicBeatState
 
 		descBackground.setPosition(descriptionShit.x - 4, descriptionShit.y - 4);
 
-		var credits:Array<Dynamic> = Json.parse(Assets.getText(Paths.json('credits')));
+		var credits:Array<CreditCategory> = cast Json.parse(Assets.getText(Paths.json('credits')));
+		var creditsGet:Array<CreditCategory> = [];
+
+		var prevMod = Paths.currentMod;
+
+		#if FILESYSTEM
+		for (mod in FileSystem.readDirectory('mods'))
+		{
+			Paths.setCurrentMod(mod);
+
+			if (Paths.checkModLoad(mod) && Paths.exists(Paths.modJson('credits')))
+			{
+				var cred:Array<CreditCategory> = cast Json.parse(File.getContent(Paths.json('credits')));
+
+
+				for (cat in cred)
+				{
+					for (info in cat.categoryItems)
+						info.funnyMod = mod;
+
+					creditsGet.push(cat);
+				}
+			}
+		}
+		#end
+
+		Paths.setCurrentMod(null);
+		creditsGet.reverse();
+
+		for (cat in creditsGet)
+			credits.insert(0, cat);
 
 		for (i in 0...credits.length)
 		{
@@ -88,8 +140,7 @@ class CreditsState extends MusicBeatState
 
 			allTheShit.push([curCategory.categoryName, "", ""]);
 
-			var catItems:Array<Dynamic> = curCategory.categoryItems;
-			for (i2 in 0...catItems.length)
+			for (i2 in 0...curCategory.categoryItems.length)
 			{
 				var curCredit = curCategory.categoryItems[i2];
 
@@ -102,6 +153,9 @@ class CreditsState extends MusicBeatState
 
 				if (curCredit.icon != null)
 				{
+					Paths.setCurrentMod(null);
+					if (curCredit.funnyMod != null)
+						Paths.setCurrentMod(curCredit.funnyMod);
 					var icon = new FlxSprite().loadGraphic(Paths.image("creditIcons/" + curCredit.icon));
 					icon.x = credLabel.width + 25;
 					icon.y = (credLabel.height / 2) - (icon.height / 2);
@@ -121,6 +175,8 @@ class CreditsState extends MusicBeatState
 			}
 		}
 
+		Paths.setCurrentMod(prevMod);
+
 		changeSelection();
 		if (alphabets.members[curSelected].isBold)
 			changeSelection(1);
@@ -135,6 +191,9 @@ class CreditsState extends MusicBeatState
 		super.update(elapsed);
 
 		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, Helper.boundTo(elapsed * 9.6, 0, 1));
+
+		if (FlxG.keys.justPressed.SEVEN)
+			CustomTransition.switchTo(new editors.CreditsEditor());
 
 		if (controls.UI_UP_P)
 		{
@@ -164,7 +223,7 @@ class CreditsState extends MusicBeatState
 
 	function changeSelection(change:Int = 0)
 	{
-		if (change == 0)
+		if (change != 0)
 			FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
 		curSelected += change;

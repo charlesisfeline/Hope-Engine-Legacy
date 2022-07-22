@@ -26,6 +26,10 @@ import Discord.DiscordClient;
 import sys.FileSystem;
 #end
 
+#if VIDEOS_ALLOWED
+import vlc.MP4Handler;
+#end
+
 class TitleState extends MusicBeatState
 {
 	static var initialized:Bool = false;
@@ -364,7 +368,7 @@ class TitleState extends MusicBeatState
 						CustomTransition.switchTo(new HopeTitle());
 					#if VIDEOS_ALLOWED
 					case 'pringles':
-						new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
+						new MP4Handler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
 					#end
 				}
 			}

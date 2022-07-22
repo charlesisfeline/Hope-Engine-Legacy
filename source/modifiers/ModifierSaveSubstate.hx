@@ -71,6 +71,9 @@ class ModifierSaveSubstate extends MusicBeatSubstate
 
 	function changeSelection(huh:Int = 0):Void
 	{
+		if (huh != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+		
 		curSelected += huh;
 
         if (curSelected > items.length - 1)

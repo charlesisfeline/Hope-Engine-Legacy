@@ -1,0 +1,16 @@
+// Hope Engine Note Types are kinda limited
+// I have 0 clue how HScript works as well
+
+// note: if you know what you're doing, feel free to modify
+
+function onNoteHit(note)
+{
+    // happens/executes when this specific note gets hit properly
+
+    PlayState.health -= 0.1; // -5% of the player's health
+}
+
+function onNoteMiss(note)
+{
+    // happens/executes when this specific note is missed
+}

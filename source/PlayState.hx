@@ -59,6 +59,11 @@ import sys.io.File;
 import Discord.DiscordClient;
 #end
 
+#if VIDEOS_ALLOWED
+import vlc.MP4Handler;
+import vlc.MP4Sprite;
+#end
+
 typedef StageJSON =
 {
 	var name:String;
@@ -531,6 +536,10 @@ class PlayState extends MusicBeatState
 
 		splashes = new FlxTypedGroup<NoteSplash>();
 		add(splashes);
+
+		var splash = new NoteSplash(noteSplashAtlas);
+		splash.alpha = 0;
+		splashes.add(splash);
 
 		// create modifier monochromes
 		modifierMonochromes = new FlxSpriteGroup();
@@ -2106,7 +2115,7 @@ class PlayState extends MusicBeatState
 			#if desktop
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
-			CustomTransition.switchTo(new editors.ChartingState());
+			LoadingState.loadAndSwitchState(new editors.ChartingState());
 			openedCharting = true;
 		}
 
@@ -2172,7 +2181,7 @@ class PlayState extends MusicBeatState
 		{
 			if (!ending)
 			{
-				Conductor.songPosition += FlxG.elapsed * 1000;
+				Conductor.songPosition += FlxG.elapsed * 1000 * FlxG.timeScale;
 				songPositionBar = Conductor.songPosition;
 
 				if (!paused)
@@ -2227,80 +2236,6 @@ class PlayState extends MusicBeatState
 				}
 			}
 		}
-
-		/*
-			if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null)
-			{
-				// Make sure Girlfriend cheers only for certain songs
-				if (allowedToHeadbang)
-				{
-					// Don't animate GF if something else is already animating her (eg. train passing)
-					if (gf.animation.curAnim.name == 'danceLeft'
-						|| gf.animation.curAnim.name == 'danceRight'
-						|| gf.animation.curAnim.name == 'idle')
-					{
-						// Per song treatment since some songs will only have the 'Hey' at certain times
-						switch (curSong)
-						{
-							case 'Blammed':
-								{
-									if (curBeat > 30 && curBeat < 190)
-									{
-										if (curBeat < 90 || curBeat > 128)
-										{
-											if (curBeat % 4 == 2)
-											{
-												if (!triggeredAlready)
-												{
-													gf.playAnim('cheer');
-													triggeredAlready = true;
-												}
-											}
-											else
-												triggeredAlready = false;
-										}
-									}
-								}
-							case 'Cocoa':
-								{
-									if (curBeat < 170)
-									{
-										if (curBeat < 65 || curBeat > 130 && curBeat < 145)
-										{
-											if (curBeat % 16 == 15)
-											{
-												if (!triggeredAlready)
-												{
-													gf.playAnim('cheer');
-													triggeredAlready = true;
-												}
-											}
-											else
-												triggeredAlready = false;
-										}
-									}
-								}
-							case 'Eggnog':
-								{
-									if (curBeat > 10 && curBeat != 111 && curBeat < 220)
-									{
-										if (curBeat % 8 == 7)
-										{
-											if (!triggeredAlready)
-											{
-												gf.playAnim('cheer');
-												triggeredAlready = true;
-											}
-										}
-										else
-											triggeredAlready = false;
-									}
-								}
-						}
-					}
-				}
-			}
-		 */
 
 		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !previewMode)
 		{
@@ -2481,7 +2416,7 @@ class PlayState extends MusicBeatState
 
 				if (openedCharting)
 				{
-					CustomTransition.switchTo(new editors.ChartingState());
+					LoadingState.loadAndSwitchState(new editors.ChartingState());
 					return;
 				}
 
@@ -2634,6 +2569,8 @@ class PlayState extends MusicBeatState
 					if (Settings.accuracyMode == 0)
 						totalNotesHit += 1;
 					sicks++;
+				case 'miss':
+					score = 0;
 			}
 		}
 		else
@@ -2871,7 +2808,7 @@ class PlayState extends MusicBeatState
 								+ (atTime - daNote.prevNote.strumTime) * (0.45 * daNote.scrollMultiplier * FlxMath.roundDecimal(Math.abs(globalScrollSpeed), 2)))
 								- daNote.height;
 
-						if ((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && daNote.canBeHit)
+						if (((!daNote.mustPress && !daNote.canMiss) || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && daNote.canBeHit)
 							&& daNote.y - daNote.offset.y * daNote.scale.y + daNote.height >= (noteY - Note.swagWidth / 2))
 						{
 							var swagRect = new FlxRect(0, 0, daNote.frameWidth * 2, daNote.frameHeight * 2);
@@ -2895,7 +2832,7 @@ class PlayState extends MusicBeatState
 								- (atTime - daNote.prevNote.strumTime) * (0.45 * daNote.scrollMultiplier * FlxMath.roundDecimal(Math.abs(globalScrollSpeed), 2)))
 								+ daNote.prevNote.height;
 
-						if ((!daNote.mustPress || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && daNote.canBeHit)
+						if (((!daNote.mustPress && !daNote.canMiss) || daNote.wasGoodHit || daNote.prevNote.wasGoodHit && daNote.canBeHit)
 							&& daNote.y + daNote.offset.y * daNote.scale.y <= (noteY + Note.swagWidth / 2))
 						{
 							var swagRect = new FlxRect(0, 0, daNote.width / daNote.scale.x, daNote.height / daNote.scale.y);
@@ -3459,7 +3396,8 @@ class PlayState extends MusicBeatState
 
 		if (note.rating == "sick" && Settings.noteSplashes && !note.isSustainNote && !note.noNoteSplash)
 		{
-			var splash:NoteSplash = new NoteSplash(note.noteData, noteSplashAtlas);
+			var splash:NoteSplash = splashes.recycle(NoteSplash);
+			splash.skin = noteSplashAtlas;
 
 			var strumNote = playerStrums.members[note.noteData];
 			splash.strumNote = strumNote;
@@ -3472,7 +3410,6 @@ class PlayState extends MusicBeatState
 				splash.setGraphicSize(Std.int(splash.width * daPixelZoom));
 				splash.updateHitbox();
 				splash.antialiasing = false;
-				splash.actualAlpha = 0.4;
 			}
 
 			splash.angle = strumNote.angle;
@@ -3482,6 +3419,8 @@ class PlayState extends MusicBeatState
 			splash.y = strumNote.y + (strumNote.staticHeight / 2) - (splash.height / 2);
 
 			splashes.add(splash);
+
+			splash.splash(note.noteData);
 		}
 
 		// add newest note to front of notesHitArray
@@ -3595,7 +3534,7 @@ class PlayState extends MusicBeatState
 			openSubState(ass);
 		}
 
-		var video:VideoHandler = new VideoHandler();
+		var video:MP4Handler = new MP4Handler();
 		video.finishCallback = function()
 		{
 			if (isCutscene && songStarted)
@@ -3735,7 +3674,6 @@ class PlayState extends MusicBeatState
 		// mp4 videos!!!!
 		#if VIDEOS_ALLOWED
 		funnyInterp.variables.set("playVideo", playVideo);
-		funnyInterp.variables.set("VideoSprite", VideoSprite);
 		#end
 
 		// cameras
@@ -3971,5 +3909,16 @@ class PlayState extends MusicBeatState
 			previewMode = value;
 		}
 		return value;
+	}
+
+	override function destroy() 
+	{
+		if (Settings.autopause)
+		{
+			FlxG.signals.focusLost.remove(focusLost);
+			FlxG.signals.focusGained.remove(focusGained);
+		}
+
+		super.destroy();
 	}
 }

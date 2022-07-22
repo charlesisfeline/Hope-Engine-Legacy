@@ -122,6 +122,9 @@ class ModifierSubstate extends MusicBeatSubstate
 
     function changeSelection(huh:Int = 0):Void
     {
+        if (huh != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+        
         curSelected += huh;
 
         if (curSelected > modifiersAvailable.length - 1)
@@ -152,6 +155,9 @@ class ModifierSubstate extends MusicBeatSubstate
 
     function changeModifier(huh:Float = 0):Void
     {
+        if (huh != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'), 0.4);
+
         if (Modifiers.modifiers[modifiersAvailable[curSelected]] is Float)
         {
             if (huh != 0)

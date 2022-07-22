@@ -1,5 +1,6 @@
 package;
 
+import flixel.math.FlxRandom;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
@@ -20,6 +21,8 @@ class Count extends FlxSpriteGroup
 	public var currentNumber:Float = 0;
 
 	public var uniform:Bool = true;
+
+	var rand:FlxRandom = new FlxRandom();
 
 	public function new(x:Null<Float> = 0, y:Null<Float> = 0, text:String = "", ?uniform:Bool = true, ?isPixel:Bool = false)
 	{
@@ -107,7 +110,12 @@ class Count extends FlxSpriteGroup
 			forEachOfType(FlxSprite, function(spr:FlxSprite)
 			{
 				spr.x += 2.5 * a;
-				spr.offset.set(spr.offset.x + FlxG.random.float(-3, 3), spr.offset.y + FlxG.random.float(-3, 3));
+
+				rand.currentSeed = PlayState.SONG != null ? letterToInt(PlayState.SONG.song) : letterToInt("IRyS");
+				var xFloat = rand.int(-3, 3);
+				var yFloat = rand.int(-3, 3);
+
+				spr.offset.set(spr.offset.x + xFloat, spr.offset.y + yFloat);
 				a++;
 			});
 		}
@@ -144,6 +152,22 @@ class Count extends FlxSpriteGroup
 			numScore.x = x + width;
 
 		numScore.y = y + (63 * yMultiplier);
+	}
+
+	function letterToInt(let:String):Int
+	{
+		var spl = let.split("");
+		var cur = "";
+
+		for (l in spl)
+		{
+			if (Std.parseInt(l) != null)
+				cur += l;
+			else
+				cur += letters.indexOf(l.toLowerCase().trim()) + "";
+		}
+
+		return Std.parseInt(cur);
 	}
 
 	public function changeNumber(text:String = "")

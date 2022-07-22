@@ -1,5 +1,7 @@
 package editors;
 
+import flixel.math.FlxPoint;
+import flixel.addons.ui.FlxUIButton;
 import ui.NumStepperFix;
 import flixel.ui.FlxButton;
 import openfl.net.FileFilter;
@@ -213,6 +215,12 @@ class NoteTypeEditor extends MusicBeatState
 		addLockStuff();
 
 		super.create();
+
+		createToolTips();
+		tooltips.cameras = [camHUD];
+
+		addToolTipFor(findHelperDesc(standardSave.label.text), standardSave, standardSave.label.text);
+		addToolTipFor(findHelperDesc(standardLoad.label.text), standardLoad, standardLoad.label.text);
 
 		changeNote();
 	}
@@ -732,7 +740,7 @@ class NoteTypeEditor extends MusicBeatState
 		var animationsLabel = new FlxText(10, 10, "Animations");
 		animationsDropdown = new DropdownMenuFix(10, animationsLabel.y + animationsLabel.height, DropdownMenuFix.makeStrIdLabelArray(fucking), selectPiece);
 
-		var prefixTitle = new FlxText(10, 50, 0, ".XML/.TXT Prefix");
+		var prefixTitle = new FlxText(10, 50, 0, ".XML Prefix");
 		prefixInput = new InputTextFix(10, prefixTitle.y + prefixTitle.height, 255);
 
 		var fpsTitle = new FlxText(prefixInput.width + 20, prefixTitle.y, 0, "FPS");
@@ -769,7 +777,7 @@ class NoteTypeEditor extends MusicBeatState
 		deleteAnimation.x = UI_box.width - deleteAnimation.width - 10;
 		deleteAnimation.y = 10;
 
-		var addButton = new FlxButton(deleteAnimation.x, 0, "Add/Update", function() {
+		var addButton = new FlxButton(deleteAnimation.x, 0, "Update", function() {
 			var a:Array<NotePiece> = longFuckingArray();
 			var i = fucking.indexOf(animationsDropdown.selectedLabel);
 
@@ -914,17 +922,23 @@ class NoteTypeEditor extends MusicBeatState
 		positionLockY.callback();
 
 		var scrollTitle = new FlxText(noNoteSplash.x + noNoteSplash.width + 10, visibleLock.y + visibleLock.height + 5, "Default Scroll\nMultiplier");
-		var scrollStepper = new NumStepperFix(scrollTitle.x, scrollTitle.y + scrollTitle.height, 0.1, _note.scrollMultiplier, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 3);
+		var scrollStepper = new NumStepperFix(scrollTitle.x, scrollTitle.y + scrollTitle.height, 0.1, 1, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 3);
+		scrollStepper.value = _note.scrollMultiplier != null ? _note.scrollMultiplier : 1;
 		scrollStepper.callback = function(_) {
 			_note.scrollMultiplier = scrollStepper.value;
 		}
 
+		if (_note.offsetMultiplier == null)
+			_note.offsetMultiplier = [1, 1];
+
 		var sfmTitle = new FlxText(10, noHolds.y + noHolds.height + 25, "Safe Zone Offset Multiplier\n(early and late, respectively)");
-		var earlyStepper = new NumStepperFix(10, sfmTitle.y + sfmTitle.height, 0.1, _note.offsetMultiplier[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 3);
+		var earlyStepper = new NumStepperFix(10, sfmTitle.y + sfmTitle.height, 0.1, 1, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 3);
+		earlyStepper.value = _note.offsetMultiplier[0] != null ? _note.offsetMultiplier[0] : 1;
 		earlyStepper.callback = function(_) {
 			_note.offsetMultiplier[0] = earlyStepper.value;
 		}
-		var lateStepper = new NumStepperFix(earlyStepper.x + earlyStepper.width + 20, sfmTitle.y + sfmTitle.height, 0.1, _note.offsetMultiplier[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 3);
+		var lateStepper = new NumStepperFix(earlyStepper.x + earlyStepper.width + 20, sfmTitle.y + sfmTitle.height, 0.1, 1, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 3);
+		lateStepper.value = _note.offsetMultiplier[1] != null ? _note.offsetMultiplier[1] : 1;
 		lateStepper.callback = function(_) {
 			_note.offsetMultiplier[1] = lateStepper.value;
 		}
@@ -1467,5 +1481,120 @@ class NoteTypeEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+	}
+
+	function createToolTips():Void
+	{
+		UI_box.forEachOfType(FlxText, function(spr:FlxText)
+		{
+			var ass = findHelperDesc(spr.text);
+			addToolTipFor(ass, spr, spr.text);
+		}, true);
+
+		UI_box.forEachOfType(FlxButton, function(spr:FlxButton)
+		{
+			var ass = findHelperDesc(spr.label.text);
+			addToolTipFor(ass, spr, spr.label.text);
+		}, true);
+
+		UI_box.forEachOfType(FlxUICheckBox, function(spr:FlxUICheckBox)
+		{
+			var ass = findHelperDesc(spr.getLabel().text);
+			addToolTipFor(ass, spr, spr.getLabel().text);
+		}, true);
+
+		UI_box.forEachOfType(FlxUIButton, function(spr:FlxUIButton)
+		{
+			var ass = findHelperDesc(spr.getLabel().text);
+			addToolTipFor(ass, spr, spr.getLabel().text);
+		}, true);
+	}
+
+	function addToolTipFor(ass:String, spr:FlxObject, title:String)
+	{
+		if (ass != null)
+		{
+			tooltips.add(spr, {
+				title: title,
+				body: ass,
+				style: {
+					titleWidth: 120,
+					bodyWidth: 120,
+					topPadding: 5,
+					bottomPadding: 5,
+					leftPadding: 5,
+					rightPadding: 5,
+					bodyOffset: new FlxPoint(0, 5)
+				},
+				moving: true
+			});
+		}
+	}
+
+	function findHelperDesc(title:String):Null<String>
+	{
+		var toReturn:Null<String> = null;
+
+		switch (title)
+		{
+			case 'Asset Path':
+				toReturn = "The file path of your assets (both XML and PNG)";
+			case 'Show Ghost?':
+				toReturn = "Show the static arrows and normal hold pieces behind the note assets to fix your offsets better.";
+			case 'Ghost Tint':
+				toReturn = "The color tint of the gray arrows and hold pieces";
+			case 'Note Tint':
+				toReturn = "The color tint of the notes that you're currently editing";
+			case 'Don\'t Smoothen (in editor)':
+				toReturn = "Dont smoothen the asset in editor. It's automatically smoothened in play.";
+			case 'Note only has an UP sprite?':
+				toReturn = "Does your note only contain an UP sprite?";
+			case 'Fix what':
+				toReturn = "Specify which aspect to fix in play.";
+			case '.XML Prefix':
+				toReturn = "The name of your object in Animate. Or the prefix you set it as in the XML generator.";
+			case 'Should Animation be X-Flipped?':
+				toReturn = "Should the animation be flipped horizontally (left and right)?";
+			case 'Should Animation be Y-Flipped?':
+				toReturn = "Should the animation be flipped vertically (up and down)?";
+			case 'Is Animation Looped?':
+				toReturn = "Is this animation looping?";
+			case 'Update':
+				toReturn = "Update the selected animation.";
+			case 'Delete Anim':
+				toReturn = "Lose all data in this animation.";
+			case 'No Note Splashes when hit':
+				toReturn = "If ticked, no notesplashes will be shown when this note is hit with a \"Sick!!\"";
+			case 'Can Score by default?':
+				toReturn = "Can this note give you a score when hit by default?";
+			case 'Can Miss by default?':
+				toReturn = "Can this note be missed? If ticked, Botplay will miss this note, and opponent won't hit this note.";
+			case 'No Holds?':
+				toReturn = "Removes holds. In play, if holds are in place, they won't get generated.";
+			case 'Angle Locked by default?':
+				toReturn = "If ticked, when in play, this note's angle will stay the same as the gray notes' angle.";
+			case 'Alpha Locked by default?':
+				toReturn = "If ticked, when in play, this note's transparency will stay the same as the gray notes' transparency.";
+			case 'Visibility Locked by default?':
+				toReturn = "If ticked, when in play, this note's visibility will stay the same as the gray notes' visibility.";
+			case 'X-Scale Locked by default?':
+				toReturn = "If ticked, when in play, this note's horizontal scale will stay the same as the gray notes' horizontal scale (wideness).";
+			case 'Y-Scale Locked by default?':
+				toReturn = "If ticked, when in play, this note's vertical scale will stay the same as the gray notes' vertical scale (wideness).";
+			case 'X-Position Locked by default?':
+				toReturn = "If ticked, when in play, this note's horizontal position will stay the same as the gray notes' horizontal position.";
+			case 'Y-Position Locked by default?':
+				toReturn = "If ticked, when in play, this note's vertical position will stay the same as the gray notes' vertical position.";
+			case 'Safe Zone Offset Multiplier\n(early and late, respectively)':
+				toReturn = "How tight the hit window of your note is. Lower the number, tighter to hit.";
+			case 'Default Scroll\nMultiplier':
+				toReturn = "How fast your note should go with a chart's scroll speed. Higher the number, faster the speed.";
+			case 'Save JSON':
+				toReturn = "Don't forget to save!";
+			case 'Load JSON':
+				toReturn = "Load a Hope Engine Note JSON file.";
+		}
+
+		return toReturn;
 	}
 }
