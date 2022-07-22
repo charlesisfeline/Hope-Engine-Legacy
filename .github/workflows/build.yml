@@ -83,7 +83,7 @@ jobs:
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib list
       - name: Build
-          run: haxelib run lime build Project.xml linux
+        run: haxelib run lime build Project.xml linux
       - uses: actions/upload-artifact@v2
         with:
           name: Linux Build
