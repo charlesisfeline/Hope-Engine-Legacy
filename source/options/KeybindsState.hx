@@ -128,9 +128,15 @@ class KeybindsState extends MusicBeatState
             categoryColumn.add(alp);
         }
 
-        var reset = new Alphabet(0, 0, "Hold Left Mouse Button\nto reset to default keys", true);
+        // var reset = new Alphabet(0, 0, "Hold Left Mouse Button\nto reset to default keys", true);
+        // reset.y = titleColumn.members[titleColumn.length - 1].y + titleColumn.members[titleColumn.length - 1].height + 50;
+        // reset.screenCenter(X);
+        // add(reset);
+
+        var reset = new AlphabetRedux(0, 0, FlxG.width, "HOLD LEFT MOUSE BUTTON TO\nRESET TO DEFAULT KEYS");
         reset.y = titleColumn.members[titleColumn.length - 1].y + titleColumn.members[titleColumn.length - 1].height + 50;
-        reset.screenCenter(X);
+        reset.alignment = CENTER;
+        reset.bold = true;
         add(reset);
 
 		recordBG = new FlxSprite().makeGraphic(FlxG.width, FlxG.height, FlxColor.BLACK);

@@ -112,6 +112,7 @@ class Count extends FlxSpriteGroup
 				spr.x += 2.5 * a;
 
 				rand.currentSeed = PlayState.SONG != null ? letterToInt(PlayState.SONG.song) : letterToInt("IRyS");
+				rand.currentSeed += Std.int(currentNumber);
 				var xFloat = rand.int(-3, 3);
 				var yFloat = rand.int(-3, 3);
 

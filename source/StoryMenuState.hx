@@ -397,6 +397,7 @@ class StoryMenuState extends MusicBeatState
 				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
+			PlayState.resetWeekStats();
 			new FlxTimer().start(1, function(tmr:FlxTimer)
 			{
 				LoadingState.loadAndSwitchState(new PlayState(), true);

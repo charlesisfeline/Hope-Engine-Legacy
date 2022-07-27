@@ -67,7 +67,6 @@ class DialogueEditor extends MusicBeatState
 		add(bg);
 
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		var tabs = [
 			{name: "1", label: 'Background & Style'},

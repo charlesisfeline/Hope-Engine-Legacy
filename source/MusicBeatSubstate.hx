@@ -21,8 +21,6 @@ class MusicBeatSubstate extends FlxSubState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	var usesMouse:Bool = false;
-
 	override function update(elapsed:Float)
 	{
 		// everyStep();
@@ -35,12 +33,6 @@ class MusicBeatSubstate extends FlxSubState
 			stepHit();
 
 		super.update(elapsed);
-
-		if (usesMouse)
-		{
-			if (FlxG.mouse.justMoved && !FlxG.mouse.visible)
-				FlxG.mouse.visible = true;
-		}
 	}
 
 	private function updateCurStep():Void

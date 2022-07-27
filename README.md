@@ -26,3 +26,7 @@ More credits on the [site](https://skuqre.github.io/Hope-Engine/credits).
 
 For building, see this: <https://skuqre.github.io/Hope-Engine/building><br>
 Do note that this will change overtime. Everything is not final.
+
+Also, little info: When taking code from the `main` branch (clicking the big green button that says "Code"), you'll be hit with the cutting edge, straight from the grasslands, version of the engine. It could either be incomplete, or complete.
+
+If you want a stable version, head to the "Releases" on the side of this page, and click the version that you want. Should lead you to a different page. Scrolling down on that new page, you should see Source Code downloads. Get the appropriate files needed for your computer.

@@ -25,8 +25,6 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	public var usesMouse:Bool = false;
-
 	override function update(elapsed:Float)
 	{
 		// everyStep();
@@ -39,12 +37,6 @@ class MusicBeatState extends FlxUIState
 			stepHit();
 
 		super.update(elapsed);
-
-		if (usesMouse)
-		{
-			if (FlxG.mouse.justMoved && !FlxG.mouse.visible)
-				FlxG.mouse.visible = true;
-		}
 	}
 
 	private function updateBeat():Void
@@ -112,23 +104,9 @@ class MusicBeatState extends FlxUIState
 				Paths.trackedImageKeys.remove(image);
 			}
 
-			forEachAlive(function(basic:FlxBasic) {
+			forEachExists(function(basic:FlxBasic) {
 				remove(basic);
-	
-				if (basic is FlxSprite)
-				{
-					var spr:FlxSprite = cast basic;
-	
-					if (spr.graphic != null)
-					{
-						if (FlxG.bitmap.get(spr.graphic.key) != null)
-						{
-							FlxG.bitmap.removeByKey(spr.graphic.key);
-							Assets.cache.clear(spr.graphic.key);
-						}
-					}
-				}
-	
+				basic.exists = false;
 				basic.kill();
 				basic.destroy();
 			}, true);

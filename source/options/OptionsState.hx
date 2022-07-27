@@ -1,5 +1,6 @@
 package options;
 
+import AlphabetRedux;
 import modifiers.Modifiers;
 import achievements.Achievements;
 import flixel.FlxG;
@@ -25,7 +26,7 @@ class OptionsState extends MusicBeatState
 	var displayCategories:FlxTypedGroup<OptionCategory>;
 	var curSelected:Int = 0;
 	var inCat:Bool = false;
-	var highlightedAlphabet:Alphabet;
+	var highlightedAlphabet:AlphaReduxLine;
 	var descText:FlxText;
 	var descBG:FlxSprite;
 

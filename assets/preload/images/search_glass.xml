@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="search_glass.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="magni0000" x="5" y="5" width="118" height="144"/>
+	<SubTexture name="magni0001" x="5" y="5" width="118" height="144"/>
+	<SubTexture name="magni0002" x="128" y="5" width="118" height="144"/>
+	<SubTexture name="magni0003" x="128" y="5" width="118" height="144"/>
+</TextureAtlas>

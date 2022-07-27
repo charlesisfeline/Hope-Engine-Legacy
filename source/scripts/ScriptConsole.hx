@@ -170,6 +170,8 @@ class ScriptConsole extends Sprite
 		addChild(placeholder);
 		addChild(commandLine);
 
+		var wasInvi:Bool = false;
+
 		FlxG.signals.postUpdate.add(function()
 		{
 			scaleX = FlxG.scaleMode.scale.x;
@@ -181,15 +183,20 @@ class ScriptConsole extends Sprite
 			if (FlxG.keys.justPressed.F3)
 			{
 				visible = !visible;
-				FlxG.mouse.visible = true;
 
-				if (FlxG.state is MusicBeatState)
+				if (visible)
 				{
-					var state:MusicBeatState = cast FlxG.state;
-
-					if (!state.usesMouse && !visible)
-						FlxG.mouse.visible = visible;
+					if (!FlxG.mouse.visible)
+					{
+						FlxG.mouse.visible = true;
+						wasInvi = true;
+					}
+					else
+						wasInvi = false;
 				}
+
+				if (wasInvi && !visible)
+					FlxG.mouse.visible = false;
 			}
 
 			placeholder.visible = commandLine.length < 1 && !isTextFocused;

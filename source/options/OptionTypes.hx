@@ -1,5 +1,6 @@
 package options;
 
+import AlphabetRedux;
 import Checkbox.CheckBox;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -9,7 +10,7 @@ import flixel.util.FlxColor;
 
 class Option extends FlxSpriteGroup
 {
-	public var alphaDisplay:Alphabet;
+	public var alphaDisplay:AlphaReduxLine;
 	public var display:String = '';
 	public var desc:String = '';
 	public var targetY:Float = 0.0;
@@ -22,7 +23,7 @@ class Option extends FlxSpriteGroup
 		this.display = display;
 		this.desc = desc;
 
-		alphaDisplay = new Alphabet(0, 0, display, false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display, false);
 		this.add(alphaDisplay);
 	}
 
@@ -55,13 +56,13 @@ class OptionCategory extends FlxSpriteGroup
 {
 	public var name:String;
 	public var options:Array<Option>;
-	public var alphaDisplay:Alphabet;
+	public var alphaDisplay:AlphaReduxLine;
 
 	public function new(name:String, options:Array<Option>)
 	{
 		super();
 
-		this.alphaDisplay = new Alphabet(0, 0, name, true);
+		this.alphaDisplay = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
 		this.name = name;
 		this.options = options;
 
@@ -113,7 +114,7 @@ class OptionSubCategoryTitle extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, name, true);
+		alphaDisplay = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
 		add(alphaDisplay);
 
 		alphaDisplay.color = color;
@@ -234,7 +235,7 @@ class ValueOptionFloat extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
 		add(alphaDisplay);
 	}
 }
@@ -320,7 +321,7 @@ class ValueOptionInt extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
 		add(alphaDisplay);
 	}
 }
@@ -368,7 +369,7 @@ class SelectionOption extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
 		add(alphaDisplay);
 	}
 

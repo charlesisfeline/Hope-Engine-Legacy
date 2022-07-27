@@ -35,7 +35,6 @@ class RatingPosSubstate extends MusicBeatSubstate
 		super();
 
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.1), Std.int(FlxG.height * 1.1), FlxColor.BLACK);
 		bg.screenCenter();

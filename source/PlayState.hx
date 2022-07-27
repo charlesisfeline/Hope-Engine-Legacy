@@ -980,7 +980,7 @@ class PlayState extends MusicBeatState
 			camHUD.visible = false;
 			camGame.setFilters([new BlurFilter()]);
 			daLogo = new FlxSprite(0, 0).loadGraphic(Paths.image('YEAHHH WE FUNKIN'));
-			daLogo.scale.set(0.75, 0.75);
+			daLogo.scale.set(0.75 * 0.5, 0.75 * 0.5);
 			daLogo.updateHitbox();
 			daLogo.screenCenter();
 			daLogo.scrollFactor.set();
@@ -2079,7 +2079,10 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		var npsShit = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "");
-		scoreTxt.text = npsShit + Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
+		var rateShit = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
+
+		if (npsShit + rateShit != scoreTxt.text)
+			scoreTxt.text = npsShit + rateShit;
 
 		if (controls.PAUSE && startedCountdown && canPause && !inCutscene)
 		{
@@ -2349,6 +2352,18 @@ class PlayState extends MusicBeatState
 		Modifiers.postUpdate(elapsed);
 	}
 
+	public static function resetWeekStats():Void
+	{
+		weekShits = 0;
+		weekBads = 0;
+		weekGoods = 0;
+		weekSicks = 0;
+		weekMisses = 0;
+		weekPeakCombo = [];
+		weekAccuracies = [];
+		weekName = "";
+	}
+
 	public var devBot:Bool = false;
 
 	var waitTime:Float = Conductor.crochet / 1500;
@@ -2453,15 +2468,7 @@ class PlayState extends MusicBeatState
 						PlayState.seenCutscene = false;
 
 						FlxG.save.flush();
-
-						weekShits = 0;
-						weekBads = 0;
-						weekGoods = 0;
-						weekSicks = 0;
-						weekMisses = 0;
-						weekPeakCombo = [];
-						weekAccuracies = [];
-						weekName = "";
+						PlayState.resetWeekStats();
 					}
 					else
 					{
@@ -3300,7 +3307,7 @@ class PlayState extends MusicBeatState
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), 0.4);
 
-			if (daNote != null)
+			if (daNote != null && !daNote.noAnim)
 			{
 				if (daNote.wasEnemyNote)
 					miss(dad, direction);
@@ -3556,7 +3563,7 @@ class PlayState extends MusicBeatState
 	var DIRECTIONS:Array<String> = ["LEFT", "DOWN", "UP", "RIGHT"];
 	var CAMERA_CONSTANT:Float = 10;
 
-	function sing(character:Character, direction:Int, ?isAlt:Bool = false)
+	public function sing(character:Character, direction:Int, ?isAlt:Bool = false)
 	{
 		var canAlt = character.animation.getByName('sing' + DIRECTIONS[direction] + "-alt") != null;
 		var alt:String = (isAlt && canAlt ? "-alt" : "");
@@ -3568,7 +3575,7 @@ class PlayState extends MusicBeatState
 			moveCamera(direction);
 	}
 
-	function miss(character:Character, direction:Int)
+	public function miss(character:Character, direction:Int)
 	{
 		var canMiss = character.animation.getByName('sing' + DIRECTIONS[direction] + "miss") != null;
 
@@ -3579,7 +3586,7 @@ class PlayState extends MusicBeatState
 			moveCamera(direction);
 	}
 
-	function moveCamera(direction:Int)
+	public function moveCamera(direction:Int)
 	{
 		switch (direction)
 		{
@@ -3598,7 +3605,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function lightStrumNote(strum:FlxTypedSpriteGroup<StaticArrow>, dir:Int)
+	public function lightStrumNote(strum:FlxTypedSpriteGroup<StaticArrow>, dir:Int)
 	{
 		strum.forEach(function(spr:StaticArrow)
 		{
@@ -3704,6 +3711,8 @@ class PlayState extends MusicBeatState
 	{
 		super.stepHit();
 
+		Modifiers.stepHit(curStep);
+
 		if (Math.abs(FlxG.sound.music.time - Conductor.songPosition) > 20
 			|| Math.abs(vocals.time - Conductor.songPosition) > 20
 			|| Math.abs(FlxG.sound.music.time - vocals.time) > 20)
@@ -3760,13 +3769,14 @@ class PlayState extends MusicBeatState
 	override function beatHit()
 	{
 		super.beatHit();
+		Modifiers.beatHit(curBeat);
 
 		if (songRecording && canPause)
 		{
 			new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
 			{
-				daLogo.scale.set(0.85, 0.85);
-				FlxTween.tween(daLogo, {"scale.x": 0.75, "scale.y": 0.75}, Conductor.crochet / 1500, {ease: FlxEase.quadOut});
+				daLogo.scale.set(0.85 * 0.5, 0.85 * 0.5);
+				FlxTween.tween(daLogo, {"scale.x": 0.75 * 0.5, "scale.y": 0.75 * 0.5}, Conductor.crochet / 1500, {ease: FlxEase.quadOut});
 			});
 		}
 
@@ -3840,7 +3850,14 @@ class PlayState extends MusicBeatState
 		var achs:Array<String> = [];
 
 		// Hard PFC
-		if (isStoryMode && storyPlaylist.length == 1 && weekGoods == 0 && weekBads == 0 && weekShits == 0 && storyDifficulty == 2)
+		if (isStoryMode
+			&& Paths.currentMod == null
+			&& storyDifficulty == 2
+			&& storyPlaylist.length == 1
+			&& weekSicks > 0
+			&& weekGoods == 0
+			&& weekBads == 0
+			&& weekShits == 0)
 		{
 			switch (storyWeek)
 			{

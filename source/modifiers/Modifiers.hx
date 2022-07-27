@@ -25,17 +25,23 @@ class Modifiers
         "stairs" => false,
         "no_miss" => false,
         "perfect" => false,
-        "goods_only" => false
+        "goods_only" => false,
+        "pure_perfect" => false,
+        "loud_speakers" => 1,
+        "fast_forward" => 1
     ];
 
     public static var modifierRates:Map<String, Float> = [
         "wind_up" => 0.005,
-        "speed" => 0.005,
+        "speed" => 0.0015,
         "p2_side" => 0,
         "stairs" => -0.03,
         "no_miss" => 0.05,
         "perfect" => 0.1,
-        "goods_only" => 0.11
+        "goods_only" => 0.11,
+        "pure_perfect" => 0.13,
+        "loud_speakers" => 0.003,
+        "fast_forward" => 0.005
     ];
 
     public static var modifierNames:Map<String, String> = [
@@ -45,7 +51,10 @@ class Modifiers
         "stairs" => "Stairs",
         "no_miss" => "No Miss",
         "perfect" => "Perfect!",
-        "goods_only" => "Goods Only"
+        "goods_only" => "Goods Only",
+        "pure_perfect" => "Pure Perfect!",
+        "loud_speakers" => "Loud Speakers",
+        "fast_forward" => "Fast Forward"
     ];
 
     /**
@@ -53,7 +62,9 @@ class Modifiers
      */
     public static var modifierIncrements:Map<String, Float> = [
         "wind_up" => 0.1,
-        "speed" => 0.1
+        "speed" => 0.1,
+        "loud_speakers" => 0.05,
+        "fast_forward" => 0.1
     ];
 
     public static var modifierDescs:Map<String, String> = [
@@ -63,8 +74,8 @@ class Modifiers
                    + "\n\nAdds 0.005 to the multiplier per level."
                    + "\n\n- Hit Timings will become more lenient as it goes on.",
         "speed" => "Multiplies the scroll speed. Does not alter anything song-related."
-                 + "\n\nAdds 0.005 to the multiplier per level.",
-        "p2_side" => "Lets you play the enemy instead."
+                 + "\n\nAdds 0.0015 to the multiplier per level.",
+        "p2_side" => "Lets you play as the enemy instead."
                    + "\n\nDoes not add anything to the multiplier.",
         "stairs" => "Hi Mic'd Up!"
                   + "\n\nEverything becomes a staircase."
@@ -75,7 +86,20 @@ class Modifiers
                    + "\n\nAdds 0.1 to the multiplier.",
         "goods_only" => "You can't hit anything but a Good! Even hitting a Sick!! *will* kill you."
                       + "\n\nAdds 0.11 to the multiplier."
-                      + "\nYou can't just delay yourself, right?"
+                      + "\nYou can't just delay yourself, right?",
+        "pure_perfect" => "You have to do it more perfectly."
+                        + "\n\nIf anything but a Sick!! (with 2 exclamation marks) appears, you're dead."
+                        + "\n\nAdds 0.13 to the multiplier.",
+        "loud_speakers" => "The speakers are too loud."
+                        + "\nThe screen shakes when GF bops."
+                        + "\n\nThat's about it really."
+                        + "\n\nAlso no the sound does not get bass boosted, this is just visual impairment"
+                        + "\n\n- higher value = higher intensity = more visual impairment"
+                        + "\n\nAdds 0.003 to the multiplier per level.",
+        "fast_forward" => "Go faster! Just go faster!"
+                        + "\nThink it's like Wind Up, but with a stable speed."
+                        + "\n\nAdds 0.005 to the multiplier per level."
+
     ];
 
     public static var modifierScores:Map<String, Array<ModifierSave>> = [];
@@ -93,6 +117,8 @@ class Modifiers
         Ratings.modifier = 1;
         musicOnComplete = null;
         peakPitch = 1;
+
+        pitchedElapsed = 0;
 
         if (modifiers["speed"] > 1)
             PlayState.instance.globalScrollSpeed *= modifiers["speed"];
@@ -157,6 +183,7 @@ class Modifiers
                 PlayState.instance.healthBar.createFilledBar(PlayState.dad.getColor(), PlayState.boyfriend.getColor());
             }
             PlayState.instance.healthBar.updateFilledBar();
+            PlayState.instance.healthBar.updateBar();
         }
     }
 
@@ -172,13 +199,26 @@ class Modifiers
 
     }
 
+    public static function beatHit(beat:Int):Void
+    {
+        if (modifiers["loud_speakers"] > 1)
+            FlxG.cameras.shake(0.02 * modifiers["loud_speakers"], (Conductor.crochet / 1000) * 0.8);
+    }
+
+    public static function stepHit(step:Int):Void
+    {
+
+    }
+
     static var musicOnComplete:Void->Void;
     static var peakPitch:Float = 1;
+
+    static var pitchedElapsed:Float = 0;
 
     // idk playstate update???
     public static function playStateUpdate(elapsed:Float)
     {
-        if (PlayState.misses != 0 && (modifiers["perfect"] || modifiers["goods_only"] || modifiers["no_miss"]))
+        if (PlayState.misses != 0 && (modifiers["perfect"] || modifiers["goods_only"] || modifiers["no_miss"] || modifiers["pure_perfect"]))
             PlayState.instance.health = 0;
 
         if (modifiers["perfect"] && (PlayState.goods != 0 || PlayState.bads != 0 || PlayState.shits != 0))
@@ -187,16 +227,29 @@ class Modifiers
         if (modifiers["goods_only"] && (PlayState.sicks != 0 || PlayState.bads != 0 || PlayState.shits != 0))
             PlayState.instance.health = 0;
 
-        if (modifiers["wind_up"] > 1 && PlayState.instance.songStarted)
+        if (modifiers["pure_perfect"] && (PlayState.sickButNotReally != 0 || PlayState.goods != 0 || PlayState.bads != 0 || PlayState.shits != 0))
+            PlayState.instance.health = 0;
+
+        if ((modifiers["wind_up"] > 1 || modifiers["fast_forward"] > 1) && PlayState.instance.songStarted)
         {
             var songPercent = FlxG.sound.music.time / FlxG.sound.music.length;
             var vocals = PlayState.instance.vocals;
             var currentPitch = (modifiers["wind_up"] * songPercent) + (1 * (1 - songPercent));
             Ratings.modifier = currentPitch;
+
+            if (modifiers["fast_forward"] > 1)
+            {
+                currentPitch = modifiers["fast_forward"];
+                Ratings.modifier = 1;
+            }
+
             FlxG.watch.addQuick("pitch" #if !cpp + " (false hope)" #end, currentPitch);
 
             if (currentPitch > peakPitch)
                 peakPitch = currentPitch;
+
+            if (FlxG.sound.music.time > pitchedElapsed)
+                pitchedElapsed = FlxG.sound.music.time;
 
             #if cpp
             @:privateAccess
@@ -209,7 +262,9 @@ class Modifiers
                     if (vocals.playing)
                         lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, currentPitch);
 
-                    if (FlxG.sound.music.playing && FlxG.sound.music.time < 1 && peakPitch > currentPitch)
+                    // when the time is done on a pitched sound, it turns time to 0
+                    // onComplete does not trigger after that and will trigger after the song's unpitched time has passed
+                    if (FlxG.sound.music.time < pitchedElapsed)
                     {
                         if (musicOnComplete != null)
                             musicOnComplete();

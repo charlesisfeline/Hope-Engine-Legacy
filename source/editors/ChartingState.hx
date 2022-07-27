@@ -158,7 +158,6 @@ class ChartingState extends MusicBeatState
 		#end
 
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		curSection = lastSection;
 
@@ -836,7 +835,8 @@ class ChartingState extends MusicBeatState
 			sectionToCopy = curSection;
 			for (i in 0..._song.notes[curSection].sectionNotes.length)
 			{
-				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes[i];
+				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes.copy()[i];
+				note[0] -= sectionStartTime();
 				notesCopied.push(note);
 			}
 		});
@@ -853,7 +853,7 @@ class ChartingState extends MusicBeatState
 				var isNoAnim = note[4] != null ? note[4] : false;
 				var isAltAnim = note[5] != null ? note[5] : false;
 
-				copiedNote = [note[0] + addToTime, note[1], note[2], note[3], isNoAnim, isAltAnim];
+				copiedNote = [note[0] + sectionStartTime(), note[1], note[2], note[3], isNoAnim, isAltAnim];
 
 				_song.notes[curSection].sectionNotes.push(copiedNote);
 			}

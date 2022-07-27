@@ -112,7 +112,6 @@ class CreditsEditor extends MusicBeatState
 
 	override function create()
 	{
-		usesMouse = true;
 		FlxG.mouse.visible = true;
 
 		#if desktop

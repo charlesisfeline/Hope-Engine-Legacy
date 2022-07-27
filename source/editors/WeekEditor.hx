@@ -88,7 +88,6 @@ class WeekEditor extends MusicBeatState
 		#end
 
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		add(blackBarThingie);

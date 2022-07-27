@@ -34,6 +34,9 @@ class ConfirmationPrompt extends MusicBeatSubstate
 	{
 		super();
 
+		if (!FlxG.mouse.visible)
+			wasInvi = true;
+
 		this.titleText = title;
 		this.descText = desc;
 		this.confirmDisplay = confirm;
@@ -42,7 +45,6 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		persistentDraw = true;
 		persistentUpdate = false;
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		this.confirmThing = confirmCallback;
 		this.denyThing = declineCallback;
@@ -127,9 +129,12 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		}
 	}
 
+	var wasInvi:Bool = false;
+
 	function confirm()
 	{
-		FlxG.mouse.visible = false;
+		if (wasInvi)
+			FlxG.mouse.visible = false;
 
 		if (confirmThing != null)
 			confirmThing();
@@ -150,7 +155,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 	function deny()
 	{
-		FlxG.mouse.visible = false;
+		if (wasInvi)
+			FlxG.mouse.visible = false;
 
 		if (denyThing != null)
 			denyThing();

@@ -102,6 +102,13 @@ class ScriptEssentials
 			Y: Y,
 			XY: XY,
 		});
+		interp.variables.set("FlxTweenType", {
+			PERSIST: FlxTweenType.PERSIST,
+			LOOPING: FlxTweenType.LOOPING,
+			PINGPONG: FlxTweenType.PINGPONG,
+			ONESHOT: FlxTweenType.ONESHOT,
+			BACKWARD: FlxTweenType.BACKWARD
+		});
 		interp.variables.set("print", function(e:Dynamic) {
 			Main.console.add(e, CONSOLE);
 		});

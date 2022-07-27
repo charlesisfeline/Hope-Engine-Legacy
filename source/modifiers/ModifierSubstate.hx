@@ -1,5 +1,6 @@
 package modifiers;
 
+import AlphabetRedux;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup.FlxTypedGroup;
@@ -13,12 +14,15 @@ class ModifierSubstate extends MusicBeatSubstate
 {
     var modifiersAvailable:Array<String> = [
         "wind_up",
+        "fast_forward",
         "speed",
         "p2_side",
         "stairs",
         "no_miss",
         "perfect",
-        "goods_only"
+        "pure_perfect",
+        "goods_only",
+        "loud_speakers"
     ];
 
     var modifierName:FlxText;
@@ -28,7 +32,7 @@ class ModifierSubstate extends MusicBeatSubstate
     var multiplierText:FlxText;
     var curMultiplier:Float = 1.0;
 
-    var items:FlxTypedGroup<Alphabet>;
+    var items:FlxTypedGroup<AlphaReduxLine>;
 
     static var curSelected:Int = 0;
     
@@ -39,16 +43,25 @@ class ModifierSubstate extends MusicBeatSubstate
         var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuBGBlue"));
         add(bg);
 
-        items = new FlxTypedGroup<Alphabet>();
+        items = new FlxTypedGroup<AlphaReduxLine>();
         add(items);
+
+        var modifierDescBG:FlxSprite = new FlxSprite().makeGraphic(Std.int(FlxG.width / 2 - 160), Std.int(FlxG.height - 80), FlxColor.BLACK);
+        modifierDescBG.x = FlxG.width - modifierDescBG.width - 40;
+        modifierDescBG.y = 40;
+        modifierDescBG.alpha = 0.6;
+        add(modifierDescBG);
 
         for (i in 0...modifiersAvailable.length)
         {
             var name = Modifiers.modifierNames[modifiersAvailable[i]];
 
-            var item = new Alphabet(0, 0, name, true);
+            var item = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
             item.isMenuItem = true;
             item.targetY = i - curSelected;
+
+            if (240 + item.width > modifierDescBG.x)
+                item.setGraphicSize(Std.int(modifierDescBG.x - item.x - 260));
 
             var box = new FlxSprite();
 			box.frames = Paths.getSparrowAtlas("modifierBox");
@@ -74,12 +87,6 @@ class ModifierSubstate extends MusicBeatSubstate
             item.y = item.getTargetY();
             items.add(item);
         }
-
-        var modifierDescBG:FlxSprite = new FlxSprite().makeGraphic(Std.int(FlxG.width / 2 - 160), Std.int(FlxG.height - 80), FlxColor.BLACK);
-        modifierDescBG.x = FlxG.width - modifierDescBG.width - 40;
-        modifierDescBG.y = 40;
-        modifierDescBG.alpha = 0.6;
-        add(modifierDescBG);
 
         modifierName = new FlxText(0, 0, modifierDescBG.width - 40);
         modifierName.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);

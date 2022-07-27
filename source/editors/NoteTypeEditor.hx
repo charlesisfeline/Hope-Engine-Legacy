@@ -146,7 +146,6 @@ class NoteTypeEditor extends MusicBeatState
 		#end
 
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		camEdit = new FlxCamera();
 		camHUD = new FlxCamera();
