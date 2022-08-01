@@ -177,3 +177,65 @@ class StageEditor extends MusicBeatState
 		}
 	}
 }
+
+class StageSprite extends FlxSprite
+{
+	var imagePathUsed:Null<String> = null;
+	var variableName:Null<String> = null;
+	var lib:Null<String> = null;
+
+	static var idInt:Int = 0;
+
+	public function new()
+	{
+		super(0, 0);
+	}
+
+	public function loadImage(imagePath:String, ?lib:String)
+	{
+		loadGraphic(Paths.image(imagePath, lib));
+		imagePathUsed = imagePath;
+		this.lib = lib;
+
+		return this;
+	}
+
+	public function generateSpriteCode():String
+	{
+		var lines:Array<String> = [];
+		var varNameReal:String = variableName != null ? variableName : "sprite" + idInt++;
+
+		var newLine = 'var $varNameReal = new FlxSprite($x, $y);';
+		var loadLine = '$varNameReal.loadGraphic(Paths.image("$imagePathUsed"${lib != null ? ', "$lib"' : ''}));';
+
+		var imageExists = Paths.exists(Paths.image(imagePathUsed, lib));
+		var xmlExists = Paths.exists(Paths.file('images/$imagePathUsed.xml', lib));
+
+		lines.push(newLine);
+
+		if (imagePathUsed != null && !imageExists && !xmlExists)
+			lines.push(loadLine);
+
+		var scaleX:Null<Float> = scale.x;
+		var scaleY:Null<Float> = scale.y;
+
+		if (scaleX != 1 || scaleY != 1)
+		{
+			lines.push('$varNameReal.scale.set($scaleX, $scaleY);');
+			lines.push('$varNameReal.updateHitbox();');
+		}
+
+		if (angle != 0)
+			lines.push('$varNameReal.angle = $angle;');
+
+		var scrollX:Null<Float> = scrollFactor.x;
+		var scrollY:Null<Float> = scrollFactor.y;
+
+		if (scrollX != 1 || scrollY != 1)
+			lines.push('$varNameReal.scale.set($scrollX, $scrollY);');
+
+		lines.push('add($varNameReal);');
+
+		return lines.join("\n").trim();
+	}
+}
