@@ -537,7 +537,7 @@ class ChartingState extends MusicBeatState
 		];
 
 		// do a reading if FILESYSTEM epic
-		#if FILESYSTEM
+		#if (FILESYSTEM && MODS_FEATURE)
 		if (FileSystem.exists(Sys.getCwd() + "mods"))
 		{
 			for (mod in FileSystem.readDirectory(Sys.getCwd() + "mods"))
@@ -957,7 +957,7 @@ class ChartingState extends MusicBeatState
 		];
 
 		// do a reading if FILESYSTEM epic
-		#if FILESYSTEM
+		#if (FILESYSTEM && MODS_FEATURE)
 		if (FileSystem.exists(Sys.getCwd() + "mods"))
 		{
 			for (mod in FileSystem.readDirectory(Sys.getCwd() + "mods"))

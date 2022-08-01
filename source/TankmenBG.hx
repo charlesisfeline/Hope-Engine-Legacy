@@ -1,5 +1,6 @@
 package;
 
+import flixel.effects.FlxFlicker;
 import flixel.FlxG;
 import flixel.FlxSprite;
 
@@ -36,11 +37,14 @@ class TankmenBG extends FlxSprite
 		updateHitbox();
 	}
 
+	public var dying:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-		visible = (x > -0.5 * FlxG.width && x < 1.2 * FlxG.width);
+		if (!dying)
+			visible = (x > -0.5 * FlxG.width && x < 1.2 * FlxG.width);
 
 		if (animation.curAnim.name == "run")
 		{
@@ -55,9 +59,16 @@ class TankmenBG extends FlxSprite
 			kill();
 		}
 
-		if (Conductor.songPosition > strumTime)
+		// fuck it, hardcoded flicker
+		if (animation.curAnim.curFrame >= 14 && animation.curAnim.curFrame % 2 == 0 && dying)
+			visible = !visible;
+
+		if (Conductor.songPosition > strumTime && !dying)
 		{
+			dying = true;
+
 			animation.play('shot');
+
 			if (fromLeft)
 			{
 				offset.x = 300;

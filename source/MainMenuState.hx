@@ -34,7 +34,7 @@ class MainMenuState extends MusicBeatState
 	var optionShit:Array<String> = [
 		'story mode',
 		'freeplay',
-		#if FILESYSTEM 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
+		#if (FILESYSTEM && MODS_FEATURE) 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
 		'achievements', // remove this line if you want the Achievements Menu to be inaccessible!
 		'credits',
 		'options'
@@ -267,7 +267,7 @@ class MainMenuState extends MusicBeatState
 				CustomTransition.switchTo(new FreeplayState());
 			case 'credits':
 				CustomTransition.switchTo(new CreditsState());
-			#if FILESYSTEM
+			#if (FILESYSTEM && MODS_FEATURE)
 			case 'mods':
 				CustomTransition.switchTo(new ModLoadingState());
 			#end

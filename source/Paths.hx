@@ -37,7 +37,11 @@ class Paths
 
 	static public function setCurrentMod(name:String)
 	{
+		#if MODS_FEATURE
 		currentMod = (name == null ? null : name.toLowerCase());
+		#else
+		currentMod = null;
+		#end
 	}
 
 	public static function getPath(file:String, type:AssetType, library:Null<String>)
@@ -513,17 +517,26 @@ class Paths
 	}
 
 	#if FILESYSTEM
-	inline static public function loadModFile(mod:String) // the "loadMod" file
+	// previous file names are kept for backwards compatibility
+	// file content will stay the same though
+
+	inline static public function loadModFile(mod:String)
 	{
-		return 'mods/$mod/loadMod';
+		if (Paths.exists('mods/$mod/loadMod'))
+			return 'mods/$mod/loadMod';
+		else
+			return 'mods/$mod/load.yml'; // since 0.1.6
 	}
 
-	inline static public function modInfoFile(mod:String) // mod-info.json
+	inline static public function modInfoFile(mod:String)
 	{
-		return 'mods/$mod/modInfo';
+		if (Paths.exists('mods/$mod/modInfo'))
+			return 'mods/$mod/modInfo';
+		else
+			return 'mods/$mod/mod.yml'; // since 0.1.6
 	}
 
-	inline static public function checkModLoad(mod:String):Bool // mod-info.json
+	inline static public function checkModLoad(mod:String):Bool
 	{
 		if (FileSystem.exists(loadModFile(mod)))
 		{

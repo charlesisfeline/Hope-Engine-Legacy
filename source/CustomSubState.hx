@@ -97,7 +97,7 @@ class CustomSubState extends MusicBeatSubstate
 		{
 			var attr = {
 				resizable: true,
-				title: "Hope Engine State Script Editor",
+				title: "Hope Engine Substate Script Editor",
 				context: {
 					background: 0x000000
 				},

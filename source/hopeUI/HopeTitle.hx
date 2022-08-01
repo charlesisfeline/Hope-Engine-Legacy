@@ -37,14 +37,14 @@ class HopeTitle extends MusicBeatState
 	override public function create():Void
 	{
 		#if FILESYSTEM
-		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
-			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
+		if (!FileSystem.exists(Sys.getCwd() + "/skins"))
+			FileSystem.createDirectory(Sys.getCwd() + "/skins");
 
 		if (!FileSystem.exists(Sys.getCwd() + "/mods"))
 			FileSystem.createDirectory(Sys.getCwd() + "/mods");
 
 		// quick check
-		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/assets/skins"))
+		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/skins"))
 		{
 			if (skinName.trim() == 'default')
 				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
@@ -129,7 +129,7 @@ class HopeTitle extends MusicBeatState
 			// transIn = FlxTransitionableState.defaultTransIn;
 			// transOut = FlxTransitionableState.defaultTransOut;
 
-			#if FILESYSTEM
+			#if (FILESYSTEM && MODS_FEATURE)
 			var prevMod = Paths.currentMod;
 
 			for (mod in FileSystem.readDirectory('mods'))

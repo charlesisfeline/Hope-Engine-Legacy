@@ -272,6 +272,8 @@ class KeybindsState extends MusicBeatState
 	var recordTime:Float = 0.0;
     var holdTime:Float = 0;
 
+    var exiting:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -311,10 +313,13 @@ class KeybindsState extends MusicBeatState
             else
                 holdTime = 0;
 
-			if (controls.UI_BACK)
+			if (controls.UI_BACK && !exiting)
             {
                 if (allKeysUnique)
+                {
+                    exiting = true;
                     CustomTransition.switchTo(new OptionsState());
+                }
                 else
                     FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
             }

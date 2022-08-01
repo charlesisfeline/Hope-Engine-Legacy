@@ -59,10 +59,10 @@ import sys.io.File;
 import Discord.DiscordClient;
 #end
 
-#if VIDEOS_ALLOWED
-import vlc.MP4Handler;
-import vlc.MP4Sprite;
-#end
+// #if VIDEOS_ALLOWED
+// import vlc.MP4Handler;
+// import vlc.MP4Sprite;
+// #end
 
 typedef StageJSON =
 {
@@ -264,7 +264,7 @@ class PlayState extends MusicBeatState
 	public var stageInterp:Interp;
 
 	// skin stuff
-	var noteSplashAtlas:FlxAtlasFrames;
+	public var noteSplashAtlas:FlxAtlasFrames;
 
 	public var globalScrollSpeed:Float = Settings.scrollSpeed == 1 ? SONG.speed : Settings.scrollSpeed;
 
@@ -429,10 +429,13 @@ class PlayState extends MusicBeatState
 
 		#if FILESYSTEM
 		var s = options.NoteSkinSelection.loadedSplashes.get(Settings.noteSkin);
-		var p = Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/note_splashes.xml";
+		var p = Sys.getCwd() + "skins/" + Settings.noteSkin + "/normal/note_splashes.xml";
 
 		if (SONG.noteStyle == 'pixel')
-			p = Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/pixel/pixel_splashes.xml";
+		{
+			s = options.NoteSkinSelection.loadedSplashes.get(Settings.noteSkin + "-pixel");
+			p = Sys.getCwd() + "skins/" + Settings.noteSkin + "/pixel/pixel_splashes.xml";
+		}
 
 		if (Settings.noteSkin != "default" && s != null && FileSystem.exists(p))
 			noteSplashAtlas = FlxAtlasFrames.fromSparrow(s, File.getContent(p));
@@ -1236,7 +1239,7 @@ class PlayState extends MusicBeatState
 		#if FILESYSTEM
 		if (Settings.noteSkin != "default" && Note.noteSkin == null && options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin) != null)
 			Note.noteSkin = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-				File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
+				File.getContent(Sys.getCwd() + "skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
 		#end
 
 		trace('loaded vocals');
@@ -1550,13 +1553,13 @@ class PlayState extends MusicBeatState
 			switch (SONG.noteStyle)
 			{
 				case 'pixel':
-					babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
-
 					#if FILESYSTEM
 					var s = options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel");
 					if (Settings.noteSkin != "default" && s != null)
 						babyArrow.loadGraphic(s, true, 17, 17);
+					else
 					#end
+						babyArrow.loadGraphic(Paths.image('pixelUI/arrows-pixels'), true, 17, 17);
 
 					babyArrow.setGraphicSize(Std.int(babyArrow.width * daPixelZoom));
 					babyArrow.updateHitbox();
@@ -1568,12 +1571,12 @@ class PlayState extends MusicBeatState
 							babyArrow.x += Note.swagWidth * 0;
 							babyArrow.animation.add('static', [0]);
 							babyArrow.animation.add('pressed', [4, 8], 12, false);
-							babyArrow.animation.add('confirm', [12, 16], 24, false);
+							babyArrow.animation.add('confirm', [12, 16], 12, false);
 						case 1:
 							babyArrow.x += Note.swagWidth * 1;
 							babyArrow.animation.add('static', [1]);
 							babyArrow.animation.add('pressed', [5, 9], 12, false);
-							babyArrow.animation.add('confirm', [13, 17], 24, false);
+							babyArrow.animation.add('confirm', [13, 17], 12, false);
 						case 2:
 							babyArrow.x += Note.swagWidth * 2;
 							babyArrow.animation.add('static', [2]);
@@ -1583,7 +1586,7 @@ class PlayState extends MusicBeatState
 							babyArrow.x += Note.swagWidth * 3;
 							babyArrow.animation.add('static', [3]);
 							babyArrow.animation.add('pressed', [7, 11], 12, false);
-							babyArrow.animation.add('confirm', [15, 19], 24, false);
+							babyArrow.animation.add('confirm', [15, 19], 12, false);
 					}
 
 				case 'normal':
@@ -1625,7 +1628,7 @@ class PlayState extends MusicBeatState
 					#if FILESYSTEM
 					if (Settings.noteSkin != "default")
 						babyArrow.frames = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-							File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
+							File.getContent(Sys.getCwd() + "skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
 					#end
 
 					babyArrow.animation.addByPrefix('green', 'arrowUP');
@@ -3541,7 +3544,7 @@ class PlayState extends MusicBeatState
 			openSubState(ass);
 		}
 
-		var video:MP4Handler = new MP4Handler();
+		var video:VideoHandler = new VideoHandler();
 		video.finishCallback = function()
 		{
 			if (isCutscene && songStarted)

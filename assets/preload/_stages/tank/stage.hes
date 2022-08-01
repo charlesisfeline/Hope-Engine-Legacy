@@ -19,12 +19,12 @@ function createBackground()
     mountains.updateHitbox();
     add(mountains);
 
-    var buildings = new FunkSprite("tankBuildings", "week7", -300, -20, 0.3, 0.3);
+    var buildings = new FunkSprite("tankBuildings", "week7", -200, 0, 0.3, 0.3);
     buildings.setGraphicSize(Std.int(1.1 * buildings.width));
     buildings.updateHitbox();
     add(buildings);
 
-    var ruins = new FunkSprite("tankRuins", "week7", -300, 0, 0.35, 0.35);
+    var ruins = new FunkSprite("tankRuins", "week7", -200, 0, 0.35, 0.35);
     ruins.setGraphicSize(Std.int(1.1 * buildings.width));
     ruins.updateHitbox();
     add(ruins);

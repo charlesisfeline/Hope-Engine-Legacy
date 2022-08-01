@@ -44,7 +44,7 @@
 
 	<assets path="assets/preload/videos" rename="assets/videos" include="*.mp4" embed='false' />
 
-	<define name="VIDEOS_ALLOWED" if="web || windows" />
+	<define name="VIDEOS_ALLOWED" if="desktop" />
 
 	<assets path="assets/preload" rename="assets" exclude="*.ogg" if="web"/>
 	<assets path="assets/preload" rename="assets" exclude="*.mp3" unless="web"/>
@@ -61,6 +61,10 @@
 	<!-- COMMENT OUT IF YOU DON'T WANT TO HEAR THE AGONY THAT IS THE HAXEFLIXEL JINGLE -->
 	<define name="CUSTOM_SPLASH_SCREEN" />
 
+	<!-- COMMENT OUT IF YOU DON'T WANT PEOPLE TO HAVE MOD ACCESS -->
+	<define name="MODS_FEATURE" />
+
+	<!-- WEEK UNLOCKING IS NOT FULLY FUNCTIONAL YET! -->
 	<define name="UNLOCK_ALL_WEEKS" />
 
 	<haxedef name="HXCPP_CHECK_POINTER" if="release" />
@@ -119,6 +123,7 @@
 	<assets path='version.awesome' embed="true" />
 
 	<assets path='mods' if="desktop" embed="false"/>
+	<assets path='skins' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
 	
 	<!-- <assets path="CHANGELOG.md" rename='changelog.txt'/> -->

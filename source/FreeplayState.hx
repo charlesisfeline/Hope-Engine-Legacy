@@ -122,7 +122,7 @@ class FreeplayState extends MusicBeatState
 			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseFloat(data[3]), data[4]));
 		}
 
-		#if FILESYSTEM
+		#if (FILESYSTEM && MODS_FEATURE)
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			Paths.setCurrentMod(i);

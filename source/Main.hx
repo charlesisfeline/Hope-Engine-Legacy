@@ -131,6 +131,9 @@ class Main extends Sprite
 		#end
 
 		MainMenuState.hopeEngineVer = Assets.getText('version.awesome');
+
+		FlxG.updateFramerate = Settings.fpsCap;
+		FlxG.drawFramerate = Settings.fpsCap;
 	}
 	
 	var game:FlxGame;

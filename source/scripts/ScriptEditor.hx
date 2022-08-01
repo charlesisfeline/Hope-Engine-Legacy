@@ -1,7 +1,11 @@
 package scripts;
 
+import hscript.Expr;
+import hscript.Parser;
+import flixel.FlxG;
 import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
+import openfl.events.Event;
 import sys.io.File;
 import openfl.events.MouseEvent;
 import openfl.text.TextFormatAlign;
@@ -23,36 +27,73 @@ class ScriptEditor extends Sprite
     var state:String;
     var path:String;
 
+    var parser:Parser;
+
     public function new(script:String, state:String, width:Int, height:Int, path:String)
     {
         super();
+
+        parser = new Parser();
+		parser.allowTypes = true;
+		parser.allowJSON = true;
+		parser.allowMetadata = true;
 
         this.script = script;
         this.state = state;
         this.path = path;
 
         content = new TextField();
-        content.width = width;
+        content.x = 64;
+        content.width = width - 64;
         content.height = height;
-        var a = new TextFormat("VCR OSD Mono", 24, 0xffbdbdbd);
+        var a = new TextFormat("VCR OSD Mono", 22, 0xffffff);
         a.align = TextFormatAlign.LEFT;
         content.defaultTextFormat = a;
-        // yeah.
-        // i wish there was a different way to do this without new lines fucking it up
-        for (i in 0...script.split("").length)
-            content.appendText(script.split("")[i]);
+        content.text = File.getContent(Paths.state(path));
+        // what the fuck are you???
+        content.text = content.text.replace("\r", "");
         content.multiline = true;
         content.type = TextFieldType.INPUT;
         content.selectable = true;
         addChild(content);
 
         content.addEventListener(KeyboardEvent.KEY_DOWN, onKey);
+        content.addEventListener(Event.ENTER_FRAME, onFrameEnter);
+    }
+
+    var parsed:Bool = false;
+    var parseTime:Float = 0.0;
+
+    function onFrameEnter(e:Event)
+    {
+        if (parseTime > 0 && !parsed)
+            parseTime -= FlxG.elapsed;
+
+        if (parseTime < 0 && !parsed)
+        {
+            parseTime = 0;
+            parsed = true;
+            try {
+                parse();
+                stage.window.title = "Hope Engine State Script Editor";
+            } catch(e:Dynamic) {
+                stage.window.title = "Hope Engine State Script Editor - [ERROR] " + e;
+            }
+        }
+    }
+
+    function parse()
+    {
+        parser.parseString(content.text.toString());
     }
 
     function onKey(k:KeyboardEvent)
     {
         if (k.keyCode == Keyboard.S && k.controlKey)
             File.saveContent(Paths.state(path), content.text.toString().trim());
+
+        parseTime = 1.5;
+        parsed = false;
     }
 
     public function mouseUpScroll(e:MouseEvent):Void

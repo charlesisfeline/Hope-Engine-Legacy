@@ -117,7 +117,7 @@ class StoryMenuState extends MusicBeatState
 			weekDifficultyLock.push(week.difficultyLock);
 		}
 
-		#if FILESYSTEM
+		#if (FILESYSTEM && MODS_FEATURE)
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && Paths.checkModLoad(i))

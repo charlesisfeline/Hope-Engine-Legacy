@@ -96,6 +96,9 @@ class MusicBeatState extends FlxUIState
 		}
 		#end
 
+		Assets.cache.clear("assets/sounds");
+		Assets.cache.clear("assets/shared/sounds");
+
 		if (!Settings.cacheImages)
 		{
 			for (image in Paths.trackedImageKeys)

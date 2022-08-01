@@ -30,7 +30,8 @@ class EditorsState extends MusicBeatState
 		"Note Type Editor",
 		"Event Editor",
 		"Position Offset Editor",
-		"Credits Editor"
+		"Credits Editor",
+		"Stage JSON Creator"
 	];
 
 	var grpOptions:FlxTypedGroup<Alphabet>;
@@ -183,6 +184,9 @@ class EditorsState extends MusicBeatState
 			case "Credits Editor":
 				CreditsEditor.fromEditors = true;
 				state = new CreditsEditor();
+			case "Stage JSON Creator":
+				StageJSONCreator.fromEditors = true;
+				state = new StageJSONCreator();
 		}
 
 		CustomTransition.switchTo(state);

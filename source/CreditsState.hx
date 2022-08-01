@@ -100,7 +100,7 @@ class CreditsState extends MusicBeatState
 
 		var prevMod = Paths.currentMod;
 
-		#if FILESYSTEM
+		#if (FILESYSTEM && MODS_FEATURE)
 		for (mod in FileSystem.readDirectory('mods'))
 		{
 			Paths.setCurrentMod(mod);

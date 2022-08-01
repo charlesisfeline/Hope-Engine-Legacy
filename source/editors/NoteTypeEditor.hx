@@ -248,7 +248,7 @@ class NoteTypeEditor extends MusicBeatState
 		#if FILESYSTEM
 		if (Settings.noteSkin != "default")
 			theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
-				File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
+				File.getContent(Sys.getCwd() + "skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
 		#end
 
 		var a:Array<String> = ["arrowLEFT", "arrowDOWN", "arrowUP", "arrowRIGHT"];

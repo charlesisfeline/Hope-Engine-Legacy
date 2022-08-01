@@ -22,7 +22,7 @@ function onStart()
         if (FlxG.random.bool(16))
         {
             var tank = new TankmenBG(20, 250, note.strumTime, note.noteData <= 2);
-            PlayState.insert(PlayState.members.indexOf(gf) - 2, tank);
+            PlayState.insert(PlayState.members.indexOf(gf) - 1, tank);
         }
     }
 

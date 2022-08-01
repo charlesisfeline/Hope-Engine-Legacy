@@ -25,10 +25,10 @@ import flixel.ui.FlxBar.FlxBarFillDirection;
 
 using StringTools;
 
-#if VIDEOS_ALLOWED
-import vlc.MP4Sprite;
-import vlc.MP4Handler;
-#end
+// #if VIDEOS_ALLOWED
+// import vlc.MP4Sprite;
+// import vlc.MP4Handler;
+// #end
 
 class ScriptEssentials
 {
@@ -67,8 +67,8 @@ class ScriptEssentials
 		interp.variables.set("Lib", Lib);
 
 		#if VIDEOS_ALLOWED
-		interp.variables.set("VideoSprite", MP4Sprite);
-		interp.variables.set("VideoHandler", MP4Handler);
+		interp.variables.set("VideoSprite", VideoSprite);
+		interp.variables.set("VideoHandler", VideoHandler);
 		#end
 
 		interp.variables.set("import", function(classPath:String)

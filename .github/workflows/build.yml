@@ -5,7 +5,14 @@
 name: Build
 
 # Controls when the workflow will run
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -38,7 +45,7 @@ jobs:
           haxelib install flixel-addons
           haxelib install flixel-ui
           haxelib git hscript https://github.com/skuqre/hscript
-          haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib install yaml
           haxelib install actuate
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
@@ -51,7 +58,11 @@ jobs:
           path: export/release/windows/bin
   linux:
     # The type of runner that the job will run on
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
+
+    # SHOUTOUTS TO https://github.com/TheRealJake12/Kade-Engine-Community
+    # AND TO TheRealJake12 (fixed Linux Actions problems)
+    # LINUX CAN HAVE VIDEOS NOW :DDDDD
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -65,9 +76,12 @@ jobs:
         run: |
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
+          sudo apt-get update
+          sudo apt-get install gcc-multilib g++-multilib haxe -y
           sudo apt-get install libvlc-dev
           sudo apt-get install libvlccore-dev
           sudo apt-get install vlc-bin
+          sudo apt-get -y install libidn12
           haxelib install lime 7.9.0
           haxelib install openfl
           haxelib --never install flixel
@@ -77,7 +91,7 @@ jobs:
           haxelib install flixel-addons
           haxelib install flixel-ui
           haxelib git hscript https://github.com/skuqre/hscript
-          haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib install yaml
           haxelib install actuate
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
@@ -114,7 +128,7 @@ jobs:
           haxelib install flixel-addons
           haxelib install flixel-ui
           haxelib git hscript https://github.com/skuqre/hscript
-          haxelib install hxCodec
+          haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib install flixel-addons
           haxelib install yaml
           haxelib install actuate

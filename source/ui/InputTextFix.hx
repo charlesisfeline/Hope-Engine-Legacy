@@ -1,5 +1,6 @@
 package ui;
 
+import openfl.events.KeyboardEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUIInputText;
@@ -56,6 +57,21 @@ class InputTextFix extends FlxUIInputText
 		
 		if (FlxG.keys.pressed.CONTROL && hasFocus)
 		{
+			// paste
+			if (FlxG.keys.justPressed.V)
+			{
+				var clip = openfl.desktop.Clipboard.generalClipboard.getData(TEXT_FORMAT);
+				var spl = text.split("");
+
+				trace(clip.toString());
+
+				spl.insert(caretIndex, clip.toString());
+
+				text = spl.join("");
+				caretIndex += clip.toString().length;
+				onChange(FlxInputText.INPUT_ACTION);
+			}
+
 			if (FlxG.keys.pressed.SHIFT)
 			{
 				if (FlxG.keys.pressed.ALT)
@@ -112,6 +128,102 @@ class InputTextFix extends FlxUIInputText
 			FlxG.sound.volumeUpKeys = [PLUS, NUMPADPLUS];
 			FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 		}
+	}
+
+	override function onKeyDown(e:KeyboardEvent):Void
+	{
+		var key:Int = e.keyCode;
+
+		if (hasFocus)
+		{
+			// Do nothing for Shift, Ctrl, Esc, and flixel console hotkey
+			if (key == 16 || key == 17 || key == 220 || key == 27)
+			{
+				return;
+			}
+			// do nothing for copy and paste keybinds
+			else if (e.controlKey)
+			{
+				if (key == 67 || key == 86)
+					return;
+			}
+			// Left arrow
+			else if (key == 37)
+			{
+				if (caretIndex > 0)
+				{
+					caretIndex--;
+					text = text; // forces scroll update
+				}
+			}
+			// Right arrow
+			else if (key == 39)
+			{
+				if (caretIndex < text.length)
+				{
+					caretIndex++;
+					text = text; // forces scroll update
+				}
+			}
+			// End key
+			else if (key == 35)
+			{
+				caretIndex = text.length;
+				text = text; // forces scroll update
+			}
+			// Home key
+			else if (key == 36)
+			{
+				caretIndex = 0;
+				text = text;
+			}
+			// Backspace
+			else if (key == 8)
+			{
+				if (caretIndex > 0)
+				{
+					caretIndex--;
+					text = text.substring(0, caretIndex) + text.substring(caretIndex + 1);
+					onChange(FlxInputText.BACKSPACE_ACTION);
+				}
+			}
+			// Delete
+			else if (key == 46)
+			{
+				if (text.length > 0 && caretIndex < text.length)
+				{
+					text = text.substring(0, caretIndex) + text.substring(caretIndex + 1);
+					onChange(FlxInputText.DELETE_ACTION);
+				}
+			}
+			// Enter
+			else if (key == 13)
+			{
+				onChange(FlxInputText.ENTER_ACTION);
+			}
+			// Actually add some text
+			else
+			{
+				if (e.charCode == 0) // non-printable characters crash String.fromCharCode
+				{
+					return;
+				}
+				var newText:String = filter(String.fromCharCode(e.charCode));
+
+				if (newText.length > 0 && (maxLength == 0 || (text.length + newText.length) < maxLength))
+				{
+					text = insertSubstring(text, newText, caretIndex);
+					caretIndex++;
+					onChange(FlxInputText.INPUT_ACTION);
+				}
+			}
+		}
+	}
+
+	override function set_text(Text:String):String 
+	{
+		Text = Text.replace("\r", "");
+		return super.set_text(Text);
 	}
 
 	override function destroy() 

@@ -1,5 +1,6 @@
 package;
 
+import lime.utils.Assets;
 import lime.ui.Window;
 import scripts.ScriptEditor;
 import lime.app.Application;
@@ -86,7 +87,10 @@ class CustomState extends MusicBeatState
 		}
 
 		if (FlxG.keys.justPressed.F5)
+		{
+			resetting = true;
 			CustomTransition.switchTo(new CustomState(scriptPath, state));
+		}
 
 		if (FlxG.keys.justPressed.F4 && !openedConsole)
 		{
@@ -104,6 +108,7 @@ class CustomState extends MusicBeatState
 			window.stage.addChild(edit);
 			window.onClose.add(function() {
 				openedConsole = false;
+				FlxG.mouse.visible = false;
 			}, true);
 			window.onResize.add(function(_, _) {
 				edit.x = 0;
@@ -111,6 +116,8 @@ class CustomState extends MusicBeatState
 				edit.content.width = window.width;
 				edit.content.height = window.height;
 			});
+
+			FlxG.mouse.visible = true;
 
 			openedConsole = true;
 		}
@@ -160,9 +167,11 @@ class CustomState extends MusicBeatState
 		interp.variables.set("insert", insert);
 	}
 
+	var resetting:Bool = false;
+
 	override function destroy() 
 	{
-		if (window != null)
+		if (window != null && !resetting)
 		{
 			window.close();
 			openedConsole = false;

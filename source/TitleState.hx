@@ -26,9 +26,9 @@ import Discord.DiscordClient;
 import sys.FileSystem;
 #end
 
-#if VIDEOS_ALLOWED
-import vlc.MP4Handler;
-#end
+// #if VIDEOS_ALLOWED
+// import vlc.MP4Handler;
+// #end
 
 class TitleState extends MusicBeatState
 {
@@ -61,14 +61,16 @@ class TitleState extends MusicBeatState
 			Paths.setCurrentMod(Paths.priorityMod);
 		
 		#if FILESYSTEM
-		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
-			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
+		if (!FileSystem.exists(Sys.getCwd() + "/skins"))
+			FileSystem.createDirectory(Sys.getCwd() + "/skins");
 
+		#if MODS_FEATURE
 		if (!FileSystem.exists(Sys.getCwd() + "/mods"))
 			FileSystem.createDirectory(Sys.getCwd() + "/mods");
+		#end
 
 		// quick check
-		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/assets/skins"))
+		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/skins"))
 		{
 			if (skinName.trim() == 'default')
 				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
@@ -158,7 +160,7 @@ class TitleState extends MusicBeatState
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			#if FILESYSTEM
+			#if (FILESYSTEM && MODS_FEATURE)
 			var prevMod = Paths.currentMod;
 
 			for (mod in FileSystem.readDirectory('mods'))
@@ -368,7 +370,7 @@ class TitleState extends MusicBeatState
 						CustomTransition.switchTo(new HopeTitle());
 					#if VIDEOS_ALLOWED
 					case 'pringles':
-						new MP4Handler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
+						new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
 					#end
 				}
 			}

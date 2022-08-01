@@ -1,6 +1,6 @@
 package;
 
-#if FILESYSTEM
+#if (FILESYSTEM && MODS_FEATURE)
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -145,7 +145,7 @@ class ModLoadingState extends MusicBeatState
 
 		if (controls.UI_BACK)
 		{
-			#if FILESYSTEM
+			#if (FILESYSTEM && MODS_FEATURE)
 			var prevMod = Paths.currentMod;
 
 			for (mod in FileSystem.readDirectory('mods'))
