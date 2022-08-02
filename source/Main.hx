@@ -46,8 +46,6 @@ class Main extends Sprite
 	{
 		// quick checks
 
-		Type.resolveClass
-
 		Lib.current.addChild(new Main());
 	}
 
