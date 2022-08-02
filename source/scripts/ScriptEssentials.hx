@@ -71,10 +71,10 @@ class ScriptEssentials
 		interp.variables.set("VideoHandler", VideoHandler);
 		#end
 
-		interp.variables.set("import", function(classPath:String)
-		{
-			importClass(classPath, interp);
-		});
+		// interp.variables.set("import", function(classPath:String)
+		// {
+		// 	importClass(classPath, interp);
+		// });
 		interp.variables.set("FlxColor", function(huh:String)
 		{
 			return FlxColor.colorLookup.get(huh);
