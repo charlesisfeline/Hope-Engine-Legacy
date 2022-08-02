@@ -223,12 +223,6 @@ class StageJSONCreator extends MusicBeatState
 
 	function addStageStuff():Void
 	{
-		/**
-			TO DO: 
-			HOLD AND CLICK CHARACTER TO MOVE (+ OFFSET)
-			CHANGE STAGE CHARACTERS
-		**/
-
 		var dadPosXTitle = new FlxText(10, 10, "Dad's X Position");
 		dadPosX = new NumStepperFix(10, dadPosXTitle.y + dadPosXTitle.height, 10, _stage.dadPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
