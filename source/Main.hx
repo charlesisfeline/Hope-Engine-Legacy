@@ -23,7 +23,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-
 class Main extends Sprite
 {
 	public static var console:ScriptConsole;
@@ -46,6 +45,8 @@ class Main extends Sprite
 	public static function main():Void
 	{
 		// quick checks
+
+		Type.resolveClass
 
 		Lib.current.addChild(new Main());
 	}
