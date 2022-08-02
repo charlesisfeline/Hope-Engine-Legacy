@@ -2076,39 +2076,6 @@ class ChartingState extends MusicBeatState
 		for (note in curRenderedNotes.members) 
 			FlxMouseEventManager.remove(note);
 
-		// while (curRenderedNotes.length > 0)
-		// {
-		// 	var n = curRenderedNotes.members[0];
-		// 	curRenderedNotes.remove(n, true);
-		// 	n.kill();
-		// 	n.destroy();
-		// }
-
-		// while (curRenderedSustains.length > 0)
-		// {
-		// 	var n = curRenderedSustains.members[0];
-		// 	curRenderedSustains.remove(n, true);
-		// 	n.kill();
-		// 	n.destroy();
-		// }
-
-		// while (curRenderedEvents.length > 0)
-		// {
-		// 	var n = curRenderedEvents.members[0];
-		// 	curRenderedEvents.remove(n, true);
-		// 	n.kill();
-		// 	n.destroy();
-		// }
-
-		// while (curRenderedEventTexts.length > 0)
-		// {
-		// 	var n = curRenderedEventTexts.members[0];
-		// 	curRenderedEventTexts.remove(n, true);
-		// 	n.kill();
-		// 	n.destroy();
-		// }
-
-		// clear the group for good measure
 		curRenderedNotes.clear();
 		curRenderedSustains.clear();
 		curRenderedEvents.clear();
