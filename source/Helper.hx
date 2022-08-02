@@ -1,3 +1,5 @@
+import flixel.FlxG;
+import flixel.FlxObject;
 using StringTools;
 
 class Helper
@@ -95,4 +97,18 @@ class Helper
 	 */
 	public static function boundTo(value:Float, min:Float, max:Float):Float
 		return Math.max(min, Math.min(max, value));
+
+	/**
+	 * You know, I wish overlap() used screen position. Shit fucks.
+	 * 
+	 * @param obj Object to check if it overlaps with the mouse cursor
+	 * @return Bool Do it overlap?
+	 */
+	public static function screenOverlap(obj:FlxObject):Bool
+	{
+		var bruh = obj.getScreenPosition();
+
+		return (FlxG.mouse.screenX >= bruh.x && FlxG.mouse.screenX <= bruh.x + obj.width) &&
+			(FlxG.mouse.screenY >= bruh.y && FlxG.mouse.screenY <= bruh.y + obj.height);
+	}
 }

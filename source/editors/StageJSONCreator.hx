@@ -1,5 +1,6 @@
 package editors;
 
+import flixel.FlxBasic;
 import flixel.ui.FlxButton;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.FlxCamera;
@@ -213,10 +214,23 @@ class StageJSONCreator extends MusicBeatState
 		super.create();
 	}
 
+	var dadPosX:NumStepperFix;
+	var dadPosY:NumStepperFix;
+	var gfPosX:NumStepperFix;
+	var gfPosY:NumStepperFix;
+	var bfPosX:NumStepperFix;
+	var bfPosY:NumStepperFix;
+
 	function addStageStuff():Void
 	{
+		/**
+			TO DO: 
+			HOLD AND CLICK CHARACTER TO MOVE (+ OFFSET)
+			CHANGE STAGE CHARACTERS
+		**/
+
 		var dadPosXTitle = new FlxText(10, 10, "Dad's X Position");
-		var dadPosX = new NumStepperFix(10, dadPosXTitle.y + dadPosXTitle.height, 10, _stage.dadPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
+		dadPosX = new NumStepperFix(10, dadPosXTitle.y + dadPosXTitle.height, 10, _stage.dadPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
 		dadPosX.callback = function(_) {
 			dad.x = dadPosX.value;
@@ -224,7 +238,7 @@ class StageJSONCreator extends MusicBeatState
 		}
 
 		var dadPosYTitle = new FlxText(UI_box.width / 2 + 5, 10, "Dad's Y Position");
-		var dadPosY = new NumStepperFix(UI_box.width / 2 + 5, dadPosYTitle.y + dadPosYTitle.height, 10, _stage.dadPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
+		dadPosY = new NumStepperFix(UI_box.width / 2 + 5, dadPosYTitle.y + dadPosYTitle.height, 10, _stage.dadPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
 		dadPosY.callback = function(_) {
 			dad.y = dadPosY.value;
@@ -232,7 +246,7 @@ class StageJSONCreator extends MusicBeatState
 		}
 
 		var gfPosXTitle = new FlxText(10, 50, "GF's X Position");
-		var gfPosX = new NumStepperFix(10, gfPosXTitle.y + gfPosXTitle.height, 10, _stage.gfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
+		gfPosX = new NumStepperFix(10, gfPosXTitle.y + gfPosXTitle.height, 10, _stage.gfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
 		gfPosX.callback = function(_) {
 			gf.x = gfPosX.value;
@@ -240,7 +254,7 @@ class StageJSONCreator extends MusicBeatState
 		}
 
 		var gfPosYTitle = new FlxText(UI_box.width / 2 + 5, 50, "GF's Y Position");
-		var gfPosY = new NumStepperFix(UI_box.width / 2 + 5, gfPosYTitle.y + gfPosYTitle.height, 10, _stage.gfPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
+		gfPosY = new NumStepperFix(UI_box.width / 2 + 5, gfPosYTitle.y + gfPosYTitle.height, 10, _stage.gfPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
 		gfPosY.callback = function(_) {
 			gf.y = gfPosY.value;
@@ -248,7 +262,7 @@ class StageJSONCreator extends MusicBeatState
 		}
 
 		var bfPosXTitle = new FlxText(10, 90, "BF's X Position");
-		var bfPosX = new NumStepperFix(10, bfPosXTitle.y + bfPosXTitle.height, 10, _stage.bfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
+		bfPosX = new NumStepperFix(10, bfPosXTitle.y + bfPosXTitle.height, 10, _stage.bfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
 		bfPosX.callback = function(_) {
 			bf.x = bfPosX.value;
@@ -256,7 +270,7 @@ class StageJSONCreator extends MusicBeatState
 		}
 
 		var bfPosYTitle = new FlxText(UI_box.width / 2 + 5, 90, "BF's Y Position");
-		var bfPosY = new NumStepperFix(UI_box.width / 2 + 5, bfPosYTitle.y + bfPosYTitle.height, 10, _stage.bfPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
+		bfPosY = new NumStepperFix(UI_box.width / 2 + 5, bfPosYTitle.y + bfPosYTitle.height, 10, _stage.bfPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
 			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
 		bfPosY.callback = function(_) {
 			bf.y = bfPosY.value;
@@ -325,16 +339,18 @@ class StageJSONCreator extends MusicBeatState
 
 	function refresh():Void
 	{
-		while (bgGroup.length > 0)
+		while (bgGroup.members.length > 0)
 		{
-			var s = remove(fgGroup.members[0]);
+			var s = bgGroup.members.shift();
+			s.exists = false;
 			s.kill();
 			s.destroy();
 		}
 
-		while (fgGroup.length > 0)
+		while (fgGroup.members.length > 0)
 		{
-			var s = remove(fgGroup.members[0]);
+			var s = fgGroup.members.shift();
+			s.exists = false;
 			s.kill();
 			s.destroy();
 		}
@@ -367,6 +383,9 @@ class StageJSONCreator extends MusicBeatState
 
 		if (stageInterp.variables.get("createForeground") != null)
 			stageInterp.variables.get("createForeground")();
+
+		// force it
+		openfl.system.System.gc();
 	}
 
 	function doVars():Void
@@ -386,6 +405,16 @@ class StageJSONCreator extends MusicBeatState
 
 	var curZoom:Float = 1;
 
+	// completely taken from RatingPosSubstate
+	var mousePastPos:Array<Float> = [];
+	var bfPastPos:Array<Float> = [];
+	var gfPastPos:Array<Float> = [];
+	var dadPastPos:Array<Float> = [];
+
+	var changingBf:Bool = false;
+	var changingDad:Bool = false;
+	var changingGf:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -394,6 +423,7 @@ class StageJSONCreator extends MusicBeatState
 		camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
 		camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
 		FlxG.camera.zoom = FlxMath.lerp(FlxG.camera.zoom, curZoom, Helper.boundTo(elapsed * 3.125, 0, 1));
+		multiplier = 1;
 
 		if (!InputTextFix.isTyping)
 		{
@@ -443,7 +473,96 @@ class StageJSONCreator extends MusicBeatState
 				#end
 				LoadingState.loadAndSwitchState(new MainMenuState());
 			}
+
+			if (FlxG.mouse.pressed)
+			{
+				if (!Helper.screenOverlap(UI_box))
+				{
+					if (FlxG.mouse.justPressed)
+					{
+						bfPastPos = [bf.x, bf.y];
+						dadPastPos = [dad.x, dad.y];
+						gfPastPos = [gf.x, gf.y];
+						mousePastPos = [FlxG.mouse.getScreenPosition().x, FlxG.mouse.getScreenPosition().y];
+					}
+		
+					if ((Helper.screenOverlap(bf) && !changingGf && !changingDad) || changingBf)
+					{
+						changingBf = true;
+		
+						bf.x = Math.round(bfPastPos[0] - (mousePastPos[0] - FlxG.mouse.getScreenPosition().x)) + bf.positionOffset[0];
+						bf.y = Math.round(bfPastPos[1] - (mousePastPos[1] - FlxG.mouse.getScreenPosition().y)) + bf.positionOffset[1];
+		
+						_stage.bfPosition[0] = bf.x;
+						_stage.bfPosition[1] = bf.y;
+	
+						updatePosSteppers();
+					}
+		
+					if ((Helper.screenOverlap(dad) && !changingBf && !changingGf) || changingDad)
+					{
+						changingDad = true;
+		
+						dad.x = Math.round(dadPastPos[0] - (mousePastPos[0] - FlxG.mouse.getScreenPosition().x)) + dad.positionOffset[0];
+						dad.y = Math.round(dadPastPos[1] - (mousePastPos[1] - FlxG.mouse.getScreenPosition().y)) + dad.positionOffset[1];
+		
+						_stage.dadPosition[0] = dad.x;
+						_stage.dadPosition[1] = dad.y;
+	
+						updatePosSteppers();
+					}
+		
+					if ((Helper.screenOverlap(gf) && !changingBf && !changingDad) || changingGf)
+					{
+						changingGf = true;
+		
+						gf.x = Math.round(gfPastPos[0] - (mousePastPos[0] - FlxG.mouse.getScreenPosition().x)) + gf.positionOffset[0];
+						gf.y = Math.round(gfPastPos[1] - (mousePastPos[1] - FlxG.mouse.getScreenPosition().y)) + gf.positionOffset[1];
+		
+						_stage.gfPosition[0] = gf.x;
+						_stage.gfPosition[1] = gf.y;
+	
+						updatePosSteppers();
+					}
+				}
+			}
+	
+			if (FlxG.mouse.justReleased)
+			{
+				changingBf = false;
+				changingDad = false;
+				changingGf = false;
+			}
+
+			if (FlxG.keys.justPressed.R)
+			{
+				_stage.bfPosition = [770, 450];
+				_stage.dadPosition = [100, 100];
+				_stage.gfPosition = [400, 130];
+	
+				gf.setPosition(_stage.gfPosition[0] + gf.positionOffset[0], _stage.gfPosition[1] + gf.positionOffset[1]);
+				dad.setPosition(_stage.dadPosition[0] + dad.positionOffset[0], _stage.dadPosition[1] + dad.positionOffset[1]);
+				bf.setPosition(_stage.bfPosition[0] + bf.positionOffset[0], _stage.bfPosition[1] + bf.positionOffset[1]);
+
+				updatePosSteppers();
+			}
 		}
+	}
+
+	function updatePosSteppers():Void
+	{
+		bfPosX.value = _stage.bfPosition[0];
+		bfPosX.callback(0);
+		bfPosY.value = _stage.bfPosition[1];
+		bfPosY.callback(0);
+		dadPosX.value = _stage.dadPosition[0];
+		dadPosX.callback(0);
+		dadPosY.value = _stage.dadPosition[1];
+		dadPosY.callback(0);
+		gfPosX.value = _stage.gfPosition[0];
+		gfPosX.callback(0);
+		gfPosY.value = _stage.gfPosition[1];
+		gfPosY.callback(0);
 	}
 
 	var _file:FileReference;
