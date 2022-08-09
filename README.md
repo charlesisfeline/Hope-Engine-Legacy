@@ -22,7 +22,7 @@ Learned things from [Psych Engine](https://github.com/ShadowMario/FNF-PsychEngin
 
 More credits on the [site](https://skuqre.github.io/Hope-Engine/credits).
 
----
+## Building
 
 For building, see this: <https://skuqre.github.io/Hope-Engine/building><br>
 Do note that this will change overtime. Everything is not final.
