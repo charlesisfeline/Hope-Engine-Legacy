@@ -12,7 +12,7 @@ High:mom:4:125:d8558e
 MILF:mom:4:180:d8558e
 Cocoa:parents:5:100:9f558e
 Eggnog:parents:5:150:9f558e
-Winter Horrorland:monster:5:159:f3ff6e
+Winter Horrorland:monster-christmas:5:159:f3ff6e
 Senpai:senpai:6:144:ffaa6f
 Roses:senpai:6:120:ffaa6f
 Thorns:spirit:6:190:ffaa6f

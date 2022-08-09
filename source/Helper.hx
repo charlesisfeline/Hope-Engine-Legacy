@@ -1,3 +1,4 @@
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 using StringTools;
@@ -104,11 +105,12 @@ class Helper
 	 * @param obj Object to check if it overlaps with the mouse cursor
 	 * @return Bool Do it overlap?
 	 */
-	public static function screenOverlap(obj:FlxObject):Bool
+	public static function screenOverlap(obj:FlxObject, ?camera:FlxCamera):Bool
 	{
-		var bruh = obj.getScreenPosition();
+		var mouse = FlxG.mouse.getScreenPosition(camera);
+		var bruh = obj.getScreenPosition(camera);
 
-		return (FlxG.mouse.screenX >= bruh.x && FlxG.mouse.screenX <= bruh.x + obj.width) &&
-			(FlxG.mouse.screenY >= bruh.y && FlxG.mouse.screenY <= bruh.y + obj.height);
+		return (mouse.x >= bruh.x && mouse.x <= bruh.x + obj.width) &&
+			(mouse.y >= bruh.y && mouse.y <= bruh.y + obj.height);
 	}
 }

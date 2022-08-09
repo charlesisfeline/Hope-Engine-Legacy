@@ -32,7 +32,7 @@ class MainMenuState extends MusicBeatState
 
 	#if !switch
 	var optionShit:Array<String> = [
-		'story mode',
+		'story_mode',
 		'freeplay',
 		#if (FILESYSTEM && MODS_FEATURE) 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
 		'achievements', // remove this line if you want the Achievements Menu to be inaccessible!
@@ -40,7 +40,7 @@ class MainMenuState extends MusicBeatState
 		'options'
 	];
 	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
+	var optionShit:Array<String> = ['story_mode', 'freeplay'];
 	#end
 
 	public static var hopeEngineVer:String = "";
@@ -122,17 +122,7 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, 0);
-			switch (optionShit[i])
-			{
-				case 'credits':
-					menuItem.frames = Paths.getSparrowAtlas('credits_assets');
-				case 'mods':
-					menuItem.frames = Paths.getSparrowAtlas('mods_assets');
-				case 'achievements':
-					menuItem.frames = Paths.getSparrowAtlas('wins_assets');
-				default:
-					menuItem.frames = Paths.getSparrowAtlas('FNF_main_menu_assets');
-			}
+			menuItem.frames = Paths.getSparrowAtlas('mainmenu/' + optionShit[i] + "_assets");
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.addByPrefix('tweakin', optionShit[i] + " basic", 24);
 			menuItem.animation.play('tweakin');
@@ -261,7 +251,7 @@ class MainMenuState extends MusicBeatState
 
 		switch (daChoice)
 		{
-			case 'story mode':
+			case 'story_mode':
 				CustomTransition.switchTo(new StoryMenuState());
 			case 'freeplay':
 				CustomTransition.switchTo(new FreeplayState());
@@ -269,7 +259,7 @@ class MainMenuState extends MusicBeatState
 				CustomTransition.switchTo(new CreditsState());
 			#if (FILESYSTEM && MODS_FEATURE)
 			case 'mods':
-				CustomTransition.switchTo(new ModLoadingState());
+				CustomTransition.switchTo(new mods.ModLoadingState());
 			#end
 			case 'achievements':
 				CustomTransition.switchTo(new AchievementState());

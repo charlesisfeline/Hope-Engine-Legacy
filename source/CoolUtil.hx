@@ -67,6 +67,18 @@ class CoolUtil
 	}
 	#end
 
+	public static function fileNameCheck(name:String):Bool
+	{
+		switch (name.toUpperCase())
+		{
+			// LMAO
+			case "CON" | "PRN" | "AUX" | "NUL" | "COM1" | "COM2" | "COM3" | "COM4" | "COM5" | "COM6" | "COM7" | "COM8" | "COM9" | "LPT1" | "LPT2" | "LPT3" | "LPT4" | "LPT5" | "LPT6" | "LPT7" | "LPT8" | "LPT9":
+				return false;
+			default:
+				return true;
+		}
+	}
+
 	public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:Array<String> = Assets.getText(path).trim().split('\n');

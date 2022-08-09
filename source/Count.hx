@@ -1,9 +1,9 @@
 package;
 
-import flixel.math.FlxRandom;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxRandom;
 import flixel.tweens.FlxTween;
 
 using StringTools;
@@ -124,7 +124,7 @@ class Count extends FlxSpriteGroup
 
 	function createCharacter(name:String = "", huh:Float = 0)
 	{
-		var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + name + pixelShitPart2));
+		var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo/num' + name + pixelShitPart2));
 
 		numScore.antialiasing = (pixelZoom == 1 ? true : false);
 		numScore.setGraphicSize(Std.int(numScore.width * (pixelZoom == 1 ? 0.5 : pixelZoom * 0.8)));
@@ -140,7 +140,7 @@ class Count extends FlxSpriteGroup
 	function createCharacterFromSpriteSheet(name:String = "", huh:Float = 0)
 	{
 		var numScore:FlxSprite = new FlxSprite();
-		numScore.frames = Paths.getSparrowAtlas(pixelShitPart1 + "comboAlphabet" + pixelShitPart2);
+		numScore.frames = Paths.getSparrowAtlas(pixelShitPart1 + "combo/comboAlphabet" + pixelShitPart2);
 		numScore.animation.addByPrefix(name, 'letter ${name}0', 24);
 		numScore.animation.play(name);
 

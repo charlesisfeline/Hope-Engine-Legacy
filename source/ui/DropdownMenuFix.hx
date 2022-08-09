@@ -1,5 +1,6 @@
 package ui;
 
+import flixel.math.FlxRect;
 import flash.geom.Rectangle;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUI9SliceSprite;
@@ -408,10 +409,7 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 	{
 		super.update(elapsed);
 
-		var m = FlxG.mouse.getScreenPosition(camera);
-		var s = getScreenPosition(camera);
-
-		if (FlxG.mouse.wheel != 0 && scrollable && (m.x >= s.x && m.x <= s.x + width) && (m.y >= s.y && m.y <= s.y + height))
+		if (FlxG.mouse.wheel != 0 && scrollable && Helper.screenOverlap(dropPanel, camera))
 			dropPanel.y += (dropPanel.height / list.length) * FlxG.mouse.wheel;
 
 		if (dropPanel.y > header.y + header.height)
@@ -426,12 +424,7 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 		#if FLX_MOUSE
 		if (FlxG.mouse.justPressed)
 		{
-			if ((m.x >= s.x && m.x <= s.x + width) && (m.y >= s.y && m.y <= s.y + height))
-			{
-				// too lazy to write the inverse of the condition above so i will put this overly long sentence to compensate for this problem :)
-				// this thing uses FlxMouseEventManager btw so that it doesn't fuck with things under lmao
-			}
-			else
+			if (!Helper.screenOverlap(dropPanel, camera))
 				showList(false);
 		}
 		#end

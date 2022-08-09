@@ -1,9 +1,5 @@
 package;
 
-import flixel.input.keyboard.FlxKey;
-import scripts.ScriptEssentials;
-import scripts.ScriptConsole;
-import ui.ConsistencyBar;
 import DialogueSubstate.DialogueStyle;
 import Event;
 import Section.SwagSection;
@@ -22,6 +18,7 @@ import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
+import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
 import flixel.math.FlxRandom;
@@ -46,6 +43,9 @@ import openfl.Lib;
 import openfl.display.BitmapData;
 import openfl.filters.BlurFilter;
 import openfl.filters.ShaderFilter;
+import scripts.ScriptConsole;
+import scripts.ScriptEssentials;
+import ui.ConsistencyBar;
 
 using StringTools;
 
@@ -401,9 +401,6 @@ class PlayState extends MusicBeatState
 
 		#if desktop
 		iconRPC = SONG.player2;
-		if (!HealthIcon.splitWhitelist.contains(SONG.player2))
-			iconRPC = SONG.player2.split("-")[0];
-
 		DiscordClient.changePresence(rpcPlaying, rpcLocation, iconRPC);
 		#end
 
@@ -693,11 +690,11 @@ class PlayState extends MusicBeatState
 				iconP1 = new HealthIcon('bf-bot' + (SONG.noteStyle == "pixel" ? "-pixel" : ""), true);
 		}
 		else
-			iconP1 = new HealthIcon(SONG.player1, true);
+			iconP1 = new HealthIcon(boyfriend.icon, true);
 
 		iconP1.y = healthBar.y + (healthBar.height / 2) - ((iconP1.height / 2) * 1.125);
 
-		iconP2 = new HealthIcon(SONG.player2, false);
+		iconP2 = new HealthIcon(dad.icon, false);
 		iconP2.y = healthBar.y + (healthBar.height / 2) - ((iconP2.height / 2) * 1.125);
 
 		if (!Settings.hideHealthIcons)
@@ -2166,11 +2163,18 @@ class PlayState extends MusicBeatState
 		#if debug
 		if (FlxG.keys.pressed.SHIFT)
 		{
-			if (FlxG.keys.justPressed.EIGHT)
-				CustomTransition.switchTo(new CharacterEditor(true, SONG.player2));
-
-			if (FlxG.keys.justPressed.ZERO)
-				CustomTransition.switchTo(new CharacterEditor(false, SONG.player1));
+			if (FlxG.keys.justPressed.EIGHT || FlxG.keys.justPressed.ZERO)
+			{
+				FlxG.sound.music.stop();
+				vocals.stop();
+				ending = true;
+				
+				if (FlxG.keys.justPressed.EIGHT)
+					CustomTransition.switchTo(new CharacterEditor(true, SONG.player2));
+	
+				if (FlxG.keys.justPressed.ZERO)
+					CustomTransition.switchTo(new CharacterEditor(false, SONG.player1));
+			}
 		}
 		#end
 

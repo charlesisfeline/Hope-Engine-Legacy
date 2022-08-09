@@ -1,5 +1,7 @@
 package ui;
 
+import flixel.input.keyboard.FlxKey;
+import openfl.ui.Keyboard;
 import openfl.events.KeyboardEvent;
 import flixel.FlxG;
 import flixel.addons.ui.FlxInputText;
@@ -128,6 +130,31 @@ class InputTextFix extends FlxUIInputText
 			FlxG.sound.volumeUpKeys = [PLUS, NUMPADPLUS];
 			FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 		}
+
+		FlxG.stage.window.onTextInput.add(onTextInput);
+	}
+
+	// onTextInput triggers A LOT for some reason
+	var canType:Bool = false;
+
+	// supports SHIFT and CAPSLOCK stuff
+	function onTextInput(s:String):Void
+	{
+		if (hasFocus && canType)
+		{
+			var toFilter = s;
+
+			var newText:String = filter(toFilter);
+
+			if (newText.length > 0 && (maxLength == 0 || (text.length + newText.length) < maxLength))
+			{
+				text = insertSubstring(text, newText, caretIndex);
+				caretIndex++;
+				onChange(FlxInputText.INPUT_ACTION);
+
+				canType = false;
+			}
+		}
 	}
 
 	override function onKeyDown(e:KeyboardEvent):Void
@@ -137,12 +164,12 @@ class InputTextFix extends FlxUIInputText
 		if (hasFocus)
 		{
 			// Do nothing for Shift, Ctrl, Esc, and flixel console hotkey
-			if (key == 16 || key == 17 || key == 220 || key == 27)
+			if (key == 16 || key == 17 || key == 220 || key == 27 || key == 20)
 			{
 				return;
 			}
 			// do nothing for copy and paste keybinds
-			else if (e.controlKey)
+			else if (FlxG.keys.pressed.CONTROL)
 			{
 				if (key == 67 || key == 86)
 					return;
@@ -201,22 +228,8 @@ class InputTextFix extends FlxUIInputText
 			{
 				onChange(FlxInputText.ENTER_ACTION);
 			}
-			// Actually add some text
 			else
-			{
-				if (e.charCode == 0) // non-printable characters crash String.fromCharCode
-				{
-					return;
-				}
-				var newText:String = filter(String.fromCharCode(e.charCode));
-
-				if (newText.length > 0 && (maxLength == 0 || (text.length + newText.length) < maxLength))
-				{
-					text = insertSubstring(text, newText, caretIndex);
-					caretIndex++;
-					onChange(FlxInputText.INPUT_ACTION);
-				}
-			}
+				canType = true;
 		}
 	}
 
@@ -229,6 +242,7 @@ class InputTextFix extends FlxUIInputText
 	override function destroy() 
 	{
 		texts.remove(this);
+		FlxG.stage.window.onTextInput.remove(onTextInput);
 		super.destroy();
 	}
 }

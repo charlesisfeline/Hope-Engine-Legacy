@@ -236,7 +236,7 @@ class FreeplayState extends MusicBeatState
 		var searchInputBG = new FlxSprite(64, 0).makeGraphic(10, 10, 0xFF000000);
 		searchInputBG.alpha = 0.3;
 
-		inst = new FlxText(searchBG.x + 10, searchBG.y + 10, "Click to input text...");
+		inst = new FlxText(searchBG.x + 10, searchBG.y + 10, "Click to input search...");
 		inst.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, NONE);
 		inst.alpha = 0.5;
 		inst.offset.y = -2;

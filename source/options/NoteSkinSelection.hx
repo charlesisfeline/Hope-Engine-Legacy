@@ -1,24 +1,24 @@
 package options;
 
 // this shit's just a superior image and file replacer
-import yaml.Yaml;
 import flixel.FlxG;
-import flixel.math.FlxMath;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import openfl.display.BitmapData;
+import yaml.Yaml;
+
+using StringTools;
 
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
-
-using StringTools;
 
 class NoteSkinSelection extends MusicBeatSubstate
 {
@@ -295,7 +295,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 			}
 
 			var skinPreview:FlxSpriteGroup = new FlxSpriteGroup();
- 
+
 			for (noteType in 0...4)
 			{
 				for (noteDir in 0...4)
@@ -583,14 +583,11 @@ class NoteSkinSelection extends MusicBeatSubstate
 
 		if (registeredPixelPreviews[curSelected] != null)
 		{
-			/**
-				TO DO: Stop bug with deleted pixel splashes crashing
-			**/
 			registeredPixelPreviews[curSelected].forEach(function(spr:FlxSprite)
 			{
 				if (spr.animation.curAnim.name.startsWith('piss') && !(spr is StaticArrow) && spr.animation.curAnim.finished)
 					spr.animation.play('piss');
-	
+
 				if (spr is StaticArrow && spr.animation.curAnim.finished)
 				{
 					var arr:StaticArrow = cast spr;
@@ -723,14 +720,14 @@ class NoteSkinSelection extends MusicBeatSubstate
 				}
 			}
 
-			var infos = Yaml.parse('name: ${registeredSkins[curSelected]}\ndescription: Create a "mod.yaml" in your skin\'s folder for this to function!\ncreator: No one'); 
+			var infos = Yaml.parse('name: ${registeredSkins[curSelected]}\ndescription: Create a "mod.yaml" in your skin\'s folder for this to function!\ncreator: No one');
 
 			if (Paths.exists("skins/" + registeredSkins[curSelected] + "/skin.yml"))
 				infos = Yaml.parse(File.getContent("skins/" + registeredSkins[curSelected] + "/skin.yml"));
 
 			skinName.text = infos.get("name") != null ? infos.get("name") : "No name provided!";
 			skinCreator.text = infos.get("creator") != null ? infos.get("creator") : "No creator provided!";
-			skinDesc.text = infos.get("description") != null ? infos.get("description") : "No description provided!"; 
+			skinDesc.text = infos.get("description") != null ? infos.get("description") : "No description provided!";
 		}
 		else
 		{
@@ -767,7 +764,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 					registeredPixelPreviews[i].visible = pixelPreviewsActive[i];
 					registeredPreviews[i].visible = !pixelPreviewsActive[i];
 				}
-			}	
+			}
 		}
 	}
 	#end

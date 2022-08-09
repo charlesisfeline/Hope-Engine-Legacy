@@ -16,6 +16,7 @@ typedef CharacterJSON =
 {
 	var name:String;
 	var image:String;
+	@:optional var icon:String;
 	var healthColor:String;
 
 	var antialiasing:Null<Bool>;
@@ -53,6 +54,7 @@ class Character extends FlxSprite
 
 	public var curCharacter:String = 'bf';
 	public var image:String = '';
+	public var icon:String = 'face';
 	public var setAntialiasing:Bool = true;
 	public var setScale:Float = 1;
 	public var facesLeft:Bool = true;
@@ -96,6 +98,7 @@ class Character extends FlxSprite
 				var charFile:CharacterJSON = cast Json.parse(rawJSON);
 
 				image = charFile.image != null ? charFile.image : '';
+				icon = charFile.icon != null ? charFile.icon : curCharacter;
 				setAntialiasing = charFile.antialiasing != null ? charFile.antialiasing : true;
 				setScale = charFile.scale != null ? charFile.scale : 1;
 				facesLeft = charFile.facesLeft != null ? charFile.facesLeft : false;
@@ -106,6 +109,7 @@ class Character extends FlxSprite
 				singDuration = charFile.singDuration != null ? charFile.singDuration : 4;
 				animationsArray = charFile.animations != null ? charFile.animations : [];
 				healthColor = charFile.healthColor != null ? charFile.healthColor : "a1a1a1";
+
 
 				#if html5
 				if (Paths.exists(Paths.getPath('images/' + charFile.image + '.txt', TEXT, null)))

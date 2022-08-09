@@ -1,29 +1,30 @@
 package editors;
 
-import flixel.FlxBasic;
-import flixel.ui.FlxButton;
-import flixel.addons.ui.FlxUITabMenu;
-import flixel.FlxCamera;
-import openfl.net.FileFilter;
-import openfl.net.FileReference;
-import openfl.events.IOErrorEvent;
-import haxe.Json;
-import hscript.Interp;
-import scripts.ScriptEssentials;
-import flixel.util.FlxColor;
-import flixel.text.FlxText;
-import flixel.math.FlxMath;
-import flixel.FlxObject;
 import PlayState.StageJSON;
-import flixel.addons.ui.FlxUI;
-import flixel.math.FlxAngle;
+import flixel.FlxBasic;
+import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.addons.ui.FlxUI;
+import flixel.addons.ui.FlxUIDropDownMenu.FlxUIDropDownHeader;
+import flixel.addons.ui.FlxUITabMenu;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
-import openfl.geom.Rectangle;
-import flixel.FlxSprite;
-import ui.*;
+import flixel.math.FlxAngle;
+import flixel.math.FlxMath;
+import flixel.text.FlxText;
+import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
+import haxe.Json;
+import hscript.Interp;
 import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import openfl.geom.Rectangle;
+import openfl.net.FileFilter;
+import openfl.net.FileReference;
+import scripts.ScriptEssentials;
+import ui.*;
 
 using StringTools;
 
@@ -56,8 +57,7 @@ class StageJSONCreator extends MusicBeatState
 	var gf:Character;
 	var bf:Boyfriend;
 
-	var bgGroup:FlxTypedGroup<FlxSprite>;
-	var fgGroup:FlxTypedGroup<FlxSprite>;
+	var stageGroup:FlxTypedGroup<FlxBasic>;
 
 	var dadInit:String = "dad";
 	var bfInit:String = "bf";
@@ -112,8 +112,8 @@ class StageJSONCreator extends MusicBeatState
 
 		stageInterp = new Interp();
 
-		bgGroup = new FlxTypedGroup<FlxSprite>();
-		add(bgGroup);
+		stageGroup = new FlxTypedGroup<FlxBasic>();
+		add(stageGroup);
 
 		ScriptEssentials.imports(stageInterp);
 		doVars();
@@ -135,22 +135,19 @@ class StageJSONCreator extends MusicBeatState
 		gf.y += gf.positionOffset[1];
 		gf.antialiasing = true;
 		gf.scrollFactor.set(0.95, 0.95);
-		add(gf);
+		stageGroup.add(gf);
 
 		dad = new Character(_stage.dadPosition[0], _stage.dadPosition[1], dadInit);
 		dad.x += dad.positionOffset[0];
 		dad.y += dad.positionOffset[1];
 		dad.antialiasing = true;
-		add(dad);
+		stageGroup.add(dad);
 
 		bf = new Boyfriend(_stage.bfPosition[0], _stage.bfPosition[1], bfInit);
 		bf.x += bf.positionOffset[0];
 		bf.y += bf.positionOffset[1];
 		bf.antialiasing = true;
-		add(bf);
-
-		fgGroup = new FlxTypedGroup<FlxSprite>();
-		add(fgGroup);
+		stageGroup.add(bf);
 
 		ScriptEssentials.imports(stageInterp);
 		doVars();
@@ -324,26 +321,108 @@ class StageJSONCreator extends MusicBeatState
 		UI_box.addGroup(tab);
 	}
 
+	var dadCharacter:DropdownMenuFix;
+	var bfCharacter:DropdownMenuFix;
+	var gfCharacter:DropdownMenuFix;
+
 	function addCharStuff():Void
 	{
+		var pastMod:Null<String> = Paths.currentMod;
+		Paths.setCurrentMod(null);
+		var characters = CoolUtil.coolTextFile(Paths.txt('characterList'));
+		#if FILESYSTEM
+		Paths.setCurrentMod(pastMod);
+
+		if (Paths.currentMod != null)
+		{
+			if (FileSystem.exists(Paths.modTxt('characterList')))
+				characters = characters.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('characterList'))));
+		}
+		#end
+
+		/**
+			TO DO:
+
+			BF CHARACTER SWITCHING
+			GF CHARACTER SWITCHING
+			INIT AS SELECTED CHARACTERS WHEN LOADING A NEW STAGE
+			KEEL OVER AND DIE
+		**/
+
+		var daWidth:Int = Std.int((UI_box.width / 3) - 10);
+
+		var dadCharacterTitle = new FlxText(10, 10, 0, "Dad Character");
+
+		dadCharacter = new DropdownMenuFix(10, dadCharacterTitle.y + dadCharacterTitle.height,
+			DropdownMenuFix.makeStrIdLabelArray(characters, true), new FlxUIDropDownHeader(daWidth));
+		dadCharacter.selectedLabel = dad.curCharacter;
+		dadCharacter.scrollable = true;
+		dadCharacter.callback = function(_) {
+			var index = stageGroup.members.indexOf(dad);
+			var item:Character = cast stageGroup.remove(dad, true);
+			var pos = [item.x, item.y];
+			item.exists = false;
+			item.kill();
+			item.destroy();
+
+			dad = new Character(pos[0], pos[1], dadCharacter.selectedLabel);
+			stageGroup.insert(index, dad);
+		}
+
+		var gfCharacterTitle = new FlxText(dadCharacter.x + daWidth + 10, 10, 0, "GF Character");
+
+		gfCharacter = new DropdownMenuFix(gfCharacterTitle.x, gfCharacterTitle.y + gfCharacterTitle.height,
+			DropdownMenuFix.makeStrIdLabelArray(characters, true), new FlxUIDropDownHeader(daWidth));
+		gfCharacter.selectedLabel = gf.curCharacter;
+		gfCharacter.scrollable = true;
+		gfCharacter.callback = function(_) {
+			var index = stageGroup.members.indexOf(gf);
+			var item:Character = cast stageGroup.remove(gf, true);
+			var pos = [item.x, item.y];
+			item.exists = false;
+			item.kill();
+			item.destroy();
+
+			gf = new Character(pos[0], pos[1], gfCharacter.selectedLabel);
+			stageGroup.insert(index, gf);
+		}
+
+		var bfCharacterTitle = new FlxText(gfCharacter.x + daWidth + 10, 10, 0, "BF Character");
+
+		bfCharacter = new DropdownMenuFix(bfCharacterTitle.x, bfCharacterTitle.y + bfCharacterTitle.height,
+			DropdownMenuFix.makeStrIdLabelArray(characters, true), new FlxUIDropDownHeader(daWidth));
+		bfCharacter.selectedLabel = bf.curCharacter;
+		bfCharacter.scrollable = true;
+		bfCharacter.callback = function(_) {
+			var index = stageGroup.members.indexOf(bf);
+			var item:Boyfriend = cast stageGroup.remove(bf, true);
+			var pos = [item.x, item.y];
+			item.exists = false;
+			item.kill();
+			item.destroy();
+
+			bf = new Boyfriend(pos[0], pos[1], bfCharacter.selectedLabel);
+			stageGroup.insert(index, bf);
+		}
+
 		var tab = new FlxUI(null, UI_box);
 		tab.name = '2';
+		tab.add(dadCharacterTitle);
+		tab.add(dadCharacter);
+		tab.add(gfCharacterTitle);
+		tab.add(gfCharacter);
+		tab.add(bfCharacterTitle);
+		tab.add(bfCharacter);
 		UI_box.addGroup(tab);
 	}
 
 	function refresh():Void
 	{
-		while (bgGroup.members.length > 0)
+		while (stageGroup.members.length > 0)
 		{
-			var s = bgGroup.members.shift();
-			s.exists = false;
-			s.kill();
-			s.destroy();
-		}
-
-		while (fgGroup.members.length > 0)
-		{
-			var s = fgGroup.members.shift();
+			if (stageGroup.members[0] == dad || stageGroup.members[0] == bf || stageGroup.members[0] == gf) continue;
+			
+			var s = stageGroup.members.shift();
 			s.exists = false;
 			s.kill();
 			s.destroy();
@@ -369,8 +448,16 @@ class StageJSONCreator extends MusicBeatState
 			Main.console.add(e, PLAYSTATE);
 		}
 
+		stageGroup.remove(dad, true);
+		stageGroup.remove(gf, true);
+		stageGroup.remove(bf, true);
+
 		if (stageInterp.variables.get("createBackground") != null)
 			stageInterp.variables.get("createBackground")();
+
+		stageGroup.add(gf);
+		stageGroup.add(dad);
+		stageGroup.add(bf);
 
 		ScriptEssentials.imports(stageInterp);
 		doVars();
@@ -384,9 +471,9 @@ class StageJSONCreator extends MusicBeatState
 
 	function doVars():Void
 	{
-		stageInterp.variables.set("add", bgGroup.add);
-		stageInterp.variables.set("remove", bgGroup.remove);
-		stageInterp.variables.set("insert", bgGroup.insert);
+		stageInterp.variables.set("add", stageGroup.add);
+		stageInterp.variables.set("remove", stageGroup.remove);
+		stageInterp.variables.set("insert", stageGroup.insert);
 		stageInterp.variables.set("boyfriend", bf);
 		stageInterp.variables.set("gf", gf);
 		stageInterp.variables.set("dad", dad);
@@ -591,7 +678,7 @@ class StageJSONCreator extends MusicBeatState
 		#end
 
 		var stage:StageJSON = cast Json.parse(File.getContent(path).trim());
-		CustomTransition.switchTo(new StageJSONCreator(stage));
+		CustomTransition.switchTo(new StageJSONCreator(stage, dad.curCharacter, bf.curCharacter, gf.curCharacter));
 
 		path = null;
 		_file = null;

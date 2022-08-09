@@ -1,6 +1,5 @@
 package editors;
 
-import flixel.addons.ui.FlxInputText;
 import Character.Animation;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -8,6 +7,7 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
+import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
@@ -207,10 +207,10 @@ class CharacterEditor extends MusicBeatState
 		add(healthBarBG);
 		add(healthBarColor);
 
-		iconHealthy = new HealthIcon(character.curCharacter);
+		iconHealthy = new HealthIcon(character.icon);
 		iconHealthy.animation.curAnim.curFrame = 0;
 
-		iconDeath = new HealthIcon(character.curCharacter);
+		iconDeath = new HealthIcon(character.icon);
 		iconDeath.animation.curAnim.curFrame = 1;
 
 		iconDeath.x = healthBarBG.x + 10;
@@ -240,11 +240,25 @@ class CharacterEditor extends MusicBeatState
 		characterName.callback = function(a:String, b:String)
 		{
 			character.curCharacter = a;
-			iconHealthy.changeIcon(a);
-			iconHealthy.animation.curAnim.curFrame = 0;
-			iconDeath.changeIcon(a);
-			iconDeath.animation.curAnim.curFrame = 1;
+
+			if (character.icon == null)
+			{
+				iconHealthy.changeIcon(a);
+				iconHealthy.animation.curAnim.curFrame = 0;
+				iconDeath.changeIcon(a);
+				iconDeath.animation.curAnim.curFrame = 1;	
+			}
 		};
+
+		var iconTitle = new FlxText(characterName.x + characterName.width + 10, 10, 0, "Character Icon (can be blank)");
+		var icon = new InputTextFix(iconTitle.x, iconTitle.y + iconTitle.height, 150, character.icon);
+		icon.callback = function(_, _) {
+			character.icon = icon.text.trim().length <= 0 ? null : icon.text.trim();
+			iconHealthy.changeIcon(character.icon != null ? character.icon : character.curCharacter);
+			iconHealthy.animation.curAnim.curFrame = 0;
+			iconDeath.changeIcon(character.icon != null ? character.icon : character.curCharacter);
+			iconDeath.animation.curAnim.curFrame = 1;
+		}
 
 		var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
 		assetPath = new InputTextFix(10, assetPathLabel.y + assetPathLabel.height, 150, character.image);
@@ -276,6 +290,8 @@ class CharacterEditor extends MusicBeatState
 		tab_group_assets.name = "1";
 		tab_group_assets.add(characterNameLabel);
 		tab_group_assets.add(characterName);
+		tab_group_assets.add(iconTitle);
+		tab_group_assets.add(icon);
 		tab_group_assets.add(assetPathLabel);
 		tab_group_assets.add(assetPath);
 		tab_group_assets.add(scaleStepperLabel);
@@ -648,10 +664,6 @@ class CharacterEditor extends MusicBeatState
 		var characters = CoolUtil.coolTextFile(Paths.txt('characterList'));
 		
 		var characterDropdownTitle = new FlxText(10, 10, 0, "Available Characters");
-		characterDropdown = new DropdownMenuFix(10, characterDropdownTitle.y + characterDropdownTitle.height,
-			DropdownMenuFix.makeStrIdLabelArray(characters, true));
-		characterDropdown.selectedLabel = 'bf';
-		characterDropdown.scrollable = true;
 
 		#if FILESYSTEM
 		Paths.setCurrentMod(pastMod);
@@ -662,6 +674,11 @@ class CharacterEditor extends MusicBeatState
 				characters = characters.concat(CoolUtil.coolStringFile(File.getContent(Paths.txt('characterList'))));
 		}
 		#end
+
+		characterDropdown = new DropdownMenuFix(10, characterDropdownTitle.y + characterDropdownTitle.height,
+			DropdownMenuFix.makeStrIdLabelArray(characters, true));
+		characterDropdown.selectedLabel = 'bf';
+		characterDropdown.scrollable = true;
 
 		var opponentTick = new FlxUICheckBox(10, 50, null, null, "Character is opponent?");
 
@@ -1357,6 +1374,7 @@ class CharacterEditor extends MusicBeatState
 		var json = {
 			name: character.curCharacter,
 			image: character.image,
+			icon: character.icon,
 			antialiasing: character.antialiasing,
 			scale: character.setScale,
 			facesLeft: character.facesLeft,
