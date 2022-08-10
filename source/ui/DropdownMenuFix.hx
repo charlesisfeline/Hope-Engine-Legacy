@@ -1,6 +1,5 @@
 package ui;
 
-import flixel.math.FlxRect;
 import flash.geom.Rectangle;
 import flixel.FlxG;
 import flixel.addons.ui.FlxUI9SliceSprite;
@@ -23,6 +22,9 @@ import flixel.util.FlxDestroyUtil;
  */
 class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams
 {
+	public static var dropdowns:Array<DropdownMenuFix> = [];
+	public static var isDropdowning:Bool = false;
+
 	public var skipButtonUpdate(default, set):Bool;
 
 	private function set_skipButtonUpdate(b:Bool):Bool
@@ -199,8 +201,8 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 		FlxMouseEventManager.add(header, null, function(a:FlxUIDropDownHeader) { onDropdown(); }, null, null, true);
 		add(header);
 
-
 		dropPanel.y = header.y + header.height;
+		dropdowns.push(this);
 	}
 
 	private function updateButtonPositions():Void
@@ -409,6 +411,16 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 	{
 		super.update(elapsed);
 
+		var a = [];
+
+		for (dd in dropdowns)
+		{
+			if (Helper.screenOverlap(dd, dd.camera))
+				a.push(dd);
+		}
+
+		isDropdowning = a.length > 0;
+
 		if (FlxG.mouse.wheel != 0 && scrollable && Helper.screenOverlap(dropPanel, camera))
 			dropPanel.y += (dropPanel.height / list.length) * FlxG.mouse.wheel;
 
@@ -433,6 +445,8 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 	override public function destroy():Void
 	{
 		super.destroy();
+
+		dropdowns.remove(this);
 
 		dropPanel = FlxDestroyUtil.destroy(dropPanel);
 

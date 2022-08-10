@@ -340,16 +340,7 @@ class StageJSONCreator extends MusicBeatState
 		}
 		#end
 
-		/**
-			TO DO:
-
-			BF CHARACTER SWITCHING
-			GF CHARACTER SWITCHING
-			INIT AS SELECTED CHARACTERS WHEN LOADING A NEW STAGE
-			KEEL OVER AND DIE
-		**/
-
-		var daWidth:Int = Std.int((UI_box.width / 3) - 10);
+		var daWidth:Int = Std.int((UI_box.width / 3) - 15);
 
 		var dadCharacterTitle = new FlxText(10, 10, 0, "Dad Character");
 
@@ -358,6 +349,8 @@ class StageJSONCreator extends MusicBeatState
 		dadCharacter.selectedLabel = dad.curCharacter;
 		dadCharacter.scrollable = true;
 		dadCharacter.callback = function(_) {
+			if (dadCharacter.selectedLabel == dad.curCharacter) return;
+
 			var index = stageGroup.members.indexOf(dad);
 			var item:Character = cast stageGroup.remove(dad, true);
 			var pos = [item.x, item.y];
@@ -367,6 +360,8 @@ class StageJSONCreator extends MusicBeatState
 
 			dad = new Character(pos[0], pos[1], dadCharacter.selectedLabel);
 			stageGroup.insert(index, dad);
+
+			openfl.system.System.gc();
 		}
 
 		var gfCharacterTitle = new FlxText(dadCharacter.x + daWidth + 10, 10, 0, "GF Character");
@@ -376,6 +371,8 @@ class StageJSONCreator extends MusicBeatState
 		gfCharacter.selectedLabel = gf.curCharacter;
 		gfCharacter.scrollable = true;
 		gfCharacter.callback = function(_) {
+			if (gfCharacter.selectedLabel == gf.curCharacter) return;
+
 			var index = stageGroup.members.indexOf(gf);
 			var item:Character = cast stageGroup.remove(gf, true);
 			var pos = [item.x, item.y];
@@ -385,6 +382,8 @@ class StageJSONCreator extends MusicBeatState
 
 			gf = new Character(pos[0], pos[1], gfCharacter.selectedLabel);
 			stageGroup.insert(index, gf);
+
+			openfl.system.System.gc();
 		}
 
 		var bfCharacterTitle = new FlxText(gfCharacter.x + daWidth + 10, 10, 0, "BF Character");
@@ -394,6 +393,8 @@ class StageJSONCreator extends MusicBeatState
 		bfCharacter.selectedLabel = bf.curCharacter;
 		bfCharacter.scrollable = true;
 		bfCharacter.callback = function(_) {
+			if (bfCharacter.selectedLabel == bf.curCharacter) return;
+
 			var index = stageGroup.members.indexOf(bf);
 			var item:Boyfriend = cast stageGroup.remove(bf, true);
 			var pos = [item.x, item.y];
@@ -403,6 +404,8 @@ class StageJSONCreator extends MusicBeatState
 
 			bf = new Boyfriend(pos[0], pos[1], bfCharacter.selectedLabel);
 			stageGroup.insert(index, bf);
+
+			openfl.system.System.gc();
 		}
 
 		var tab = new FlxUI(null, UI_box);
@@ -534,7 +537,7 @@ class StageJSONCreator extends MusicBeatState
 				curZoom -= 0.01 * multiplier;
 			if (FlxG.keys.pressed.E)
 				curZoom += 0.01 * multiplier;
-			if (FlxG.mouse.wheel != 0)
+			if (FlxG.mouse.wheel != 0 && !DropdownMenuFix.isDropdowning)
 				curZoom += FlxG.mouse.wheel * 0.1 * multiplier;
 	
 			if (FlxG.keys.justPressed.F5)

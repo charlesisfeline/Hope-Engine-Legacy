@@ -1166,7 +1166,8 @@ class CharacterEditor extends MusicBeatState
 		if (FlxG.keys.pressed.SHIFT)
 			multiplier = 3;
 
-		FlxG.camera.zoom += FlxG.mouse.wheel * 0.05 * multiplier;
+		if (!DropdownMenuFix.isDropdowning)
+			FlxG.camera.zoom += FlxG.mouse.wheel * 0.05 * multiplier;
 
 		if (FlxG.mouse.pressedRight)
 		{

@@ -1824,7 +1824,7 @@ class ChartingState extends MusicBeatState
 			if (FlxG.sound.music.time < 0 || curStep < 0)
 				FlxG.sound.music.time = 0;
 
-			if (FlxG.mouse.wheel != 0)
+			if (FlxG.mouse.wheel != 0 && !DropdownMenuFix.isDropdowning)
 			{
 				if (!FlxG.keys.pressed.CONTROL)
 				{
