@@ -48,6 +48,7 @@ class ChartingState extends MusicBeatState
 	static var playBfClaps:Bool = false;
 	static var playDadClaps:Bool = false;
 	static var playEventClaps:Bool = false;
+	static var playMetronome:Bool = false;
 	static var isSwipeMode:Bool = false;
 
 	public var snap:Int = 1;
@@ -464,6 +465,13 @@ class ChartingState extends MusicBeatState
 			FlxG.sound.music.volume = vol;
 		};
 
+		var metronome = new FlxUICheckBox(eventClaps.x, iconFollow.y, null, null, "Metronome enabled");
+		metronome.checked = playMetronome;
+		metronome.callback = function()
+		{
+			playMetronome = metronome.checked;
+		};
+
 		var showBeatLines = new FlxUICheckBox(10, iconFollow.y + iconFollow.height + 10, null, null, "Show beat lines");
 		showBeatLines.checked = false;
 		showBeatLines.callback = function()
@@ -504,6 +512,7 @@ class ChartingState extends MusicBeatState
 		tab_group_misc.add(eventClaps);
 		tab_group_misc.add(iconFollow);
 		tab_group_misc.add(muteInst);
+		tab_group_misc.add(metronome);
 		tab_group_misc.add(showBeatLines);
 		tab_group_misc.add(showStepLines);
 		tab_group_misc.add(showProperties);
@@ -845,8 +854,6 @@ class ChartingState extends MusicBeatState
 
 		var pasteSectionButton:FlxUIButton = new FlxUIButton(10, copySectionButton.y + copySectionButton.height, "Paste Section\nNotes", function()
 		{
-			var addToTime:Float = Conductor.stepCrochet * (_song.notes[curSection].lengthInSteps * (curSection - sectionToCopy));
-
 			for (note in notesCopied)
 			{
 				var copiedNote:Array<Dynamic> = [];
@@ -857,6 +864,7 @@ class ChartingState extends MusicBeatState
 
 				_song.notes[curSection].sectionNotes.push(copiedNote);
 			}
+			
 			updateGrid();
 		});
 		pasteSectionButton.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
@@ -1300,6 +1308,7 @@ class ChartingState extends MusicBeatState
 			{
 				case 'Point camera to Boyfriend?':
 					_song.notes[curSection].mustHitSection = check.checked;
+					updateHeads();
 				case 'Change BPM':
 					_song.notes[curSection].changeBPM = check.checked;
 				case "Alternate Animation":
@@ -1377,6 +1386,8 @@ class ChartingState extends MusicBeatState
 
 	var timeHovered:Float = 0;
 	var backing:Bool = false;
+
+	var lastMetroBeat:Int = 0;
 
 	var dummyArrowPastPosY:Float = 0;
 
@@ -1900,6 +1911,16 @@ class ChartingState extends MusicBeatState
 		miscTxt.y = FlxG.height - miscTxt.height - 10;
 
 		super.update(elapsed);
+		
+		// poor man's metronome
+		if (playMetronome)
+		{
+			if (curBeat != lastMetroBeat && FlxG.sound.music.playing)
+			{
+				FlxG.sound.play(Paths.sound("tick", "shared"), 1);
+				lastMetroBeat = curBeat;
+			}
+		}
 
 		if (curStep < 16 * curSection)
 		{
@@ -2480,13 +2501,12 @@ class ChartingState extends MusicBeatState
 	function loadJson(song:String):Void
 	{
 		var songFormatted = song.replace(" ", "-").toLowerCase();
-		var songPath = 'assets/data/' + songFormatted + '/' + songFormatted + ".json";
+		var songPath = 'assets/data/$songFormatted/$songFormatted.json';
 
-		#if FILESYSTEM
-		if (FileSystem.exists(Sys.getCwd() + songPath))
-		#else
-		if (Assets.exists(songPath))
-		#end
+		if (Paths.currentMod != null)
+			songPath = 'mods/${Paths.currentMod}/assets/data/$songFormatted/$songFormatted.json';
+
+		if (Paths.exists(songPath))
 		{
 			PlayState.SONG = Song.loadFromJson(songFormatted, songFormatted,
 				(Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
