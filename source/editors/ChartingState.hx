@@ -4,6 +4,7 @@ import Conductor.BPMChangeEvent;
 import Event;
 import Section.SwagSection;
 import Song.SwagSong;
+import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -49,6 +50,7 @@ class ChartingState extends MusicBeatState
 	static var playDadClaps:Bool = false;
 	static var playEventClaps:Bool = false;
 	static var playMetronome:Bool = false;
+	static var noAutoscroll:Bool = false;
 	static var isSwipeMode:Bool = false;
 
 	public var snap:Int = 1;
@@ -151,6 +153,9 @@ class ChartingState extends MusicBeatState
 		192
 	];
 
+	var camHUD:FlxCamera;
+	var camGame:FlxCamera;
+
 	override function create()
 	{
 		#if FILESYSTEM
@@ -159,6 +164,14 @@ class ChartingState extends MusicBeatState
 		#end
 
 		FlxG.mouse.visible = true;
+
+		camGame = new FlxCamera();
+		camHUD = new FlxCamera();
+		camHUD.bgColor.alpha = 0;
+
+		FlxG.cameras.reset(camGame);
+		FlxG.cameras.add(camHUD);
+		FlxCamera.defaultCameras = [camGame];
 
 		curSection = lastSection;
 
@@ -253,10 +266,12 @@ class ChartingState extends MusicBeatState
 		bpmTxt = new FlxText(10, 100, 0, "", 16);
 		bpmTxt.scrollFactor.set();
 		add(bpmTxt);
+		bpmTxt.cameras = [camHUD];
 
 		miscTxt = new FlxText(10, 0, 0, "", 16);
 		miscTxt.scrollFactor.set();
 		add(miscTxt);
+		miscTxt.cameras = [camHUD];
 
 		strumLine = new FlxSprite(gridBG.x).makeGraphic(Std.int(gridBG.width), 4);
 		add(strumLine);
@@ -265,6 +280,7 @@ class ChartingState extends MusicBeatState
 		add(eventLine);
 
 		add(snapText);
+		snapText.cameras = [camHUD];
 
 		var tabs = [
 			{name: "1", label: 'Assets'},
@@ -282,6 +298,7 @@ class ChartingState extends MusicBeatState
 		UI_box.x = FlxG.width / 2 + 5;
 		UI_box.y = 20;
 		add(UI_box);
+		UI_box.cameras = [camHUD];
 
 		bpmTxt.setPosition(UI_box.x + UI_box.width + 10, UI_box.y);
 
@@ -307,6 +324,7 @@ class ChartingState extends MusicBeatState
 		noteTxt.borderSize = 3;
 		noteTxt.scrollFactor.set();
 		add(noteTxt);
+		noteTxt.cameras = [camHUD];
 
 		super.create();
 		addEventUI();
@@ -490,6 +508,14 @@ class ChartingState extends MusicBeatState
 		};
 		showStepLines.callback();
 
+		var noAutoscrollToggle = new FlxUICheckBox(showStepLines.x + showStepLines.width + 10, showBeatLines.y, null, null, "Disable Autoscroll");
+		noAutoscrollToggle.checked = false;
+		noAutoscrollToggle.callback = function()
+		{
+			noAutoscroll = noAutoscrollToggle.checked;
+		};
+		noAutoscrollToggle.callback();
+
 		var showProperties = new FlxUICheckBox(10, showBeatLines.y + showBeatLines.height + 10, null, null, "Show Note Properties");
 		showProperties.checked = false;
 		showProperties.callback = function()
@@ -515,6 +541,7 @@ class ChartingState extends MusicBeatState
 		tab_group_misc.add(metronome);
 		tab_group_misc.add(showBeatLines);
 		tab_group_misc.add(showStepLines);
+		tab_group_misc.add(noAutoscrollToggle);
 		tab_group_misc.add(showProperties);
 		tab_group_misc.add(swipeMode);
 
@@ -787,6 +814,7 @@ class ChartingState extends MusicBeatState
 			}
 
 			itemToAdd.scrollFactor.set();
+			itemToAdd.cameras = [camHUD];
 			
 			tooltips.add(itemToAdd, {
 				title: "Parameter ID",
@@ -844,7 +872,9 @@ class ChartingState extends MusicBeatState
 			sectionToCopy = curSection;
 			for (i in 0..._song.notes[curSection].sectionNotes.length)
 			{
-				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes.copy()[i];
+				// do it fart
+				// copy is WEIRD
+				var note:Array<Dynamic> = _song.notes[curSection].sectionNotes[i].copy();
 				note[0] -= sectionStartTime();
 				notesCopied.push(note);
 			}
@@ -1536,8 +1566,6 @@ class ChartingState extends MusicBeatState
 		leftIcon.x = (GRID_SIZE * 2) - (leftIcon.width / 2);
 		rightIcon.x = (GRID_SIZE * 6) - (rightIcon.width / 2);
 
-		camFollow.setPosition(strumLine.x + strumLine.width + camFollowXOffset, strumLine.y + camFollowYOffset);
-
 		curRenderedNotes.forEach(function(note:Note)
 		{
 			if (note.strumTime <= Conductor.songPosition && !claps.contains(note) && FlxG.sound.music.playing)
@@ -1911,6 +1939,19 @@ class ChartingState extends MusicBeatState
 		miscTxt.y = FlxG.height - miscTxt.height - 10;
 
 		super.update(elapsed);
+
+		if (noAutoscroll)
+		{
+			camFollow.setPosition(strumLine.x + strumLine.width + (camFollowXOffset / 0.7), gridBG.y + (gridBG.height / 2) - 75);
+			FlxG.camera.zoom = 0.7;
+			bg.scale.set(1 / 0.7, 1 / 0.7);
+		}
+		else
+		{
+			camFollow.setPosition(strumLine.x + strumLine.width + camFollowXOffset, strumLine.y + camFollowYOffset);
+			FlxG.camera.zoom = 1;
+			bg.scale.set(1, 1);
+		}
 		
 		// poor man's metronome
 		if (playMetronome)
@@ -1923,9 +1964,7 @@ class ChartingState extends MusicBeatState
 		}
 
 		if (curStep < 16 * curSection)
-		{
 			changeSection(curSection - 1, false);
-		}
 	}
 
 	function checkMustPress(note:FlxSprite):Bool
@@ -2094,7 +2133,7 @@ class ChartingState extends MusicBeatState
 
 	function updateGrid():Void
 	{
-		for (note in curRenderedNotes.members) 
+		for (note in curRenderedNotes.members)
 			FlxMouseEventManager.remove(note);
 
 		curRenderedNotes.clear();
@@ -2213,6 +2252,8 @@ class ChartingState extends MusicBeatState
 			curRenderedEvents.add(event);
 			curRenderedEventTexts.add(event.textThing);
 		}
+
+		openfl.system.System.gc();
 	}
 
 	// may cause some discolors with Black and White
