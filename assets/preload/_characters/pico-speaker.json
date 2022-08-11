@@ -156,6 +156,10 @@
 		0,
 		0
 	],
+	"positionOffset": [
+		111,
+		-12
+	],
 	"antialiasing": true,
 	"name": "pico-speaker",
 	"isDeath": false,

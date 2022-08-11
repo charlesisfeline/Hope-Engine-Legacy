@@ -1,7 +1,5 @@
 package;
 
-import flixel.util.FlxSort;
-import ui.InputTextFix;
 import AlphabetRedux;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -13,10 +11,12 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxSort;
 import modifiers.ModifierSaveSubstate;
 import modifiers.ModifierSubstate;
 import modifiers.Modifiers;
 import openfl.utils.Assets;
+import ui.InputTextFix;
 
 using StringTools;
 
@@ -412,7 +412,7 @@ class FreeplayState extends MusicBeatState
 
 		if (!InputTextFix.isTyping)
 		{
-			if (controls.UI_UP || controls.UI_DOWN)
+			if ((controls.UI_UP || controls.UI_DOWN) && !exiting)
 			{
 				if (holdTime > maxThing)
 				{
@@ -467,19 +467,22 @@ class FreeplayState extends MusicBeatState
 					openSubState(new ModifierSubstate());
 			}
 	
-			if (!FlxG.keys.pressed.SHIFT)
+			if (!exiting)
 			{
-				if (controls.UI_LEFT_P)
-					changeDiff(-1);
-				if (controls.UI_RIGHT_P)
-					changeDiff(1);
-			}
-			else
-			{
-				if (controls.UI_LEFT_P)
-					changeSort(-1);
-				if (controls.UI_RIGHT_P)
-					changeSort(1);
+				if (!FlxG.keys.pressed.SHIFT)
+				{
+					if (controls.UI_LEFT_P)
+						changeDiff(-1);
+					if (controls.UI_RIGHT_P)
+						changeDiff(1);
+				}
+				else
+				{
+					if (controls.UI_LEFT_P)
+						changeSort(-1);
+					if (controls.UI_RIGHT_P)
+						changeSort(1);
+				}
 			}
 	
 			if (controls.UI_BACK)
@@ -494,8 +497,10 @@ class FreeplayState extends MusicBeatState
 			if (FlxG.keys.justPressed.SPACE)
 				playMusic();
 	
-			if (controls.UI_ACCEPT && !FlxG.keys.justPressed.SPACE)
+			if (controls.UI_ACCEPT && !FlxG.keys.justPressed.SPACE && !exiting)
 			{
+				exiting = true;
+				
 				var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
 				var songLowercase = songs[curSelected].songName.replace(" ", "-").toLowerCase();
 				var poop:String = songLowercase + CoolUtil.difficultySuffixfromInt(curDifficulty);
