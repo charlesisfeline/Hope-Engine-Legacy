@@ -530,7 +530,10 @@ class FreeplayState extends MusicBeatState
 					FlxG.mouse.visible = false;
 				}
 				else
+				{
 					FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
+					exiting = false;
+				}
 			}
 
 			if (FlxG.mouse.justPressed && FlxG.mouse.visible)
