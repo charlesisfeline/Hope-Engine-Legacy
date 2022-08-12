@@ -1226,7 +1226,6 @@ class ChartingState extends MusicBeatState
 			line.kill();
 			beatLineGroup.remove(line, true);
 			line.destroy();
-			trace("destroyed line!");
 		}
 
 		for (num in beatNumsGroup.members)
@@ -1258,7 +1257,7 @@ class ChartingState extends MusicBeatState
 			line.alpha = 0.5;
 			stepLineGroup.add(line);
 
-			var stepNum = (sectionStartTime() / Conductor.stepCrochet) + i;
+			var stepNum = Math.floor((sectionStartTime() / Conductor.stepCrochet) + i);
 			var num = new FlxText(0, 0, FlxG.width / 4, stepNum + '');
 			num.antialiasing = true;
 			num.x = line.x - num.width - 8;
@@ -1273,7 +1272,7 @@ class ChartingState extends MusicBeatState
 				line.alpha = 0.5;
 				beatLineGroup.add(line);
 
-				var beatNum = ((sectionStartTime() / Conductor.stepCrochet) + i) / 4;
+				var beatNum = Math.floor(((sectionStartTime() / Conductor.stepCrochet) + i) / 4);
 				var num = new FlxText(0, 0, FlxG.width / 4, beatNum + '');
 				num.antialiasing = true;
 				num.x = line.x - num.width - 8;

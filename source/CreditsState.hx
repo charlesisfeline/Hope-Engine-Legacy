@@ -54,6 +54,8 @@ class CreditsState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("CreditsState", CREDITS));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -186,8 +188,13 @@ class CreditsState extends MusicBeatState
 
 	var bgTargetY:Float = 0;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		super.update(elapsed);
 
 		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, Helper.boundTo(elapsed * 9.6, 0, 1));

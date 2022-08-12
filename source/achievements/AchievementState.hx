@@ -41,6 +41,8 @@ class AchievementState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("AchievementState", ACHIEVEMENTS));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -211,9 +213,14 @@ class AchievementState extends MusicBeatState
 		}
 	}
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+		
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
 
 		if (controls.UI_UP_P)
 			changeSelection(-1);

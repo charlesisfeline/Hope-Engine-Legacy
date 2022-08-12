@@ -67,6 +67,8 @@ class StoryMenuState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("StoryMenuState", STORYMENU));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -280,8 +282,13 @@ class StoryMenuState extends MusicBeatState
 		});
 	}
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 

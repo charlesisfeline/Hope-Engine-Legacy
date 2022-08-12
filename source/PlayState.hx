@@ -266,7 +266,7 @@ class PlayState extends MusicBeatState
 	// skin stuff
 	public var noteSplashAtlas:FlxAtlasFrames;
 
-	public var globalScrollSpeed:Float = Settings.scrollSpeed == 1 ? SONG.speed : Settings.scrollSpeed;
+	public var globalScrollSpeed:Float = Settings.scrollSpeed == 1 && SONG != null && SONG.speed != null ? SONG.speed : Settings.scrollSpeed;
 
 	// RPC Variables
 	public var rpcSong:String = '';
@@ -289,6 +289,8 @@ class PlayState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("PlayState", PLAYSTATE));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -1914,8 +1916,13 @@ class PlayState extends MusicBeatState
 
 	var originalNoteSpeed:Null<Float>;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override public function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		#if !debug
 		perfectMode = false;
 		#end
@@ -3624,11 +3631,6 @@ class PlayState extends MusicBeatState
 	public function interpVariables(funnyInterp:Interp):Void
 	{
 		ScriptEssentials.imports(funnyInterp);
-
-		// state funcs
-		funnyInterp.variables.set("add", add);
-		funnyInterp.variables.set("remove", remove);
-		funnyInterp.variables.set("insert", insert);
 
 		// characters
 		funnyInterp.variables.set("boyfriend", boyfriend);

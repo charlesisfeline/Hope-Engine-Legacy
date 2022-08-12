@@ -58,6 +58,8 @@ class MainMenuState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("MainMenuState", MAINMENU));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -159,8 +161,13 @@ class MainMenuState extends MusicBeatState
 
 	var holdTime:Float = 0;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		if (FlxG.sound.music.volume < 0.8)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 

@@ -1,15 +1,15 @@
 package;
 
-import lime.ui.Window;
-import scripts.ScriptEditor;
-import lime.app.Application;
 import flixel.FlxG;
-import hscript.Parser;
 import hscript.Interp;
+import hscript.Parser;
+import lime.app.Application;
+import lime.ui.Window;
 import scripts.ScriptConsole.ConsolePrefix;
+import scripts.ScriptEditor;
 import scripts.ScriptEssentials;
-import sys.io.File;
 import sys.FileSystem;
+import sys.io.File;
 
 // DOESN'T WORK YET!!
 
@@ -160,9 +160,6 @@ class CustomSubState extends MusicBeatSubstate
 		});
 		interp.variables.set("curStep", curStep);
 		interp.variables.set("curBeat", curBeat);
-		interp.variables.set("add", add);
-		interp.variables.set("remove", remove);
-		interp.variables.set("insert", insert);
 	}
 
 	override function destroy() 

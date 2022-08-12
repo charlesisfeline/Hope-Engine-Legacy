@@ -1,27 +1,27 @@
 package scripts;
 
-import flixel.util.FlxAxes;
-import flixel.util.FlxColor;
 import DialogueSubstate;
-import openfl.Lib;
+import achievements.Achievements;
 import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.display.FlxBackdrop;
+import flixel.addons.effects.FlxTrail;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxGroup;
+import flixel.math.FlxMath;
+import flixel.math.FlxRandom;
+import flixel.math.FlxRect;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
-import flixel.math.FlxRect;
-import flixel.math.FlxMath;
-import flixel.system.FlxSound;
-import flixel.addons.effects.FlxTrail;
-import flixel.util.FlxTimer;
 import flixel.tweens.FlxTween;
-import flixel.math.FlxRandom;
-import flixel.FlxSprite;
-import achievements.Achievements;
-import flixel.group.FlxGroup;
-import flixel.graphics.frames.FlxAtlasFrames;
-import lime.app.Application;
-import flixel.addons.display.FlxBackdrop;
-import hscript.Interp;
 import flixel.ui.FlxBar.FlxBarFillDirection;
+import flixel.util.FlxAxes;
+import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
+import hscript.Interp;
+import lime.app.Application;
+import openfl.Lib;
 
 using StringTools;
 
@@ -116,6 +116,10 @@ class ScriptEssentials
 			LEFT_TO_RIGHT: LEFT_TO_RIGHT,
 			RIGHT_TO_LEFT: RIGHT_TO_LEFT
 		});
+		
+		interp.variables.set("add", FlxG.state.subState != null ? FlxG.state.subState.add : FlxG.state.add);
+		interp.variables.set("remove", FlxG.state.subState != null ? FlxG.state.subState.remove : FlxG.state.remove);
+		interp.variables.set("insert", FlxG.state.subState != null ? FlxG.state.subState.insert : FlxG.state.insert);
 	}
 
 	static function importClass(classPath:String, interp:Interp):Void

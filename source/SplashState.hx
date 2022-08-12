@@ -1,7 +1,7 @@
 package;
 
-import flixel.FlxSprite;
 import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -32,6 +32,8 @@ class SplashState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("SplashState", SPLASH));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -94,10 +96,16 @@ class SplashState extends MusicBeatState
 		super.create();
 	}
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override public function update(elapsed:Float):Void
 	{
 		// Thing to skip the splash screen
 		// Comment this out if you want it unskippable
+
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		if (FlxG.keys.justPressed.ANY)
 		{
 			finishTween();

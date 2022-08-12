@@ -1,16 +1,16 @@
 package;
 
-import lime.utils.Assets;
-import lime.ui.Window;
-import scripts.ScriptEditor;
-import lime.app.Application;
 import flixel.FlxG;
-import hscript.Parser;
 import hscript.Interp;
+import hscript.Parser;
+import lime.app.Application;
+import lime.ui.Window;
+import lime.utils.Assets;
 import scripts.ScriptConsole.ConsolePrefix;
+import scripts.ScriptEditor;
 import scripts.ScriptEssentials;
-import sys.io.File;
 import sys.FileSystem;
+import sys.io.File;
 
 class CustomState extends MusicBeatState
 {
@@ -162,9 +162,6 @@ class CustomState extends MusicBeatState
 		});
 		interp.variables.set("curStep", curStep);
 		interp.variables.set("curBeat", curBeat);
-		interp.variables.set("add", add);
-		interp.variables.set("remove", remove);
-		interp.variables.set("insert", insert);
 	}
 
 	var resetting:Bool = false;

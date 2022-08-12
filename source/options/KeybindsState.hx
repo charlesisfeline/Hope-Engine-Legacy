@@ -1,13 +1,13 @@
 package options;
 
-import flixel.text.FlxText;
+import flixel.FlxG;
+import flixel.FlxObject;
+import flixel.FlxSprite;
+import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
-import flixel.FlxObject;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.FlxG;
+import flixel.text.FlxText;
 import flixel.util.FlxColor;
-import flixel.FlxSprite;
 
 using StringTools;
 
@@ -45,6 +45,8 @@ class KeybindsState extends MusicBeatState
             {
                 Paths.setCurrentMod(Paths.priorityMod);
                 FlxG.switchState(new CustomState("KeybindsState", BINDS));
+
+                DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
                 return;
             }
         }
@@ -274,15 +276,20 @@ class KeybindsState extends MusicBeatState
 
     var exiting:Bool = false;
 
+    var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+        if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+
 		super.update(elapsed);
 
         uniqueness();
 
         var lerp:Float = Helper.boundTo(elapsed * 9.2, 0, 1);
-		camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
-		camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
+        camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
+        camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);
 
         if (selected != null)
         {
@@ -295,8 +302,8 @@ class KeybindsState extends MusicBeatState
         else
             selectUnderline.visible = false;
 
-		if (!isRecording)
-		{
+        if (!isRecording)
+        {
             if (FlxG.mouse.pressed)
             {
                 holdTime += elapsed;
@@ -313,7 +320,7 @@ class KeybindsState extends MusicBeatState
             else
                 holdTime = 0;
 
-			if (controls.UI_BACK && !exiting)
+            if (controls.UI_BACK && !exiting)
             {
                 if (allKeysUnique)
                 {
@@ -338,12 +345,12 @@ class KeybindsState extends MusicBeatState
 
             if (controls.UI_ACCEPT)
                 activateRecord();
-		}
-		else
-		{
-			recordTime += elapsed;
+        }
+        else
+        {
+            recordTime += elapsed;
 
-			recordText.alpha = deleteText.alpha = (Math.sin(recordTime * 5) + 1) / 2;
+            recordText.alpha = deleteText.alpha = (Math.sin(recordTime * 5) + 1) / 2;
 
             if (FlxG.keys.justPressed.ANY || FlxG.mouse.justPressed || FlxG.mouse.justPressedRight)
             {
@@ -374,6 +381,6 @@ class KeybindsState extends MusicBeatState
                 FlxG.save.flush();
                 PlayerSettings.player1.controls.loadKeyBinds();
             }
-		}
+        }
 	}
 }

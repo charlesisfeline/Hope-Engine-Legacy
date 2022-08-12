@@ -1,22 +1,22 @@
 package scripts;
 
-import openfl.ui.Keyboard;
-import lime.ui.KeyCode;
-import openfl.events.KeyboardEvent;
-import hscript.Parser;
-import hscript.Interp;
-import openfl.events.FocusEvent;
-import openfl.text.TextFieldType;
-import flixel.util.FlxStringUtil;
-import openfl.events.MouseEvent;
-import openfl.Lib;
 import flixel.FlxG;
+import flixel.util.FlxStringUtil;
+import hscript.Interp;
+import hscript.Parser;
+import lime.ui.KeyCode;
+import openfl.Lib;
 import openfl.display.Bitmap;
-import openfl.text.TextFormatAlign;
-import openfl.text.TextFormat;
-import openfl.text.TextField;
-import openfl.display.Sprite;
 import openfl.display.BitmapData;
+import openfl.display.Sprite;
+import openfl.events.FocusEvent;
+import openfl.events.KeyboardEvent;
+import openfl.events.MouseEvent;
+import openfl.text.TextField;
+import openfl.text.TextFieldType;
+import openfl.text.TextFormat;
+import openfl.text.TextFormatAlign;
+import openfl.ui.Keyboard;
 
 using StringTools;
 
@@ -53,6 +53,25 @@ class ScriptConsole extends Sprite
 		"Everything. By everyone.",
 		"Left... down... up... right...",
 		"WAAAAAAAAAAAAAAAAAAAAAAAAAAAAAa",
+		"Now with more bugs!",
+		"Now with more crashes!",
+		"We out here",
+		"Roblox dev console type beat",
+		"Apple",
+		"while (true) {}",
+		"Sys.exit(0) :troll:",
+		"We are gaming my peoplpe",
+		"2 steps ahead.",
+		"Connection terminated.",
+		"Clown to clown communication",
+		"HELIKOPTER HELIKOPTER",
+		"Rust. Oxidized, even.",
+		"cock",
+		"Pretty much.",
+		"",
+		"",
+		"",
+		""
 	];
 
 	public var history:Array<String> = [];

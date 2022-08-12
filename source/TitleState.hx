@@ -51,6 +51,8 @@ class TitleState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("TitleState", TITLESTATE));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -292,8 +294,13 @@ class TitleState extends MusicBeatState
 
 	var typed:String = "";
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		if (swing)
 			logoBl.angle = Math.sin(FlxG.game.ticks / 500) * -5;
 

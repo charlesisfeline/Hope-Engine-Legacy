@@ -49,6 +49,8 @@ class ModLoadingState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("ModLoadingState", MODSMENU));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -210,10 +212,15 @@ class ModLoadingState extends MusicBeatState
 		});
 	}
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
-		super.update(elapsed);
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
 
+		super.update(elapsed);
+		
 		var lerp:Float = Helper.boundTo(elapsed * 9.2, 0, 1);
 		camPos.x = FlxMath.lerp(camPos.x, camFollow.x, lerp);
 		camPos.y = FlxMath.lerp(camPos.y, camFollow.y, lerp);

@@ -1,7 +1,6 @@
 package options;
 
 import AlphabetRedux;
-import modifiers.Modifiers;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,6 +8,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
 import lime.app.Application;
+import modifiers.Modifiers;
 import openfl.Lib;
 import options.OptionTypes;
 
@@ -190,6 +190,8 @@ class OptionsState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("OptionsState", OPTIONS));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -240,8 +242,13 @@ class OptionsState extends MusicBeatState
 
 	var holdTimer:Float = 0;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+
 		super.update(elapsed);
 
 		if (!inCat)

@@ -87,6 +87,8 @@ class FreeplayState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("FreeplayState", FREEPLAY));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -389,8 +391,13 @@ class FreeplayState extends MusicBeatState
 	var searchExtended:Bool = false;
 	var searchExtending:Bool = false;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		super.update(elapsed);
 
 		if (FlxG.sound.music != null)

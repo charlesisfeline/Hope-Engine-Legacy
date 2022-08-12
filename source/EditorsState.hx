@@ -52,6 +52,8 @@ class EditorsState extends MusicBeatState
 			{
 				Paths.setCurrentMod(Paths.priorityMod);
 				FlxG.switchState(new CustomState("EditorsState", EDITORS));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
 				return;
 			}
 		}
@@ -192,8 +194,13 @@ class EditorsState extends MusicBeatState
 		CustomTransition.switchTo(state);
 	}
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+
 		super.update(elapsed);
 
 		if (controls.UI_BACK)
