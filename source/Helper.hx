@@ -115,6 +115,7 @@ class Helper
 			(mouse.y >= bruh.y && mouse.y <= bruh.y + obj.height);
 	}
 
+	#if windows
 	/**
 	 * Heh. Window transparency.
 	 *
@@ -124,4 +125,5 @@ class Helper
 	{
 		Transparency.setTransparency("Friday Night Funkin' : Hope Engine", color);
 	}
+	#end
 }
