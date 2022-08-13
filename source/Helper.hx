@@ -1,6 +1,7 @@
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
+
 using StringTools;
 
 class Helper
@@ -112,5 +113,15 @@ class Helper
 
 		return (mouse.x >= bruh.x && mouse.x <= bruh.x + obj.width) &&
 			(mouse.y >= bruh.y && mouse.y <= bruh.y + obj.height);
+	}
+
+	/**
+	 * Heh. Window transparency.
+	 *
+	 * @param color Color to key. Format is `0x00bbggrr`!
+	 */
+	public static function setTransparency(color:Int)
+	{
+		Transparency.setTransparency("Friday Night Funkin' : Hope Engine", color);
 	}
 }

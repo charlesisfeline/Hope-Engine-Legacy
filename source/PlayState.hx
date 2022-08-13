@@ -2380,7 +2380,7 @@ class PlayState extends MusicBeatState
 
 	public var devBot:Bool = false;
 
-	var waitTime:Float = Conductor.crochet / 1500;
+	var waitTime:Float = FlxG.elapsed;
 
 	public function endSong():Void
 	{
@@ -2393,8 +2393,6 @@ class PlayState extends MusicBeatState
 				FlxG.signals.focusLost.remove(focusLost);
 				FlxG.signals.focusGained.remove(focusGained);
 			}
-
-			FlxTween.tween(camHUD, {alpha: 0}, Conductor.crochet / 1500, {ease: FlxEase.expoInOut});
 
 			canPause = false;
 			FlxG.sound.music.volume = 0;
@@ -2422,20 +2420,14 @@ class PlayState extends MusicBeatState
 				Highscore.saveScore(songHighscore, Math.round(songScore), storyDifficulty);
 				Highscore.saveAccuracy(songHighscore, accuracy, storyDifficulty);
 			}
-
-			if (!mv.contains(true) && !openedCharting)
-			{
-				Achievements.camera = camMisc;
-				achievementCheck();
-			}
-
+			
 			if (executeModchart)
 			{
 				if (interp.variables.get("onSongEnd") != null)
 					interp.variables.get("onSongEnd")();
 			}
 
-			new FlxTimer().start(waitTime, function(tmr:FlxTimer)
+			new FlxTimer().start(FlxG.elapsed, function(tmr:FlxTimer)
 			{
 				if (inCutscene)
 				{
@@ -2465,24 +2457,32 @@ class PlayState extends MusicBeatState
 
 					if (storyPlaylist.length <= 0)
 					{
-						FlxG.sound.playMusic(Paths.music('freakyMenu'));
-						Conductor.changeBPM(102);
-						CustomTransition.switchTo(new StoryMenuState());
+						if (!mv.contains(true) && !Settings.botplay && !openedCharting)
+						{
+							Achievements.camera = camMisc;
+							achievementCheck();
+						}
 
-						if (SONG.validScore)
-							Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
+						new FlxTimer().start(waitTime, function(_) {
+							FlxG.sound.playMusic(Paths.music('freakyMenu'));
+							Conductor.changeBPM(102);
+							CustomTransition.switchTo(new StoryMenuState());
 
-						#if !UNLOCK_ALL_WEEKS
-						FlxG.save.data.weeksUnlocked.push(true);
-						#end
+							if (SONG.validScore)
+								Highscore.saveWeekScore(storyWeek, campaignScore, storyDifficulty);
 
-						openedCharting = false;
-						PlayState.startAt = 0;
-						Settings.botplay = false;
-						PlayState.seenCutscene = false;
+							#if !UNLOCK_ALL_WEEKS
+							FlxG.save.data.weeksUnlocked.push(true);
+							#end
 
-						FlxG.save.flush();
-						PlayState.resetWeekStats();
+							openedCharting = false;
+							PlayState.startAt = 0;
+							Settings.botplay = false;
+							PlayState.seenCutscene = false;
+
+							FlxG.save.flush();
+							PlayState.resetWeekStats();
+						});
 					}
 					else
 					{
@@ -3862,7 +3862,6 @@ class PlayState extends MusicBeatState
 		if (isStoryMode
 			&& Paths.currentMod == null
 			&& storyDifficulty == 2
-			&& storyPlaylist.length == 1
 			&& weekSicks > 0
 			&& weekGoods == 0
 			&& weekBads == 0
