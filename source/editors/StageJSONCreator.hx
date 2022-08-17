@@ -1,6 +1,6 @@
 package editors;
 
-import PlayState.StageJSON;
+import Stage.StageJSON;
 import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;

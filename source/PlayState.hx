@@ -1,9 +1,9 @@
 package;
 
-import DialogueSubstate.DialogueStyle;
 import Event;
 import Section.SwagSection;
 import Song.SwagSong;
+import Stage.StageJSON;
 import achievements.Achievements;
 import editors.CharacterEditor;
 import flixel.FlxBasic;
@@ -12,23 +12,18 @@ import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
-import flixel.addons.display.FlxBackdrop;
-import flixel.addons.effects.FlxTrail;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
-import flixel.input.keyboard.FlxKey;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
-import flixel.math.FlxRandom;
 import flixel.math.FlxRect;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
-import flixel.util.FlxAxes;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import flixel.util.FlxStringUtil;
@@ -64,20 +59,10 @@ import Discord.DiscordClient;
 // import vlc.MP4Sprite;
 // #end
 
-typedef StageJSON =
-{
-	var name:String;
-	var bfPosition:Array<Float>;
-	var gfPosition:Array<Float>;
-	var dadPosition:Array<Float>;
-	var defaultCamZoom:Null<Float>;
-
-	var isHalloween:Null<Bool>;
-}
-
 class PlayState extends MusicBeatState
 {
 	public static var seenCutscene:Bool = false;
+	public static var previousCamPos:FlxPoint = null;
 	public static var instance:PlayState = null;
 
 	// main vars
@@ -206,9 +191,6 @@ class PlayState extends MusicBeatState
 	var scoreTxt:FlxText;
 	var scrollSpeedText:FlxText;
 	var songName:FlxText;
-
-	// camera
-	private static var prevCamFollow:FlxObject;
 
 	public var camZooming:Bool = false;
 	public var isCamForced:Bool = false;
@@ -448,6 +430,9 @@ class PlayState extends MusicBeatState
 
 		var camPos:FlxPoint = new FlxPoint(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
 
+		if (previousCamPos != null)
+			camPos = previousCamPos;
+
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
 
 		var stageCheck = SONG.stage != null ? SONG.stage : 'stage';
@@ -606,17 +591,8 @@ class PlayState extends MusicBeatState
 		camFollow.setPosition(camPos.x, camPos.y);
 		curCamPos.setPosition(camPos.x, camPos.y);
 
-		if (prevCamFollow != null)
-		{
-			camFollow = prevCamFollow;
-			prevCamFollow = null;
-		}
-
 		add(camFollow);
 		add(curCamPos);
-
-		camFollow.setPosition(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
-		curCamPos.setPosition(gf.getGraphicMidpoint().x, gf.getGraphicMidpoint().y);
 
 		FlxG.camera.follow(curCamPos, LOCKON, 1);
 		FlxG.camera.zoom = defaultCamZoom;
@@ -1688,7 +1664,13 @@ class PlayState extends MusicBeatState
 			if (Settings.middleScroll && player == 0)
 				wantedAlpha = 0.1;
 
-			FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: wantedAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.2 + (0.2 * i)});
+			if (previousCamPos == null)
+				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: wantedAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.2 + (0.2 * i)});
+			else
+			{
+				babyArrow.y += 10;
+				babyArrow.alpha = 1;
+			}
 
 			babyArrow.playAnim('static');
 			babyArrow.staticWidth = babyArrow.width;
@@ -2125,6 +2107,7 @@ class PlayState extends MusicBeatState
 			#if desktop
 			DiscordClient.changePresence("Chart Editor", null, null, true);
 			#end
+			PlayState.resetWeekStats();
 			LoadingState.loadAndSwitchState(new editors.ChartingState());
 			openedCharting = true;
 		}
@@ -2254,7 +2237,7 @@ class PlayState extends MusicBeatState
 			}
 		}
 
-		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !previewMode)
+		if (generatedMusic && PlayState.SONG.notes[Std.int(curStep / 16)] != null && !previewMode && !ending)
 		{
 			if ((camFollow.x != dad.getMidpoint().x + 150 + dad.cameraOffset[0] + cameraOffsetX
 				|| camFollow.y != dad.getMidpoint().y
@@ -2376,6 +2359,8 @@ class PlayState extends MusicBeatState
 		weekPeakCombo = [];
 		weekAccuracies = [];
 		weekName = "";
+
+		previousCamPos = null;
 	}
 
 	public var devBot:Bool = false;
@@ -2427,7 +2412,11 @@ class PlayState extends MusicBeatState
 					interp.variables.get("onSongEnd")();
 			}
 
-			new FlxTimer().start(FlxG.elapsed, function(tmr:FlxTimer)
+			FlxTween.tween(songPosBG, {alpha: 0}, 0.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(songPosBar, {alpha: 0}, 0.5, {ease: FlxEase.expoInOut});
+			FlxTween.tween(songName, {alpha: 0}, 0.5, {ease: FlxEase.expoInOut});
+
+			new FlxTimer().start(0.5, function(tmr:FlxTimer)
 			{
 				if (inCutscene)
 				{
@@ -2437,6 +2426,10 @@ class PlayState extends MusicBeatState
 
 				if (openedCharting)
 				{
+					#if desktop
+					DiscordClient.changePresence("Chart Editor", null, null, true);
+					#end
+					PlayState.resetWeekStats();
 					LoadingState.loadAndSwitchState(new editors.ChartingState());
 					return;
 				}
@@ -2497,7 +2490,7 @@ class PlayState extends MusicBeatState
 
 						FlxTransitionableState.skipNextTransIn = true;
 						FlxTransitionableState.skipNextTransOut = true;
-						prevCamFollow = camFollow;
+						previousCamPos = new FlxPoint(camFollow.x, camFollow.y);
 
 						PlayState.SONG = Song.loadFromJson(nextSongLowercase + difficulty, nextSongLowercase,
 							(Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
