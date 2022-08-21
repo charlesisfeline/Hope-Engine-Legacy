@@ -1,6 +1,11 @@
 package;
 
+import editors.StageEditor.StageSprite;
+import flixel.FlxSprite;
 import flixel.util.FlxColor;
+import flixel.util.FlxSort;
+import flixel.util.typeLimit.OneOfTwo;
+import openfl.display.BlendMode;
 
 typedef StageJSON =
 {
@@ -19,31 +24,34 @@ typedef StageJSON =
 
 typedef JSONStage =
 {
-    var stage:Array<JSONStageSprite>;
+	var stage:Array<JSONStageSprite>;
 }
 
 typedef JSONStageSprite =
 {
-    var varName:String;
-    var imagePath:String;
+	var varName:String;
+	var imagePath:String;
 
-    var antialiasing:Bool;
-    var scale:Array<Float>;
-    var angle:Float;
-    var color:String;
-    var alpha:Float;
-    var blend:String;
-    var flipX:Bool;
-    var flipY:Bool;
+	var layer:Int;
 
-    var initAnim:String;
-
-    var animations:Array<JSONStageSpriteAnimation>;
+	var antialiasing:Bool;
+	var position:Array<Float>;
+	var scrollFactor:Array<Float>;
+	var scale:Array<Float>;
+	var angle:Float;
+	var color:String;
+	var alpha:Float;
+	var blend:String;
+	var flipX:Bool;
+	var flipY:Bool;
+	var initAnim:String;
+	var inFront:Bool;
+	var animations:Array<JSONStageSpriteAnimation>;
 }
 
-typedef JSONStageSpriteAnimation = 
+typedef JSONStageSpriteAnimation =
 {
-    var name:String;
+	var name:String;
 	var prefix:String;
 
 	@:optional var frameRate:Null<Int>;
@@ -51,4 +59,70 @@ typedef JSONStageSpriteAnimation =
 	@:optional var indices:Null<Array<Int>>;
 	@:optional var flipX:Null<Bool>;
 	@:optional var flipY:Null<Bool>;
+}
+
+typedef ParsedJSONStage =
+{
+	var background:Array<StageSprite>;
+	var foreground:Array<StageSprite>;
+}
+
+class Stage
+{
+	public static function parseJSONStage(json:JSONStage):ParsedJSONStage
+	{
+		// TO DO: THIS LMAOOOOOOOOOOOOO
+
+		var spritesBack:Array<StageSprite> = [];
+		var spritesFront:Array<StageSprite> = [];
+
+		for (item in json.stage)
+		{
+            var s = new StageSprite();
+
+			s.antialiasing = item.antialiasing;
+			s.setPosition(item.position[0], item.position[1]);
+			s.scrollFactor.set(item.scrollFactor[0], item.scrollFactor[1]);
+			s.scale.set(item.scale[0], item.scale[1]);
+			s.updateHitbox();
+			s.angle = item.angle;
+			s.color = FlxColor.fromString("#" + item.color);
+			s.alpha = item.alpha;
+			s.blend = @:privateAccess BlendMode.fromString(item.blend);
+			s.flipX = item.flipX;
+			s.flipY = item.flipY;
+
+			if (item.animations.length > 0)
+			{
+				s.frames = Paths.getSparrowAtlas(item.imagePath);
+
+				for (anim in item.animations)
+				{
+					if (anim.indices != null)
+						s.animation.addByIndices(anim.name, anim.prefix, anim.indices, null, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
+					else
+						s.animation.addByPrefix(anim.name, anim.prefix, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
+				}
+
+				s.animation.play(item.initAnim);
+			}
+			else
+				s.loadGraphic(Paths.image(item.imagePath));
+
+			if (item.inFront)
+				spritesFront.push(s);
+			else
+				spritesBack.push(s);
+		}
+
+		spritesFront.sort(function(a:StageSprite, b:StageSprite) {
+			return FlxSort.byValues(FlxSort.ASCENDING, a.layer, b.layer);
+		});
+
+		spritesBack.sort(function(a:StageSprite, b:StageSprite) {
+			return FlxSort.byValues(FlxSort.ASCENDING, a.layer, b.layer);
+		});
+
+		return {background: spritesBack, foreground: spritesFront};
+	}
 }

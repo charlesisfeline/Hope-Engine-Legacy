@@ -31,6 +31,7 @@ class EditorsState extends MusicBeatState
 		"Event Editor",
 		"Position Offset Editor",
 		"Credits Editor",
+		"Stage Editor",
 		"Stage JSON Creator"
 	];
 
@@ -68,6 +69,8 @@ class EditorsState extends MusicBeatState
 		#end
 
 		super.create();
+
+		FlxG.mouse.visible = false;
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat_gradient"));
 		bg.screenCenter();
@@ -186,6 +189,9 @@ class EditorsState extends MusicBeatState
 			case "Credits Editor":
 				CreditsEditor.fromEditors = true;
 				state = new CreditsEditor();
+			case "Stage Editor":
+				StageEditor.fromEditors = true;
+				state = new StageEditor();
 			case "Stage JSON Creator":
 				StageJSONCreator.fromEditors = true;
 				state = new StageJSONCreator();

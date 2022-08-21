@@ -548,6 +548,8 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
+
+		FlxG.mouse.visible = true;
 	}
 
 	/**
@@ -559,6 +561,8 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	/**
@@ -571,30 +575,32 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+
+		FlxG.mouse.visible = true;
 	}
 
 	////////////////////////
 
 	private function loadJSON()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	private function loadEvents()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onEventsLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	var path:String;
@@ -621,6 +627,8 @@ class EventEditor extends MusicBeatState
 		updateInfoTab();
 
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onEventsLoadComplete(_)
@@ -644,6 +652,8 @@ class EventEditor extends MusicBeatState
 		updateEventParams();
 
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadCancel(_):Void
@@ -652,6 +662,8 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadError(_):Void
@@ -660,5 +672,7 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 }

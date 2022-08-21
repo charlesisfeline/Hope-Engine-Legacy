@@ -520,6 +520,8 @@ class DialogueEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
+
+		FlxG.mouse.visible = true;
 	}
 
 	/**
@@ -531,6 +533,8 @@ class DialogueEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	/**
@@ -543,30 +547,32 @@ class DialogueEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+
+		FlxG.mouse.visible = true;
 	}
 
 	////////////////////////
 
 	private function loadSettings()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	private function loadDialog()
 	{
-		var imageFilter:FileFilter = new FileFilter('TXT', 'txt');
+		var funnyFilter:FileFilter = new FileFilter('TXT', 'txt');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onDialogLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	var path:String;
@@ -614,6 +620,8 @@ class DialogueEditor extends MusicBeatState
 		toInput.callback(_settings.bgMusic.fadeIn.to);
 
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onDialogLoadComplete(_)
@@ -637,6 +645,8 @@ class DialogueEditor extends MusicBeatState
 		refreshDialogue();
 
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadCancel(_):Void
@@ -645,6 +655,8 @@ class DialogueEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadError(_):Void
@@ -653,5 +665,7 @@ class DialogueEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 }

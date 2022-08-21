@@ -2632,6 +2632,8 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		trace("Successfully saved LEVEL DATA.");
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	/**
@@ -2643,6 +2645,8 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	/**
@@ -2655,6 +2659,8 @@ class ChartingState extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		trace("Problem saving Level data");
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	function resyncVocals():Void

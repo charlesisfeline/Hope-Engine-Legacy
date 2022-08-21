@@ -3,7 +3,10 @@ package;
 import Event;
 import Section.SwagSection;
 import Song.SwagSong;
+import Stage.JSONStage;
+import Stage.ParsedJSONStage;
 import Stage.StageJSON;
+import WiggleEffect;
 import achievements.Achievements;
 import editors.CharacterEditor;
 import flixel.FlxBasic;
@@ -449,16 +452,44 @@ class PlayState extends MusicBeatState
 		defaultCamZoom = parsed.defaultCamZoom != null ? parsed.defaultCamZoom : 1.05;
 		isHalloween = parsed.isHalloween != null ? parsed.isHalloween : false;
 
-		#if FILESYSTEM
-		var stageScript = File.getContent(Sys.getCwd() + "/" + Paths.stageScript(curStage));
-		#else
-		var stageScript = Assets.getText(Paths.stageScript(curStage));
-		#end
+		var stageScript = "";
+
+		if (Paths.exists(Paths.stageScript(curStage)))
+		{
+			#if FILESYSTEM
+			stageScript = File.getContent(Paths.stageScript(curStage));
+			#else
+			stageScript = Assets.getText(Paths.stageScript(curStage));
+			#end
+		}
+
+		var jsonStageActuallyParsed:ParsedJSONStage = null;
+
+		if (Paths.exists(Paths.stageJSON(curStage)))
+		{
+			var parsedJSON:JSONStage = null;
+			#if FILESYSTEM
+			parsedJSON = cast Json.parse(File.getContent(Paths.stageJSON(curStage)));
+			#else
+			parsedJSON = cast Json.parse(Assets.getText(Paths.stageJSON(curStage)));
+			#end
+
+			jsonStageActuallyParsed = Stage.parseJSONStage(parsedJSON);
+		}
 
 		var ast = parser.parseString(stageScript);
 
 		stageInterp = new Interp();
+		
 		interpVariables(stageInterp);
+		if (jsonStageActuallyParsed != null)
+		{
+			for (item in jsonStageActuallyParsed.background)
+			{
+				stageInterp.variables.set(item.varName, item);
+				add(item);
+			}
+		}
 
 		try
 		{
@@ -487,6 +518,15 @@ class PlayState extends MusicBeatState
 		}
 
 		interpVariables(stageInterp);
+		if (jsonStageActuallyParsed != null)
+		{
+			for (item in jsonStageActuallyParsed.foreground)
+			{
+				stageInterp.variables.set(item.varName, item);
+				add(item);
+			}
+		}
+
 		if (stageInterp.variables.get("createForeground") != null)
 			stageInterp.variables.get("createForeground")();
 

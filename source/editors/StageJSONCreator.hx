@@ -514,7 +514,7 @@ class StageJSONCreator extends MusicBeatState
 			if (FlxG.keys.pressed.SHIFT)
 				multiplier = 4;
 	
-			if (FlxG.keys.pressed.W || FlxG.keys.pressed.A || FlxG.keys.pressed.S || FlxG.keys.pressed.D)
+			if (FlxG.keys.anyJustPressed([W, A, S, D]))
 			{
 				if (FlxG.keys.pressed.W)
 					camFollow.velocity.y = -speed * multiplier;
@@ -653,13 +653,13 @@ class StageJSONCreator extends MusicBeatState
 
 	private function loadJSON()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	var path:String = null;

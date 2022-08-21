@@ -1,14 +1,14 @@
 package;
 
-import motion.easing.Sine;
+import flixel.FlxG;
+import flixel.FlxState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.util.FlxTimer;
 import motion.Actuate;
+import motion.easing.Sine;
 import openfl.Assets;
 import openfl.display.Bitmap;
 import openfl.display.Sprite;
-import flixel.FlxG;
-import flixel.FlxState;
 
 class CustomTransition
 {

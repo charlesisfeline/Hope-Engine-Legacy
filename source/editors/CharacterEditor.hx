@@ -1406,6 +1406,8 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	/**
@@ -1417,6 +1419,8 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	/**
@@ -1429,5 +1433,7 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 }

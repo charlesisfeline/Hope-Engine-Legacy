@@ -8,13 +8,14 @@ import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+
+using StringTools;
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 import yaml.Yaml;
 #end
 
-using StringTools;
 
 class Paths
 {
@@ -486,6 +487,16 @@ class Paths
 		return 'assets/_stages/$key/data.json';
 	}
 
+	inline static public function stageJSON(key:String)
+	{
+		#if FILESYSTEM
+		if (FileSystem.exists(modStageJSON(key)))
+			return modStageJSON(key);
+		#end
+
+		return 'assets/_stages/$key/stage.json';
+	}
+
 	inline static public function font(key:String)
 	{
 		#if FILESYSTEM
@@ -580,6 +591,11 @@ class Paths
 	inline static public function modStageData(key:String)
 	{
 		return 'mods/$currentMod/assets/_stages/$key/data.json';
+	}
+
+	inline static public function modStageJSON(key:String)
+	{
+		return 'mods/$currentMod/assets/_stages/$key/stage.json';
 	}
 
 	inline static public function modModchart(key:String, ?library:String) // I am so fucking terrified

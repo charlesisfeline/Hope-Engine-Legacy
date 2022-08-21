@@ -45,6 +45,13 @@ class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 
 	public var callback:Float->Void;
 
+	/**
+	 * If true, when buttons of this numerical stepper
+	 * are pushed, it will add/subtract on continuously.
+	 */
+	public var holdable:Bool = true;
+	public var holdMax:Float = 0.5;
+
 	private function set_params(p:Array<Dynamic>):Array<Dynamic>
 	{
 		params = p;
@@ -272,9 +279,21 @@ class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		add(button_minus);
 
 		button_plus.onUp.callback = _onPlus;
+		button_plus.onDown.callback = function() {
+			buttonPlusPushed = true;
+		}
+		button_plus.onOut.callback = function() {
+			buttonPlusPushed = false;
+		}
 		button_plus.broadcastToFlxUI = false;
 
 		button_minus.onUp.callback = _onMinus;
+		button_minus.onDown.callback = function() {
+			buttonMinusPushed = true;
+		}
+		button_minus.onOut.callback = function() {
+			buttonMinusPushed = false;
+		}
 		button_minus.broadcastToFlxUI = false;
 
 		stack = Stack;
@@ -313,6 +332,8 @@ class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		value += stepSize;
 		_doCallback(CLICK_EVENT);
 		_doCallback(CHANGE_EVENT);
+
+		buttonPlusPushed = addedContinuously = false;
 	}
 
 	private function _onMinus():Void
@@ -320,6 +341,8 @@ class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 		value -= stepSize;
 		_doCallback(CLICK_EVENT);
 		_doCallback(CHANGE_EVENT);
+
+		buttonMinusPushed = addedContinuously = false;
 	}
 
 	private function _doCallback(event_name:String):Void
@@ -331,5 +354,45 @@ class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUI
 
 		if (callback != null)
 			callback(value);
+	}
+
+	var buttonPlusPushed:Bool = false;
+	var buttonMinusPushed:Bool = false;
+	var addedContinuously:Bool = false;
+
+	var holdTime:Float = 0;
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (holdable)
+		{
+			if (buttonPlusPushed || buttonMinusPushed)
+			{
+				if (holdTime > holdMax)
+				{
+					addedContinuously = true;
+
+					if (buttonPlusPushed)
+					{
+						value += stepSize;
+						_doCallback(CLICK_EVENT);
+						_doCallback(CHANGE_EVENT);
+					}
+					
+					if (buttonMinusPushed)
+					{
+						value -= stepSize;
+						_doCallback(CLICK_EVENT);
+						_doCallback(CHANGE_EVENT);
+					}
+				}
+				else
+					holdTime += elapsed;
+			}
+			else 
+				holdTime = 0;
+		}
 	}
 }

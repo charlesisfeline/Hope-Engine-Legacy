@@ -1,19 +1,19 @@
 package;
 
-import scripts.ScriptConsole;
-import lime.app.Application;
-import haxe.CallStack;
-import openfl.events.UncaughtErrorEvent;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.tweens.FlxTween;
+import haxe.CallStack;
+import lime.app.Application;
 import modifiers.Modifiers;
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
+import openfl.events.UncaughtErrorEvent;
+import scripts.ScriptConsole;
 import stats.CustomFPS;
 import stats.CustomMEM;
 

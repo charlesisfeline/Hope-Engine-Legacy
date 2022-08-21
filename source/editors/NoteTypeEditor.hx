@@ -1,32 +1,33 @@
 package editors;
 
-import flixel.math.FlxPoint;
-import flixel.addons.ui.FlxUIButton;
-import ui.NumStepperFix;
-import flixel.ui.FlxButton;
-import openfl.net.FileFilter;
-import openfl.net.FileReference;
-import haxe.Json;
-import openfl.events.IOErrorEvent;
-import flixel.addons.ui.FlxInputText;
-import flixel.util.FlxTimer;
-import Note;
-import ui.DropdownMenuFix;
-import flixel.addons.ui.FlxUICheckBox;
-import flixel.util.FlxColor;
-import flixel.addons.ui.FlxUI;
-import flixel.text.FlxText;
-import flixel.group.FlxSpriteGroup;
-import flixel.graphics.frames.FlxAtlasFrames;
 import Note.NoteJSON;
-import ui.InputTextFix;
-import flixel.FlxObject;
+import Note;
 import flixel.FlxCamera;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.addons.ui.FlxInputText;
+import flixel.addons.ui.FlxUI;
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUITabMenu;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxPoint;
+import flixel.text.FlxText;
+import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
+import haxe.Json;
 import openfl.events.Event;
+import openfl.events.IOErrorEvent;
+import openfl.net.FileFilter;
+import openfl.net.FileReference;
+import ui.DropdownMenuFix;
+import ui.InputTextFix;
+import ui.NumStepperFix;
 
+using StringTools;
 
 #if FILESYSTEM
 import Discord.DiscordClient;
@@ -34,7 +35,6 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-using StringTools;
 
 /**
 	As you can see I genuinely hated making this...
@@ -1394,13 +1394,13 @@ class NoteTypeEditor extends MusicBeatState
 
 	private function loadJSON()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	var path:String = null;
@@ -1426,6 +1426,8 @@ class NoteTypeEditor extends MusicBeatState
 
 		path = null;
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	function onLoadCancel(_):Void
@@ -1434,6 +1436,8 @@ class NoteTypeEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	function onLoadError(_):Void
@@ -1442,6 +1446,8 @@ class NoteTypeEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	private function saveJSON()
@@ -1464,6 +1470,8 @@ class NoteTypeEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	function onSaveCancel(_):Void
@@ -1472,6 +1480,8 @@ class NoteTypeEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	function onSaveError(_):Void
@@ -1480,6 +1490,8 @@ class NoteTypeEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = camHUD.visible = true;
 	}
 
 	function createToolTips():Void
