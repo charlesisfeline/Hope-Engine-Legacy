@@ -22,8 +22,8 @@ import flixel.util.FlxStringUtil;
  */
 class NumStepperFix extends FlxUIGroup implements IFlxUIWidget implements IFlxUIClickable implements IHasParams
 {
-	private var button_plus:FlxUITypedButton<FlxSprite>;
-	private var button_minus:FlxUITypedButton<FlxSprite>;
+	public var button_plus:FlxUITypedButton<FlxSprite>;
+	public var button_minus:FlxUITypedButton<FlxSprite>;
 	private var text_field:FlxText;
 
 	public var stepSize:Float = 0;

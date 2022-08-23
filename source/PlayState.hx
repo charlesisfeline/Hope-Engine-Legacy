@@ -2349,12 +2349,6 @@ class PlayState extends MusicBeatState
 			var bfPos = boyfriend.getScreenPosition(camMisc);
 			openSubState(new GameOverSubstate(bfPos.x, bfPos.y, curCamPos));
 
-			if (time / FlxG.sound.music.length >= 0.95)
-			{
-				Achievements.camera = camMisc;
-				Achievements.give("so_close");
-			}
-
 			#if desktop
 			DiscordClient.changePresence(rpcDeath, rpcLocation);
 			#end

@@ -6,7 +6,6 @@ pfc_week4_hard
 pfc_week5_hard
 pfc_week6_hard
 pfc_week7_hard
-so_close
 friday_night
 funky_guy
 hope_ui

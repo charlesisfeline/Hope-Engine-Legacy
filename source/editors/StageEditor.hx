@@ -10,7 +10,9 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
+import flixel.addons.ui.FlxUIAssets;
 import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu.FlxUIDropDownHeader;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.graphics.FlxGraphic;
@@ -18,6 +20,7 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
 import flixel.ui.FlxButton;
+import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import haxe.Json;
 import openfl.events.Event;
@@ -25,6 +28,7 @@ import openfl.events.IOErrorEvent;
 import openfl.geom.Rectangle;
 import openfl.net.FileFilter;
 import openfl.net.FileReference;
+import openfl.system.System;
 import ui.*;
 
 using StringTools;
@@ -45,6 +49,7 @@ class StageEditor extends MusicBeatState
 	public static var fromEditors:Bool = false;
 
 	var UI_box:FlxUITabMenu;
+	var SPRITE_box:FlxUITabMenu;
 
 	var camEdit:FlxCamera;
 	var camHUD:FlxCamera;
@@ -62,6 +67,9 @@ class StageEditor extends MusicBeatState
 	var dad:Character;
 	var gf:Character;
 	var bf:Boyfriend;
+
+	var deselect:FlxUIButton;
+	var delete:FlxUIButton;
 
 	var stageData:StageJSON = {
 		name: "stage",
@@ -106,19 +114,31 @@ class StageEditor extends MusicBeatState
 		add(select9Slice);
 
 		var tabs = [
-			{name: "1", label: 'Sprite'},
-			{name: "2", label: 'Animations'},
-			{name: "3", label: 'Stage Data'},
-			{name: "4", label: 'Characters'}
+			{name: "1", label: 'Stage Data'},
+			{name: "2", label: 'Characters'}
 		];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
-		UI_box.resize((FlxG.width * 0.5) - 10, FlxG.height * 0.25);
+		UI_box.resize(460, 200);
 		UI_box.x = 10;
 		UI_box.y = FlxG.height - UI_box.height - 10;
 		UI_box.selected_tab = 0;
 		add(UI_box);
 		UI_box.cameras = [camHUD];
+
+		var tabs = [
+			{name: "1", label: 'Sprite'},
+			{name: "2", label: 'Animations'}
+		];
+
+		SPRITE_box = new FlxUITabMenu(null, tabs, true);
+		SPRITE_box.resize((FlxG.width * 0.5) - 10, 200);
+		SPRITE_box.x = FlxG.width - SPRITE_box.width - 10;
+		SPRITE_box.y = FlxG.height - SPRITE_box.height - 10;
+		SPRITE_box.selected_tab = 0;
+		add(SPRITE_box);
+		SPRITE_box.exists = false;
+		SPRITE_box.cameras = [camHUD];
 
 		characterLayer = new FlxTypedGroup<Character>();
 
@@ -141,6 +161,43 @@ class StageEditor extends MusicBeatState
 		bf.antialiasing = true;
 		characterLayer.add(bf);
 
+		var emptySprite = new FlxUIButton(UI_box.x + UI_box.width + 10, FlxG.height - 30, "Add empty sprite", function() {
+			addSprite();
+		});
+		emptySprite.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		emptySprite.resize(150, 20);
+		add(emptySprite);
+		emptySprite.cameras = [camHUD];
+
+		var loadedSprite = new FlxUIButton(UI_box.x + UI_box.width + 10, emptySprite.y - 30, "Add sprite w/ graphic", function() {
+			addingASprite = true;
+			findThroughExplorer();
+		});
+		loadedSprite.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		loadedSprite.resize(150, 20);
+		add(loadedSprite);
+		loadedSprite.cameras = [camHUD];
+
+		deselect = new FlxUIButton(UI_box.x + UI_box.width + 10, loadedSprite.y - 30, "Deselect Sprite", function() {
+			selectedObj = null;
+		});
+		deselect.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		deselect.resize(150, 20);
+		deselect.exists = false;
+		add(deselect);
+		deselect.cameras = [camHUD];
+
+		delete = new FlxUIButton(UI_box.x + UI_box.width + 10, deselect.y - 30, "Delete Sprite", function() {
+			delSprite();
+		});
+		delete.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		delete.resize(150, 20);
+		delete.color = FlxColor.RED;
+		delete.label.color = FlxColor.WHITE;
+		delete.exists = false;
+		add(delete);
+		delete.cameras = [camHUD];
+
 		addSpriteStuff();
 		addAnimStuff();
 		addDataStuff();
@@ -149,30 +206,18 @@ class StageEditor extends MusicBeatState
 		/**
 			to do:
 
-			// TEST ALL EDITORS IF THEY CRASH OR NAH LMAOO
-
 			sprite UI
-			// make movement buttons for selected sprites
-			// make movement controls for stage
-			// make mouse mmovement controls
-			merge this and stage json editor together
-			// make assetPath input actually work with selected object
 			animation UI
 			misc UI
-			// make selecting objects actually possible
 
-			make scrollfactor dependent on selection AND with select square
+			layering interface [DOING]
+
+			show object info checkbox
+			make default stage a simple stage.json file
+
 			test if stage.json files can exist by itself and exist with stage.hes files
 
-			// add object
 			remove selected object
-
-			// right click to select objecy
-			// middle mouse click to move with mouse
-			also zoom buttons to chars because, well merge with stage json editor
-
-			// when selecting object, lerp camera pos and zoom (focus to selected object)
-
 			die
 		**/
 
@@ -198,6 +243,11 @@ class StageEditor extends MusicBeatState
 	var angleStepper:NumStepperFix;
 	var alphaStepper:NumStepperFix;
 
+	var antiAliasing:FlxUICheckBox;
+	var inFront:FlxUICheckBox;
+
+	var layerStepper:NumStepperFix;
+
 	function addSpriteStuff():Void
 	{
 		var assetPathTitle = new FlxText(10, 10, "Sprite's image asset path");
@@ -212,19 +262,50 @@ class StageEditor extends MusicBeatState
 						selectedObj.frames = Paths.getSparrowAtlas(assetPath.text);
 					else
 						selectedObj.loadGraphic(Paths.image(assetPath.text));
+
+					selectedObj.imagePath = assetPath.text;
 				}
 			}
 		}
 
-		var findThroughExplorer = new FlxUIButton(10, assetPath.y + assetPath.height + 10, "Find image through Explorer", findThroughExplorer);
+		var findThroughExplorer = new FlxUIButton(10, assetPath.y + assetPath.height + 10, "Find image through Explorer", function() {
+			addingASprite = false;
+			findThroughExplorer();
+		});
 		findThroughExplorer.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		findThroughExplorer.resize(assetPath.width, 20);
 
-		var addSpriteButton = new FlxUIButton(10, findThroughExplorer.y + findThroughExplorer.height + 10, "Add empty sprite", function() {
-			addSprite();
-		});
-		addSpriteButton.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
-		addSpriteButton.resize(assetPath.width, 20);
+		antiAliasing = new FlxUICheckBox(10, findThroughExplorer.y + findThroughExplorer.height + 10, null, null, "Smoothen?", 75);
+		antiAliasing.callback = function() {
+			if (selectedObj != null)
+				selectedObj.antialiasing = antiAliasing.checked;
+		}
+
+		inFront = new FlxUICheckBox(10, findThroughExplorer.y + findThroughExplorer.height + 10, null, null, "Foreground object?", 75);
+		inFront.callback = function() {
+			if (selectedObj != null)
+			{
+				selectedObj.inFront = inFront.checked;
+				updateLayering();
+			}
+		}
+		inFront.x = findThroughExplorer.x + findThroughExplorer.width - inFront.width;
+
+		var layerTitle = new FlxText(10, antiAliasing.y + antiAliasing.height + 10, "Layer");
+		layerStepper = new NumStepperFix(layerTitle.x, layerTitle.y + layerTitle.height, 1, 0, 0, 256, 1, new InputTextFix(0, 0, 60));
+		layerStepper.callback = function(_) {
+			if (selectedObj != null)
+			{
+				selectedObj.layer = Std.int(layerStepper.value);
+				updateLayering();
+			}
+		}
+
+		layerStepper.button_minus.label.loadGraphic(FlxUIAssets.IMG_DROPDOWN);
+		layerStepper.button_plus.label.loadGraphic(FlxUIAssets.IMG_DROPDOWN);
+		layerStepper.button_plus.label.offset.x += 2;
+		layerStepper.button_minus.label.offset.x += 2;
+		layerStepper.button_plus.label.flipY = true;
 		
 		var xStepperTitle = new FlxText(assetPath.x + assetPath.width + 10, 10, "X position");
 		xStepper = new NumStepperFix(xStepperTitle.x, xStepperTitle.y + xStepperTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1, new InputTextFix(0, 0, 60));
@@ -282,12 +363,15 @@ class StageEditor extends MusicBeatState
 		flipY.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		flipY.resize(93, 20);
 
-		var tab = new FlxUI(null, UI_box);
+		var tab = new FlxUI(null, SPRITE_box);
 		tab.name = "1";
 		tab.add(assetPathTitle);
 		tab.add(assetPath);
 		tab.add(findThroughExplorer);
-		tab.add(addSpriteButton);
+		tab.add(antiAliasing);
+		tab.add(inFront);
+		tab.add(layerTitle);
+		tab.add(layerStepper);
 		tab.add(xStepperTitle);
 		tab.add(xStepper);
 		tab.add(yStepperTitle);
@@ -302,19 +386,23 @@ class StageEditor extends MusicBeatState
 		tab.add(angleStepper);
 		tab.add(flipX);
 		tab.add(flipY);
-		UI_box.addGroup(tab);
+		SPRITE_box.addGroup(tab);
 	}
 
 	function updateSpriteShiz():Void
 	{
 		if (selectedObj != null)
 		{
+			assetPath.text = selectedObj.imagePath;
 			xStepper.value = selectedObj.x;
 			yStepper.value = selectedObj.y;
 			scrollXStepper.value = selectedObj.scrollFactor.x;
 			scrollYStepper.value = selectedObj.scrollFactor.y;
 			alphaStepper.value = selectedObj.alpha;
 			angleStepper.value = selectedObj.angle;
+			antiAliasing.checked = selectedObj.antialiasing;
+			inFront.checked = selectedObj.inFront;
+			layerStepper.value = selectedObj.layer;
 		}
 	}
 
@@ -433,7 +521,7 @@ class StageEditor extends MusicBeatState
 		dataLoad.y = dataSave.y = focusDad.y;
 
 		var tab = new FlxUI(null, UI_box);
-		tab.name = '3';
+		tab.name = '1';
 		tab.add(dadPosXTitle);
 		tab.add(dadPosX);
 		tab.add(dadPosYTitle);
@@ -542,7 +630,7 @@ class StageEditor extends MusicBeatState
 		}
 
 		var tab = new FlxUI(null, UI_box);
-		tab.name = '4';
+		tab.name = '2';
 		tab.add(dadCharacterTitle);
 		tab.add(dadCharacter);
 		tab.add(gfCharacterTitle);
@@ -554,12 +642,14 @@ class StageEditor extends MusicBeatState
 
 	function selectObject(s:StageSprite)
 	{
+		remove(select9Slice, true);
+		
 		if (selectedObj != s)
 			selectedObj = s;
 		else
 		{
 			if (!FlxG.keys.pressed.SHIFT)
-				curZoom = stageData.defaultCamZoom;
+				curZoom = stageData.defaultCamZoom != null ? stageData.defaultCamZoom : 1.05;
 		}
 
 		if (!FlxG.keys.pressed.SHIFT)
@@ -567,6 +657,8 @@ class StageEditor extends MusicBeatState
 			camFollow.x = s.x + s.width / 2;
 			camFollow.y = s.y + s.height / 2;
 		}
+
+		add(select9Slice);
 
 		updateSpriteShiz();
 	}
@@ -578,7 +670,9 @@ class StageEditor extends MusicBeatState
 
 		if (spritePath != null)
 		{
-			if (!Paths.exists(Paths.file('images/$spritePath.xml')))
+			s.imagePath = spritePath;
+			
+			if (!Paths.exists(Paths.file('images/$spritePath.xml', TEXT, 'shared').replace("shared:", "")) && !Paths.exists(Paths.modFile('images/$spritePath.xml')))
 				s.loadGraphic(Paths.image(spritePath));
 			else
 				s.frames = Paths.getSparrowAtlas(spritePath);
@@ -588,28 +682,54 @@ class StageEditor extends MusicBeatState
 		else
 			s.screenCenter();
 		
+		s.layer = getMaxLayer() + 1;
 		stageSprites.push(s);
 		add(s);
+		updateLayering();
 		selectObject(s);
+	}
+
+	function delSprite():Void
+	{
+		remove(selectedObj, true);
+		stageSprites.remove(selectedObj);
+		selectedObj.exists = false;
+		selectedObj.kill();
+		selectedObj.destroy();
+
+		System.gc();
+
+		selectedObj = null;
+	}
+
+	function getMaxLayer(?inFront:Bool = false):Int
+	{
+		var sprites:Array<StageSprite> = [];
+
+		for (i in stageSprites)
+		{
+			if (i.inFront == inFront)
+				sprites.push(i);
+		}
+
+		return sprites.length - 1;
 	}
 
 	function updateLayering():Void
 	{
 		remove(characterLayer, true);
+		remove(select9Slice, true);
 		
 		var spritesBack:Array<StageSprite> = [];
 		var spritesFront:Array<StageSprite> = [];
 
-		for (i in members)
+		for (i in stageSprites)
 		{
-			if (i is StageSprite)
-			{
-				var s:StageSprite = cast remove(i, true);
-				if (s.inFront)
-					spritesFront.push(s);
-				else
-					spritesBack.push(s);
-			}
+			var s:StageSprite = cast remove(i, true);
+			if (s.inFront)
+				spritesFront.push(s);
+			else
+				spritesBack.push(s);
 		}
 
 		spritesFront.sort(function(a:StageSprite, b:StageSprite) {
@@ -628,6 +748,7 @@ class StageEditor extends MusicBeatState
 		for (i in spritesFront)
 			add(i);
 
+		add(select9Slice);
 	}
 
 	var backing:Bool = false;
@@ -649,6 +770,10 @@ class StageEditor extends MusicBeatState
 		if (selectedObj != null)
 		{
 			select9Slice.exists = true;
+			SPRITE_box.exists = true;
+			delete.exists = true;
+			deselect.exists = true;
+
 			select9Slice.angle = selectedObj.angle;
 			select9Slice.resize(selectedObj.width + 8, selectedObj.height + 8);
 			select9Slice.x = selectedObj.x - 4;
@@ -656,7 +781,12 @@ class StageEditor extends MusicBeatState
 			select9Slice.scrollFactor.set(selectedObj.scrollFactor.x, selectedObj.scrollFactor.y);
 		}
 		else
+		{
 			select9Slice.exists = false;
+			SPRITE_box.exists = false;
+			delete.exists = false;
+			deselect.exists = false;
+		}
 
 		// I don't wanna modify world bounds
 		@:privateAccess camFollow.updateMotion(elapsed);
@@ -675,6 +805,16 @@ class StageEditor extends MusicBeatState
 				else
 				#end
 				CustomTransition.switchTo(new MainMenuState());
+			}
+
+			if (FlxG.keys.justPressed.F)
+			{
+				if (selectedObj != null)
+				{
+					curZoom = stageData.defaultCamZoom != null ? stageData.defaultCamZoom : 1.05;
+					camFollow.x = selectedObj.x + selectedObj.width / 2;
+					camFollow.y = selectedObj.y + selectedObj.height / 2;
+				}
 			}
 
 			if (FlxG.mouse.pressedMiddle)
