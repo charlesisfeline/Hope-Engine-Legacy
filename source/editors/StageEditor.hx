@@ -23,6 +23,7 @@ import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
 import haxe.Json;
+import openfl.display.BlendMode;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.geom.Rectangle;
@@ -208,16 +209,8 @@ class StageEditor extends MusicBeatState
 
 			sprite UI
 			animation UI
-			misc UI
-
-			layering interface [DOING]
 
 			show object info checkbox
-			make default stage a simple stage.json file
-
-			test if stage.json files can exist by itself and exist with stage.hes files
-
-			remove selected object
 			die
 		**/
 
@@ -227,6 +220,7 @@ class StageEditor extends MusicBeatState
 	}
 
 	var assetPath:InputTextFix;
+	var varName:InputTextFix;
 
 	var xStepper:NumStepperFix;
 	var yStepper:NumStepperFix;
@@ -246,11 +240,40 @@ class StageEditor extends MusicBeatState
 	var antiAliasing:FlxUICheckBox;
 	var inFront:FlxUICheckBox;
 
+	var colorInput:InputTextFix;
+
 	var layerStepper:NumStepperFix;
+
+	var blendDrop:DropdownMenuFix;
+
+	var blends:Array<String> = [
+		"ADD",
+		"ALPHA",
+		"DARKEN",
+		"DIFFERENCE",
+		"ERASE",
+		"HARDLIGHT",
+		"INVERT",
+		"LAYER",
+		"LIGHTEN",
+		"MULTIPLY",
+		"NORMAL",
+		"OVERLAY",
+		"SCREEN",
+		"SUBTRACT"
+	];
 
 	function addSpriteStuff():Void
 	{
-		var assetPathTitle = new FlxText(10, 10, "Sprite's image asset path");
+		var varNameTitle = new FlxText(10, 10, "Sprite Unique Variable Name");
+		varName = new InputTextFix(10, varNameTitle.y + varNameTitle.height, 198);
+		varName.callback = function(_, _) 
+		{
+			if (selectedObj != null)
+				selectedObj.varName = varName.text.trim();
+		}
+
+		var assetPathTitle = new FlxText(10, 38, "Sprite's image asset path");
 		assetPath = new InputTextFix(10, assetPathTitle.y + assetPathTitle.height, 198);
 		assetPath.callback = function(_, _)
 		{
@@ -349,22 +372,41 @@ class StageEditor extends MusicBeatState
 				selectedObj.angle = angleStepper.value;
 		}
 
-		var flipX = new FlxUIButton(angleStepper.x + angleStepper.width + 10, findThroughExplorer.y, "Flip X", function() {
+		var flipX = new FlxUIButton(angleStepper.x + angleStepper.width + 10, alphaStepper.y - 4, "Flip X", function() {
 			if (selectedObj != null)
 				selectedObj.flipX = !selectedObj.flipX;
 		});
 		flipX.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		flipX.resize(93, 20);
 
-		var flipY = new FlxUIButton(flipX.x + flipX.width + 10, findThroughExplorer.y, "Flip Y", function() {
+		var flipY = new FlxUIButton(flipX.x + flipX.width + 10, flipX.y, "Flip Y", function() {
 			if (selectedObj != null)
 				selectedObj.flipY = !selectedObj.flipY;
 		});
 		flipY.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		flipY.resize(93, 20);
 
+		var colorTitle = new FlxText(alphaTitle.x, alphaStepper.y + alphaStepper.height + 10, "Color Tint");
+		colorInput = new InputTextFix(colorTitle.x, colorTitle.y + colorTitle.height, 60);
+		colorInput.callback = function(_, _)
+		{
+			if (selectedObj != null)
+				selectedObj.color = FlxColor.fromString("#" + colorInput.text.trim());
+		}
+
+		var blendTitle = new FlxText(colorInput.x + colorInput.width + 10, colorTitle.y, "Blend Mode");
+		blendDrop = new DropdownMenuFix(blendTitle.x, blendTitle.y + blendTitle.height, DropdownMenuFix.makeStrIdLabelArray(blends));
+		blendDrop.scrollable = true;
+		blendDrop.callback = function(_)
+		{
+			if (selectedObj != null)
+				selectedObj.blend = @:privateAccess BlendMode.fromString(blendDrop.selectedLabel.toLowerCase());
+		}
+
 		var tab = new FlxUI(null, SPRITE_box);
 		tab.name = "1";
+		tab.add(varNameTitle);
+		tab.add(varName);
 		tab.add(assetPathTitle);
 		tab.add(assetPath);
 		tab.add(findThroughExplorer);
@@ -384,6 +426,10 @@ class StageEditor extends MusicBeatState
 		tab.add(alphaStepper);
 		tab.add(angleTitle);
 		tab.add(angleStepper);
+		tab.add(colorTitle);
+		tab.add(colorInput);
+		tab.add(blendTitle);
+		tab.add(blendDrop);
 		tab.add(flipX);
 		tab.add(flipY);
 		SPRITE_box.addGroup(tab);
@@ -393,6 +439,7 @@ class StageEditor extends MusicBeatState
 	{
 		if (selectedObj != null)
 		{
+			varName.text = selectedObj.varName;
 			assetPath.text = selectedObj.imagePath;
 			xStepper.value = selectedObj.x;
 			yStepper.value = selectedObj.y;
@@ -403,6 +450,8 @@ class StageEditor extends MusicBeatState
 			antiAliasing.checked = selectedObj.antialiasing;
 			inFront.checked = selectedObj.inFront;
 			layerStepper.value = selectedObj.layer;
+			colorInput.text = selectedObj.color.toHexString(false, false);
+			blendDrop.selectedLabel = @:privateAccess selectedObj.blend.toString().toUpperCase();
 		}
 	}
 
@@ -807,6 +856,12 @@ class StageEditor extends MusicBeatState
 				CustomTransition.switchTo(new MainMenuState());
 			}
 
+			if (FlxG.keys.pressed.CONTROL)
+			{
+				if (FlxG.keys.justPressed.S)
+					saveJSON();
+			}
+
 			if (FlxG.keys.justPressed.F)
 			{
 				if (selectedObj != null)
@@ -1155,7 +1210,7 @@ class StageSprite extends FlxSprite
 	public var inFront:Bool = false;
 	public var layer:Int = 0;
 
-	public var data:JSONStageSprite;
+	public var data(get, null):JSONStageSprite;
 
 	public function new()
 	{
@@ -1163,25 +1218,6 @@ class StageSprite extends FlxSprite
 
 		varName = 'sprite' + ID;
 		blend = NORMAL;
-
-		data = {
-			varName: varName,
-			position: [x, y],
-			scrollFactor: [scrollFactor.x, scrollFactor.y],
-			scale: [scale.x, scale.y],
-			initAnim: initAnim,
-			antialiasing: antialiasing,
-			animations: animations,
-			imagePath: imagePath,
-			flipX: false,
-			flipY: false,
-			color: "FFFFFF",
-			blend: "NORMAL",
-			angle: 0,
-			alpha: 1,
-			inFront: inFront,
-			layer: layer
-		}
 	}
 
 	public function updateAnimations():Void
@@ -1206,29 +1242,6 @@ class StageSprite extends FlxSprite
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
-
-		if (data != null)
-		{
-			@:privateAccess
-			data = {
-				varName: varName,
-				position: [x, y],
-				scrollFactor: [scrollFactor.x, scrollFactor.y],
-				scale: [scale.x, scale.y],
-				initAnim: initAnim,
-				antialiasing: antialiasing,
-				animations: animations,
-				imagePath: imagePath,
-				flipX: flipX,
-				flipY: flipY,
-				color: color.toHexString(false, false),
-				blend: blend.toString().toUpperCase(),
-				angle: angle,
-				alpha: alpha,
-				inFront: inFront,
-				layer: layer
-			}
-		}
 	}
 
 	function set_animations(value:Array<JSONStageSpriteAnimation>):Array<JSONStageSpriteAnimation>
@@ -1237,5 +1250,27 @@ class StageSprite extends FlxSprite
 			updateAnimations();
 
 		return animations = value;
+	}
+
+	function get_data():JSONStageSprite {
+		@:privateAccess
+		return {
+			varName: varName,
+			position: [x, y],
+			scrollFactor: [scrollFactor.x, scrollFactor.y],
+			scale: [scale.x, scale.y],
+			initAnim: initAnim,
+			antialiasing: antialiasing,
+			animations: animations,
+			imagePath: imagePath,
+			flipX: flipX,
+			flipY: flipY,
+			color: color.toHexString(false, false),
+			blend: blend.toString().toUpperCase(),
+			angle: angle,
+			alpha: alpha,
+			inFront: inFront,
+			layer: layer
+		}
 	}
 }

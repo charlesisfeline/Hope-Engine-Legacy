@@ -71,8 +71,6 @@ class Stage
 {
 	public static function parseJSONStage(json:JSONStage):ParsedJSONStage
 	{
-		// TO DO: THIS LMAOOOOOOOOOOOOO
-
 		var spritesBack:Array<StageSprite> = [];
 		var spritesFront:Array<StageSprite> = [];
 
@@ -80,6 +78,7 @@ class Stage
 		{
             var s = new StageSprite();
 
+			s.varName = item.varName;
 			s.antialiasing = item.antialiasing;
 			s.setPosition(item.position[0], item.position[1]);
 			s.scrollFactor.set(item.scrollFactor[0], item.scrollFactor[1]);
@@ -88,7 +87,7 @@ class Stage
 			s.angle = item.angle;
 			s.color = FlxColor.fromString("#" + item.color);
 			s.alpha = item.alpha;
-			s.blend = @:privateAccess BlendMode.fromString(item.blend);
+			s.blend = @:privateAccess BlendMode.fromString(item.blend.toLowerCase());
 			s.flipX = item.flipX;
 			s.flipY = item.flipY;
 
