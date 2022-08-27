@@ -1,6 +1,5 @@
 package;
 
-import flixel.util.FlxTimer;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -11,6 +10,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import haxe.Json;
 import openfl.Assets;
 
@@ -145,11 +145,11 @@ class DialogueSubstate extends MusicBeatSubstate
 		if (settingsJSON == null)
 		{
 			#if FILESYSTEM
-			if (FileSystem.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
-				settingsJSON = cast Json.parse(File.getContent(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
+			if (FileSystem.exists(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))))
+				settingsJSON = cast Json.parse(File.getContent(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))));
 			#else
-			if (Assets.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
-				settingsJSON = cast Json.parse(Assets.getText(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
+			if (Assets.exists(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))))
+				settingsJSON = cast Json.parse(Assets.getText(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))));
 			#end
 		}
 

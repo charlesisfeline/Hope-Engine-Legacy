@@ -366,7 +366,7 @@ class PauseSubState extends MusicBeatSubstate
 		if (originalOffset == null)
 			originalOffset = PlayState.songOffset;
 
-		var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase().replace(" ", "-") + '/.offset';
+		var songPath = 'assets/data/' + Paths.toSongPath(PlayState.SONG.song) + '/.offset';
 
 		if (Paths.currentMod != null && FileSystem.exists(Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath))
 			songPath = Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath;

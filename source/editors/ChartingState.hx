@@ -2557,7 +2557,7 @@ class ChartingState extends MusicBeatState
 
 	function loadJson(song:String):Void
 	{
-		var songFormatted = song.replace(" ", "-").toLowerCase();
+		var songFormatted = Paths.toSongPath(song);
 		var songPath = 'assets/data/$songFormatted/$songFormatted.json';
 
 		if (Paths.currentMod != null)
@@ -2611,7 +2611,7 @@ class ChartingState extends MusicBeatState
 		_file.addEventListener(Event.COMPLETE, onSaveComplete);
 		_file.addEventListener(Event.CANCEL, onSaveCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onSaveError);
-		_file.save(data.trim(), _song.song.toLowerCase() + ".json");
+		_file.save(data.trim(), Paths.toSongPath(_song.song) + ".json");
 	}
 
 	private function saveEvents()

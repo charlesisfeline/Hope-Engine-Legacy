@@ -509,7 +509,7 @@ class FreeplayState extends MusicBeatState
 				exiting = true;
 				
 				var mod = (songs[curSelected].mod != null ? songs[curSelected].mod : "");
-				var songLowercase = songs[curSelected].songName.replace(" ", "-").toLowerCase();
+				var songLowercase = Paths.toSongPath(songs[curSelected].songName);
 				var poop:String = songLowercase + CoolUtil.difficultySuffixfromInt(curDifficulty);
 				var songPath = mod + (songs[curSelected].mod != null ? "/" : "") + 'assets/data/' + songLowercase + '/' + poop + ".json";
 	
@@ -615,7 +615,7 @@ class FreeplayState extends MusicBeatState
 			return;
 
 		// adjusting the highscore song name to be compatible (changeDiff)
-		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
+		var songHighscore = songs[curSelected].songName;
 
 		var prevScore = intendedScore;
 		var prevAcc = intendedAcc;
@@ -660,7 +660,7 @@ class FreeplayState extends MusicBeatState
 		#end
 			Paths.setCurrentMod(null);
 
-		var songHighscore = StringTools.replace(songs[curSelected].songName, " ", "-");
+		var songHighscore = songs[curSelected].songName;
 
 		var prevScore = intendedScore;
 		var prevAcc = intendedAcc;
@@ -714,7 +714,7 @@ class FreeplayState extends MusicBeatState
 	{
 		switching = true;
 
-		var song = songs[curSelected].songName.replace(" ", "-").toLowerCase();
+		var song = Paths.toSongPath(songs[curSelected].songName);
 		var bpm = songs[curSelected].bpm;
 
 		FlxG.sound.music.fadeOut(0.25, 0, function(twn:FlxTween)
@@ -841,20 +841,20 @@ class FreeplayState extends MusicBeatState
 		else
 			Paths.setCurrentMod(null);
 
-		var aName = a.songName.replace(" ", "-");
+		var aName = a.songName;
 		var score1:Int = Highscore.getScore(aName, curDifficulty);
 		var acc1:Float = Highscore.getAccuracy(aName, curDifficulty);
-		var name1:String = a.songName.replace(" ", "-").toUpperCase().trim();
+		var name1:String = a.songName.toUpperCase().trim();
 
 		if (b.mod != "")
 			Paths.setCurrentMod(b.mod.split("/")[1]);
 		else
 			Paths.setCurrentMod(null);
 
-		var bName = b.songName.replace(" ", "-");
+		var bName = b.songName;
 		var score2:Int = Highscore.getScore(bName, curDifficulty);
 		var acc2:Float = Highscore.getAccuracy(bName, curDifficulty);
-		var name2:String = b.songName.replace(" ", "-").toUpperCase().trim();
+		var name2:String = b.songName.toUpperCase().trim();
 
 		Paths.setCurrentMod(prevMod);
 

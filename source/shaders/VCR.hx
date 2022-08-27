@@ -154,13 +154,13 @@ class VCR extends flixel.system.FlxAssets.FlxShader
         this.vignetteMoving.value = [false];
         this.noiseOn.value = [false];
         this.glitchModifier.value = [0];
-        this.iResolution.value = [FlxG.width, FlxG.height];
+        this.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
 	}
 
     override function __update()
     {
         super.__update();
         this.iTime.value[0] += FlxG.elapsed;
-        this.iResolution.value = [FlxG.width, FlxG.height];
+        this.iResolution.value = [Lib.current.stage.stageWidth, Lib.current.stage.stageHeight];
     }
 }

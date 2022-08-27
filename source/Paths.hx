@@ -45,6 +45,13 @@ class Paths
 		#end
 	}
 
+	public static function toSongPath(song:String)
+	{
+		var f = ~/[\\\/:*?"<>|]/g;
+
+		return f.replace(song, "").replace(" ", "-").toLowerCase().trim();
+	}
+
 	public static function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		if (library != null)
@@ -376,7 +383,7 @@ class Paths
 
 	inline static public function voices(song:String):Dynamic
 	{
-		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var songLowercase = Paths.toSongPath(song);
 		var pissOff:String;
 
 		#if FILESYSTEM
@@ -407,7 +414,7 @@ class Paths
 
 	inline static public function inst(song:String):Dynamic
 	{
-		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+		var songLowercase = Paths.toSongPath(song);
 		var pissOff:String;
 
 		#if FILESYSTEM

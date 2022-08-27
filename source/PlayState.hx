@@ -335,7 +335,7 @@ class PlayState extends MusicBeatState
 		FlxCamera.defaultCameras = [camGame];
 
 		// pre lowercasing the song name (create)
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		var songLowercase = Paths.toSongPath(PlayState.SONG.song);
 		
 
 		#if FILESYSTEM
@@ -612,13 +612,13 @@ class PlayState extends MusicBeatState
 		
 		if (Paths.currentMod != null)
 		{
-			if (Paths.exists(Paths.currentMod + "/assets/data/" + SONG.song.toLowerCase().replace(" ", "-") + "/speakerChart.json"))
-				generateSpeakerNotes(Song.loadFromJson("speakerChart", SONG.song.toLowerCase().replace(" ", "-")).notes);
+			if (Paths.exists(Paths.currentMod + "/assets/data/" + Paths.toSongPath(SONG.song) + "/speakerChart.json"))
+				generateSpeakerNotes(Song.loadFromJson("speakerChart", Paths.toSongPath(SONG.song)).notes);
 		}
 		else
 		{
-			if (Paths.exists("assets/data/" + SONG.song.toLowerCase().replace(" ", "-") + "/speakerChart.json"))
-				generateSpeakerNotes(Song.loadFromJson("speakerChart", SONG.song.toLowerCase().replace(" ", "-")).notes);
+			if (Paths.exists("assets/data/" + Paths.toSongPath(SONG.song) + "/speakerChart.json"))
+				generateSpeakerNotes(Song.loadFromJson("speakerChart", Paths.toSongPath(SONG.song)).notes);
 		}
 
 		trace('generated');
@@ -771,7 +771,7 @@ class PlayState extends MusicBeatState
 			{
 				// we soft-codin this bitch in
 				#if FILESYSTEM
-				if (FileSystem.exists(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase())))
+				if (FileSystem.exists(Paths.dialogueStartFile(Paths.toSongPath(curSong))))
 				{
 					inCutscene = true;
 
@@ -782,7 +782,7 @@ class PlayState extends MusicBeatState
 					});
 				}
 				#else
-				if (Assets.exists("assets/data/" + StringTools.replace(curSong, " ", "-").toLowerCase() + '/dialogueStart.txt'))
+				if (Assets.exists("assets/data/" + Paths.toSongPath(curSong) + '/dialogueStart.txt'))
 				{
 					inCutscene = true;
 
@@ -847,12 +847,12 @@ class PlayState extends MusicBeatState
 		FlxG.sound.music.looped = false;
 		vocals.looped = false;
 
-		if (Paths.exists(Paths.cautionFile(curSong.replace(" ", "-").toLowerCase())))
+		if (Paths.exists(Paths.cautionFile(Paths.toSongPath(curSong))))
 		{
 			#if FILESYSTEM
-			var strings = File.getContent(Paths.cautionFile(curSong.replace(" ", "-").toLowerCase()));
+			var strings = File.getContent(Paths.cautionFile(Paths.toSongPath(curSong)));
 			#else
-			var strings = Assets.getText(Paths.cautionFile(curSong.replace(" ", "-").toLowerCase()));
+			var strings = Assets.getText(Paths.cautionFile(Paths.toSongPath(curSong)));
 			#end
 
 			new FlxTimer().start(0.3, function(tmr:FlxTimer)
@@ -916,19 +916,19 @@ class PlayState extends MusicBeatState
 		var sub:DialogueSubstate = null;
 		
 		#if FILESYSTEM
-		if (FileSystem.exists(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase())))
+		if (FileSystem.exists(Paths.dialogueStartFile(Paths.toSongPath(curSong))))
 		{
-			sub = new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueStartFile(curSong.replace(" ", "-").toLowerCase()))),
+			sub = new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueStartFile(Paths.toSongPath(curSong)))),
 			null, startCountdown);
 			
 			sub.cameras = [camMisc];
 			openSubState(sub);
 		}
 		#else
-		if (Assets.exists("assets/data/" + StringTools.replace(curSong, " ", "-").toLowerCase() + '/dialogueStart.txt'))
+		if (Assets.exists("assets/data/" + Paths.toSongPath(curSong) + '/dialogueStart.txt'))
 		{
 			sub = new DialogueSubstate(CoolUtil.awesomeDialogueFile(Assets.getText('assets/data/'
-				+ StringTools.replace(SONG.song, " ", "-").toLowerCase() + '/dialogueStart.txt')),
+				+ Paths.toSongPath(curSong) + '/dialogueStart.txt')),
 				null, startCountdown);
 
 			sub.cameras = [camMisc];
@@ -1135,7 +1135,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.music.onComplete = endSong;
 
 		#if FILESYSTEM
-		if (FileSystem.exists(Paths.dialogueEndFile(curSong.replace(" ", "-").toLowerCase())) && isStoryMode)
+		if (FileSystem.exists(Paths.dialogueEndFile(Paths.toSongPath(curSong))) && isStoryMode)
 			FlxG.sound.music.onComplete = function()
 			{
 				inCutscene = true;
@@ -1148,14 +1148,14 @@ class PlayState extends MusicBeatState
 
 				var sub:DialogueSubstate = null;
 
-				sub = new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueEndFile(curSong.replace(" ", "-").toLowerCase()))),
+				sub = new DialogueSubstate(CoolUtil.awesomeDialogueFile(File.getContent(Paths.dialogueEndFile(Paths.toSongPath(curSong)))),
 					null, endSong);
 
 				sub.cameras = [camMisc];
 				openSubState(sub);
 			};
 		#else
-		if (Assets.exists("assets/data/" + StringTools.replace(curSong, " ", "-").toLowerCase() + '/dialogueEnd.txt') && isStoryMode)
+		if (Assets.exists("assets/data/" + Paths.toSongPath(curSong) + '/dialogueEnd.txt') && isStoryMode)
 			FlxG.sound.music.onComplete = function()
 			{
 				inCutscene = true;
@@ -1169,7 +1169,7 @@ class PlayState extends MusicBeatState
 				var sub:DialogueSubstate = null;
 
 				sub = new DialogueSubstate(CoolUtil.awesomeDialogueFile(Assets.getText('assets/data/'
-					+ StringTools.replace(SONG.song, " ", "-").toLowerCase() + '/dialogueEnd.txt')),
+					+ Paths.toSongPath(curSong) + '/dialogueEnd.txt')),
 					null, endSong);
 						
 				sub.cameras = [camMisc];
@@ -1264,7 +1264,7 @@ class PlayState extends MusicBeatState
 		var noteData:Array<SwagSection>;
 		noteData = songData.notes;
 
-		var songLowercase = StringTools.replace(PlayState.SONG.song, " ", "-").toLowerCase();
+		var songLowercase = Paths.toSongPath(PlayState.SONG.song);
 
 		// Per song offset check
 		#if FILESYSTEM
@@ -2434,7 +2434,7 @@ class PlayState extends MusicBeatState
 			}
 			else if (SONG.validScore && !openedCharting)
 			{
-				var songHighscore = StringTools.replace(PlayState.SONG.song, " ", "-");
+				var songHighscore = PlayState.SONG.song;
 
 				Highscore.saveScore(songHighscore, Math.round(songScore), storyDifficulty);
 				Highscore.saveAccuracy(songHighscore, accuracy, storyDifficulty);
@@ -2519,7 +2519,7 @@ class PlayState extends MusicBeatState
 
 						trace('LOADING NEXT SONG');
 						// pre lowercasing the next story song name
-						var nextSongLowercase = PlayState.storyPlaylist[0].replace(" ", "-").toLowerCase();
+						var nextSongLowercase = Paths.toSongPath(PlayState.storyPlaylist[0]);
 						trace(nextSongLowercase + difficulty);
 
 						FlxTransitionableState.skipNextTransIn = true;
@@ -3729,7 +3729,7 @@ class PlayState extends MusicBeatState
 		// song
 		funnyInterp.variables.set("songPosition", Conductor.songPosition);
 		funnyInterp.variables.set("song", SONG.song);
-		funnyInterp.variables.set("songLowercase", SONG.song.replace(" ", "-").trim().toLowerCase());
+		funnyInterp.variables.set("songLowercase", Paths.toSongPath(SONG.song));
 		funnyInterp.variables.set("songData", SONG);
 		funnyInterp.variables.set("SONG", SONG);
 		funnyInterp.variables.set("bpm", Conductor.bpm);

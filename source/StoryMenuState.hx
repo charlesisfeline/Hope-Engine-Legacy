@@ -397,7 +397,7 @@ class StoryMenuState extends MusicBeatState
 			var diffic = CoolUtil.difficultySuffixfromInt(curDifficulty);
 
 			PlayState.storyDifficulty = curDifficulty;
-			var lma = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+			var lma = Paths.toSongPath(PlayState.storyPlaylist[0]);
 			PlayState.SONG = Song.loadFromJson(lma + diffic, lma, (Paths.currentMod != null
 				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 			PlayState.EVENTS = Event.load(lma, (Paths.currentMod != null
