@@ -3609,8 +3609,11 @@ class PlayState extends MusicBeatState
 		var canAlt = character.animation.getByName('sing' + DIRECTIONS[direction] + "-alt") != null;
 		var alt:String = (isAlt && canAlt ? "-alt" : "");
 
-		character.holdTimer = 0;
-		character.playAnim('sing' + DIRECTIONS[direction] + alt, true);
+		if (!character.specialAnim)
+		{
+			character.holdTimer = 0;
+			character.playAnim('sing' + DIRECTIONS[direction] + alt, true);
+		}
 
 		if (whosFocused == character)
 			moveCamera(direction);
@@ -3620,7 +3623,7 @@ class PlayState extends MusicBeatState
 	{
 		var canMiss = character.animation.getByName('sing' + DIRECTIONS[direction] + "miss") != null;
 
-		if (canMiss)
+		if (canMiss && !character.specialAnim)
 			character.playAnim('sing' + DIRECTIONS[direction] + 'miss', true);
 
 		if (whosFocused == character)

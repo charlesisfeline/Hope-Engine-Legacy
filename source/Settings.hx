@@ -49,6 +49,8 @@ class Settings
 	public static var lastVolume:Float = 1;
 	public static var lastMuted:Bool = false;
 
+	public static var extraDetails:Bool = false;
+
 	// experimental
 	public static var difficultyVocals:Bool = false;
 
@@ -98,6 +100,10 @@ class Settings
 		autopause = FlxG.save.data.autopause;
 		lastVolume = FlxG.save.data.lastVolume;
 		lastMuted = FlxG.save.data.lastMuted;
+
+		///////////////////////////////////
+
+		extraDetails = FlxG.save.data.extraDetails;
 
 		///////////////////////////////////
 
@@ -154,6 +160,10 @@ class Settings
 		FlxG.save.data.autopause = autopause;
 		FlxG.save.data.lastVolume = lastVolume;
 		FlxG.save.data.lastMuted = lastMuted;
+
+		///////////////////////////////////
+
+		FlxG.save.data.extraDetails = extraDetails;
 
 		///////////////////////////////////
 
@@ -286,6 +296,11 @@ class Settings
 
 		if (FlxG.save.data.lastMuted == null)
 			FlxG.save.data.lastMuted = lastMuted;
+
+		///////////////////////////////////
+
+		if (FlxG.save.data.extraDetails == null)
+			FlxG.save.data.extraDetails = extraDetails;
 
 		// this is NULL?!?!?
 		if (FlxG.save.data.windowSettings == null)

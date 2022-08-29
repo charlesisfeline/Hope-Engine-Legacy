@@ -67,6 +67,7 @@ class OptionsState extends MusicBeatState
 			new OptionSubCategoryTitle("Accessibility"),
 			new ToggleOption("Flashing Lights", "If activated, flashing lights will appear.", "flashing"),
 			new ToggleOption("Distractions", "Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)", "distractions"),
+			new ToggleOption("Extra Details", "Show extra details.", "extraDetails"),
 			new ToggleOption("Persistent Volume", "If activated, the game will save the volume and stay the same everytime you reopen.", "persistentVolume"),
 			new ToggleOption("Video Cutscenes", "Use videos for cutscenes instead of them being in game.\nRecommended for computers with <8gb RAM.", "videoCutscenes")
 		]),

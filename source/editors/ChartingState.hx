@@ -566,7 +566,8 @@ class ChartingState extends MusicBeatState
 			"hopeEngine/def_cam_zoom",
 			"hopeEngine/move_cam",
 			"hopeEngine/play_animation",
-			"hopeEngine/scroll_change"
+			"hopeEngine/scroll_change",
+			"hopeEngine/ed_pico_shoots"
 		];
 
 		// do a reading if FILESYSTEM epic
@@ -2155,6 +2156,42 @@ class ChartingState extends MusicBeatState
 	{
 		for (note in curRenderedNotes.members)
 			FlxMouseEventManager.remove(note);
+
+		while (curRenderedNotes.length > 0 || curRenderedSustains.length > 0 
+			|| curRenderedEvents.length > 0 || curRenderedEventTexts.length > 0)
+		{
+			if (curRenderedNotes.length > 0)
+			{
+				var a = curRenderedNotes.remove(curRenderedNotes.members[0], true);
+				a.exists = false;
+				a.kill();
+				a.destroy();
+			}
+
+			if (curRenderedSustains.length > 0)
+			{
+				var a = curRenderedSustains.remove(curRenderedSustains.members[0], true);
+				a.exists = false;
+				a.kill();
+				a.destroy();
+			}
+
+			if (curRenderedEvents.length > 0)
+			{
+				var a = curRenderedEvents.remove(curRenderedEvents.members[0], true);
+				a.exists = false;
+				a.kill();
+				a.destroy();
+			}
+
+			if (curRenderedEventTexts.length > 0)
+			{
+				var a = curRenderedEventTexts.remove(curRenderedEventTexts.members[0], true);
+				a.exists = false;
+				a.kill();
+				a.destroy();
+			}
+		}
 
 		curRenderedNotes.clear();
 		curRenderedSustains.clear();

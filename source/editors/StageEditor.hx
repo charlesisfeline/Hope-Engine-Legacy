@@ -37,7 +37,6 @@ using StringTools;
 #if desktop
 import Discord.DiscordClient;
 #end
-
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -114,10 +113,7 @@ class StageEditor extends MusicBeatState
 		select9Slice.exists = false;
 		add(select9Slice);
 
-		var tabs = [
-			{name: "1", label: 'Stage Data'},
-			{name: "2", label: 'Characters'}
-		];
+		var tabs = [{name: "1", label: 'Stage Data'}, {name: "2", label: 'Characters'}];
 
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.resize(460, 200);
@@ -127,10 +123,7 @@ class StageEditor extends MusicBeatState
 		add(UI_box);
 		UI_box.cameras = [camHUD];
 
-		var tabs = [
-			{name: "1", label: 'Sprite'},
-			{name: "2", label: 'Animations'}
-		];
+		var tabs = [{name: "1", label: 'Sprite'}, {name: "2", label: 'Animations'}];
 
 		SPRITE_box = new FlxUITabMenu(null, tabs, true);
 		SPRITE_box.resize((FlxG.width * 0.5) - 10, 200);
@@ -162,7 +155,8 @@ class StageEditor extends MusicBeatState
 		bf.antialiasing = true;
 		characterLayer.add(bf);
 
-		var emptySprite = new FlxUIButton(UI_box.x + UI_box.width + 10, FlxG.height - 30, "Add empty sprite", function() {
+		var emptySprite = new FlxUIButton(UI_box.x + UI_box.width + 10, FlxG.height - 30, "Add empty sprite", function()
+		{
 			addSprite();
 		});
 		emptySprite.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
@@ -170,7 +164,8 @@ class StageEditor extends MusicBeatState
 		add(emptySprite);
 		emptySprite.cameras = [camHUD];
 
-		var loadedSprite = new FlxUIButton(UI_box.x + UI_box.width + 10, emptySprite.y - 30, "Add sprite w/ graphic", function() {
+		var loadedSprite = new FlxUIButton(UI_box.x + UI_box.width + 10, emptySprite.y - 30, "Add sprite w/ graphic", function()
+		{
 			addingASprite = true;
 			findThroughExplorer();
 		});
@@ -179,7 +174,8 @@ class StageEditor extends MusicBeatState
 		add(loadedSprite);
 		loadedSprite.cameras = [camHUD];
 
-		deselect = new FlxUIButton(UI_box.x + UI_box.width + 10, loadedSprite.y - 30, "Deselect Sprite", function() {
+		deselect = new FlxUIButton(UI_box.x + UI_box.width + 10, loadedSprite.y - 30, "Deselect Sprite", function()
+		{
 			selectedObj = null;
 		});
 		deselect.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
@@ -188,7 +184,8 @@ class StageEditor extends MusicBeatState
 		add(deselect);
 		deselect.cameras = [camHUD];
 
-		delete = new FlxUIButton(UI_box.x + UI_box.width + 10, deselect.y - 30, "Delete Sprite", function() {
+		delete = new FlxUIButton(UI_box.x + UI_box.width + 10, deselect.y - 30, "Delete Sprite", function()
+		{
 			delSprite();
 		});
 		delete.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
@@ -217,6 +214,8 @@ class StageEditor extends MusicBeatState
 		updateLayering();
 
 		super.create();
+
+		FlxG.stage.window.onDropFile.add(onDropDown);
 	}
 
 	var assetPath:InputTextFix;
@@ -247,27 +246,14 @@ class StageEditor extends MusicBeatState
 	var blendDrop:DropdownMenuFix;
 
 	var blends:Array<String> = [
-		"ADD",
-		"ALPHA",
-		"DARKEN",
-		"DIFFERENCE",
-		"ERASE",
-		"HARDLIGHT",
-		"INVERT",
-		"LAYER",
-		"LIGHTEN",
-		"MULTIPLY",
-		"NORMAL",
-		"OVERLAY",
-		"SCREEN",
-		"SUBTRACT"
+		"ADD", "ALPHA", "DARKEN", "DIFFERENCE", "ERASE", "HARDLIGHT", "INVERT", "LAYER", "LIGHTEN", "MULTIPLY", "NORMAL", "OVERLAY", "SCREEN", "SUBTRACT"
 	];
 
 	function addSpriteStuff():Void
 	{
 		var varNameTitle = new FlxText(10, 10, "Sprite Unique Variable Name");
 		varName = new InputTextFix(10, varNameTitle.y + varNameTitle.height, 198);
-		varName.callback = function(_, _) 
+		varName.callback = function(_, _)
 		{
 			if (selectedObj != null)
 				selectedObj.varName = varName.text.trim();
@@ -279,7 +265,8 @@ class StageEditor extends MusicBeatState
 		{
 			if (selectedObj != null)
 			{
-				if (Paths.image(assetPath.text) is FlxGraphic || Paths.exists(cast (Paths.image(assetPath.text), String).replace("shared:", "")))
+				if (Paths.image(assetPath.text) is FlxGraphic
+					|| Paths.exists(cast(Paths.image(assetPath.text), String).replace("shared:", "")))
 				{
 					if (selectedObj.animations.length > 0)
 						selectedObj.frames = Paths.getSparrowAtlas(assetPath.text);
@@ -291,7 +278,8 @@ class StageEditor extends MusicBeatState
 			}
 		}
 
-		var findThroughExplorer = new FlxUIButton(10, assetPath.y + assetPath.height + 10, "Find image through Explorer", function() {
+		var findThroughExplorer = new FlxUIButton(10, assetPath.y + assetPath.height + 10, "Find image through Explorer", function()
+		{
 			addingASprite = false;
 			findThroughExplorer();
 		});
@@ -299,13 +287,15 @@ class StageEditor extends MusicBeatState
 		findThroughExplorer.resize(assetPath.width, 20);
 
 		antiAliasing = new FlxUICheckBox(10, findThroughExplorer.y + findThroughExplorer.height + 10, null, null, "Smoothen?", 75);
-		antiAliasing.callback = function() {
+		antiAliasing.callback = function()
+		{
 			if (selectedObj != null)
 				selectedObj.antialiasing = antiAliasing.checked;
 		}
 
 		inFront = new FlxUICheckBox(10, findThroughExplorer.y + findThroughExplorer.height + 10, null, null, "Foreground object?", 75);
-		inFront.callback = function() {
+		inFront.callback = function()
+		{
 			if (selectedObj != null)
 			{
 				selectedObj.inFront = inFront.checked;
@@ -316,7 +306,8 @@ class StageEditor extends MusicBeatState
 
 		var layerTitle = new FlxText(10, antiAliasing.y + antiAliasing.height + 10, "Layer");
 		layerStepper = new NumStepperFix(layerTitle.x, layerTitle.y + layerTitle.height, 1, 0, 0, 256, 1, new InputTextFix(0, 0, 60));
-		layerStepper.callback = function(_) {
+		layerStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 			{
 				selectedObj.layer = Std.int(layerStepper.value);
@@ -329,57 +320,69 @@ class StageEditor extends MusicBeatState
 		layerStepper.button_plus.label.offset.x += 2;
 		layerStepper.button_minus.label.offset.x += 2;
 		layerStepper.button_plus.label.flipY = true;
-		
+
 		var xStepperTitle = new FlxText(assetPath.x + assetPath.width + 10, 10, "X position");
-		xStepper = new NumStepperFix(xStepperTitle.x, xStepperTitle.y + xStepperTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1, new InputTextFix(0, 0, 60));
-		xStepper.callback = function(_) {
+		xStepper = new NumStepperFix(xStepperTitle.x, xStepperTitle.y + xStepperTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1,
+			new InputTextFix(0, 0, 60));
+		xStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 				selectedObj.x = xStepper.value;
 		}
 
 		var yStepperTitle = new FlxText(xStepper.x + xStepper.width + 10, 10, "Y position");
-		yStepper = new NumStepperFix(yStepperTitle.x, yStepperTitle.y + yStepperTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1, new InputTextFix(0, 0, 60));
-		yStepper.callback = function(_) {
+		yStepper = new NumStepperFix(yStepperTitle.x, yStepperTitle.y + yStepperTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1,
+			new InputTextFix(0, 0, 60));
+		yStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 				selectedObj.y = yStepper.value;
 		}
 
 		var xScrollTitle = new FlxText(yStepper.x + yStepper.width + 10, 10, "X Parallax Factor");
-		scrollXStepper = new NumStepperFix(xScrollTitle.x, xScrollTitle.y + xScrollTitle.height, 0.1, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1, new InputTextFix(0, 0, 60));
-		scrollXStepper.callback = function(_) {
+		scrollXStepper = new NumStepperFix(xScrollTitle.x, xScrollTitle.y + xScrollTitle.height, 0.1, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1,
+			new InputTextFix(0, 0, 60));
+		scrollXStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 				selectedObj.scrollFactor.x = scrollXStepper.value;
 		}
 
 		var yScrollTitle = new FlxText(scrollXStepper.x + scrollXStepper.width + 10, 10, "Y Parallax Factor");
-		scrollYStepper = new NumStepperFix(yScrollTitle.x, yScrollTitle.y + yScrollTitle.height, 0.1, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1, new InputTextFix(0, 0, 60));
-		scrollYStepper.callback = function(_) {
+		scrollYStepper = new NumStepperFix(yScrollTitle.x, yScrollTitle.y + yScrollTitle.height, 0.1, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 1,
+			new InputTextFix(0, 0, 60));
+		scrollYStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 				selectedObj.scrollFactor.y = scrollYStepper.value;
 		}
 
 		var alphaTitle = new FlxText(xStepperTitle.x, 38, "Opacity");
 		alphaStepper = new NumStepperFix(alphaTitle.x, alphaTitle.y + alphaTitle.height, 0.1, 0, 0, 1, 1, new InputTextFix(0, 0, 60));
-		alphaStepper.callback = function(_) {
+		alphaStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 				selectedObj.alpha = alphaStepper.value;
 		}
 
 		var angleTitle = new FlxText(yStepperTitle.x, 38, "Rotation");
 		angleStepper = new NumStepperFix(angleTitle.x, angleTitle.y + angleTitle.height, 1, 0, -360, 360, 1, new InputTextFix(0, 0, 60));
-		angleStepper.callback = function(_) {
+		angleStepper.callback = function(_)
+		{
 			if (selectedObj != null)
 				selectedObj.angle = angleStepper.value;
 		}
 
-		var flipX = new FlxUIButton(angleStepper.x + angleStepper.width + 10, alphaStepper.y - 4, "Flip X", function() {
+		var flipX = new FlxUIButton(angleStepper.x + angleStepper.width + 10, alphaStepper.y - 4, "Flip X", function()
+		{
 			if (selectedObj != null)
 				selectedObj.flipX = !selectedObj.flipX;
 		});
 		flipX.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		flipX.resize(93, 20);
 
-		var flipY = new FlxUIButton(flipX.x + flipX.width + 10, flipX.y, "Flip Y", function() {
+		var flipY = new FlxUIButton(flipX.x + flipX.width + 10, flipX.y, "Flip Y", function()
+		{
 			if (selectedObj != null)
 				selectedObj.flipY = !selectedObj.flipY;
 		});
@@ -470,56 +473,63 @@ class StageEditor extends MusicBeatState
 	function addDataStuff():Void
 	{
 		var dadPosXTitle = new FlxText(10, 10, "Dad's X Position");
-		dadPosX = new NumStepperFix(10, dadPosXTitle.y + dadPosXTitle.height, 10, stageData.dadPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
-			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
-		dadPosX.callback = function(_) {
+		dadPosX = new NumStepperFix(10, dadPosXTitle.y + dadPosXTitle.height, 10, stageData.dadPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2,
+			new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
+		dadPosX.callback = function(_)
+		{
 			dad.x = dadPosX.value;
 			dad.x += dad.positionOffset[0];
 		}
 
 		var dadPosYTitle = new FlxText(UI_box.width / 2 + 5, 10, "Dad's Y Position");
-		dadPosY = new NumStepperFix(UI_box.width / 2 + 5, dadPosYTitle.y + dadPosYTitle.height, 10, stageData.dadPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
-			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
-		dadPosY.callback = function(_) {
+		dadPosY = new NumStepperFix(UI_box.width / 2 + 5, dadPosYTitle.y + dadPosYTitle.height, 10, stageData.dadPosition[1], Math.NEGATIVE_INFINITY,
+			Math.POSITIVE_INFINITY, 2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
+		dadPosY.callback = function(_)
+		{
 			dad.y = dadPosY.value;
 			dad.y += dad.positionOffset[1];
 		}
 
 		var gfPosXTitle = new FlxText(10, 50, "GF's X Position");
-		gfPosX = new NumStepperFix(10, gfPosXTitle.y + gfPosXTitle.height, 10, stageData.gfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
-			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
-		gfPosX.callback = function(_) {
+		gfPosX = new NumStepperFix(10, gfPosXTitle.y + gfPosXTitle.height, 10, stageData.gfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2,
+			new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
+		gfPosX.callback = function(_)
+		{
 			gf.x = gfPosX.value;
 			gf.x += gf.positionOffset[0];
 		}
 
 		var gfPosYTitle = new FlxText(UI_box.width / 2 + 5, 50, "GF's Y Position");
-		gfPosY = new NumStepperFix(UI_box.width / 2 + 5, gfPosYTitle.y + gfPosYTitle.height, 10, stageData.gfPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
-			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
-		gfPosY.callback = function(_) {
+		gfPosY = new NumStepperFix(UI_box.width / 2 + 5, gfPosYTitle.y + gfPosYTitle.height, 10, stageData.gfPosition[1], Math.NEGATIVE_INFINITY,
+			Math.POSITIVE_INFINITY, 2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
+		gfPosY.callback = function(_)
+		{
 			gf.y = gfPosY.value;
 			gf.y += gf.positionOffset[1];
 		}
 
 		var bfPosXTitle = new FlxText(10, 90, "BF's X Position");
-		bfPosX = new NumStepperFix(10, bfPosXTitle.y + bfPosXTitle.height, 10, stageData.bfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
-			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
-		bfPosX.callback = function(_) {
+		bfPosX = new NumStepperFix(10, bfPosXTitle.y + bfPosXTitle.height, 10, stageData.bfPosition[0], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2,
+			new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
+		bfPosX.callback = function(_)
+		{
 			bf.x = bfPosX.value;
 			bf.x += bf.positionOffset[0];
 		}
 
 		var bfPosYTitle = new FlxText(UI_box.width / 2 + 5, 90, "BF's Y Position");
-		bfPosY = new NumStepperFix(UI_box.width / 2 + 5, bfPosYTitle.y + bfPosYTitle.height, 10, stageData.bfPosition[1], Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY,
-			2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
-		bfPosY.callback = function(_) {
+		bfPosY = new NumStepperFix(UI_box.width / 2 + 5, bfPosYTitle.y + bfPosYTitle.height, 10, stageData.bfPosition[1], Math.NEGATIVE_INFINITY,
+			Math.POSITIVE_INFINITY, 2, new InputTextFix(0, 0, Std.int(UI_box.width / 2 - 50)));
+		bfPosY.callback = function(_)
+		{
 			bf.y = bfPosY.value;
 			bf.y += bf.positionOffset[1];
 		}
 
 		///
 
-		var focusDad = new FlxButton(0, 0, "Focus Dad", function() {
+		var focusDad = new FlxButton(0, 0, "Focus Dad", function()
+		{
 			curZoom = stageData.defaultCamZoom != null ? stageData.defaultCamZoom : 1.05;
 
 			var offsetX = dad.cameraOffset[0];
@@ -530,7 +540,8 @@ class StageEditor extends MusicBeatState
 		focusDad.x = 10;
 		focusDad.y = UI_box.height - focusDad.height - 30;
 
-		var focusGF = new FlxButton(0, 0, "Focus GF", function() {
+		var focusGF = new FlxButton(0, 0, "Focus GF", function()
+		{
 			curZoom = stageData.defaultCamZoom != null ? stageData.defaultCamZoom : 1.05;
 			var offsetX = gf.cameraOffset[0];
 			var offsetY = gf.cameraOffset[1];
@@ -540,7 +551,8 @@ class StageEditor extends MusicBeatState
 		focusGF.x = focusDad.x + focusDad.width + 10;
 		focusGF.y = focusDad.y;
 
-		var focusBF = new FlxButton(0, 0, "Focus BF", function() {
+		var focusBF = new FlxButton(0, 0, "Focus BF", function()
+		{
 			curZoom = stageData.defaultCamZoom != null ? stageData.defaultCamZoom : 1.05;
 			var offsetX = bf.cameraOffset[0];
 			var offsetY = bf.cameraOffset[1];
@@ -554,12 +566,12 @@ class StageEditor extends MusicBeatState
 		var dataLoad:FlxButton = new FlxButton(0, 0, "Load Data", function()
 		{
 			camHUD.visible = false;
-			openSubState(new ConfirmationPrompt("You sure?", "Be sure to save your progress. Your progress will be lost if it is left unsaved!", "Sure", "Nah", 
-			function() {
+			openSubState(new ConfirmationPrompt("You sure?", "Be sure to save your progress. Your progress will be lost if it is left unsaved!", "Sure",
+				"Nah", function()
+			{
 				lookinFor = 'stagedata';
 				loadJSON();
-			}, 
-			function()
+			}, function()
 			{
 				FlxG.mouse.visible = camHUD.visible = true;
 			}));
@@ -614,12 +626,14 @@ class StageEditor extends MusicBeatState
 
 		var dadCharacterTitle = new FlxText(10, 10, 0, "Dad Character");
 
-		dadCharacter = new DropdownMenuFix(10, dadCharacterTitle.y + dadCharacterTitle.height,
-			DropdownMenuFix.makeStrIdLabelArray(characters, true), new FlxUIDropDownHeader(daWidth));
+		dadCharacter = new DropdownMenuFix(10, dadCharacterTitle.y + dadCharacterTitle.height, DropdownMenuFix.makeStrIdLabelArray(characters, true),
+			new FlxUIDropDownHeader(daWidth));
 		dadCharacter.selectedLabel = dad.curCharacter;
 		dadCharacter.scrollable = true;
-		dadCharacter.callback = function(_) {
-			if (dadCharacter.selectedLabel == dad.curCharacter) return;
+		dadCharacter.callback = function(_)
+		{
+			if (dadCharacter.selectedLabel == dad.curCharacter)
+				return;
 
 			var index = characterLayer.members.indexOf(dad);
 			var item:Character = cast characterLayer.remove(dad, true);
@@ -640,8 +654,10 @@ class StageEditor extends MusicBeatState
 			DropdownMenuFix.makeStrIdLabelArray(characters, true), new FlxUIDropDownHeader(daWidth));
 		gfCharacter.selectedLabel = gf.curCharacter;
 		gfCharacter.scrollable = true;
-		gfCharacter.callback = function(_) {
-			if (gfCharacter.selectedLabel == gf.curCharacter) return;
+		gfCharacter.callback = function(_)
+		{
+			if (gfCharacter.selectedLabel == gf.curCharacter)
+				return;
 
 			var index = characterLayer.members.indexOf(gf);
 			var item:Character = cast characterLayer.remove(gf, true);
@@ -662,8 +678,10 @@ class StageEditor extends MusicBeatState
 			DropdownMenuFix.makeStrIdLabelArray(characters, true), new FlxUIDropDownHeader(daWidth));
 		bfCharacter.selectedLabel = bf.curCharacter;
 		bfCharacter.scrollable = true;
-		bfCharacter.callback = function(_) {
-			if (bfCharacter.selectedLabel == bf.curCharacter) return;
+		bfCharacter.callback = function(_)
+		{
+			if (bfCharacter.selectedLabel == bf.curCharacter)
+				return;
 
 			var index = characterLayer.members.indexOf(bf);
 			var item:Boyfriend = cast characterLayer.remove(bf, true);
@@ -692,7 +710,7 @@ class StageEditor extends MusicBeatState
 	function selectObject(s:StageSprite)
 	{
 		remove(select9Slice, true);
-		
+
 		if (selectedObj != s)
 			selectedObj = s;
 		else
@@ -712,7 +730,7 @@ class StageEditor extends MusicBeatState
 		updateSpriteShiz();
 	}
 
-	function addSprite(?spritePath:String):Void
+	function addSprite(?spritePath:String, ?toMousePosition:Bool = false):Void
 	{
 		var s = new StageSprite();
 		s.setPosition(0, 0);
@@ -720,17 +738,29 @@ class StageEditor extends MusicBeatState
 		if (spritePath != null)
 		{
 			s.imagePath = spritePath;
-			
-			if (!Paths.exists(Paths.file('images/$spritePath.xml', TEXT, 'shared').replace("shared:", "")) && !Paths.exists(Paths.modFile('images/$spritePath.xml')))
+
+			if (!Paths.exists(Paths.file('images/$spritePath.xml', TEXT, 'shared').replace("shared:", ""))
+				&& !Paths.exists(Paths.modFile('images/$spritePath.xml')))
 				s.loadGraphic(Paths.image(spritePath));
 			else
 				s.frames = Paths.getSparrowAtlas(spritePath);
-	
+
 			s.updateAnimations();
 		}
 		else
 			s.screenCenter();
-		
+
+		if (toMousePosition)
+		{
+			var m = FlxG.mouse.getWorldPosition(camEdit);
+
+			s.x = m.x - s.width / 2;
+			s.y = m.y - s.height / 2;
+
+
+			// to do: fix this lole
+		}
+
 		s.layer = getMaxLayer() + 1;
 		stageSprites.push(s);
 		add(s);
@@ -751,6 +781,23 @@ class StageEditor extends MusicBeatState
 		selectedObj = null;
 	}
 
+	function onDropDown(imagePath:String):Void
+	{
+		trace(imagePath);
+
+		var prefix = Sys.getCwd().replace("\\", "/").trim() + "assets/shared/images/";
+
+		if (Paths.currentMod != null)
+			prefix = Sys.getCwd().replace("\\", "/").trim() + "mods/" + Paths.currentMod + "/assets/images/";
+
+		var repl = imagePath.replace("\\", "/").trim();
+
+		if (repl.startsWith(prefix))
+			addSprite(repl.substr(prefix.length).replace(".png", ""), true);
+		else
+			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), 0.6);
+	}
+
 	function getMaxLayer(?inFront:Bool = false):Int
 	{
 		var sprites:Array<StageSprite> = [];
@@ -768,7 +815,7 @@ class StageEditor extends MusicBeatState
 	{
 		remove(characterLayer, true);
 		remove(select9Slice, true);
-		
+
 		var spritesBack:Array<StageSprite> = [];
 		var spritesFront:Array<StageSprite> = [];
 
@@ -781,11 +828,13 @@ class StageEditor extends MusicBeatState
 				spritesBack.push(s);
 		}
 
-		spritesFront.sort(function(a:StageSprite, b:StageSprite) {
+		spritesFront.sort(function(a:StageSprite, b:StageSprite)
+		{
 			return FlxSort.byValues(FlxSort.ASCENDING, a.layer, b.layer);
 		});
 
-		spritesBack.sort(function(a:StageSprite, b:StageSprite) {
+		spritesBack.sort(function(a:StageSprite, b:StageSprite)
+		{
 			return FlxSort.byValues(FlxSort.ASCENDING, a.layer, b.layer);
 		});
 
@@ -879,14 +928,14 @@ class StageEditor extends MusicBeatState
 					pastCameraPos = [camFollow.x, camFollow.y];
 					mouseMiddleClickPastPos = [FlxG.mouse.getScreenPosition(camHUD).x, FlxG.mouse.getScreenPosition(camHUD).y];
 				}
-	
+
 				curCamPos.x = camFollow.x = pastCameraPos[0] + ((mouseMiddleClickPastPos[0] - FlxG.mouse.getScreenPosition(camHUD).x) / FlxG.camera.zoom);
 				curCamPos.y = camFollow.y = pastCameraPos[1] + ((mouseMiddleClickPastPos[1] - FlxG.mouse.getScreenPosition(camHUD).y) / FlxG.camera.zoom);
 			}
 
 			if (FlxG.mouse.justPressedRight)
 			{
-				for (sprite in stageSprites) 
+				for (sprite in stageSprites)
 				{
 					if (Helper.screenOverlap(sprite))
 					{
@@ -895,7 +944,7 @@ class StageEditor extends MusicBeatState
 					}
 				}
 			}
-	
+
 			if (FlxG.mouse.wheel != 0 && !DropdownMenuFix.isDropdowning)
 				FlxG.camera.zoom = curZoom += FlxG.mouse.wheel * 0.1;
 
@@ -905,14 +954,14 @@ class StageEditor extends MusicBeatState
 
 				if (FlxG.keys.pressed.SHIFT)
 					multiplier = 10;
-				
+
 				if (FlxG.keys.pressed.W)
 					camFollow.velocity.y = -speed * multiplier;
 				else if (FlxG.keys.pressed.S)
 					camFollow.velocity.y = speed * multiplier;
 				else
 					camFollow.velocity.y = 0;
-	
+
 				if (FlxG.keys.pressed.A)
 					camFollow.velocity.x = -speed * multiplier;
 				else if (FlxG.keys.pressed.D)
@@ -976,7 +1025,7 @@ class StageEditor extends MusicBeatState
 						modX *= 10;
 						modY *= 10;
 					}
-					
+
 					if (FlxG.keys.pressed.ALT)
 					{
 						modX *= 100;
@@ -990,6 +1039,12 @@ class StageEditor extends MusicBeatState
 				}
 			}
 		}
+	}
+
+	override function destroy()
+	{
+		FlxG.stage.window.onDropFile.remove(onDropDown);
+		super.destroy();
 	}
 
 	function updatePosSteppers():Void
@@ -1143,7 +1198,7 @@ class StageEditor extends MusicBeatState
 
 		for (i in stageSprites)
 			stage.stage.push(i.data);
-		
+
 		var data:String = Json.stringify(stage, null, "\t");
 
 		if ((data != null) && (data.length > 0))
@@ -1222,11 +1277,12 @@ class StageSprite extends FlxSprite
 
 	public function updateAnimations():Void
 	{
-		if (frames == null || animations.length == 0) return;
-		
+		if (frames == null || animations.length == 0)
+			return;
+
 		animation.stop();
 		animation.curAnim = null;
-		
+
 		for (name in animation.getNameList())
 			animation.remove(name);
 
@@ -1252,7 +1308,8 @@ class StageSprite extends FlxSprite
 		return animations = value;
 	}
 
-	function get_data():JSONStageSprite {
+	function get_data():JSONStageSprite
+	{
 		@:privateAccess
 		return {
 			varName: varName,
