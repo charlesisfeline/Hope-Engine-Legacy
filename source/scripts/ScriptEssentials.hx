@@ -6,6 +6,8 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.addons.effects.FlxTrail;
+import flixel.effects.particles.FlxEmitter;
+import flixel.effects.particles.FlxParticle;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
@@ -43,7 +45,9 @@ class ScriptEssentials
 		interp.variables.set("FlxBackdrop", FlxBackdrop);
 		interp.variables.set("StringTools", StringTools);
 		interp.variables.set("Application", Application);
+		interp.variables.set("FlxParticle", FlxParticle);
 		interp.variables.set("FunkSprite", FunkSprite);
+		interp.variables.set("FlxEmitter", FlxEmitter);
 		interp.variables.set("TankmenBG", TankmenBG);
 		interp.variables.set("Conductor", Conductor);
 		interp.variables.set("FlxSprite", FlxSprite);
@@ -115,6 +119,10 @@ class ScriptEssentials
 		interp.variables.set("FlxBarFillDirection", {
 			LEFT_TO_RIGHT: LEFT_TO_RIGHT,
 			RIGHT_TO_LEFT: RIGHT_TO_LEFT
+		});
+		interp.variables.set("FlxEmitterMode", {
+			SQUARE: FlxEmitterMode.SQUARE,
+			CIRCLE: FlxEmitterMode.CIRCLE
 		});
 		
 		interp.variables.set("add", FlxG.state.subState != null ? FlxG.state.subState.add : FlxG.state.add);

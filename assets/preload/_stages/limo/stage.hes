@@ -31,6 +31,30 @@ function createBackground()
         }
     }
 
+    if (Settings.extraDetails)
+    {
+        var particleBackEmitter = new FlxEmitter(-400);
+        particleBackEmitter.launchMode = FlxEmitterMode.SQUARE;
+        particleBackEmitter.height = FlxG.height;
+
+        for (fuck in 0...40)
+        {
+            var particle = new FlxParticle();
+            particle.loadGraphic(Paths.image('limo/windLine', 'week4'));
+            particle.lifespan = 0.1;
+            particle.exists = false;
+            particle.scrollFactor.set(0.45, 0.45);
+            particleBackEmitter.add(particle); 
+        }
+
+        particleBackEmitter.start(false, 0.1, 0);
+        particleBackEmitter.velocity.set(2048 * 2, 0, 2048 * 3, 0);
+        particleBackEmitter.alpha.set(0.1, 0.3);
+        particleBackEmitter.scale.set(0.75);
+
+        add(particleBackEmitter);
+    }
+
     var limoTex = Paths.getSparrowAtlas('limo/limoDrive','week4');
 
     limo = new FlxSprite(-120, 550);
@@ -63,6 +87,28 @@ function createForeground()
 
     add(boyfriend);
     add(dad);
+
+    if (Settings.extraDetails)
+    {
+        var particleFrontEmitter = new FlxEmitter(-400);
+        particleFrontEmitter.launchMode = FlxEmitterMode.SQUARE;
+        particleFrontEmitter.height = FlxG.height;
+
+        for (fuck in 0...40)
+        {
+            var particle = new FlxParticle();
+            particle.loadGraphic(Paths.image('limo/windLine', 'week4'));
+            particle.lifespan = 0.1;
+            particle.exists = false;
+            particleFrontEmitter.add(particle); 
+        }
+
+        particleFrontEmitter.start(false, 0.2, 0);
+        particleFrontEmitter.velocity.set(2048 * 1.5, 0, 2048 * 3, 0);
+        particleFrontEmitter.alpha.set(0.2, 0.4);
+
+        add(particleFrontEmitter);
+    }
 }
 
 function beatHit(curBeat:Int)

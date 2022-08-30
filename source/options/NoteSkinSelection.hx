@@ -615,6 +615,10 @@ class NoteSkinSelection extends MusicBeatSubstate
 					FlxTween.tween(spr, {alpha: 0}, 0.5, {
 						onComplete: function(twn:FlxTween)
 						{
+							var a = remove(spr, true);
+							a.exists = false;
+							a.destroy();
+							
 							close();
 						}
 					});
