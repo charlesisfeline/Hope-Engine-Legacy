@@ -2561,7 +2561,7 @@ class PlayState extends MusicBeatState
 	private function popUpScore(daNote:Note, ?comboBreak:Bool = false):Void
 	{
 		var noteDiff = -(daNote.strumTime - Conductor.songPosition);
-		var wife:Float = EtternaFunctions.wife3(noteDiff, Conductor.timeScale);
+		var wife:Float = EtternaFunctions.wife3(Math.abs(noteDiff), Conductor.timeScale);
 		vocals.volume = 1;
 
 		var wasEarlyOrLate:Bool = false;
