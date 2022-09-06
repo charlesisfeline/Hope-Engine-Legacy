@@ -750,17 +750,6 @@ class StageEditor extends MusicBeatState
 		else
 			s.screenCenter();
 
-		if (toMousePosition)
-		{
-			var m = FlxG.mouse.getWorldPosition(camEdit);
-
-			s.x = m.x - s.width / 2;
-			s.y = m.y - s.height / 2;
-
-
-			// to do: fix this lole
-		}
-
 		s.layer = getMaxLayer() + 1;
 		stageSprites.push(s);
 		add(s);
@@ -783,8 +772,6 @@ class StageEditor extends MusicBeatState
 
 	function onDropDown(imagePath:String):Void
 	{
-		trace(imagePath);
-
 		var prefix = Sys.getCwd().replace("\\", "/").trim() + "assets/shared/images/";
 
 		if (Paths.currentMod != null)
@@ -923,6 +910,9 @@ class StageEditor extends MusicBeatState
 
 			if (FlxG.mouse.pressedMiddle)
 			{
+				if (!FlxG.stage.window.cursor.equals(MOVE))
+					FlxG.stage.window.cursor = MOVE;
+
 				if (FlxG.mouse.justPressedMiddle)
 				{
 					pastCameraPos = [camFollow.x, camFollow.y];
@@ -931,6 +921,11 @@ class StageEditor extends MusicBeatState
 
 				curCamPos.x = camFollow.x = pastCameraPos[0] + ((mouseMiddleClickPastPos[0] - FlxG.mouse.getScreenPosition(camHUD).x) / FlxG.camera.zoom);
 				curCamPos.y = camFollow.y = pastCameraPos[1] + ((mouseMiddleClickPastPos[1] - FlxG.mouse.getScreenPosition(camHUD).y) / FlxG.camera.zoom);
+			}
+			else
+			{
+				if (!FlxG.stage.window.cursor.equals(ARROW))
+					FlxG.stage.window.cursor = ARROW;
 			}
 
 			if (FlxG.mouse.justPressedRight)
@@ -1044,6 +1039,7 @@ class StageEditor extends MusicBeatState
 	override function destroy()
 	{
 		FlxG.stage.window.onDropFile.remove(onDropDown);
+
 		super.destroy();
 	}
 

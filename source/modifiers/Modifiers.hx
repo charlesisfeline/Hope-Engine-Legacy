@@ -262,6 +262,11 @@ class Modifiers
                     if (vocals.playing)
                         lime.media.openal.AL.sourcef(vocals._channel.__source.__backend.handle, lime.media.openal.AL.PITCH, currentPitch);
 
+                    if (!PlayState.instance.paused)
+                        FlxG.timeScale = currentPitch;
+                    else
+                        FlxG.timeScale = 1;
+
                     // when the time is done on a pitched sound, it turns time to 0
                     // onComplete does not trigger after that and will trigger after the song's unpitched time has passed
                     if (FlxG.sound.music.time < pitchedElapsed)

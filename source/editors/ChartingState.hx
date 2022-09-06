@@ -1200,27 +1200,19 @@ class ChartingState extends MusicBeatState
 
 	function updateLines():Void
 	{
-		remove(beatLineGroup);
-		beatLineGroup = new FlxTypedGroup<FlxSprite>();
-		add(beatLineGroup);
-
-		remove(beatNumsGroup);
-		beatNumsGroup = new FlxTypedGroup<FlxText>();
-		add(beatNumsGroup);
-
-		remove(stepLineGroup);
-		stepLineGroup = new FlxTypedGroup<FlxSprite>();
-		add(stepLineGroup);
-
-		remove(stepNumsGroup);
-		stepNumsGroup = new FlxTypedGroup<FlxText>();
-		add(stepNumsGroup);
-
-		beatLineGroup.visible = beatLinesShown;
-		beatNumsGroup.visible = beatLinesShown;
-
-		stepLineGroup.visible = stepLinesShown;
-		stepNumsGroup.visible = stepLinesShown;
+		if (!beatLinesShown && !stepLinesShown)
+		{
+			beatLineGroup.visible = beatLinesShown;
+			beatNumsGroup.visible = beatLinesShown;
+			stepLineGroup.visible = stepLinesShown;
+			stepNumsGroup.visible = stepLinesShown;
+			return;
+		}
+		
+		remove(beatLineGroup, true);
+		remove(beatNumsGroup, true);
+		remove(stepLineGroup, true);
+		remove(stepNumsGroup, true);
 
 		for (line in beatLineGroup.members)
 		{
@@ -1249,6 +1241,28 @@ class ChartingState extends MusicBeatState
 			stepNumsGroup.remove(num, true);
 			num.destroy();
 		}
+
+		beatLineGroup.destroy();
+		beatNumsGroup.destroy();
+		stepLineGroup.destroy();
+		stepNumsGroup.destroy();
+
+		beatLineGroup = new FlxTypedGroup<FlxSprite>();
+		add(beatLineGroup);
+
+		beatNumsGroup = new FlxTypedGroup<FlxText>();
+		add(beatNumsGroup);
+
+		stepLineGroup = new FlxTypedGroup<FlxSprite>();
+		add(stepLineGroup);
+
+		stepNumsGroup = new FlxTypedGroup<FlxText>();
+		add(stepNumsGroup);
+
+		beatLineGroup.visible = beatLinesShown;
+		beatNumsGroup.visible = beatLinesShown;
+		stepLineGroup.visible = stepLinesShown;
+		stepNumsGroup.visible = stepLinesShown;
 
 		for (i in 0..._song.notes[curSection].lengthInSteps)
 		{
@@ -1406,9 +1420,23 @@ class ChartingState extends MusicBeatState
 
 	var dummyArrowPastPosY:Float = 0;
 
+	var gced:Bool = false;
+	var gcTimer:Float = 0;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (gcTimer <= 0)
+		{
+			gcTimer = 0;
+			gced = true;
+			
+			if (!gced)
+				openfl.system.System.gc();
+		}
+		else
+			gcTimer -= elapsed;
 
 		snapText.text = "Quantization (U | O): " + mfinQuants[curQuant] + "th";
 
@@ -1463,7 +1491,7 @@ class ChartingState extends MusicBeatState
 
 		Conductor.songPosition = FlxG.sound.music.time;
 
-		if (Math.floor(dummyArrowPastPosY) != Math.floor(dummyArrow.y))
+		if (FlxG.mouse.justMoved && Math.floor(dummyArrowPastPosY) != Math.floor(dummyArrow.y))
 		{
 			swipePlacedNote = false;
 			dummyArrowPastPosY = dummyArrow.y;
@@ -1733,7 +1761,10 @@ class ChartingState extends MusicBeatState
 			if (FlxG.keys.pressed.SHIFT)
 				dummyArrow.y = FlxG.mouse.y - (GRID_SIZE / 2);
 			else
-				dummyArrow.y = Math.floor(FlxG.mouse.y / GRID_SIZE) * GRID_SIZE;
+			{
+				var shit = GRID_SIZE * (16 / mfinQuants[curQuant]);
+				dummyArrow.y = Math.floor(FlxG.mouse.y / shit) * shit;
+			}
 		}
 		else
 			dummyArrow.visible = false;
@@ -2198,7 +2229,7 @@ class ChartingState extends MusicBeatState
 		curRenderedEvents.clear();
 		curRenderedEventTexts.clear();
 
-		if (gridBG.height / GRID_SIZE != _song.notes[curSection].lengthInSteps)
+		if (Math.round(gridBG.height / GRID_SIZE) != _song.notes[curSection].lengthInSteps)
 		{
 			remove(gridBG);
 			gridBG = FlxGridOverlay.create(GRID_SIZE, GRID_SIZE, GRID_SIZE * 8, GRID_SIZE * _song.notes[curSection].lengthInSteps);
@@ -2306,7 +2337,8 @@ class ChartingState extends MusicBeatState
 			curRenderedEventTexts.add(event.textThing);
 		}
 
-		openfl.system.System.gc();
+		gced = false;
+		gcTimer = 1;
 	}
 
 	// may cause some discolors with Black and White

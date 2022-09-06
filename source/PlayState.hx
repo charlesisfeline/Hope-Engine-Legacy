@@ -1930,7 +1930,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	private var paused(default, set):Bool = false;
+	public var paused(default, set):Bool = false;
 	public var startedCountdown:Bool = false;
 	var canPause:Bool = true;
 	var nps:Int = 0;
@@ -3973,6 +3973,8 @@ class PlayState extends MusicBeatState
 			FlxG.signals.focusLost.remove(focusLost);
 			FlxG.signals.focusGained.remove(focusGained);
 		}
+
+		FlxG.timeScale = 1;
 
 		super.destroy();
 	}

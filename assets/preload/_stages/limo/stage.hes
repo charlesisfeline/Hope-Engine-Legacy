@@ -3,7 +3,13 @@ var limo:FlxSprite;
 
 var fastCarCanDrive:Bool = true;
 
+var bgLimo:FlxSprite;
+
 var dancers:Array<BackgroundDancer> = [];
+
+var lights:Array<FlxSprite> = [];
+var lightX:Float = -1000;
+var lightMax:Float = 2000;
 
 function createBackground()
 {
@@ -13,11 +19,27 @@ function createBackground()
     skyBG.scrollFactor.set(0.1, 0.1);
     add(skyBG);
 
-    var bgLimo:FlxSprite = new FlxSprite(-200, 480);
+    if (Settings.extraDetails)
+    {
+        var lightAmount = 10;
+        for (i in 0...lightAmount)
+        {
+            var light = new FlxSprite(lightX);
+            light.loadGraphic(Paths.image("limo/death/lowHangingLight", "week4"));
+            // light.velocity.x = 4000;
+            light.scrollFactor.set();
+            light.antialiasing = true;
+            add(light);
+            lights.push(light);
+        }
+    }
+
+    bgLimo = new FlxSprite(-200, 480);
     bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo','week4');
     bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
     bgLimo.animation.play('drive');
     bgLimo.scrollFactor.set(0.4, 0.4);
+    bgLimo.antialiasing = true;
     add(bgLimo);
 
     if (Settings.distractions)
@@ -44,6 +66,7 @@ function createBackground()
             particle.lifespan = 0.1;
             particle.exists = false;
             particle.scrollFactor.set(0.45, 0.45);
+            particle.antialiasing = true;
             particleBackEmitter.add(particle); 
         }
 
@@ -100,6 +123,7 @@ function createForeground()
             particle.loadGraphic(Paths.image('limo/windLine', 'week4'));
             particle.lifespan = 0.1;
             particle.exists = false;
+            particle.antialiasing = true;
             particleFrontEmitter.add(particle); 
         }
 
@@ -110,6 +134,9 @@ function createForeground()
         add(particleFrontEmitter);
     }
 }
+
+var henchDying:Bool = false;
+var henchDied:Bool = false;
 
 function beatHit(curBeat:Int)
 {
@@ -124,6 +151,55 @@ function beatHit(curBeat:Int)
         if (FlxG.random.bool(10) && fastCarCanDrive)
             fastCarDrive();
     }
+    
+    if (Settings.extraDetails && song == 'MILF')
+    {
+        // henchmen die in this beat
+        // :((((((((
+        var hitBeat = 200;
+
+        if (curBeat >= hitBeat && henchDying && !henchDied)
+        {
+            for (light in lights)
+            {
+                // find a light thats beside the henchmen and position it correctly vertically
+                if (light.x > -350 - light.width - 10 && light.x < -350)
+                    light.y += 175;
+            }
+
+            for (i in 0...dancers.length)
+            {
+                new FlxTimer().start((Conductor.stepCrochet / 1000) * i, function(tmr:FlxTimer) {
+                    var dancer = dancers[i];
+                    dancer.die();
+                    dancer.scale.set(0.9, 0.9);
+                    dancer.acceleration.x = 1500;
+                    dancer.acceleration.y = 2000;
+                    dancer.velocity.y -= 500;
+                });
+            }
+
+            new FlxTimer().start(2, function(tmr:FlxTimer) {
+                bgLimo.acceleration.x = 700;
+            });
+
+            henchDied = true;
+        }
+        
+        if (curBeat >= hitBeat - 32 && !henchDying)
+        {
+            henchDying = true;
+            var movement = 500;
+
+            for (i in 0...dancers.length)
+            {
+                var dancer = dancers[i];
+                dancer.acceleration.x = -8.2;
+            }
+
+            bgLimo.acceleration.x = -8.2;
+        }
+    }
 }
 
 function stepHit(curStep:Int)
@@ -132,10 +208,42 @@ function stepHit(curStep:Int)
     // I don't actually know what this is useful for
 }
 
+var lightTime:Float = 0;
+
 function onUpdate(elapsed:Float)
 {
     // This happens every frame.
     // Useful for checking key presses, and other things
+
+    if (Settings.extraDetails && !PlayState.paused)
+    {
+        for (i in lights)
+        {
+            if (i.x >= lightMax)
+            {
+                i.x = lightX;
+                i.y = 0;
+                i.velocity.x = 0;
+            }
+        }
+
+        lightTime += elapsed;
+
+        if (lights.length > 0 && lightTime >= 0.3)
+        {
+            var lightsAvailable = [];
+
+            for (light in lights)
+            {
+                if (light.velocity.x < 1)
+                    lightsAvailable.push(light);
+            }
+
+            var light = lightsAvailable[FlxG.random.int(0, lightsAvailable.length - 1)];
+            light.velocity.x = 4000;
+            lightTime = 0;
+        }
+    }
 }
 
 function resetFastCar():Void
