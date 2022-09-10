@@ -2277,6 +2277,9 @@ class PlayState extends MusicBeatState
 							if (eventInt.variables.get("trigger") != null)
 								eventInt.variables.get("trigger")(paramsMap);
 
+							if (stageInterp.variables.get("onEvent") != null)
+								stageInterp.variables.get("onEvent")(event.eventID, paramsMap);
+
 							if (executeModchart)
 							{
 								if (interp.variables.get("onEvent") != null)

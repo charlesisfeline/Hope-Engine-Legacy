@@ -64,7 +64,6 @@ class ScriptConsole extends Sprite
 		"2 steps ahead.",
 		"Connection terminated.",
 		"Clown to clown communication",
-		"HELIKOPTER HELIKOPTER",
 		"Rust. Oxidized, even.",
 		"cock",
 		"Pretty much.",
