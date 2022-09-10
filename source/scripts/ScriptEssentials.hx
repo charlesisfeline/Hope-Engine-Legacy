@@ -34,8 +34,15 @@ using StringTools;
 
 class ScriptEssentials
 {
+	// "Halt" is such a fancy word i cant help myself
+	public static var HALT_EXECUTION:Int = 0;
+	public static var CONTINUE_EXECUTION:Int = 1;
+
 	public static function imports(interp:Interp):Void
 	{
+		interp.variables.set("CONTINUE_EXECUTION", CONTINUE_EXECUTION);
+		interp.variables.set("HALT_EXECUTION", HALT_EXECUTION);
+		
 		interp.variables.set("BackgroundDancer", BackgroundDancer);
 		interp.variables.set("DialogueSubstate", DialogueSubstate);
 		interp.variables.set("BackgroundGirls", BackgroundGirls);

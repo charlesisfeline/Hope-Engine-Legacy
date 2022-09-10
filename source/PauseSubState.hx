@@ -177,15 +177,18 @@ class PauseSubState extends MusicBeatSubstate
 		var accepted = controls.UI_ACCEPT;
 		var backed = controls.UI_BACK;
 
-		if (upP)
+		if (!resuming)
 		{
-			FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
-			changeSelection(-1);
-		}
-		else if (downP)
-		{
-			FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
-			changeSelection(1);
+			if (upP)
+			{
+				FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
+				changeSelection(-1);
+			}
+			else if (downP)
+			{
+				FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
+				changeSelection(1);
+			}
 		}
 
 		if (backed)

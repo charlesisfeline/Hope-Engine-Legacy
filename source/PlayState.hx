@@ -2115,18 +2115,31 @@ class PlayState extends MusicBeatState
 
 		if (controls.PAUSE && startedCountdown && canPause && !inCutscene)
 		{
+			if (executeModchart)
+			{
+				if (interp.variables.get("onPause") != null)
+				{
+					var val:Int = cast interp.variables.get("onPause")();
+
+					if (val == ScriptEssentials.HALT_EXECUTION)
+						return;
+				}
+			}
+
+			if (stageInterp.variables.get("onPause") != null)
+			{
+				var val:Int = cast stageInterp.variables.get("onPause")();
+
+				if (val == ScriptEssentials.HALT_EXECUTION)
+					return;
+			}
+				
 			persistentUpdate = false;
 			persistentDraw = true;
 			paused = true;
 
 			FlxG.sound.music.pause();
 			vocals.pause();
-
-			if (songStarted && executeModchart)
-			{
-				if (interp.variables.get("onPause") != null)
-					interp.variables.get("onPause")();
-			}
 
 			// 1 / 1000 chance for Gitaroo Man easter egg
 			if (FlxG.random.bool(0.1))
@@ -2327,12 +2340,22 @@ class PlayState extends MusicBeatState
 		if (health <= 0)
 		{
 			if (stageInterp.variables.get("onDeath") != null)
-				stageInterp.variables.get("onDeath")();
+			{
+				var val:Int = cast stageInterp.variables.get("onDeath")();
+
+				if (val == ScriptEssentials.HALT_EXECUTION)
+					return;
+			}
 	
 			if (executeModchart)
 			{
 				if (interp.variables.get("onDeath") != null)
-					interp.variables.get("onDeath")();
+				{
+					var val:Int = cast interp.variables.get("onDeath")();
+
+					if (val == ScriptEssentials.HALT_EXECUTION)
+						return;
+				}
 			}
 
 			boyfriend.stunned = true;
@@ -2340,8 +2363,6 @@ class PlayState extends MusicBeatState
 			persistentUpdate = false;
 			persistentDraw = false;
 			paused = true;
-
-			var time = FlxG.sound.music.time;
 
 			vocals.stop();
 			FlxG.sound.music.stop();
