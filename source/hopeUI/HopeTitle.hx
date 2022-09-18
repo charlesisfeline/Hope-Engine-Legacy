@@ -149,7 +149,7 @@ class HopeTitle extends MusicBeatState
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 			});
 
-			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/master/version.awesome');
+			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/main/version.awesome');
 
 			http.onData = function(data:String)
 			{

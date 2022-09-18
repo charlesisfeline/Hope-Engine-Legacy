@@ -8,13 +8,16 @@ import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
+import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI9SliceSprite;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIAssets;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
 import flixel.addons.ui.FlxUIDropDownMenu.FlxUIDropDownHeader;
+import flixel.addons.ui.FlxUIList;
 import flixel.addons.ui.FlxUITabMenu;
+import flixel.addons.ui.FlxUIText;
 import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
@@ -22,6 +25,7 @@ import flixel.text.FlxText;
 import flixel.ui.FlxButton;
 import flixel.util.FlxColor;
 import flixel.util.FlxSort;
+import flixel.util.FlxStringUtil;
 import haxe.Json;
 import openfl.display.BlendMode;
 import openfl.events.Event;
@@ -205,7 +209,11 @@ class StageEditor extends MusicBeatState
 			to do:
 
 			sprite UI
+			width + height stuff
+
 			animation UI
+			when frame prefix is clicked on list auto add that shit onto the textbox
+			reset position when selecting new sprite in prefix list
 
 			show object info checkbox
 			die
@@ -458,9 +466,239 @@ class StageEditor extends MusicBeatState
 		}
 	}
 
+	var animationDropdown:DropdownMenuFix;
+	var animationName:InputTextFix;
+	var prefix:InputTextFix;
+	var animationIndices:InputTextFix;
+	var frameRate:InputTextFix;
+	var postfix:InputTextFix;
+	var isAnimLooped:FlxUICheckBox;
+	var isFlipX:FlxUICheckBox;
+	var isFlipY:FlxUICheckBox;
+
+	var prefixList:FlxUIList;
+
 	function addAnimStuff():Void
 	{
-		//
+		var animsTitle = new FlxText(10, 10, "Animations");
+		animationDropdown = new DropdownMenuFix(10, animsTitle.y + animsTitle.height, DropdownMenuFix.makeStrIdLabelArray([""]));
+		animationDropdown.callback = onAnimDropdown;
+
+		var animNameTitle = new FlxText(10, 50, 0, "Animation Name");
+		animationName = new InputTextFix(10, animNameTitle.y + animNameTitle.height, Std.int(animationDropdown.width));
+
+		var prefixTitle = new FlxText(animationName.width + 20, 50, 0, ".XML/.TXT Prefix");
+		prefix = new InputTextFix(animationName.width + 20, animNameTitle.y + animNameTitle.height, 197);
+
+		var indicesTitle = new FlxText(10, 80, 0, "Animation Indices");
+		animationIndices = new InputTextFix(10, indicesTitle.y + indicesTitle.height, 200);
+
+		var fpsTitle = new FlxText(animationIndices.width + 20, 80, 0, "FPS");
+		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10));
+		frameRate.filterMode = FlxInputText.ONLY_NUMERIC;
+
+		var postfixTitle = new FlxText(animationIndices.width + frameRate.width + 30, 80, 0, "Postfix");
+		postfix = new InputTextFix(animationIndices.width
+			+ frameRate.width
+			+ 30, indicesTitle.y
+			+ indicesTitle.height,
+			Std.int((animationDropdown.width / 2))
+			- 3);
+
+		isAnimLooped = new FlxUICheckBox(10, 115, null, null, "Is Animation Looped?", 75);
+		isFlipX = new FlxUICheckBox(60, 115, null, null, "Should Animation be X-Flipped?", 75);
+		isFlipY = new FlxUICheckBox(110, 115, null, null, "Should Animation be Y-Flipped?", 75);
+
+		isFlipX.x = (350 / 2) - (isFlipX.width / 2);
+		isFlipY.x = 350 - isFlipY.width - 10;
+
+		var avaPrefixesTitle = new FlxText(340, 10, 70, "XML Prefixes\nAvailable:");
+		prefixList = new FlxUIList(avaPrefixesTitle.x + avaPrefixesTitle.width + 10, 10, [], 300, (UI_box.height / 2) + 20);
+		prefixList.y = (UI_box.height / 2) - (prefixList.height / 2) - 10;
+
+		var addOrUpdate = new FlxButton(10, 0, "Add/Update", addUpdateAnim);
+		addOrUpdate.y = UI_box.height - (addOrUpdate.height * 1.5) - 20;
+
+		var delete = new FlxButton(addOrUpdate.x + addOrUpdate.width + 10, addOrUpdate.y, "Delete", deleteAnim);
+
+		var tab = new FlxUI(null, SPRITE_box);
+		tab.name = "2";
+		tab.add(animsTitle);
+		tab.add(animNameTitle);	
+		tab.add(animationName);
+		tab.add(prefixTitle);
+		tab.add(prefix);
+		tab.add(indicesTitle);
+		tab.add(animationIndices);
+		tab.add(fpsTitle);
+		tab.add(frameRate);
+		tab.add(postfixTitle);
+		tab.add(postfix);
+		tab.add(isAnimLooped);
+		tab.add(isFlipX);
+		tab.add(isFlipY);
+		tab.add(avaPrefixesTitle);
+		tab.add(prefixList);
+		tab.add(addOrUpdate);
+		tab.add(delete);
+		tab.add(animationDropdown);
+		SPRITE_box.addGroup(tab);
+	}
+
+	var prefixInList:Array<FlxUIText> = [];
+
+	function updatePrefixList():Void
+	{
+		if (selectedObj.frames == null)
+			return;
+
+		while (prefixInList.length > 0)
+		{
+			var obj = prefixList.remove(prefixInList[0], true);
+			prefixInList.remove(cast obj);
+			obj.exists = false;
+			obj.kill();
+			obj.destroy();
+		}
+
+		var collected = [];
+
+		for (frame in selectedObj.frames.frames)
+			collected.push(frame.name);
+
+		if (collected.length < 1)
+			collected.push("No frames!!");
+
+		for (frame in collected)
+		{
+			var txt = new FlxUIText(0, 0, 0, frame);
+			prefixList.add(txt);
+			prefixInList.push(txt);
+		}
+
+		Reflect.callMethod(prefixList, Reflect.field(prefixList, 'refreshList'), []);
+	}
+
+	function onAnimDropdown(_):Void
+	{
+		if (selectedObj != null)
+		{
+			var anim = selectedObj.animation.getByName(animationDropdown.selectedLabel);
+			var animRaw:JSONStageSpriteAnimation = null;
+
+			for (rawAnim in selectedObj.animations)
+			{
+				if (rawAnim.name == animationDropdown.selectedLabel)
+				{
+					animRaw = rawAnim;
+					break;
+				}
+			}
+
+			if (animRaw != null && anim != null && anim.frames.length > 0)
+			{
+				selectedObj.animation.play(animationDropdown.selectedLabel, true);
+
+				if (animRaw.name != null)
+					animationName.text = animRaw.name;
+				if (animRaw.prefix != null)
+					prefix.text = animRaw.prefix;
+				if (animRaw.indices != null)
+					animationIndices.text = animRaw.indices.join(', ');
+				if (animRaw.frameRate != null)
+					frameRate.text = animRaw.frameRate + "";
+				if (animRaw.postfix != null)
+					postfix.text = animRaw.postfix;
+				if (animRaw.loopedAnim != null)
+					isAnimLooped.checked = animRaw.loopedAnim;
+				if (animRaw.flipX != null)
+					isFlipX.checked = animRaw.flipX;
+				if (animRaw.flipY != null)
+					isFlipY.checked = animRaw.flipY;
+			}
+		}
+	}
+
+	function addUpdateAnim():Void
+	{
+		if (selectedObj != null)
+		{
+			var animRaw:JSONStageSpriteAnimation = null;
+
+			for (rawAnim in selectedObj.animations)
+			{
+				if (rawAnim.name == animationName.text)
+				{
+					animRaw = rawAnim;
+					break;
+				}
+			}
+
+			if (animRaw != null)
+				selectedObj.animations.remove(animRaw);
+
+			var indices:Array<Int> = [];
+			var indicesStr:Array<String> = animationIndices.text.trim().replace(" ", "").split(",");
+
+			if (indicesStr.length > 1)
+			{
+				for (i in 0...indicesStr.length)
+				{
+					var index:Int = Std.parseInt(indicesStr[i]);
+					if (indicesStr[i] != null && indicesStr[i] != '' && !Math.isNaN(index) && index > -1)
+						indices.push(index);
+				}
+			}
+
+			animRaw = {
+				name: animationName.text,
+				prefix: prefix.text,
+				indices: indices.length > 0 ? indices : null,
+				frameRate: frameRate.text.trim().length > 0 ? Std.parseInt(frameRate.text.trim()) : 24,
+				postfix: postfix.text,
+				loopedAnim: isAnimLooped.checked,
+				flipX: isFlipX.checked,
+				flipY: isFlipY.checked
+			}
+
+			selectedObj.animations.push(animRaw);
+			selectedObj.updateAnimations();
+			selectedObj.animation.play(animRaw.name, true);
+			updateAnimDropdown();
+		}
+	}
+
+	function deleteAnim():Void
+	{
+		if (selectedObj != null)
+		{
+			var animRaw:JSONStageSpriteAnimation = null;
+
+			for (rawAnim in selectedObj.animations)
+			{
+				if (rawAnim.name == animationName.text)
+				{
+					animRaw = rawAnim;
+					break;
+				}
+			}
+
+			if (animRaw != null)
+				selectedObj.animations.remove(animRaw);
+
+			selectedObj.updateAnimations();
+			updateAnimDropdown();
+		}
+	}
+
+	function updateAnimDropdown():Void
+	{
+		var arr = [for (i in selectedObj.animations) i.name];
+
+		if (arr.length < 1)
+			arr.push('');
+
+		animationDropdown.setData(DropdownMenuFix.makeStrIdLabelArray(arr));
 	}
 
 	var dadPosX:NumStepperFix;
@@ -727,6 +965,7 @@ class StageEditor extends MusicBeatState
 
 		add(select9Slice);
 
+		updatePrefixList();
 		updateSpriteShiz();
 	}
 
@@ -1284,11 +1523,15 @@ class StageSprite extends FlxSprite
 
 		for (item in animations)
 		{
+			trace("adding anim..." + item);
+			
 			if (item.indices != null)
-				animation.addByIndices(item.name, item.prefix, item.indices, null, item.frameRate, item.loopedAnim, item.flipX, item.flipY);
+				animation.addByIndices(item.name, item.prefix, item.indices, item.postfix, item.frameRate, item.loopedAnim, item.flipX, item.flipY);
 			else
 				animation.addByPrefix(item.name, item.prefix, item.frameRate, item.loopedAnim, item.flipX, item.flipY);
 		}
+
+		trace(animation.getNameList(), animations);
 	}
 
 	override function update(elapsed:Float)
@@ -1299,9 +1542,12 @@ class StageSprite extends FlxSprite
 	function set_animations(value:Array<JSONStageSpriteAnimation>):Array<JSONStageSpriteAnimation>
 	{
 		if (animations != value)
+		{
+			animations = value;
 			updateAnimations();
+		}
 
-		return animations = value;
+		return value;
 	}
 
 	function get_data():JSONStageSprite

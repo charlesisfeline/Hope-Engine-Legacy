@@ -59,6 +59,7 @@ typedef JSONStageSpriteAnimation =
 	@:optional var indices:Null<Array<Int>>;
 	@:optional var flipX:Null<Bool>;
 	@:optional var flipY:Null<Bool>;
+	@:optional var postfix:Null<String>;
 }
 
 typedef ParsedJSONStage =
@@ -98,7 +99,7 @@ class Stage
 				for (anim in item.animations)
 				{
 					if (anim.indices != null)
-						s.animation.addByIndices(anim.name, anim.prefix, anim.indices, null, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
+						s.animation.addByIndices(anim.name, anim.prefix, anim.indices, anim.postfix, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
 					else
 						s.animation.addByPrefix(anim.name, anim.prefix, anim.frameRate, anim.loopedAnim, anim.flipX, anim.flipY);
 				}
