@@ -321,6 +321,8 @@ class ChartingState extends MusicBeatState
 		updateEventsUI();
 		updateEventParams();
 
+		tooltips.cameras = [camHUD];
+
 		vocals.pause();
 		vocals.time = 0;
 		FlxG.sound.music.pause();

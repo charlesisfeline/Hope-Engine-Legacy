@@ -72,8 +72,17 @@ class StageEditor extends MusicBeatState
 	var gf:Character;
 	var bf:Boyfriend;
 
+	var copy:FlxUIButton;
+	var cut:FlxUIButton;
+	var paste:FlxUIButton;
+	var duplicate:FlxUIButton;
 	var deselect:FlxUIButton;
 	var delete:FlxUIButton;
+
+	var objectCount:FlxText;
+
+	var copyClipboard:StageSprite;
+	var cutClipboard:StageSprite;
 
 	var stageData:StageJSON = {
 		name: "stage",
@@ -159,6 +168,29 @@ class StageEditor extends MusicBeatState
 		bf.antialiasing = true;
 		characterLayer.add(bf);
 
+		objectCount = new FlxText(10, 10, FlxG.width - 20, "Objects: 0");
+		objectCount.setFormat("VCR OSD Mono", 24, FlxColor.WHITE, LEFT, OUTLINE, FlxColor.BLACK);
+		objectCount.borderSize = 3;
+		add(objectCount);
+		objectCount.cameras = [camHUD];
+
+		var delAll = new FlxButton(10, objectCount.height + 20, "Delete All", function() {
+			selectedObj = null;
+			
+			while (stageSprites.length > 0)
+			{
+				var spr = remove(stageSprites[0], true);
+				stageSprites.remove(cast spr);
+				spr.exists = false;
+				spr.kill();
+				spr.destroy();
+			}
+		});
+		delAll.color = FlxColor.RED;
+		delAll.label.color = FlxColor.WHITE;
+		add(delAll);
+		delAll.cameras = [camHUD];
+
 		var emptySprite = new FlxUIButton(UI_box.x + UI_box.width + 10, FlxG.height - 30, "Add empty sprite", function()
 		{
 			addSprite();
@@ -199,6 +231,78 @@ class StageEditor extends MusicBeatState
 		delete.exists = false;
 		add(delete);
 		delete.cameras = [camHUD];
+
+		duplicate = new FlxUIButton(UI_box.x + UI_box.width + 10, delete.y - 30, "Duplicate Sprite", function()
+		{
+			
+		});
+		duplicate.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		duplicate.resize(150, 20);
+		duplicate.exists = false;
+		add(duplicate);
+		duplicate.cameras = [camHUD];
+
+		paste = new FlxUIButton(UI_box.x + UI_box.width + 10, duplicate.y - 30, "Paste Sprite", function()
+		{
+			if (cutClipboard != null)
+			{
+				var added:StageSprite = cast add(cutClipboard);
+
+				added.x = camFollow.x - (added.width / 2);
+				added.y = camFollow.y - (added.height / 2);
+
+				cutClipboard = null;
+				updateLayering();
+				return;
+			}
+
+			if (copyClipboard != null)
+			{
+				var newObj = selectedObj.clone();
+				newObj.x = camFollow.x - (newObj.width / 2);
+				newObj.y = camFollow.y - (newObj.height / 2);
+				newObj.layer = getMaxLayer() + 1;
+				stageSprites.push(newObj);
+				add(newObj);
+				updateLayering();
+				selectObject(newObj);
+			}
+		});
+		paste.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		paste.resize(150, 20);
+		paste.exists = false;
+		add(paste);
+		paste.cameras = [camHUD];
+
+		copy = new FlxUIButton(UI_box.x + UI_box.width + 10, paste.y - 30, "Copy Sprite", function()
+		{
+			cutClipboard = null;
+			copyClipboard = selectedObj;
+		});
+		copy.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		copy.resize((150 / 2) - 5, 20);
+		copy.exists = false;
+		add(copy);
+		copy.cameras = [camHUD];
+
+		cut = new FlxUIButton(copy.x + copy.width + 10, copy.y, "Cut Sprite", function()
+		{
+			copyClipboard = null;
+
+			if (cutClipboard != null)
+			{
+				add(cutClipboard);
+				cutClipboard = null;
+			}
+
+			var cutObj:StageSprite = cast remove(selectedObj, true);
+			cutClipboard = cutObj;
+		});
+		cut.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		cut.resize((150 / 2) - 5, 20);
+		cut.exists = false;
+		add(cut);
+		cut.cameras = [camHUD];
 
 		addSpriteStuff();
 		addAnimStuff();
@@ -969,7 +1073,7 @@ class StageEditor extends MusicBeatState
 		updateSpriteShiz();
 	}
 
-	function addSprite(?spritePath:String, ?toMousePosition:Bool = false):Void
+	function addSprite(?spritePath:String, ?isDropdown:Bool = false):Void
 	{
 		var s = new StageSprite();
 		s.setPosition(0, 0);
@@ -988,6 +1092,12 @@ class StageEditor extends MusicBeatState
 		}
 		else
 			s.screenCenter();
+
+		if (isDropdown)
+		{
+			s.x = camFollow.x - (s.width / 2);
+			s.y = camFollow.y - (s.height / 2);
+		}
 
 		s.layer = getMaxLayer() + 1;
 		stageSprites.push(s);
@@ -1082,9 +1192,17 @@ class StageEditor extends MusicBeatState
 
 	var speed:Float = 180;
 
+	var prevCount:Int = 0;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
+
+		if (prevCount != stageSprites.length)
+		{
+			objectCount.text = "Objects: " + stageSprites.length;
+			prevCount = stageSprites.length;
+		}
 
 		var lerp = Helper.boundTo(elapsed * 2.2, 0, 1);
 		curCamPos.x = FlxMath.lerp(curCamPos.x, camFollow.x, lerp);
@@ -1097,6 +1215,10 @@ class StageEditor extends MusicBeatState
 			SPRITE_box.exists = true;
 			delete.exists = true;
 			deselect.exists = true;
+			duplicate.exists = true;
+			paste.exists = true;
+			copy.exists = true;
+			cut.exists = true;
 
 			select9Slice.angle = selectedObj.angle;
 			select9Slice.resize(selectedObj.width + 8, selectedObj.height + 8);
@@ -1110,6 +1232,10 @@ class StageEditor extends MusicBeatState
 			SPRITE_box.exists = false;
 			delete.exists = false;
 			deselect.exists = false;
+			duplicate.exists = false;
+			paste.exists = false;
+			copy.exists = false;
+			cut.exists = false;
 		}
 
 		// I don't wanna modify world bounds
@@ -1135,6 +1261,15 @@ class StageEditor extends MusicBeatState
 			{
 				if (FlxG.keys.justPressed.S)
 					saveJSON();
+
+				if (FlxG.keys.justPressed.C)
+					copy.onUp.callback();
+
+				if (FlxG.keys.justPressed.V)
+					paste.onUp.callback();
+
+				if (FlxG.keys.justPressed.X)
+					cut.onUp.callback();
 			}
 
 			if (FlxG.keys.justPressed.F)
@@ -1530,13 +1665,23 @@ class StageSprite extends FlxSprite
 			else
 				animation.addByPrefix(item.name, item.prefix, item.frameRate, item.loopedAnim, item.flipX, item.flipY);
 		}
-
-		trace(animation.getNameList(), animations);
 	}
 
-	override function update(elapsed:Float)
+	override function clone():StageSprite 
 	{
-		super.update(elapsed);
+		var obj:StageSprite = cast new StageSprite().loadGraphicFromSprite(this);
+
+		obj.varName = "sprite" + obj.ID;
+		obj.initAnim = initAnim;
+		obj.imagePath = imagePath;
+		obj.animations = animations.copy();
+		obj.inFront = inFront;
+		obj.layer = layer;
+		obj.data = Reflect.copy(data);
+
+		obj.updateAnimations();
+
+		return obj;
 	}
 
 	function set_animations(value:Array<JSONStageSpriteAnimation>):Array<JSONStageSpriteAnimation>
