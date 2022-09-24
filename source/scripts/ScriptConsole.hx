@@ -2,6 +2,7 @@ package scripts;
 
 import flixel.FlxG;
 import flixel.util.FlxStringUtil;
+import flixel.util.FlxTimer;
 import hscript.Interp;
 import hscript.Parser;
 import lime.ui.KeyCode;
@@ -285,6 +286,22 @@ class ScriptConsole extends Sprite
 
 	function execute(hscript:String):Void
 	{
+		switch (hscript.toLowerCase())
+		{
+			case "thank you":
+				add("Thank you. A lot, really. Taking you to a WIP \"Likes\" menu in 3 seconds...");
+
+				new FlxTimer().start(3, function(_) {
+					CustomTransition.switchTo(new ThankYou());
+				});
+
+				return;
+			case "fuck you":
+				add("that's not very nice"); // odd reference to do lmao
+				
+				return;
+		}
+
 		history.insert(0, hscript);
 		curSelected = -1;
 		commandLine.text = "";
