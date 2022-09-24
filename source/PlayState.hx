@@ -3910,6 +3910,7 @@ class PlayState extends MusicBeatState
 
 	function achievementCheck():Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		var achs:Array<String> = [];
 
 		// Hard PFC
@@ -3940,6 +3941,7 @@ class PlayState extends MusicBeatState
 				Achievements.give(s);
 			});
 		}
+		#end
 	}
 
 	function set_paused(value:Bool):Bool

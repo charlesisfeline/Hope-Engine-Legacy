@@ -1,6 +1,5 @@
 package achievements;
 
-import lime.app.Application;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -9,6 +8,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import haxe.Json;
+import lime.app.Application;
 
 using StringTools;
 
@@ -44,6 +44,7 @@ class Achievements
 
 	public static function init():Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		#if FILESYSTEM
 		var listPath = Sys.getCwd() + Paths.achievementList();
 
@@ -84,28 +85,34 @@ class Achievements
 		save();
 
 		FlxG.log.add("Achievements initialized!");
+		#end
 	}
 
 	public static function load():Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		achievementsGet = FlxG.save.data.achievementsGet;
 		FlxG.log.add("Achievements loaded!");
+		#end
 	}
 
 	public static function save():Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		FlxG.save.data.achievementsGet = achievementsGet;
 
 		FlxG.save.flush();
 
 		FlxG.log.add("Achievements saved!");
+		#end
 	}
 
 	public static function has(achievementId:String):Bool
-		return achievementsGet.exists(achievementId);
+		return #if ACHIEVEMENTS_FEATURE achievementsGet.exists(achievementId) #else false #end;
 
 	public static function give(achievementId:String):Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		if (!achievementsGet.exists(achievementId))
 		{
 			alert(achievementId);
@@ -113,27 +120,33 @@ class Achievements
 			save();
 			load();
 		}
+		#end
 	}
 
 	public static function take(achievementId:String):Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		if (achievementsGet.exists(achievementId))
 		{
 			achievementsGet.remove(achievementId);
 			save();
 			load();
 		}
+		#end
 	}
 
 	public static function takeAll():Void
 	{
+		#if ACHIEVEMENTS_FEATURE
 		achievementsGet.clear();
 		save();
 		load();
+		#end
 	}
 
 	public static function alert(achID:String)
 	{
+		#if ACHIEVEMENTS_FEATURE
 		#if FILESYSTEM
 		var achFile = File.getContent(Sys.getCwd() + Paths.achievement(achID));
 		#else
@@ -209,5 +222,6 @@ class Achievements
 				sprGroup.destroy();
 			}
 		});
+		#end
 	}
 }

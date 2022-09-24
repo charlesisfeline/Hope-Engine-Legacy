@@ -35,7 +35,7 @@ class MainMenuState extends MusicBeatState
 		'story_mode',
 		'freeplay',
 		#if (FILESYSTEM && MODS_FEATURE) 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
-		'achievements', // remove this line if you want the Achievements Menu to be inaccessible!
+		#if ACHIEVEMENTS_FEATURE 'achievements', #end // remove this line if you want the Achievements Menu to be inaccessible!
 		'credits',
 		'options'
 	];
