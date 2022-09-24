@@ -9,7 +9,7 @@ body:
     id: description
     attributes:
       label: Bug Description
-      description: It is best to keep it brief, but not *too* brief that one can't understand what the bug is. It's fine if the description is long though.
+      description: It is best to keep it brief, but not *too* brief that one can't understand what the bug is. It's fine if the description is long though. It also would be nice if a step-by-step instruction into reproducing the bug is added!
       placeholder: Something happened with Settings.hx or something!!!
     validations:
       required: true
@@ -36,7 +36,7 @@ body:
     attributes:
       label: Version
       description: What version of Hope Engine are you using?
-      placeholder: v0.1.2
+      placeholder: latest
     validations:
       required: true
   - type: dropdown
