@@ -176,6 +176,15 @@ class StageEditor extends MusicBeatState
 
 		var delAll = new FlxButton(10, objectCount.height + 20, "Delete All", function() {
 			selectedObj = null;
+			copyClipboard = null;
+
+			if (cutClipboard != null)
+			{
+				add(cutClipboard);
+				updateLayering();
+			}
+
+			cutClipboard = null;
 			
 			while (stageSprites.length > 0)
 			{
@@ -234,7 +243,14 @@ class StageEditor extends MusicBeatState
 
 		duplicate = new FlxUIButton(UI_box.x + UI_box.width + 10, delete.y - 30, "Duplicate Sprite", function()
 		{
-			
+			var newObj = selectedObj.clone();
+			newObj.x = selectedObj.x;
+			newObj.y = selectedObj.y;
+			newObj.layer = getMaxLayer() + 1;
+			stageSprites.push(newObj);
+			add(newObj);
+			updateLayering();
+			selectObject(newObj);
 		});
 		duplicate.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		duplicate.resize(150, 20);
@@ -253,12 +269,13 @@ class StageEditor extends MusicBeatState
 
 				cutClipboard = null;
 				updateLayering();
+				updateSpriteShiz();
 				return;
 			}
 
 			if (copyClipboard != null)
 			{
-				var newObj = selectedObj.clone();
+				var newObj = copyClipboard.clone();
 				newObj.x = camFollow.x - (newObj.width / 2);
 				newObj.y = camFollow.y - (newObj.height / 2);
 				newObj.layer = getMaxLayer() + 1;
@@ -276,6 +293,12 @@ class StageEditor extends MusicBeatState
 
 		copy = new FlxUIButton(UI_box.x + UI_box.width + 10, paste.y - 30, "Copy Sprite", function()
 		{
+			if (cutClipboard != null)
+			{
+				add(cutClipboard);
+				updateLayering();
+			}
+
 			cutClipboard = null;
 			copyClipboard = selectedObj;
 		});
@@ -292,6 +315,7 @@ class StageEditor extends MusicBeatState
 			if (cutClipboard != null)
 			{
 				add(cutClipboard);
+				updateLayering();
 				cutClipboard = null;
 			}
 
@@ -316,11 +340,7 @@ class StageEditor extends MusicBeatState
 			width + height stuff
 
 			animation UI
-			when frame prefix is clicked on list auto add that shit onto the textbox
 			reset position when selecting new sprite in prefix list
-
-			show object info checkbox
-			die
 		**/
 
 		updateLayering();
@@ -357,6 +377,7 @@ class StageEditor extends MusicBeatState
 
 	var blendDrop:DropdownMenuFix;
 
+	// MOST OF THESE DONT WORK OPENFL-FLIXEL WHYYYYYYYYYYYYYYYY
 	var blends:Array<String> = [
 		"ADD", "ALPHA", "DARKEN", "DIFFERENCE", "ERASE", "HARDLIGHT", "INVERT", "LAYER", "LIGHTEN", "MULTIPLY", "NORMAL", "OVERLAY", "SCREEN", "SUBTRACT"
 	];
@@ -1270,6 +1291,9 @@ class StageEditor extends MusicBeatState
 
 				if (FlxG.keys.justPressed.X)
 					cut.onUp.callback();
+
+				if (FlxG.keys.justPressed.D)
+					duplicate.onUp.callback();
 			}
 
 			if (FlxG.keys.justPressed.F)
@@ -1677,7 +1701,17 @@ class StageSprite extends FlxSprite
 		obj.animations = animations.copy();
 		obj.inFront = inFront;
 		obj.layer = layer;
-		obj.data = Reflect.copy(data);
+
+		obj.setPosition(x, y);
+		obj.scrollFactor.set(scrollFactor.x, scrollFactor.y);
+		obj.scale.set(scale.x, scale.y);
+		obj.imagePath = imagePath;
+		obj.flipX = flipX;
+		obj.flipY = flipY;
+		obj.color = color;
+		obj.blend = blend;
+		obj.angle = angle;
+		obj.alpha = alpha;
 
 		obj.updateAnimations();
 
