@@ -362,6 +362,8 @@ class StageEditor extends MusicBeatState
 	var widthStepper:NumStepperFix;
 	var heightStepper:NumStepperFix;
 
+	var sizeFromCenter:FlxUICheckBox;
+
 	var scaleXStepper:NumStepperFix;
 	var scaleYStepper:NumStepperFix;
 
@@ -419,7 +421,7 @@ class StageEditor extends MusicBeatState
 		findThroughExplorer.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		findThroughExplorer.resize(assetPath.width, 20);
 
-		antiAliasing = new FlxUICheckBox(10, findThroughExplorer.y + findThroughExplorer.height + 10, null, null, "Smoothen?", 75);
+		antiAliasing = new FlxUICheckBox(10, findThroughExplorer.y + findThroughExplorer.height + 10, null, null, "Smooth?", 75);
 		antiAliasing.callback = function()
 		{
 			if (selectedObj != null)
@@ -436,6 +438,8 @@ class StageEditor extends MusicBeatState
 			}
 		}
 		inFront.x = findThroughExplorer.x + findThroughExplorer.width - inFront.width;
+
+		sizeFromCenter = new FlxUICheckBox(inFront.x, inFront.y + inFront.height + 20, null, null, "Size From Center?", 75);
 
 		var layerTitle = new FlxText(10, antiAliasing.y + antiAliasing.height + 10, "Layer");
 		layerStepper = new NumStepperFix(layerTitle.x, layerTitle.y + layerTitle.height, 1, 0, 0, 256, 1, new InputTextFix(0, 0, 60));
@@ -517,7 +521,14 @@ class StageEditor extends MusicBeatState
 				else
 					selectedObj.setGraphicSize(Std.int(widthStepper.value), Std.int(selectedObj.height));
 
+				var centerPreUpdate = selectedObj.getMidpoint();
 				selectedObj.updateHitbox();
+
+				if (sizeFromCenter.checked)
+				{
+					selectedObj.x = centerPreUpdate.x - (selectedObj.width / 2);
+					selectedObj.y = centerPreUpdate.y - (selectedObj.height / 2);
+				}
 			}
 
 			updateSpriteShiz();
@@ -534,7 +545,14 @@ class StageEditor extends MusicBeatState
 				else
 					selectedObj.setGraphicSize(Std.int(selectedObj.width), Std.int(heightStepper.value));
 
+				var centerPreUpdate = selectedObj.getMidpoint();
 				selectedObj.updateHitbox();
+
+				if (sizeFromCenter.checked)
+				{
+					selectedObj.x = centerPreUpdate.x - (selectedObj.width / 2);
+					selectedObj.y = centerPreUpdate.y - (selectedObj.height / 2);
+				}
 			}
 
 			updateSpriteShiz();
@@ -547,7 +565,14 @@ class StageEditor extends MusicBeatState
 			if (selectedObj != null)
 			{
 				selectedObj.scale.x = scaleXStepper.value;
+				var centerPreUpdate = selectedObj.getMidpoint();
 				selectedObj.updateHitbox();
+
+				if (sizeFromCenter.checked)
+				{
+					selectedObj.x = centerPreUpdate.x - (selectedObj.width / 2);
+					selectedObj.y = centerPreUpdate.y - (selectedObj.height / 2);
+				}
 			}
 
 			updateSpriteShiz();
@@ -560,7 +585,14 @@ class StageEditor extends MusicBeatState
 			if (selectedObj != null)
 			{
 				selectedObj.scale.y = scaleYStepper.value;
+				var centerPreUpdate = selectedObj.getMidpoint();
 				selectedObj.updateHitbox();
+
+				if (sizeFromCenter.checked)
+				{
+					selectedObj.x = centerPreUpdate.x - (selectedObj.width / 2);
+					selectedObj.y = centerPreUpdate.y - (selectedObj.height / 2);
+				}
 			}
 
 			updateSpriteShiz();
@@ -583,7 +615,7 @@ class StageEditor extends MusicBeatState
 		flipY.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
 		flipY.resize(93, 20);
 
-		var colorTitle = new FlxText(alphaTitle.x, alphaStepper.y + alphaStepper.height + 10, "Color Tint");
+		var colorTitle = new FlxText(alphaTitle.x, 66, "Color Tint");
 		colorInput = new InputTextFix(colorTitle.x, colorTitle.y + colorTitle.height, 60);
 		colorInput.callback = function(_, _)
 		{
@@ -608,6 +640,7 @@ class StageEditor extends MusicBeatState
 		tab.add(assetPath);
 		tab.add(findThroughExplorer);
 		tab.add(antiAliasing);
+		tab.add(sizeFromCenter);
 		tab.add(inFront);
 		tab.add(layerTitle);
 		tab.add(layerStepper);
