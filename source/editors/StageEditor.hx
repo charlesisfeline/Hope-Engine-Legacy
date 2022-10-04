@@ -506,7 +506,68 @@ class StageEditor extends MusicBeatState
 				selectedObj.angle = angleStepper.value;
 		}
 
-		var flipX = new FlxUIButton(angleStepper.x + angleStepper.width + 10, alphaStepper.y - 4, "Flip X", function()
+		var widthTitle = new FlxText(xScrollTitle.x, 38, "Width");
+		widthStepper = new NumStepperFix(widthTitle.x, widthTitle.y + widthTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 0, new InputTextFix(0, 0, 60));
+		widthStepper.callback = function(_)
+		{
+			if (selectedObj != null)
+			{
+				if (FlxG.keys.pressed.SHIFT)
+					selectedObj.setGraphicSize(Std.int(widthStepper.value));
+				else
+					selectedObj.setGraphicSize(Std.int(widthStepper.value), Std.int(selectedObj.height));
+
+				selectedObj.updateHitbox();
+			}
+
+			updateSpriteShiz();
+		}
+
+		var heightTitle = new FlxText(yScrollTitle.x, 38, "Height");
+		heightStepper = new NumStepperFix(heightTitle.x, heightTitle.y + heightTitle.height, 10, 0, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 0, new InputTextFix(0, 0, 60));
+		heightStepper.callback = function(_)
+		{
+			if (selectedObj != null)
+			{
+				if (FlxG.keys.pressed.SHIFT)
+					selectedObj.setGraphicSize(0, Std.int(heightStepper.value));
+				else
+					selectedObj.setGraphicSize(Std.int(selectedObj.width), Std.int(heightStepper.value));
+
+				selectedObj.updateHitbox();
+			}
+
+			updateSpriteShiz();
+		}
+
+		var scaleXTitle = new FlxText(xScrollTitle.x, 66, "X Scale");
+		scaleXStepper = new NumStepperFix(scaleXTitle.x, scaleXTitle.y + scaleXTitle.height, 0.1, 1, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2, new InputTextFix(0, 0, 60));
+		scaleXStepper.callback = function(_)
+		{
+			if (selectedObj != null)
+			{
+				selectedObj.scale.x = scaleXStepper.value;
+				selectedObj.updateHitbox();
+			}
+
+			updateSpriteShiz();
+		}
+
+		var scaleYTitle = new FlxText(yScrollTitle.x, 66, "Y Scale");
+		scaleYStepper = new NumStepperFix(scaleYTitle.x, scaleYTitle.y + scaleYTitle.height, 0.1, 1, Math.NEGATIVE_INFINITY, Math.POSITIVE_INFINITY, 2, new InputTextFix(0, 0, 60));
+		scaleYStepper.callback = function(_)
+		{
+			if (selectedObj != null)
+			{
+				selectedObj.scale.y = scaleYStepper.value;
+				selectedObj.updateHitbox();
+			}
+
+			updateSpriteShiz();
+		}
+		
+
+		var flipX = new FlxUIButton(angleStepper.x + angleStepper.width + 10, findThroughExplorer.y + findThroughExplorer.height + 10, "Flip X", function()
 		{
 			if (selectedObj != null)
 				selectedObj.flipX = !selectedObj.flipX;
@@ -562,6 +623,14 @@ class StageEditor extends MusicBeatState
 		tab.add(alphaStepper);
 		tab.add(angleTitle);
 		tab.add(angleStepper);
+		tab.add(widthTitle);
+		tab.add(widthStepper);
+		tab.add(heightTitle);
+		tab.add(heightStepper);
+		tab.add(scaleXTitle);
+		tab.add(scaleXStepper);
+		tab.add(scaleYTitle);
+		tab.add(scaleYStepper);
 		tab.add(colorTitle);
 		tab.add(colorInput);
 		tab.add(blendTitle);
@@ -581,6 +650,10 @@ class StageEditor extends MusicBeatState
 			yStepper.value = selectedObj.y;
 			scrollXStepper.value = selectedObj.scrollFactor.x;
 			scrollYStepper.value = selectedObj.scrollFactor.y;
+			widthStepper.value = selectedObj.width;
+			heightStepper.value = selectedObj.height;
+			scaleXStepper.value = selectedObj.scale.x;
+			scaleYStepper.value = selectedObj.scale.y;
 			alphaStepper.value = selectedObj.alpha;
 			angleStepper.value = selectedObj.angle;
 			antiAliasing.checked = selectedObj.antialiasing;
