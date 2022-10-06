@@ -31,9 +31,7 @@ typedef JSONStageSprite =
 {
 	var varName:String;
 	var imagePath:String;
-
 	var layer:Int;
-
 	var antialiasing:Bool;
 	var position:Array<Float>;
 	var scrollFactor:Array<Float>;
@@ -81,16 +79,21 @@ class Stage
 
 			s.varName = item.varName;
 			s.antialiasing = item.antialiasing;
-			s.setPosition(item.position[0], item.position[1]);
 			s.scrollFactor.set(item.scrollFactor[0], item.scrollFactor[1]);
 			s.scale.set(item.scale[0], item.scale[1]);
-			s.updateHitbox();
+			s.setPosition(item.position[0], item.position[1]);
 			s.angle = item.angle;
 			s.color = FlxColor.fromString("#" + item.color);
 			s.alpha = item.alpha;
 			s.blend = @:privateAccess BlendMode.fromString(item.blend.toLowerCase());
 			s.flipX = item.flipX;
 			s.flipY = item.flipY;
+			
+			s.imagePath = item.imagePath;
+			s.layer = item.layer;
+			s.initAnim = item.initAnim;
+			s.inFront = item.inFront;
+			s.animations = item.animations.copy();
 
 			if (item.animations.length > 0)
 			{
@@ -113,6 +116,13 @@ class Stage
 				spritesFront.push(s);
 			else
 				spritesBack.push(s);
+
+			// please just update dude omg
+			s.updateHitbox();
+			s.updateHitbox();
+			s.updateHitbox();
+			s.updateHitbox();
+			s.updateHitbox();
 		}
 
 		spritesFront.sort(function(a:StageSprite, b:StageSprite) {

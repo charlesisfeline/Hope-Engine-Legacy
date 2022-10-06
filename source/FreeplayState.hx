@@ -128,7 +128,7 @@ class FreeplayState extends MusicBeatState
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			Paths.setCurrentMod(i);
-			var frepla = Paths.txt('freeplaySonglist');
+			var frepla = Paths.modTxt('freeplaySonglist');
 
 			if (FileSystem.exists(frepla) && Paths.checkModLoad(i))
 			{

@@ -175,30 +175,62 @@ class StageEditor extends MusicBeatState
 		objectCount.cameras = [camHUD];
 
 		var delAll = new FlxButton(10, objectCount.height + 20, "Delete All", function() {
-			selectedObj = null;
-			copyClipboard = null;
-
-			if (cutClipboard != null)
+			camHUD.visible = false;
+			openSubState(new ConfirmationPrompt("Wait a min..!", "Uh, hello? You're gonna need to think about this! This action is IRREVERSIBLE!!!!", "Yes!",
+				"No...", function()
 			{
-				add(cutClipboard);
-				updateLayering();
-			}
+				selectedObj = null;
+				copyClipboard = null;
 
-			cutClipboard = null;
-			
-			while (stageSprites.length > 0)
+				if (cutClipboard != null)
+				{
+					add(cutClipboard);
+					updateLayering();
+				}
+
+				cutClipboard = null;
+				
+				while (stageSprites.length > 0)
+				{
+					var spr = remove(stageSprites[0], true);
+					stageSprites.remove(cast spr);
+					spr.exists = false;
+					spr.kill();
+					spr.destroy();
+				}
+
+				FlxG.mouse.visible = camHUD.visible = true;
+			}, function()
 			{
-				var spr = remove(stageSprites[0], true);
-				stageSprites.remove(cast spr);
-				spr.exists = false;
-				spr.kill();
-				spr.destroy();
-			}
+				FlxG.mouse.visible = camHUD.visible = true;
+			}));
 		});
 		delAll.color = FlxColor.RED;
 		delAll.label.color = FlxColor.WHITE;
 		add(delAll);
 		delAll.cameras = [camHUD];
+
+		var save = new FlxButton(FlxG.width - 90, 10, "Save Stage", function() {
+			saveJSON();
+		});
+		add(save);
+		save.cameras = [camHUD];
+
+		var load = new FlxButton(FlxG.width - 90, save.height + 20, "Load Stage", function()
+		{
+			camHUD.visible = false;
+			openSubState(new ConfirmationPrompt("You sure?", "Be sure to save your progress!! Your progress will be lost if it is left unsaved!", "YES",
+				"Noo", function()
+			{
+				lookinFor = 'jsonstage';
+				loadJSON();
+			}, function()
+			{
+				FlxG.mouse.visible = camHUD.visible = true;
+			}));
+		});
+		add(load);
+		load.cameras = [camHUD];
 
 		var emptySprite = new FlxUIButton(UI_box.x + UI_box.width + 10, FlxG.height - 30, "Add empty sprite", function()
 		{
@@ -1604,6 +1636,21 @@ class StageEditor extends MusicBeatState
 				stageData = cast Json.parse(File.getContent(path).trim());
 				updatePosSteppers();
 			case 'jsonstage':
+				var stage = Stage.parseJSONStage(cast Json.parse(File.getContent(path).trim()));
+				trace(stage);
+
+				for (i in stage.background)
+					stageSprites.push(i);
+				for (i in stage.foreground)
+					stageSprites.push(i);
+				for (i in stageSprites)
+				{
+					if (!members.contains(i))
+						add(i);
+				}
+
+				updateLayering();
+				
 		}
 
 		FlxG.mouse.visible = camHUD.visible = true;
