@@ -17,6 +17,7 @@ import modifiers.ModifierSubstate;
 import modifiers.Modifiers;
 import openfl.utils.Assets;
 import ui.InputTextFix;
+import yaml.Yaml;
 
 using StringTools;
 
@@ -51,8 +52,9 @@ class FreeplayState extends MusicBeatState
 
 	public static var vocals:FlxSound;
 
-	private var grpSongs:FlxTypedGroup<AlphaReduxLine>;
-	private var grpIcons:FlxTypedGroup<HealthIcon>;
+	var grpSongs:FlxTypedGroup<AlphaReduxLine>;
+	var grpIcons:FlxTypedGroup<HealthIcon>;
+	var grpMods:FlxTypedGroup<FlxText>;
 
 	var scoreBG:FlxSprite;
 	var modifierTextBG:FlxSprite;
@@ -115,13 +117,20 @@ class FreeplayState extends MusicBeatState
 
 		for (i in 0...initSonglist.length)
 		{
-			var data:Array<String> = initSonglist[i].split(':');
+			var untrimData = initSonglist[i].split(':');
+			var len1 = untrimData[untrimData.length - 1].length;
+			var len2 = untrimData[untrimData.length - 2].length;
+			var len3 = untrimData[untrimData.length - 3].length;
+			var len4 = untrimData[untrimData.length - 4].length;
+			var songName = initSonglist[i].substring(0, initSonglist[i].length - len1 - len2 - len3 - len4 - 4);
+
+			var data:Array<String> = initSonglist[i].substring(songName.length).split(':');
 			
 			// just to be sure :)
 			for (s in data)
 				s.trim();
 
-			songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseFloat(data[3]), data[4]));
+			songs.push(new SongMetadata(songName, Std.parseInt(data[2]), data[1], Std.parseFloat(data[3]), data[4]));
 		}
 
 		#if (FILESYSTEM && MODS_FEATURE)
@@ -136,12 +145,23 @@ class FreeplayState extends MusicBeatState
 
 				for (i2 in 0...songlist.length)
 				{
-					var data:Array<String> = songlist[i2].split(':');
+					// never make your fucking separators ":"
+					// NEVER!!!
+					var untrimData = songlist[i2].split(':');
+					var len1 = untrimData[untrimData.length - 1].length;
+					var len2 = untrimData[untrimData.length - 2].length;
+					var len3 = untrimData[untrimData.length - 3].length;
+					var len4 = untrimData[untrimData.length - 4].length;
+					var songName = songlist[i2].substring(0, songlist[i2].length - len1 - len2 - len3 - len4 - 4);
+
+					var data:Array<String> = songlist[i2].substring(songName.length).split(':');
+					// turns the song data to ":char:week:bpm:color" to maintain 4 values only in an array, 
+					// not 5 due to song names having ":" in their name
 
 					for (s in data)
 						s.trim();
 
-					songs.push(new SongMetadata(data[0], Std.parseInt(data[2]), data[1], Std.parseFloat(data[3]), data[4], i));
+					songs.push(new SongMetadata(songName, Std.parseInt(data[2]), data[1], Std.parseFloat(data[3]), data[4], i));
 				}
 			}
 		}
@@ -163,6 +183,12 @@ class FreeplayState extends MusicBeatState
 		grpIcons = new FlxTypedGroup<HealthIcon>();
 		add(grpIcons);
 
+		if (Settings.freeplayModDisplays)
+		{
+			grpMods = new FlxTypedGroup<FlxText>();
+			add(grpMods);
+		}
+
 		for (i in 0...songs.length)
 		{
 			Paths.setCurrentMod(songs[i].mod.split('/')[1]);
@@ -174,6 +200,15 @@ class FreeplayState extends MusicBeatState
 
 			if (songText.width > FlxG.width - 360)
 				songText.setGraphicSize(FlxG.width - 360);
+
+			if (Settings.freeplayModDisplays && Paths.currentMod != null && Paths.currentMod.trim().length > 0)
+			{
+				var newTxt = new TrackedText(songText, 24, Yaml.parse(File.getContent(Paths.modInfoFile(Paths.currentMod))).get("name"));
+				newTxt.borderSize = 3;
+				newTxt.yOffset = songText.height + 5;
+				newTxt.alpha = 0.6;
+				grpMods.add(newTxt);
+			}
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;
@@ -795,6 +830,8 @@ class FreeplayState extends MusicBeatState
 
 		grpSongs.clear();
 		grpIcons.clear();
+		if (Settings.freeplayModDisplays)
+			grpMods.clear();
 		songs.splice(0, songs.length);
 
 		if (searchResults.length > 0)
@@ -821,6 +858,15 @@ class FreeplayState extends MusicBeatState
 
 			if (songText.width > FlxG.width - 360)
 				songText.setGraphicSize(FlxG.width - 360);
+
+			if (Settings.freeplayModDisplays && Paths.currentMod != null && Paths.currentMod.trim().length > 0)
+			{
+				var newTxt = new TrackedText(songText, 24, Yaml.parse(File.getContent(Paths.modInfoFile(Paths.currentMod))).get("name"));
+				newTxt.borderSize = 3;
+				newTxt.yOffset = songText.height + 5;
+				newTxt.alpha = 0.6;
+				grpMods.add(newTxt);
+			}
 
 			var icon:HealthIcon = new HealthIcon(songs[i].songCharacter);
 			icon.sprTracker = songText;

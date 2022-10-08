@@ -109,7 +109,7 @@ class EventEditor extends MusicBeatState
 		eventIcon.antialiasing = true;
 		add(eventIcon);
 
-		eventTextPreview = new TrackedText(eventIcon.x, eventIcon.y, "");
+		eventTextPreview = new TrackedText(eventIcon, "");
 		eventTextPreview.fieldWidth = 145;
 		eventTextPreview.xOffset = -eventTextPreview.width - 5;
 		add(eventTextPreview);

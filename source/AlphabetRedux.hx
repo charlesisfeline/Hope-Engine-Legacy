@@ -1,10 +1,10 @@
 package;
 
-import flixel.math.FlxMath;
 import flixel.FlxG;
-import flixel.util.FlxColor;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxMath;
+import flixel.util.FlxColor;
 
 using StringTools;
 
@@ -192,6 +192,9 @@ class AlphaReduxLine extends FlxSpriteGroup
 
 		var prevLet:FlxSprite = null;
 
+		// for letter fix post size update
+		var ass = height * (Height <= 0 ? newScaleX : newScaleY);
+
 		for (letter in members)
 		{
 			var let = remove(letter);
@@ -217,6 +220,23 @@ class AlphaReduxLine extends FlxSpriteGroup
 
 			prevLet = let;
 			add(let);
+		}
+
+		for (let in members)
+		{
+			var letter:AlphaReduxCharacter = null;
+
+			if (let is AlphaReduxCharacter)
+				letter = cast let;
+			else
+				continue;
+
+			remove(letter);
+			if (letter.isCentered)
+				letter.y = (ass / 2) - (let.height / 2);
+			if (letter.isGrounded || !letter.bold)
+				letter.y = ass - let.height;
+			add(letter);
 		}
 	}
 

@@ -31,8 +31,7 @@ class EditorsState extends MusicBeatState
 		"Event Editor",
 		"Position Offset Editor",
 		"Credits Editor",
-		"Stage Editor",
-		"Stage JSON Creator"
+		"Stage Editor"
 	];
 
 	var grpOptions:FlxTypedGroup<Alphabet>;

@@ -69,7 +69,8 @@ class OptionsState extends MusicBeatState
 			new ToggleOption("Distractions", "Toggle stage distractions that can hinder your gameplay.\n(Train passing by, fast cars passing by, etc.)", "distractions"),
 			new ToggleOption("Extra Details", "Show extra details.", "extraDetails"),
 			new ToggleOption("Persistent Volume", "If activated, the game will save the volume and stay the same everytime you reopen.", "persistentVolume"),
-			new ToggleOption("Video Cutscenes", "Use videos for cutscenes instead of them being in game.\nRecommended for computers with <8gb RAM.", "videoCutscenes")
+			new ToggleOption("Video Cutscenes", "Use videos for cutscenes instead of them being in game.\nRecommended for computers with <8gb RAM.", "videoCutscenes"),
+			new ToggleOption("Freeplay Mod Displays", "Show mod origins of songs. Can be useful if several mods have the same song names.", "freeplayModDisplays")
 		]),
 		new OptionCategory("Appearance", [
 			new OptionSubCategoryTitle("Appearance"),
@@ -308,11 +309,12 @@ class OptionsState extends MusicBeatState
 
 			if (controls.UI_BACK)
 			{
+				FlxG.sound.play(Paths.sound('cancelMenu'));
+				
 				if (!inCat)
 				{
 					// FlxG.save.flush();
 					Settings.save();
-					FlxG.sound.play(Paths.sound('cancelMenu'));
 					CustomTransition.switchTo(new MainMenuState());
 				}
 				else

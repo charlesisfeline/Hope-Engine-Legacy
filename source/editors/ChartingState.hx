@@ -2332,7 +2332,7 @@ class ChartingState extends MusicBeatState
 				events.push(eventInfos.get(event.eventID).eventName);
 			if (events.length < 1)
 				events.push("No events");
-			event.textThing = new TrackedText(event.x, event.y, text + events.join(",\n"));
+			event.textThing = new TrackedText(event, text + events.join(",\n"));
 			event.textThing.fieldWidth = 145;
 			event.textThing.xOffset = -event.textThing.width - 5;
 			curRenderedEvents.add(event);
