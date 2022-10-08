@@ -278,6 +278,7 @@ class StageEditor extends MusicBeatState
 			var newObj = selectedObj.clone();
 			newObj.x = selectedObj.x;
 			newObj.y = selectedObj.y;
+			newObj.animation.play(newObj.data.initAnim);
 			newObj.layer = getMaxLayer() + 1;
 			stageSprites.push(newObj);
 			add(newObj);
@@ -310,6 +311,7 @@ class StageEditor extends MusicBeatState
 				var newObj = copyClipboard.clone();
 				newObj.x = camFollow.x - (newObj.width / 2);
 				newObj.y = camFollow.y - (newObj.height / 2);
+				newObj.animation.play(newObj.data.initAnim);
 				newObj.layer = getMaxLayer() + 1;
 				stageSprites.push(newObj);
 				add(newObj);
@@ -367,9 +369,6 @@ class StageEditor extends MusicBeatState
 
 		/**
 			to do:
-
-			sprite UI
-			width + height stuff
 
 			animation UI
 			reset position when selecting new sprite in prefix list
@@ -738,6 +737,7 @@ class StageEditor extends MusicBeatState
 	var isAnimLooped:FlxUICheckBox;
 	var isFlipX:FlxUICheckBox;
 	var isFlipY:FlxUICheckBox;
+	var initAnim:InputTextFix;
 
 	var prefixList:FlxUIList;
 
@@ -747,10 +747,29 @@ class StageEditor extends MusicBeatState
 		animationDropdown = new DropdownMenuFix(10, animsTitle.y + animsTitle.height, DropdownMenuFix.makeStrIdLabelArray([""]));
 		animationDropdown.callback = onAnimDropdown;
 
+		var initAnimTitle = new FlxText(animationDropdown.width + 20, 10, 0, "Initial Animation");
+		initAnim = new InputTextFix(initAnimTitle.x , initAnimTitle.y + initAnimTitle.height, Std.int(animationDropdown.width));
+		initAnim.callback = function(_, _) {
+			if (selectedObj != null)
+			{
+				if (initAnim.text.trim().length < 1)
+					selectedObj.initAnim = null;
+				else 
+					selectedObj.initAnim = initAnim.text.trim();
+			}
+		}
+
+		var playInitAnim = new FlxUIButton(initAnim.x + initAnim.width + 10, initAnim.y, "Play Anim", function() {
+			if (selectedObj != null && selectedObj.initAnim != null && selectedObj.animation.exists(selectedObj.initAnim))
+				selectedObj.animation.play(selectedObj.initAnim, true);
+		});
+		playInitAnim.loadGraphicSlice9([Paths.image('customButton')], 20, 20, [[4, 4, 16, 16]], false, 20, 20);
+		playInitAnim.resize(65, 20);
+
 		var animNameTitle = new FlxText(10, 50, 0, "Animation Name");
 		animationName = new InputTextFix(10, animNameTitle.y + animNameTitle.height, Std.int(animationDropdown.width));
 
-		var prefixTitle = new FlxText(animationName.width + 20, 50, 0, ".XML/.TXT Prefix");
+		var prefixTitle = new FlxText(animationName.width + 20, 50, 0, ".XML Prefix"); // .TXT support soon Packers are less commonly used and am lazy to add it :)
 		prefix = new InputTextFix(animationName.width + 20, animNameTitle.y + animNameTitle.height, 197);
 
 		var indicesTitle = new FlxText(10, 80, 0, "Animation Indices");
@@ -775,7 +794,7 @@ class StageEditor extends MusicBeatState
 		isFlipX.x = (350 / 2) - (isFlipX.width / 2);
 		isFlipY.x = 350 - isFlipY.width - 10;
 
-		var avaPrefixesTitle = new FlxText(340, 10, 70, "XML Prefixes\nAvailable:");
+		var avaPrefixesTitle = new FlxText(350, 10, 70, "XML Prefixes\nAvailable:");
 		prefixList = new FlxUIList(avaPrefixesTitle.x + avaPrefixesTitle.width + 10, 10, [], 300, (UI_box.height / 2) + 20);
 		prefixList.y = (UI_box.height / 2) - (prefixList.height / 2) - 10;
 
@@ -789,6 +808,9 @@ class StageEditor extends MusicBeatState
 		tab.add(animsTitle);
 		tab.add(animNameTitle);	
 		tab.add(animationName);
+		tab.add(initAnimTitle);
+		tab.add(initAnim);	
+		tab.add(playInitAnim);	
 		tab.add(prefixTitle);
 		tab.add(prefix);
 		tab.add(indicesTitle);
@@ -840,6 +862,8 @@ class StageEditor extends MusicBeatState
 		}
 
 		Reflect.callMethod(prefixList, Reflect.field(prefixList, 'refreshList'), []);
+
+		prefixList.scrollIndex = 0;
 	}
 
 	function onAnimDropdown(_):Void
@@ -1637,7 +1661,6 @@ class StageEditor extends MusicBeatState
 				updatePosSteppers();
 			case 'jsonstage':
 				var stage = Stage.parseJSONStage(cast Json.parse(File.getContent(path).trim()));
-				trace(stage);
 
 				for (i in stage.background)
 					stageSprites.push(i);
@@ -1835,8 +1858,6 @@ class StageSprite extends FlxSprite
 
 		for (item in animations)
 		{
-			trace("adding anim..." + item);
-			
 			if (item.indices != null)
 				animation.addByIndices(item.name, item.prefix, item.indices, item.postfix, item.frameRate, item.loopedAnim, item.flipX, item.flipY);
 			else

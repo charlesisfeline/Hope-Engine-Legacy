@@ -117,6 +117,8 @@ class Stage
 			else
 				spritesBack.push(s);
 
+			s.animation.play(item.initAnim);
+
 			// please just update dude omg
 			s.updateHitbox();
 			s.updateHitbox();
