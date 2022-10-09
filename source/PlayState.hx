@@ -3371,6 +3371,7 @@ class PlayState extends MusicBeatState
 			songScore -= 10;
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), 0.4);
+			vocals.volume = 0;
 
 			if (daNote != null && !daNote.noAnim)
 			{
