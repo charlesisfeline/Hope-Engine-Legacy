@@ -363,7 +363,7 @@ class TitleState extends MusicBeatState
 				"pringles"
 			];
 
-			typed += FlxG.keys.getIsDown()[0].ID.toString();
+			typed += FlxG.keys.getIsDown()[FlxG.keys.getIsDown().length - 1].ID.toString();
 			typed = typed.trim().toLowerCase();
 
 			for (word in acceptableWords)
@@ -374,7 +374,11 @@ class TitleState extends MusicBeatState
 				switch (typed.trim().toLowerCase())
 				{
 					case 'hope':
-						CustomTransition.switchTo(new HopeTitle());
+						FlxG.sound.music.stop();
+						FlxG.sound.play(Paths.sound('Lights_Shut_off'), 1, function() {
+							CustomTransition.switchTo(new HopeTitle());
+						});
+						FlxG.camera.fade(FlxColor.BLACK, 0);
 					#if VIDEOS_ALLOWED
 					case 'pringles':
 						new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);

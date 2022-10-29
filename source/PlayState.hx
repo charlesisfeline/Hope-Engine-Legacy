@@ -66,6 +66,7 @@ class PlayState extends MusicBeatState
 {
 	public static var seenCutscene:Bool = false;
 	public static var previousCamPos:FlxPoint = null;
+	public static var previousCamFollow:FlxPoint = null;
 	public static var instance:PlayState = null;
 
 	// main vars
@@ -143,6 +144,8 @@ class PlayState extends MusicBeatState
 	/*
 	public static var keyDisplays:FlxSpriteGroup;
 	*/
+
+	public static var scoreSeparator:String = "|";
 
 	private var curSong:String = "";
 
@@ -288,7 +291,7 @@ class PlayState extends MusicBeatState
 		rpcPlaying = "Playing " + rpcSong;
 		rpcDeath = "Dead on " + rpcSong;
 		rpcPaused = 'Paused on ' + rpcSong;
-		rpcLocation = (isStoryMode ? "Week \"" + rpcWeek + "\"" : null);
+		rpcLocation = (isStoryMode ? "Week \"" + rpcWeek + "\"" : "Freeplay");
 
 		if (FreeplayState.vocals != null)
 			FreeplayState.vocals.kill();
@@ -435,6 +438,8 @@ class PlayState extends MusicBeatState
 
 		if (previousCamPos != null)
 			camPos = previousCamPos;
+		if (previousCamFollow != null)
+			camPos = previousCamFollow;
 
 		boyfriend = new Boyfriend(770, 450, SONG.player1);
 
@@ -665,7 +670,6 @@ class PlayState extends MusicBeatState
 
 		scoreTxt = new FlxText(0, 0, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		scoreTxt.antialiasing = true;
 		scoreTxt.borderSize = 2;
 		scoreTxt.scrollFactor.set();
 
@@ -1704,7 +1708,7 @@ class PlayState extends MusicBeatState
 			if (Settings.middleScroll && player == 0)
 				wantedAlpha = 0.1;
 
-			if (previousCamPos == null)
+			if (previousCamFollow == null)
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: wantedAlpha}, 1, {ease: FlxEase.circOut, startDelay: 0.2 + (0.2 * i)});
 			else
 			{
@@ -2107,7 +2111,7 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		var npsShit = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") | " : "");
+		var npsShit = (Settings.npsDisplay ? "NPS: " + nps + " (Max " + maxNPS + ") " + scoreSeparator + " " : "");
 		var rateShit = Ratings.CalculateRanking(songScore, songScoreDef, nps, maxNPS, accuracy);
 
 		if (npsShit + rateShit != scoreTxt.text)
@@ -2418,6 +2422,7 @@ class PlayState extends MusicBeatState
 		weekAccuracies = [];
 		weekName = "";
 
+		previousCamFollow = null;
 		previousCamPos = null;
 	}
 
@@ -2548,7 +2553,8 @@ class PlayState extends MusicBeatState
 
 						FlxTransitionableState.skipNextTransIn = true;
 						FlxTransitionableState.skipNextTransOut = true;
-						previousCamPos = new FlxPoint(camFollow.x, camFollow.y);
+						previousCamFollow = new FlxPoint(camFollow.x, camFollow.y);
+						previousCamPos = new FlxPoint(curCamPos.x, curCamPos.y);
 
 						PlayState.SONG = Song.loadFromJson(nextSongLowercase + difficulty, nextSongLowercase,
 							(Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));

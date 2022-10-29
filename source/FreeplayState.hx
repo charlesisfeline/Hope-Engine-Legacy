@@ -554,12 +554,12 @@ class FreeplayState extends MusicBeatState
 				if (Assets.exists('assets/data/' + songLowercase + '/' + poop + ".json")) // crap fix i know shut UP
 				#end
 				{
+					PlayState.resetWeekStats();
 					PlayState.SONG = Song.loadFromJson(poop, songLowercase, mod);
 					PlayState.EVENTS = Event.load(songLowercase, mod);
 					PlayState.isStoryMode = false;
 					PlayState.storyDifficulty = curDifficulty;
 					PlayState.storyWeek = songs[curSelected].week;
-					PlayState.resetWeekStats();
 	
 					if (FlxG.keys.pressed.CONTROL)
 					{

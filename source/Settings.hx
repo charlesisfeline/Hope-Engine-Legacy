@@ -43,6 +43,7 @@ class Settings
 	public static var dynamicCamera:Float = 0;
 	public static var videoCutscenes:Bool = false;
 	public static var freeplayModDisplays:Bool = true;
+	public static var antialiasing:Bool = true;
 
 	public static var persistentVolume:Bool = true;
 	public static var autopause:Bool = true;
@@ -98,6 +99,7 @@ class Settings
 		dynamicCamera = FlxG.save.data.dynamicCamera;
 		videoCutscenes = FlxG.save.data.videoCutscenes;
 		freeplayModDisplays = FlxG.save.data.freeplayModDisplays;
+		antialiasing = FlxG.save.data.antialiasing;
 		persistentVolume = FlxG.save.data.persistentVolume;
 		autopause = FlxG.save.data.autopause;
 		lastVolume = FlxG.save.data.lastVolume;
@@ -159,6 +161,7 @@ class Settings
 		FlxG.save.data.dynamicCamera = dynamicCamera;
 		FlxG.save.data.videoCutscenes = videoCutscenes;
 		FlxG.save.data.freeplayModDisplays = freeplayModDisplays;
+		FlxG.save.data.antialiasing = antialiasing;
 		FlxG.save.data.persistentVolume = persistentVolume;
 		FlxG.save.data.autopause = autopause;
 		FlxG.save.data.lastVolume = lastVolume;
@@ -285,6 +288,9 @@ class Settings
 
 		if (FlxG.save.data.freeplayModDisplays == null)
 			FlxG.save.data.freeplayModDisplays = freeplayModDisplays;
+
+		if (FlxG.save.data.antialiasing == null)
+			FlxG.save.data.antialiasing = antialiasing;
 
 		if (FlxG.save.data.persistentVolume == null)
 			FlxG.save.data.persistentVolume = persistentVolume;

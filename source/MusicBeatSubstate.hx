@@ -1,7 +1,7 @@
 package;
 
 import Conductor.BPMChangeEvent;
-import flixel.FlxG;
+import flixel.FlxSprite;
 import flixel.FlxSubState;
 
 class MusicBeatSubstate extends FlxSubState
@@ -20,6 +20,13 @@ class MusicBeatSubstate extends FlxSubState
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
+
+	override function create()
+	{
+		super.create();
+
+		updateAntialiasing();
+	}
 
 	override function update(elapsed:Float)
 	{
@@ -60,5 +67,27 @@ class MusicBeatSubstate extends FlxSubState
 	public function beatHit():Void
 	{
 		// do literally nothing dumbass
+	}
+
+	var antialiasedSprites:Array<FlxSprite> = [];
+
+	public function updateAntialiasing():Void
+	{
+		forEachOfType(FlxSprite, function(spr:FlxSprite)
+		{
+			if (spr.antialiasing)
+			{
+				spr.antialiasing = Settings.antialiasing;
+
+				if (!antialiasedSprites.contains(spr))
+					antialiasedSprites.push(spr);
+			}
+
+			if (Settings.antialiasing)
+			{
+				for (sprite in antialiasedSprites)
+					sprite.antialiasing = true;
+			}
+		}, true);
 	}
 }

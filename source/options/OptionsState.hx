@@ -70,7 +70,18 @@ class OptionsState extends MusicBeatState
 			new ToggleOption("Extra Details", "Show extra details.", "extraDetails"),
 			new ToggleOption("Persistent Volume", "If activated, the game will save the volume and stay the same everytime you reopen.", "persistentVolume"),
 			new ToggleOption("Video Cutscenes", "Use videos for cutscenes instead of them being in game.\nRecommended for computers with <8gb RAM.", "videoCutscenes"),
-			new ToggleOption("Freeplay Mod Displays", "Show mod origins of songs. Can be useful if several mods have the same song names.", "freeplayModDisplays")
+			new ToggleOption("Freeplay Mod Displays", "Show mod origins of songs. Can be useful if several mods have the same song names.", "freeplayModDisplays"),
+			new ToggleOption("Antialiasing", "If ticked, smoothing on most sprites will occur. Otherwise, blocky/pixel-ly artifacts occur around edges of sprites.", "antialiasing", function() 
+			{
+				var state:MusicBeatState = cast FlxG.state;
+				state.updateAntialiasing();
+
+				if (FlxG.state.subState != null)
+				{
+					var sub:MusicBeatSubstate = cast FlxG.state.subState;
+					sub.updateAntialiasing();
+				}
+			})
 		]),
 		new OptionCategory("Appearance", [
 			new OptionSubCategoryTitle("Appearance"),

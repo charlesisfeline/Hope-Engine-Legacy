@@ -1,15 +1,12 @@
 package;
 
-import lime.utils.Assets;
 import Conductor.BPMChangeEvent;
 import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
-import lime.app.Application;
-import lime.system.System;
+import lime.utils.Assets;
 import openfl.Assets as OpenFlAssets;
-import openfl.Lib;
 
 using StringTools;
 
@@ -24,6 +21,13 @@ class MusicBeatState extends FlxUIState
 
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
+
+	override function create()
+	{
+		super.create();
+
+		updateAntialiasing();
+	}
 
 	override function update(elapsed:Float)
 	{
@@ -107,7 +111,8 @@ class MusicBeatState extends FlxUIState
 				Paths.trackedImageKeys.remove(image);
 			}
 
-			forEachExists(function(basic:FlxBasic) {
+			forEachExists(function(basic:FlxBasic)
+			{
 				remove(basic);
 				basic.exists = false;
 				basic.kill();
@@ -121,5 +126,27 @@ class MusicBeatState extends FlxUIState
 			FlxG.bitmap.clearCache();
 
 		openfl.system.System.gc();
+	}
+
+	var antialiasedSprites:Array<FlxSprite> = [];
+
+	public function updateAntialiasing():Void
+	{
+		forEachOfType(FlxSprite, function(spr:FlxSprite)
+		{
+			if (spr.antialiasing)
+			{
+				spr.antialiasing = Settings.antialiasing;
+
+				if (!antialiasedSprites.contains(spr))
+					antialiasedSprites.push(spr);
+			}
+
+			if (Settings.antialiasing)
+			{
+				for (sprite in antialiasedSprites)
+					sprite.antialiasing = true;
+			}
+		}, true);
 	}
 }

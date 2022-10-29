@@ -142,9 +142,9 @@ class Ratings
 		}
 
 		return
-			'Score: ${(Conductor.safeFrames != 10 ? Std.int(score * multiplier) + " (" + Std.int(scoreDef * multiplier) + ")" : "" + Std.int(score * multiplier))} |'
-			+ ' Misses: ${PlayState.misses} |'
-			+ ' Accuracy: ${(Settings.botplay && !PlayState.instance.devBot ? "?" : Helper.completePercent(accuracy, 2) + "%")} |'
+			'Score: ${(Conductor.safeFrames != 10 ? Std.int(score * multiplier) + " (" + Std.int(scoreDef * multiplier) + ")" : "" + Std.int(score * multiplier))} ${PlayState.scoreSeparator}'
+			+ ' Misses: ${PlayState.misses} ${PlayState.scoreSeparator}'
+			+ ' Accuracy: ${(Settings.botplay && !PlayState.instance.devBot ? "?" : Helper.completePercent(accuracy, 2) + "%")} ${PlayState.scoreSeparator}'
 			+ ' ${GenerateLetterRank(accuracy)}';
 	}
 }
