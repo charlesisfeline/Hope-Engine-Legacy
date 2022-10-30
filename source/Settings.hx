@@ -31,6 +31,7 @@ class Settings
 	public static var hitsoundType:Int = 0;
 	public static var hitsoundVolume:Float = 0;
 	public static var consistencyBar:Bool = false;
+	public static var yourLaneDisplay:Bool = true;
 
 	public static var flashing:Bool = true;
 	public static var distractions:Bool = true;
@@ -85,6 +86,7 @@ class Settings
 		hitsoundType = FlxG.save.data.hitsoundType;
 		hitsoundVolume = FlxG.save.data.hitsoundVolume;
 		consistencyBar = FlxG.save.data.consistencyBar;
+		yourLaneDisplay = FlxG.save.data.yourLaneDisplay;
 
 		///////////////////////////////////
 
@@ -147,6 +149,7 @@ class Settings
 		FlxG.save.data.hitsoundType = hitsoundType;
 		FlxG.save.data.hitsoundVolume = hitsoundVolume;
 		FlxG.save.data.consistencyBar = consistencyBar;
+		FlxG.save.data.yourLaneDisplay = yourLaneDisplay;
 
 		///////////////////////////////////
 
@@ -253,6 +256,9 @@ class Settings
 
 		if (FlxG.save.data.consistencyBar == null)
 			FlxG.save.data.consistencyBar = consistencyBar;
+
+		if (FlxG.save.data.yourLaneDisplay == null)
+			FlxG.save.data.yourLaneDisplay = yourLaneDisplay;
 
 		///////////////////////////////////
 

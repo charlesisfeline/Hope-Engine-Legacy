@@ -28,7 +28,8 @@ class Modifiers
         "goods_only" => false,
         "pure_perfect" => false,
         "loud_speakers" => 1,
-        "fast_forward" => 1
+        "fast_forward" => 1,
+        "kade_judge" => false
     ];
 
     public static var modifierRates:Map<String, Float> = [
@@ -41,7 +42,8 @@ class Modifiers
         "goods_only" => 0.11,
         "pure_perfect" => 0.13,
         "loud_speakers" => 0.003,
-        "fast_forward" => 0.005
+        "fast_forward" => 0.005,
+        "kade_judge" => 0
     ];
 
     public static var modifierNames:Map<String, String> = [
@@ -54,7 +56,8 @@ class Modifiers
         "goods_only" => "Goods Only",
         "pure_perfect" => "Pure Perfect!",
         "loud_speakers" => "Loud Speakers",
-        "fast_forward" => "Fast Forward"
+        "fast_forward" => "Fast Forward",
+        "kade_judge" => "Kade's Judging"
     ];
 
     /**
@@ -98,8 +101,14 @@ class Modifiers
                         + "\n\nAdds 0.003 to the multiplier per level.",
         "fast_forward" => "Go faster! Just go faster!"
                         + "\nThink it's like Wind Up, but with a stable speed."
-                        + "\n\nAdds 0.005 to the multiplier per level."
-
+                        + "\n\nAdds 0.005 to the multiplier per level.",
+        "kade_judge" => "Ever wanted a glimpse back?"
+                        + "\n\nHope Engine modifies Kade Engine's input by a bit:"
+                        + "\n - Removing Fat Finger errors"
+                        + "\n - Reverting scoring to the original Vanilla scoring"
+                        + "\n - et. cetera."
+                        + "\nActivate this modifier to revert these changes."
+                        + "\n\nDoesn't add anything to the rate."
     ];
 
     public static var modifierScores:Map<String, Array<ModifierSave>> = [];

@@ -652,33 +652,25 @@ class PlayState extends MusicBeatState
 			healthBarBG.y = (FlxG.height * 0.1) - healthBarBG.height;
 		healthBarBG.screenCenter(X);
 		healthBarBG.alpha = 0.7;
-
-		healthBarBG.scrollFactor.set();
-
 		add(healthBarBG);
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, healthbarDirection, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
 			'health', 0, 2);
-		healthBar.scrollFactor.set();
-
 		if (Settings.healthBarColors)
 			healthBar.createFilledBar(dad.getColor(), boyfriend.getColor());
 		else
 			healthBar.createFilledBar(0xFFFF0000, 0xFF66FF33);
-
 		add(healthBar);
 
 		scoreTxt = new FlxText(0, 0, FlxG.width, "", 20);
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		scoreTxt.borderSize = 2;
-		scoreTxt.scrollFactor.set();
 
 		scoreTxt.y = healthBarBG.y + 35;
 
 		botPlayState = new FlxText(0, 0, FlxG.width, "BOTPLAY", 20);
 		botPlayState.setFormat(Paths.font("vcr.ttf"), 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		botPlayState.borderSize = 3;
-		botPlayState.scrollFactor.set();
 
 		scrollSpeedText = new FlxText(0, 0, 0, "");
 		scrollSpeedText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -738,8 +730,8 @@ class PlayState extends MusicBeatState
 
 			consistencyBar.cameras = [camHUD];
 		}
+
 		strumLineNotes.cameras = [camHUD];
-		// notes.cameras = [camHUD];
 		splashes.cameras = [camHUD];
 		displaySustains.cameras = [camHUD];
 		displayNotes.cameras = [camHUD];
@@ -1563,6 +1555,8 @@ class PlayState extends MusicBeatState
 	function sortEvent(ob1:EventNote, ob2:EventNote)
 		return FlxSort.byValues(FlxSort.ASCENDING, ob1.strumTime, ob2.strumTime);
 
+	var you:TrackedText;
+
 	private function generateStaticArrows(player:Int, ?inverted:Bool = false):Void
 	{
 		for (i in 0...4)
@@ -1799,6 +1793,19 @@ class PlayState extends MusicBeatState
 			}
 		}
 		*/
+
+		if (Settings.yourLaneDisplay && player == 1)
+		{
+			you = new TrackedText(playerStrums, 32, "YOU");
+			you.alignment = CENTER;
+			you.fieldWidth = playerStrums.width;
+			you.borderSize = 4;
+			you.xOffset = (playerStrums.width / 2) - (you.width / 2);
+			you.yOffset = playerStrums.height + 32;
+			add(you);
+
+			you.cameras = [camHUD];
+		}
 	}
 
 	override function openSubState(SubState:FlxSubState)
@@ -2621,6 +2628,11 @@ class PlayState extends MusicBeatState
 			switch (daRating)
 			{
 				case 'shit':
+					if (Modifiers.modifiers['kade_judge'])
+					{
+						combo = 0;
+						misses++;
+					}
 					score = -300;
 					health -= 0.2;
 					shits++;
@@ -3283,10 +3295,13 @@ class PlayState extends MusicBeatState
 
 			var dontCheck = false;
 
-			for (i in 0...pressArray.length)
+			if (Modifiers.modifiers['kade_judge'])
 			{
-				if (pressArray[i] && !directionList.contains(i))
-					dontCheck = true;
+				for (i in 0...pressArray.length)
+				{
+					if (pressArray[i] && !directionList.contains(i))
+						dontCheck = true;
+				}
 			}
 
 			if (perfectMode)

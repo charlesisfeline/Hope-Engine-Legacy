@@ -22,7 +22,8 @@ class ModifierSubstate extends MusicBeatSubstate
         "perfect",
         "pure_perfect",
         "goods_only",
-        "loud_speakers"
+        "loud_speakers",
+        "kade_judge"
     ];
 
     var modifierName:FlxText;
@@ -119,6 +120,7 @@ class ModifierSubstate extends MusicBeatSubstate
         changeSelection();
         changeModifier();
         updateMultiplier();
+        updateModifierDisplays();
 
         forEachOfType(FlxSprite, function(spr:FlxSprite) {
             var alpha = spr.alpha;
@@ -184,6 +186,7 @@ class ModifierSubstate extends MusicBeatSubstate
         }
 
         updateMultiplier();
+        updateModifierDisplays();
         
         modifierText.y = modifierDesc.y + modifierDesc.height + 40;
     }
@@ -204,6 +207,19 @@ class ModifierSubstate extends MusicBeatSubstate
         }
 
         multiplierText.text = "Multiplier Value: " + Helper.completePercent(curMultiplier, 3) + "x";
+    }
+
+    function updateModifierDisplays():Void
+    {
+        for (i in 0...modifiersAvailable.length)
+        {
+            var name = modifiersAvailable[i];
+
+            if (Modifiers.modifiers[name] != Modifiers.modifierDefaults[name])
+                items.members[i].color = 0xff00ff00;
+            else
+                items.members[i].color = 0xffffffff;
+        }
     }
 
     override function update(elapsed:Float) 
