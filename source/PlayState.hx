@@ -2126,6 +2126,14 @@ class PlayState extends MusicBeatState
 
 		if (controls.PAUSE && startedCountdown && canPause && !inCutscene)
 		{
+			if (stageInterp.variables.get("onPause") != null)
+			{
+				var val:Int = cast stageInterp.variables.get("onPause")();
+
+				if (val == ScriptEssentials.HALT_EXECUTION)
+					return;
+			}
+
 			if (executeModchart)
 			{
 				if (interp.variables.get("onPause") != null)
@@ -2135,14 +2143,6 @@ class PlayState extends MusicBeatState
 					if (val == ScriptEssentials.HALT_EXECUTION)
 						return;
 				}
-			}
-
-			if (stageInterp.variables.get("onPause") != null)
-			{
-				var val:Int = cast stageInterp.variables.get("onPause")();
-
-				if (val == ScriptEssentials.HALT_EXECUTION)
-					return;
 			}
 				
 			persistentUpdate = false;
