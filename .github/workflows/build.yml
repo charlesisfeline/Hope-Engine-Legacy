@@ -41,9 +41,9 @@ jobs:
           haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
-          haxelib install flixel-addons
-          haxelib install flixel-ui
+          haxelib install flixel-tools 1.5.1
+          haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
+          haxelib install flixel-ui 2.4.0
           haxelib git hscript https://github.com/skuqre/hscript
           haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib install yaml
@@ -87,9 +87,9 @@ jobs:
           haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
-          haxelib install flixel-addons
-          haxelib install flixel-ui
+          haxelib install flixel-tools 1.5.1
+          haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
+          haxelib install flixel-ui 2.4.0
           haxelib git hscript https://github.com/skuqre/hscript
           haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib install yaml
@@ -124,9 +124,9 @@ jobs:
           haxelib --never install flixel 4.11.0
           haxelib run lime setup flixel
           haxelib run lime setup
-          haxelib install flixel-tools
-          haxelib install flixel-addons
-          haxelib install flixel-ui
+          haxelib install flixel-tools 1.5.1
+          haxelib git flixel-addons https://github.com/HaxeFlixel/flixel-addons
+          haxelib install flixel-ui 2.4.0
           haxelib git hscript https://github.com/skuqre/hscript
           haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
           haxelib install flixel-addons
