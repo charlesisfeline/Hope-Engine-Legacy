@@ -74,7 +74,7 @@ class CreditsState extends MusicBeatState
 		Paths.clearCustomSoundCache();
 		#end
 
-		menuBG = new FlxBackdrop(Paths.image('credBG'), 1, 1, false);
+		menuBG = new FlxBackdrop(Paths.image('credBG'), Y);
 		menuBG.screenCenter(X);
 		menuBG.antialiasing = true;
 		menuBG.color = 0xff3e3040;

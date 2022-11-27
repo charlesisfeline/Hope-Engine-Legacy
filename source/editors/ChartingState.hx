@@ -2188,7 +2188,7 @@ class ChartingState extends MusicBeatState
 	function updateGrid():Void
 	{
 		for (note in curRenderedNotes.members)
-			FlxMouseEventManager.remove(note);
+			Main.mouseManager.remove(note);
 
 		while (curRenderedNotes.length > 0 || curRenderedSustains.length > 0 
 			|| curRenderedEvents.length > 0 || curRenderedEventTexts.length > 0)
@@ -2297,7 +2297,7 @@ class ChartingState extends MusicBeatState
 				curRenderedSustains.add(sustainVis);
 			}
 
-			FlxMouseEventManager.add(note, null, null, function(n:Note)
+			Main.mouseManager.add(note, null, null, function(n:Note)
 			{
 				noteTxt.text = 'Properties:'
 					+ '\nStrumtime: ${FlxStringUtil.formatTime(n.strumTime / 1000, true)} (${n.strumTime})'
@@ -2449,7 +2449,7 @@ class ChartingState extends MusicBeatState
 
 		updateGrid();
 
-		FlxMouseEventManager.remove(note);
+		Main.mouseManager.remove(note);
 		noteTxt.text = '';
 		noteTxt.visible = false;
 

@@ -198,7 +198,7 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 
 		// _ui_control_callback = UIControlCallback;
 		// header.button.onUp.callback = onDropdown;
-		FlxMouseEventManager.add(header, null, function(a:FlxUIDropDownHeader) { onDropdown(); }, null, null, true);
+		Main.mouseManager.add(header, null, function(a:FlxUIDropDownHeader) { onDropdown(); }, null, null, true);
 		add(header);
 
 		dropPanel.y = header.y + header.height;
@@ -337,7 +337,7 @@ class DropdownMenuFix extends FlxUIGroup implements IFlxUIWidget implements IFlx
 		var t:FlxUIButton = new FlxUIButton(0, 0, Label);
 		t.broadcastToFlxUI = false;
 		// t.onUp.callback = onClickItem.bind(i);
-		FlxMouseEventManager.add(t, null, function(a:FlxUIButton) { onClickItem(i); }, null, null, true);
+		Main.mouseManager.add(t, null, function(a:FlxUIButton) { onClickItem(i); }, null, null, true);
 
 		t.name = Name;
 

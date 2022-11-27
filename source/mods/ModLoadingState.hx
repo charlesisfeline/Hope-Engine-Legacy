@@ -62,7 +62,7 @@ class ModLoadingState extends MusicBeatState
 
 		FlxG.mouse.visible = true;
 
-		var menuBG:FlxBackdrop = new FlxBackdrop(Paths.image('menuDesat'), 1, 1, false);
+		var menuBG:FlxBackdrop = new FlxBackdrop(Paths.image('menuDesat'), Y);
 		menuBG.color = 0xFFea71fd;
 		menuBG.scrollFactor.set(0, 0.2);
 		menuBG.antialiasing = true;

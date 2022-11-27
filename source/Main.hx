@@ -1,5 +1,6 @@
 package;
 
+import flixel.input.mouse.FlxMouseEventManager;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxGame;
@@ -26,6 +27,9 @@ import sys.io.File;
 class Main extends Sprite
 {
 	public static var console:ScriptConsole;
+
+	// whoever the fuck rewrote this wholly without warning
+	public static var mouseManager:FlxMouseEventManager;
 
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
@@ -87,7 +91,7 @@ class Main extends Sprite
 		initialState = TitleState;
 		#end
 
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
+		game = new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
 
 		// FlxGraphic.defaultPersist = true;
 		addChild(game);
@@ -133,6 +137,9 @@ class Main extends Sprite
 
 		FlxG.updateFramerate = Settings.fpsCap;
 		FlxG.drawFramerate = Settings.fpsCap;
+		
+		mouseManager = new FlxMouseEventManager();
+		FlxG.plugins.add(mouseManager);
 	}
 	
 	var game:FlxGame;

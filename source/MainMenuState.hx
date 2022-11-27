@@ -86,13 +86,13 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		bg = new FlxBackdrop(Paths.image('menuBG'), 1, 1, false);
+		bg = new FlxBackdrop(Paths.image('menuBG'), Y);
 		bg.screenCenter(X);
 		bg.antialiasing = true;
 		bg.scrollFactor.set(0, 0.1);
 		add(bg);
 
-		magenta = new FlxBackdrop(Paths.image('menuDesat'), 1, 1, false);
+		magenta = new FlxBackdrop(Paths.image('menuDesat'), Y);
 		magenta.scrollFactor.set(0, 0.1);
 		magenta.screenCenter(X);
 		magenta.visible = false;
