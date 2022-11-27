@@ -19,7 +19,7 @@ jobs:
   # This workflow contains a single job called "build"
   windows:
     # The type of runner that the job will run on
-    runs-on: macos-latest
+    runs-on: windows-latest
     
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
@@ -31,10 +31,12 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Install Libraries
         run: |
+          cinst haxe --version 4.2.4 -y
+          RefreshEnv
           mkdir "%HAXELIB_ROOT%"
           haxelib setup "%HAXELIB_ROOT%"
-          haxelib install hxcpp > /dev/null
           haxelib install lime
+          RefreshEnv
           haxelib install openfl
           haxelib --never install flixel
           haxelib run lime setup flixel --always
@@ -44,14 +46,13 @@ jobs:
           haxelib install flixel-ui
           haxelib git hscript https://github.com/skuqre/hscript
           haxelib git hxCodec https://github.com/polybiusproxy/hxCodec
-          haxelib install flixel-addons
           haxelib install yaml
           haxelib install actuate
           haxelib git discord_rpc https://github.com/Aidan63/linc_discord-rpc
           haxelib list
       - name: Build
-        run: haxelib run lime build mac
+        run: haxelib run lime build windows
       - uses: actions/upload-artifact@v2
         with:
-          name: Mac Build
-          path: export/release/macos/bin
+          name: Windows Build
+          path: export/release/windows/bin
