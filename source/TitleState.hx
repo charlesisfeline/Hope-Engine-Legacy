@@ -1,5 +1,7 @@
 package;
 
+import shaders.LensDistortion;
+import Discord.DiscordClient;
 import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxSprite;
@@ -13,8 +15,6 @@ import openfl.Assets;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
 import openfl.filters.ShaderFilter;
-import shaders.Grain;
-import shaders.Mosaic;
 
 using StringTools;
 
@@ -279,6 +279,7 @@ class TitleState extends MusicBeatState
 		[new ShaderFilter(new shaders.Hq2x())],
 		[new ShaderFilter(new shaders.Mosaic(8, 8))],
 		[new ShaderFilter(new shaders.Scanline(2.0))],
+		[new ShaderFilter(new shaders.LensDistortion())],
 		[
 			new ColorMatrixFilter([
 				-1,  0,  0, 0, 255,
@@ -310,7 +311,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		if (FlxG.keys.justPressed.F3)
+		if (FlxG.keys.justPressed.F4)
 		{
 			curFilter++;
 

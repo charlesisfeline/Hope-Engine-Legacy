@@ -571,7 +571,11 @@ class PlayState extends MusicBeatState
 
 		var splash = new NoteSplash(noteSplashAtlas);
 		splash.alpha = 0;
+		splash.exists = false;
+		splash.kill();
 		splashes.add(splash);
+		
+		splash.cameras = [camHUD];
 
 		// create modifier monochromes
 		modifierMonochromes = new FlxSpriteGroup();
@@ -1793,19 +1797,6 @@ class PlayState extends MusicBeatState
 			}
 		}
 		*/
-
-		if (Settings.yourLaneDisplay && player == 1)
-		{
-			you = new TrackedText(playerStrums, 32, "YOU");
-			you.alignment = CENTER;
-			you.fieldWidth = playerStrums.width;
-			you.borderSize = 4;
-			you.xOffset = (playerStrums.width / 2) - (you.width / 2);
-			you.yOffset = playerStrums.height + 32;
-			add(you);
-
-			you.cameras = [camHUD];
-		}
 	}
 
 	override function openSubState(SubState:FlxSubState)
