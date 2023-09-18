@@ -3,24 +3,12 @@ function createBackground()
     // This happens BEFORE BF and GF get put.
 }
 
-<<<<<<< HEAD
 function createForeground()
-=======
-function createForeground(bf:Character, gf:Character, dad:Character)
->>>>>>> upstream
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
 
-<<<<<<< HEAD
     remove(boyfriend);
-=======
-    // bf is Boyfriend/Player 1/Player
-    // gf is, well, Girlfriend
-    // dad is Dad/Player 2/Enemy
-
-    remove(bf);
->>>>>>> upstream
     remove(gf);
     remove(dad);
 }

@@ -2,7 +2,6 @@ function onSongEnd()
 {
     if (isStoryMode)
     {
-<<<<<<< HEAD
         PlayState.inCutscene = true;
         camHUD.visible = false;
 
@@ -15,9 +14,5 @@ function onSongEnd()
         FlxG.sound.play(Paths.sound('Lights_Shut_off'), 1, false, null, true, function() {
             PlayState.inCutscene = false;
         });
-=======
-        camHUD.fade(0xFF000000, 0);
-        FlxG.sound.play(Paths.sound('Lights_Shut_off'));
->>>>>>> upstream
     }
 }

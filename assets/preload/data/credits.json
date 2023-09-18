@@ -6,45 +6,29 @@
                 "name": "ninjamuffin99",
                 "desc": "Programmer for the Funk",
                 "link": "https://twitter.com/ninja_muffin99",
-<<<<<<< HEAD
                 "tint": "ff3333",
                 "icon": "ninjamuff"
-=======
-                "tint": "ff0000"
->>>>>>> upstream
             },
             {
                 "name": "Kawai Sprite",
                 "desc": "Musician for the Funk",
                 "link": "https://twitter.com/kawaisprite",
-<<<<<<< HEAD
                 "tint": "0aade6",
                 "icon": "kawai"
-=======
-                "tint": "0aade6"
->>>>>>> upstream
             },
             {
                 "name": "PhantomArcade",
                 "desc": "Artist for the Funk",
                 "link": "https://twitter.com/phantomarcade3k",
-<<<<<<< HEAD
                 "tint": "7EED56",
                 "icon": "dave"
-=======
-                "tint": "7EED56"
->>>>>>> upstream
             },
             {
                 "name": "EvilSk8r",
                 "desc": "Artist for the Funk",
                 "link": "https://twitter.com/evilsk8r",
-<<<<<<< HEAD
                 "tint": "dedede",
                 "icon": "sk8r"
-=======
-                "tint": "dedede"
->>>>>>> upstream
             },
             {
                 "name": "THE ORIGINAL GAME",
@@ -95,20 +79,12 @@
             {
                 "name": "PolybiusProxy",
                 "desc": "MP4 Support. God overall.",
-<<<<<<< HEAD
                 "link": "https://twitter.com/polybiusproxy"
-=======
-                "link": "https://github.com/polybiusproxy"
->>>>>>> upstream
             },
             {
                 "name": "GITHUB REPO",
                 "desc": "Press ENTER to get redirected",
-<<<<<<< HEAD
                 "link": "https://github.com/polybiusproxy/hxCodec"
-=======
-                "link": "https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support"
->>>>>>> upstream
             }
         ]
     },
@@ -119,12 +95,8 @@
                 "name": "skuqre",
                 "desc": "Maintainer of whatever the hell this is",
                 "link": "https://twitter.com/skuqre",
-<<<<<<< HEAD
                 "tint": "ad34ff",
                 "icon": "skuqre"
-=======
-                "tint": "ad34ff"
->>>>>>> upstream
             }
         ]
     }

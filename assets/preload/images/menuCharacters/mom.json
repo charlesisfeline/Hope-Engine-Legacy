@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"settings": {
 		"flipped": false,
 		"scale": 1
@@ -16,17 +15,4 @@
 		"danceRight": null
 	},
 	"character": "mom"
-=======
-    "character" : "mom",
-    "animations" : {
-        "idle" : {
-            "prefix" : "idle0"
-        }
-    },
-    "settings" : {
-        "x" : -30,
-        "y" : 140,
-        "scale" : 0.85
-    }
->>>>>>> upstream
 }

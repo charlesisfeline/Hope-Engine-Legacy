@@ -1,9 +1,5 @@
 {
     "weekName" : "Spooky Month",
     "characters" : ["spooky", "gf", "bf"],
-<<<<<<< HEAD
     "tracks" : ["Spookeez", "South", "Monster"]
-=======
-    "tracks" : ["Spookeez", "South"]
->>>>>>> upstream
 }

@@ -17,7 +17,6 @@ gf-pixel
 senpai
 senpai-angry
 spirit
-<<<<<<< HEAD
 bf-and-gf
 gf-tankmen
 pico-speaker
@@ -30,8 +29,6 @@ gf-stress
 pico-stress1
 pico-stress2
 pico-stress3
-=======
->>>>>>> upstream
 bf-dead
 bf-car-dead
 bf-pixel-dead

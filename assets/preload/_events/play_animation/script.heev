@@ -1,6 +1,5 @@
 function trigger(params:Map<String, Dynamic>)
 {
-<<<<<<< HEAD
     /**
      * People don't really look at internals,
      * so here's some shit about this event:
@@ -69,26 +68,4 @@ function trigger(params:Map<String, Dynamic>)
         boyfriend.specialAnim = true;
         boyfriend.playAnim(animation, force, reverse, frame);
     }
-=======
-	var character:String = params.get("character");
-	var animation:String = params.get("animation");
-	var forced:Bool = params.get("forced");
-	var reversed:Bool = params.get("reversed");
-	var startingFrame:Int = params.get("starting_frame");
-
-	var actualChar:Character = boyfriend;
-
-	switch (character)
-	{
-		case 'gf' | 'girlfriend':
-			actualChar = gf;
-		case 'dad':
-			actualChar = dad;
-		default:
-			actualChar = boyfriend;
-	}
-
-	actualChar.specialAnim = true;
-	actualChar.playAnim(animation, forced, reversed, startingFrame);
->>>>>>> upstream
 }

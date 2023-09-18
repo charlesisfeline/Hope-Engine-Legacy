@@ -1,10 +1,7 @@
 package;
 
-<<<<<<< HEAD
 
 import editors.WeekEditor.Week;
-=======
->>>>>>> upstream
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
@@ -22,10 +19,7 @@ import openfl.utils.Assets;
 using StringTools;
 
 #if FILESYSTEM
-<<<<<<< HEAD
 import editors.WeekEditor.Week;
-=======
->>>>>>> upstream
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -35,18 +29,11 @@ import Discord.DiscordClient;
 
 class StoryMenuState extends MusicBeatState
 {
-<<<<<<< HEAD
 	static var curWeek:Int = 0;
 	static var curDifficulty:Int = 1;
 
 	var scoreText:FlxText;
 
-=======
-	var scoreText:FlxText;
-
-	var curDifficulty:Int = 1;
-
->>>>>>> upstream
 	public static var weekUnlocked:Array<Bool> = [];
 
 	var weekData:Array<Dynamic> = [];
@@ -59,10 +46,6 @@ class StoryMenuState extends MusicBeatState
 	var weekDifficultyLock:Array<Null<String>> = [];
 
 	var txtWeekTitle:FlxText;
-<<<<<<< HEAD
-=======
-	var curWeek:Int = 0;
->>>>>>> upstream
 	var txtTracklist:FlxText;
 	var yellowBG:FlxSprite;
 
@@ -78,7 +61,6 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
-<<<<<<< HEAD
 		if (Paths.priorityMod != "hopeEngine")
 		{
 			if (Paths.exists(Paths.state("StoryMenuState")))
@@ -96,8 +78,6 @@ class StoryMenuState extends MusicBeatState
 		else
 			Paths.setCurrentMod(Paths.priorityMod);
 
-=======
->>>>>>> upstream
 		#if desktop
 		DiscordClient.changePresence("Story Menu");
 		#end
@@ -125,17 +105,10 @@ class StoryMenuState extends MusicBeatState
 		{
 			#if FILESYSTEM
 			var path = Sys.getCwd() + "assets/_weeks/" + i + ".json";
-<<<<<<< HEAD
 			var week:Week = cast Json.parse(File.getContent(path));
 			#else
 			var path = "assets/_weeks/" + i + ".json";
 			var week:Week = cast Json.parse(Assets.getText(path));
-=======
-			var week = Json.parse(File.getContent(path));
-			#else
-			var path = "assets/_weeks/" + i + ".json";
-			var week = Json.parse(Assets.getText(path));
->>>>>>> upstream
 			#end
 
 			weekData.push(week.tracks);
@@ -146,16 +119,11 @@ class StoryMenuState extends MusicBeatState
 			weekDifficultyLock.push(week.difficultyLock);
 		}
 
-<<<<<<< HEAD
 		#if (FILESYSTEM && MODS_FEATURE)
-=======
-		#if FILESYSTEM
->>>>>>> upstream
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && Paths.checkModLoad(i))
 			{
-<<<<<<< HEAD
 				var content = File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt");
 
 				if (content.trim().length > 0)
@@ -172,19 +140,6 @@ class StoryMenuState extends MusicBeatState
 						weekMods.push(i);
 						weekDifficultyLock.push(week.difficultyLock);
 					}
-=======
-				for (jsonName in CoolUtil.coolStringFile(File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt")))
-				{
-					var path = Sys.getCwd() + "mods/" + i + "/assets/_weeks/" + jsonName + ".json";
-					var week = Json.parse(File.getContent(path));
-
-					weekData.push(week.tracks);
-					weekNames.push(week.weekName);
-					weekCharacters.push(week.characters);
-					weekJsonNames.push(jsonName);
-					weekMods.push(i);
-					weekDifficultyLock.push(week.difficultyLock);
->>>>>>> upstream
 				}
 			}
 		}
@@ -302,10 +257,7 @@ class StoryMenuState extends MusicBeatState
 		add(tracksText);
 
 		changeDifficulty();
-<<<<<<< HEAD
 		changeWeek();
-=======
->>>>>>> upstream
 		updateText();
 
 		super.create();
@@ -330,7 +282,6 @@ class StoryMenuState extends MusicBeatState
 		});
 	}
 
-<<<<<<< HEAD
 	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
 
 	override function update(elapsed:Float)
@@ -338,10 +289,6 @@ class StoryMenuState extends MusicBeatState
 		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
 			return;
 		
-=======
-	override function update(elapsed:Float)
-	{
->>>>>>> upstream
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
@@ -359,7 +306,6 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
-<<<<<<< HEAD
 				if (controls.UI_UP_P)
 					changeWeek(-1);
 
@@ -367,37 +313,18 @@ class StoryMenuState extends MusicBeatState
 					changeWeek(1);
 
 				if (controls.UI_RIGHT)
-=======
-				if (controls.UP_P)
-					changeWeek(-1);
-
-				if (controls.DOWN_P)
-					changeWeek(1);
-
-				if (controls.RIGHT)
->>>>>>> upstream
 					rightArrow.animation.play('press');
 				else
 					rightArrow.animation.play('idle');
 
-<<<<<<< HEAD
 				if (controls.UI_LEFT)
-=======
-				if (controls.LEFT)
->>>>>>> upstream
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
 
-<<<<<<< HEAD
 				if (controls.UI_RIGHT_P && weekDifficultyLock[curWeek] == null)
 					changeDifficulty(1);
 				if (controls.UI_LEFT_P && weekDifficultyLock[curWeek] == null)
-=======
-				if (controls.RIGHT_P && weekDifficultyLock[curWeek] == null)
-					changeDifficulty(1);
-				if (controls.LEFT_P && weekDifficultyLock[curWeek] == null)
->>>>>>> upstream
 					changeDifficulty(-1);
 
 				if (weekDifficultyLock[curWeek] != null)
@@ -412,7 +339,6 @@ class StoryMenuState extends MusicBeatState
 				}
 			}
 
-<<<<<<< HEAD
 			if (controls.UI_ACCEPT)
 				selectWeek();
 		}
@@ -431,24 +357,6 @@ class StoryMenuState extends MusicBeatState
 			CustomTransition.switchTo(new editors.WeekEditor());
 		}
 		#end
-=======
-			if (controls.ACCEPT)
-				selectWeek();
-		}
-
-		if (controls.BACK && !movedBack && !selectedWeek)
-		{
-			FlxG.sound.play(Paths.sound('cancelMenu'));
-			movedBack = true;
-			FlxG.switchState(new MainMenuState());
-		}
-
-		if (FlxG.keys.justPressed.SEVEN && !movedBack && !selectedWeek)
-		{
-			movedBack = true;
-			FlxG.switchState(new editors.WeekEditor());
-		}
->>>>>>> upstream
 
 		super.update(elapsed);
 	}
@@ -481,10 +389,7 @@ class StoryMenuState extends MusicBeatState
 				stopspamming = true;
 			}
 
-<<<<<<< HEAD
 			PlayState.resetWeekStats();
-=======
->>>>>>> upstream
 			PlayState.storyPlaylist = weekData[curWeek];
 			PlayState.weekName = weekNames[curWeek];
 			PlayState.isStoryMode = true;
@@ -493,18 +398,11 @@ class StoryMenuState extends MusicBeatState
 			var diffic = CoolUtil.difficultySuffixfromInt(curDifficulty);
 
 			PlayState.storyDifficulty = curDifficulty;
-<<<<<<< HEAD
 			var lma = Paths.toSongPath(PlayState.storyPlaylist[0]);
 			PlayState.SONG = Song.loadFromJson(lma + diffic, lma, (Paths.currentMod != null
 				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 			PlayState.EVENTS = Event.load(lma, (Paths.currentMod != null
 				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
-=======
-			var lma = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
-			PlayState.SONG = Song.loadFromJson(lma + diffic, lma, (Paths.currentMod != null
-				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
-			PlayState.EVENTS = Event.load(lma, (Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
->>>>>>> upstream
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -549,12 +447,9 @@ class StoryMenuState extends MusicBeatState
 
 	function changeWeek(change:Int = 0):Void
 	{
-<<<<<<< HEAD
 		if (change != 0)
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		
-=======
->>>>>>> upstream
 		curWeek += change;
 
 		if (curWeek >= weekData.length)
@@ -582,11 +477,6 @@ class StoryMenuState extends MusicBeatState
 			bullShit++;
 		}
 
-<<<<<<< HEAD
-=======
-		FlxG.sound.play(Paths.sound('scrollMenu'));
-
->>>>>>> upstream
 		var prevScore = intendedScore;
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
 		FlxTween.num(prevScore, intendedScore, 0.5, {ease: FlxEase.circOut}, function(v:Float)

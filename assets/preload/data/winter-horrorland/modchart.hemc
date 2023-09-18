@@ -2,7 +2,6 @@ function onStart()
 {
     // if you're going to modify the cutscene and don't know what you're doing, make a backup!
     
-<<<<<<< HEAD
     if (isStoryMode && !PlayStateClass.seenCutscene)
     {
         PlayState.inCutscene = true;
@@ -24,26 +23,11 @@ function onStart()
             curCamPos.y = camFollow.y;
             curCamPos.x = camFollow.x;
             FlxG.camera.focusOn(curCamPos.getPosition());
-=======
-    if (isStoryMode)
-    {
-        cutsceneDuration = 3;
-        camHUD.visible = false;
-
-        new FlxTimer().start(0.1, function(tmr:FlxTimer)
-        {
-            camHUD.stopFX();
-            FlxG.sound.play(Paths.sound('Lights_Turn_On'));
-            camFollow.y = -2050;
-            camFollow.x += 200;
-            FlxG.camera.focusOn(camFollow.getPosition());
->>>>>>> upstream
             FlxG.camera.zoom = 1.5;
 
             new FlxTimer().start(0.8, function(tmr:FlxTimer)
             {
                 camHUD.visible = true;
-<<<<<<< HEAD
                 FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {
                     ease: FlxEase.quadInOut,
                     onComplete: function(twn:FlxTween)
@@ -51,9 +35,6 @@ function onStart()
                         PlayState.inCutscene = false;
                     }
                 });
-=======
-                FlxTween.tween(FlxG.camera, {zoom: defaultCamZoom}, 2.5, {ease: FlxEase.quadInOut});
->>>>>>> upstream
             });
         });
     }

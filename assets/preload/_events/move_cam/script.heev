@@ -1,6 +1,5 @@
 function trigger(params:Map<String, Dynamic>)
 {
-<<<<<<< HEAD
     var xPos:Float = params["xpos"];
     var yPos:Float = params["ypos"];
     var reset:Float = params["reset"];
@@ -12,7 +11,4 @@ function trigger(params:Map<String, Dynamic>)
         PlayState.isCamForced = true;
         PlayState.camFollow.setPosition(xPos, yPos);
     }
-=======
-	
->>>>>>> upstream
 }

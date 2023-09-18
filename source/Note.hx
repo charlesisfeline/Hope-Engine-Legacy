@@ -6,10 +6,7 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxSliceSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
-<<<<<<< HEAD
 import flixel.graphics.frames.FlxFramesCollection;
-=======
->>>>>>> upstream
 import flixel.math.FlxMath;
 import flixel.util.FlxColor;
 import haxe.Json;
@@ -20,7 +17,6 @@ using StringTools;
 import sys.io.File;
 #end
 
-<<<<<<< HEAD
 typedef NoteJSON =
 {
 	var name:Null<String>;
@@ -71,22 +67,17 @@ typedef NotePiece =
 	var offset:Null<Array<Float>>;
 }
 
-=======
->>>>>>> upstream
 class Note extends FlxSprite
 {
 	public var strumTime:Float = 0;
 	public var strumTimeSus:Float = 0; // for sustain note consistency
 
-<<<<<<< HEAD
 	public var scrollMultiplier:Float = 1;
 	public var downscroll:Bool = false;
 
 	public var altAnim:Bool = false;
 	public var noAnim:Bool = false;
 
-=======
->>>>>>> upstream
 	public var mustPress:Bool = false;
 	public var noteData:Int = 0;
 	public var canBeHit:Bool = false;
@@ -100,10 +91,7 @@ class Note extends FlxSprite
 	public var noHolds:Null<Bool> = false; // if true, it has no sus notes
 	public var setScale:Null<Float> = 1;
 	public var upSpriteOnly:Null<Bool> = false;
-<<<<<<< HEAD
 	public var noNoteSplash:Null<Bool> = false;
-=======
->>>>>>> upstream
 
 	public var wasEnemyNote = false;
 	public var prevNote:Note;
@@ -116,15 +104,9 @@ class Note extends FlxSprite
 	public var angleLock:Null<Bool> = true;
 	public var alphaLock:Null<Bool> = true;
 	public var visibleLock:Null<Bool> = true;
-<<<<<<< HEAD
 	public var scaleLockX:Null<Bool> = true;
 	public var scaleLockY:Null<Bool> = true;
 
-=======
-
-	// public var scaleLockX:Null<Bool> = true;
-	// public var scaleLockY:Null<Bool> = true;
->>>>>>> upstream
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
 	public static var GREEN_NOTE:Int = 2;
@@ -134,19 +116,12 @@ class Note extends FlxSprite
 	public var rating:String = "shit";
 
 	var offsetMultiplier:Array<Float> = [1, 1];
-<<<<<<< HEAD
 	var animOffset:Array<Float> = [0, 0];
 
 	var noteStyle:String = "normal";
 
 	public static var noteSkin:FlxFramesCollection = null;
 
-=======
-	var animOffset:Array<Int> = [0, 0];
-
-	var noteStyle:String = "normal";
-
->>>>>>> upstream
 	public function new(strumTime:Float, noteData:Int, ?prevNote:Note, ?sustainNote:Bool = false, ?setNoteType:String = "hopeEngine/normal")
 	{
 		super();
@@ -169,11 +144,8 @@ class Note extends FlxSprite
 
 		this.noteData = noteData;
 
-<<<<<<< HEAD
 		this.downscroll = Settings.downscroll;
 
-=======
->>>>>>> upstream
 		noteStyle = PlayState.SONG != null ? PlayState.SONG.noteStyle : "normal";
 
 		switch (noteStyle)
@@ -185,11 +157,7 @@ class Note extends FlxSprite
 				if (Settings.noteSkin != "default" && options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel") != null)
 					loadGraphic(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin + "-pixel"), true, 17, 17);
 				#end
-<<<<<<< HEAD
 
-=======
-				
->>>>>>> upstream
 				animation.add('purpleScroll', [4]);
 				animation.add('blueScroll', [5]);
 				animation.add('greenScroll', [6]);
@@ -219,18 +187,11 @@ class Note extends FlxSprite
 				setGraphicSize(Std.int(width * PlayState.daPixelZoom));
 				updateHitbox();
 			default:
-<<<<<<< HEAD
 
 				if (Settings.noteSkin != "default" && noteSkin != null)
 					frames = noteSkin;
 				else
 					frames = Paths.getSparrowAtlas("NOTE_assets", "shared");
-=======
-				frames = Paths.getSparrowAtlas("NOTE_assets", "shared");
-
-				if (Settings.noteSkin != "default" && options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin) != null)
-					frames = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin), File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
->>>>>>> upstream
 
 				animation.addByPrefix('greenScroll', 'green0');
 				animation.addByPrefix('redScroll', 'red0');
@@ -269,12 +230,6 @@ class Note extends FlxSprite
 		if (pissShit == "-pixel")
 			antialiasing = false;
 
-<<<<<<< HEAD
-=======
-		if (Settings.downscroll && sustainNote)
-			flipY = true;
-
->>>>>>> upstream
 		if (isSustainNote && prevNote != null)
 		{
 			alpha = 0.6;
@@ -326,15 +281,9 @@ class Note extends FlxSprite
 			return;
 
 		#if FILESYSTEM
-<<<<<<< HEAD
 		var noteJSON:NoteJSON = cast Json.parse(File.getContent(Sys.getCwd() + Paths.noteJSON(a[1], a[0])));
 		#else
 		var noteJSON:NoteJSON = cast Json.parse(openfl.utils.Assets.getText(Paths.noteJSON(a[1], a[0])));
-=======
-		var noteJSON = Json.parse(File.getContent(Sys.getCwd() + Paths.noteJSON(a[1], a[0])));
-		#else
-		var noteJSON = Json.parse(openfl.utils.Assets.getText(Paths.noteJSON(a[1], a[0])));
->>>>>>> upstream
 		#end
 
 		var previousMod = Paths.currentMod;
@@ -346,29 +295,19 @@ class Note extends FlxSprite
 		this.upSpriteOnly = (noteJSON.upSpriteOnly != null ? noteJSON.upSpriteOnly : false);
 		this.canScore = (noteJSON.canScore != null ? noteJSON.canScore : true);
 		this.canMiss = (noteJSON.canMiss != null ? noteJSON.canMiss : false);
-<<<<<<< HEAD
 		this.offsetMultiplier = (noteJSON.offsetMultiplier != null ? noteJSON.offsetMultiplier : [1, 1]);
 		this.scrollMultiplier = (noteJSON.scrollMultiplier != null ? noteJSON.scrollMultiplier : 1);
 		this.noHolds = (noteJSON.noHolds != null ? noteJSON.noHolds : false);
 		this.setScale = (noteJSON.scale != null ? noteJSON.scale : 1);
 		this.noNoteSplash = (noteJSON.noNoteSplash != null ? noteJSON.noNoteSplash : false);
-=======
-		this.offsetMultiplier = (noteJSON.offsetMultipler != null ? noteJSON.offsetMultipler : [1, 1]);
-		this.setScale = (noteJSON.scale != null ? noteJSON.scale : 1);
->>>>>>> upstream
 
 		this.positionLockX = (noteJSON.positionLockX != null ? noteJSON.positionLockX : true);
 		this.positionLockY = (noteJSON.positionLockY != null ? noteJSON.positionLockY : true);
 		this.angleLock = (noteJSON.angleLock != null ? noteJSON.angleLock : true);
 		this.alphaLock = (noteJSON.alphaLock != null ? noteJSON.alphaLock : true);
 		this.visibleLock = (noteJSON.visibleLock != null ? noteJSON.visibleLock : true);
-<<<<<<< HEAD
 		this.scaleLockX = (noteJSON.scaleLockX != null ? noteJSON.scaleLockX : true);
 		this.scaleLockY = (noteJSON.scaleLockY != null ? noteJSON.scaleLockY : true);
-=======
-		// this.scaleLockX = (noteJSON.scaleLockX != null ? noteJSON.scaleLockX : true);
-		// this.scaleLockY = (noteJSON.scaleLockY != null ? noteJSON.scaleLockY : true);
->>>>>>> upstream
 
 		if (this.upSpriteOnly)
 		{
@@ -394,7 +333,6 @@ class Note extends FlxSprite
 					noteJSON.sprites.up.note.flipX, noteJSON.sprites.up.note.flipY);
 				animation.play('Scroll');
 			}
-<<<<<<< HEAD
 
 			if (isSustainNote)
 			{
@@ -405,8 +343,6 @@ class Note extends FlxSprite
 			}
 			else
 				animOffset = noteJSON.sprites.up.note.offset;
-=======
->>>>>>> upstream
 		}
 		else
 		{
@@ -520,10 +456,6 @@ class Note extends FlxSprite
 			unblandNote(noteJSON.unblandWhat);
 
 		updateHitbox();
-<<<<<<< HEAD
-=======
-
->>>>>>> upstream
 		setGraphicSize(Std.int(width * this.setScale));
 
 		if (noteType != "hopeEngine/normal") // huh, normal notes have an offset of their own...
@@ -587,12 +519,9 @@ class Note extends FlxSprite
 
 		// sus note consistency bullshit
 
-<<<<<<< HEAD
 		if (downscroll && isSustainNote && flipY != downscroll)
 			flipY = downscroll;
 
-=======
->>>>>>> upstream
 		if (animation.curAnim != null && animation.curAnim.name.endsWith('hold'))
 		{
 			scale.y = Conductor.stepCrochet / 100 * (noteStyle != "pixel" ? 1.045 : 7.6) * Math.abs(PlayState.instance.globalScrollSpeed);

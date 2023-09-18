@@ -22,23 +22,15 @@ class Settings
 	public static var stationaryRatings:Bool = false;
 	public static var ratingPos:Array<Float> = [431.667, 365];
 	public static var comboPos:Array<Float> = [431.667, 515];
-<<<<<<< HEAD
 	public static var comboSprPos:Array<Float> = [581.667, 440];
 	public static var noteSplashes:Bool = true;
-=======
-	public static var noteSplashes:Bool = true;
-	public static var extensiveDisplay:Bool = false;
->>>>>>> upstream
 	public static var npsDisplay:Bool = false;
 	public static var healthBarColors:Bool = true;
 	public static var hideHealthIcons:Bool = false;
 	public static var posBarType:Int = 0;
-<<<<<<< HEAD
 	public static var hitsoundType:Int = 0;
 	public static var hitsoundVolume:Float = 0;
 	public static var consistencyBar:Bool = false;
-=======
->>>>>>> upstream
 
 	public static var flashing:Bool = true;
 	public static var distractions:Bool = true;
@@ -49,12 +41,9 @@ class Settings
 	public static var resumeCountdown:Bool = true;
 	public static var botplay:Bool = false;
 	public static var dynamicCamera:Float = 0;
-<<<<<<< HEAD
 	public static var videoCutscenes:Bool = false;
 	public static var freeplayModDisplays:Bool = true;
 	public static var antialiasing:Bool = true;
-=======
->>>>>>> upstream
 
 	public static var persistentVolume:Bool = true;
 	public static var autopause:Bool = true;
@@ -62,11 +51,8 @@ class Settings
 	public static var lastVolume:Float = 1;
 	public static var lastMuted:Bool = false;
 
-<<<<<<< HEAD
 	public static var extraDetails:Bool = false;
 
-=======
->>>>>>> upstream
 	// experimental
 	public static var difficultyVocals:Bool = false;
 
@@ -90,23 +76,15 @@ class Settings
 		stationaryRatings = FlxG.save.data.stationaryRatings;
 		ratingPos = FlxG.save.data.ratingPos;
 		comboPos = FlxG.save.data.comboPos;
-<<<<<<< HEAD
 		comboSprPos = FlxG.save.data.comboSprPos;
 		noteSplashes = FlxG.save.data.noteSplashes;
-=======
-		noteSplashes = FlxG.save.data.noteSplashes;
-		extensiveDisplay = FlxG.save.data.extensiveDisplay;
->>>>>>> upstream
 		npsDisplay = FlxG.save.data.npsDisplay;
 		healthBarColors = FlxG.save.data.healthBarColors;
 		hideHealthIcons = FlxG.save.data.hideHealthIcons;
 		posBarType = FlxG.save.data.posBarType;
-<<<<<<< HEAD
 		hitsoundType = FlxG.save.data.hitsoundType;
 		hitsoundVolume = FlxG.save.data.hitsoundVolume;
 		consistencyBar = FlxG.save.data.consistencyBar;
-=======
->>>>>>> upstream
 
 		///////////////////////////////////
 
@@ -119,12 +97,9 @@ class Settings
 		resumeCountdown = FlxG.save.data.resumeCountdown;
 		botplay = FlxG.save.data.botplay;
 		dynamicCamera = FlxG.save.data.dynamicCamera;
-<<<<<<< HEAD
 		videoCutscenes = FlxG.save.data.videoCutscenes;
 		freeplayModDisplays = FlxG.save.data.freeplayModDisplays;
 		antialiasing = FlxG.save.data.antialiasing;
-=======
->>>>>>> upstream
 		persistentVolume = FlxG.save.data.persistentVolume;
 		autopause = FlxG.save.data.autopause;
 		lastVolume = FlxG.save.data.lastVolume;
@@ -132,13 +107,10 @@ class Settings
 
 		///////////////////////////////////
 
-<<<<<<< HEAD
 		extraDetails = FlxG.save.data.extraDetails;
 
 		///////////////////////////////////
 
-=======
->>>>>>> upstream
 		difficultyVocals = FlxG.save.data.difficultyVocals;
 
 		FlxG.log.add("Settings loaded!");
@@ -166,23 +138,15 @@ class Settings
 		FlxG.save.data.stationaryRatings = stationaryRatings;
 		FlxG.save.data.ratingPos = ratingPos;
 		FlxG.save.data.comboPos = comboPos;
-<<<<<<< HEAD
 		FlxG.save.data.comboSprPos = comboSprPos;
 		FlxG.save.data.noteSplashes = noteSplashes;
-=======
-		FlxG.save.data.noteSplashes = noteSplashes;
-		FlxG.save.data.extensiveDisplay = extensiveDisplay;
->>>>>>> upstream
 		FlxG.save.data.npsDisplay = npsDisplay;
 		FlxG.save.data.healthBarColors = healthBarColors;
 		FlxG.save.data.hideHealthIcons = hideHealthIcons;
 		FlxG.save.data.posBarType = posBarType;
-<<<<<<< HEAD
 		FlxG.save.data.hitsoundType = hitsoundType;
 		FlxG.save.data.hitsoundVolume = hitsoundVolume;
 		FlxG.save.data.consistencyBar = consistencyBar;
-=======
->>>>>>> upstream
 
 		///////////////////////////////////
 
@@ -195,12 +159,9 @@ class Settings
 		FlxG.save.data.resumeCountdown = resumeCountdown;
 		FlxG.save.data.botplay = botplay;
 		FlxG.save.data.dynamicCamera = dynamicCamera;
-<<<<<<< HEAD
 		FlxG.save.data.videoCutscenes = videoCutscenes;
 		FlxG.save.data.freeplayModDisplays = freeplayModDisplays;
 		FlxG.save.data.antialiasing = antialiasing;
-=======
->>>>>>> upstream
 		FlxG.save.data.persistentVolume = persistentVolume;
 		FlxG.save.data.autopause = autopause;
 		FlxG.save.data.lastVolume = lastVolume;
@@ -208,13 +169,10 @@ class Settings
 
 		///////////////////////////////////
 
-<<<<<<< HEAD
 		FlxG.save.data.extraDetails = extraDetails;
 
 		///////////////////////////////////
 
-=======
->>>>>>> upstream
 		FlxG.save.data.difficultyVocals = difficultyVocals;
 
 		FlxG.save.flush();
@@ -269,21 +227,12 @@ class Settings
 		if (FlxG.save.data.comboPos == null)
 			FlxG.save.data.comboPos = comboPos;
 
-<<<<<<< HEAD
 		if (FlxG.save.data.comboSprPos == null)
 			FlxG.save.data.comboSprPos = comboSprPos;
 
 		if (FlxG.save.data.noteSplashes == null)
 			FlxG.save.data.noteSplashes = noteSplashes;
 
-=======
-		if (FlxG.save.data.noteSplashes == null)
-			FlxG.save.data.noteSplashes = noteSplashes;
-
-		if (FlxG.save.data.extensiveDisplay == null)
-			FlxG.save.data.extensiveDisplay = extensiveDisplay;
-
->>>>>>> upstream
 		if (FlxG.save.data.npsDisplay == null)
 			FlxG.save.data.npsDisplay = npsDisplay;
 
@@ -296,7 +245,6 @@ class Settings
 		if (FlxG.save.data.posBarType == null)
 			FlxG.save.data.posBarType = posBarType;
 
-<<<<<<< HEAD
 		if (FlxG.save.data.hitsoundType == null)
 			FlxG.save.data.hitsoundType = hitsoundType;
 
@@ -306,8 +254,6 @@ class Settings
 		if (FlxG.save.data.consistencyBar == null)
 			FlxG.save.data.consistencyBar = consistencyBar;
 
-=======
->>>>>>> upstream
 		///////////////////////////////////
 
 		if (FlxG.save.data.flashing == null)
@@ -337,7 +283,6 @@ class Settings
 		if (FlxG.save.data.dynamicCamera == null)
 			FlxG.save.data.dynamicCamera = dynamicCamera;
 
-<<<<<<< HEAD
 		if (FlxG.save.data.videoCutscenes == null)
 			FlxG.save.data.videoCutscenes = videoCutscenes;
 
@@ -347,8 +292,6 @@ class Settings
 		if (FlxG.save.data.antialiasing == null)
 			FlxG.save.data.antialiasing = antialiasing;
 
-=======
->>>>>>> upstream
 		if (FlxG.save.data.persistentVolume == null)
 			FlxG.save.data.persistentVolume = persistentVolume;
 
@@ -366,24 +309,18 @@ class Settings
 		if (FlxG.save.data.lastMuted == null)
 			FlxG.save.data.lastMuted = lastMuted;
 
-<<<<<<< HEAD
 		///////////////////////////////////
 
 		if (FlxG.save.data.extraDetails == null)
 			FlxG.save.data.extraDetails = extraDetails;
 
-=======
->>>>>>> upstream
 		// this is NULL?!?!?
 		if (FlxG.save.data.windowSettings == null)
 			FlxG.save.data.windowSettings = new Map<Dynamic, Dynamic>();
 
-<<<<<<< HEAD
 		if (FlxG.save.data.priority == null)
 			FlxG.save.data.priority = "hopeEngine";
 
-=======
->>>>>>> upstream
 		Conductor.recalculateTimings();
 		PlayerSettings.player1.controls.loadKeyBinds();
 		KeyBinds.keyCheck();
@@ -394,12 +331,8 @@ class Settings
 		load();
 		save();
 
-<<<<<<< HEAD
 		FlxG.updateFramerate = Settings.fpsCap;
 		FlxG.drawFramerate = Settings.fpsCap;
-=======
-		FlxG.updateFramerate = FlxG.drawFramerate = fpsCap;
->>>>>>> upstream
 		FlxG.autoPause = autopause;
 
 		if (Settings.persistentVolume)

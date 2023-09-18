@@ -52,33 +52,20 @@ class GitarooPause extends MusicBeatState
 
 	override function update(elapsed:Float)
 	{
-<<<<<<< HEAD
 		if (controls.UI_LEFT_P || controls.UI_RIGHT_P)
 			changeThing();
 
 		if (controls.UI_ACCEPT)
-=======
-		if (controls.LEFT_P || controls.RIGHT_P)
-			changeThing();
-
-		if (controls.ACCEPT)
->>>>>>> upstream
 		{
 			if (replaySelect)
 				LoadingState.loadAndSwitchState(new PlayState());
 			else
 			{
-<<<<<<< HEAD
 				CustomTransition.switchTo(new MainMenuState());
 				PlayState.openedCharting = false;
 				PlayState.startAt = 0;
 				Settings.botplay = false;
 				PlayState.seenCutscene = false;
-=======
-				FlxG.switchState(new MainMenuState());
-				PlayState.openedCharting = false;
-				Settings.botplay = false;
->>>>>>> upstream
 			}
 		}
 

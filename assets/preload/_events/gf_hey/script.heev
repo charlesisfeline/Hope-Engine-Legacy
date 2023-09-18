@@ -6,13 +6,9 @@ function trigger(params:Map<String, Dynamic>)
 	var bfHey:Bool = params.get("bfHey");
 	var dadHey:Bool = params.get("dadHey");
 
-<<<<<<< HEAD
 	if (gfHey && (gf.animation.curAnim.name == 'danceLeft'
 		|| gf.animation.curAnim.name == 'danceRight'
 		|| gf.animation.curAnim.name == 'idle'))
-=======
-	if (gfHey)
->>>>>>> upstream
 	{
 		gf.specialAnim = true;
 		gf.playAnim("hey", true);
@@ -32,7 +28,6 @@ function trigger(params:Map<String, Dynamic>)
 		dad.playAnim("hey", true);
 		dad.playAnim("cheer", true);
 	}
-<<<<<<< HEAD
 
 	new FlxTimer().start(Conductor.crochet / 1000, function(_) {
 		if (gf.specialAnim && (gf.animation.curAnim.name == 'hey' || gf.animation.curAnim.name == 'cheer'))
@@ -53,6 +48,4 @@ function trigger(params:Map<String, Dynamic>)
 			dad.dance();
 		}
 	});
-=======
->>>>>>> upstream
 }

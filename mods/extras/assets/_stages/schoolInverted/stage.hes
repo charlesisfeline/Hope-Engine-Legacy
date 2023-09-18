@@ -11,21 +11,10 @@ function createBackground()
     add(bg);
 }
 
-<<<<<<< HEAD
 function createForeground()
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
-=======
-function createForeground(bf:Character, gf:Character, dad:Character)
-{
-    // This happens AFTER BF and GF get put.
-    // Meaning sprites created here will be put INFRONT of the characters
-
-    // bf is Boyfriend/Player 1/Player
-    // gf is, well, Girlfriend
-    // dad is Dad/Player 2/Enemy
->>>>>>> upstream
 }
 
 function beatHit(curBeat:Int)

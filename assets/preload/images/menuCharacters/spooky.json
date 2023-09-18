@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"settings": {
 		"flipped": false,
 		"scale": 1
@@ -26,23 +25,4 @@
 		}
 	},
 	"character": "spooky"
-=======
-    "character" : "spooky",
-    "animations" : {
-        "danceLeft" : {
-            "prefix" : "idle0",
-            "indices" : [0, 2, 6],
-            "fps" : 12
-        },
-        "danceRight" : {
-            "prefix" : "idle0",
-            "indices" : [8, 10, 12, 14],
-            "fps" : 12
-        }
-    },
-    "settings" : {
-        "x" : 20,
-        "y" : 30
-    }
->>>>>>> upstream
 }

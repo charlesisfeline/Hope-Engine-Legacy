@@ -34,12 +34,9 @@ class ConfirmationPrompt extends MusicBeatSubstate
 	{
 		super();
 
-<<<<<<< HEAD
 		if (!FlxG.mouse.visible)
 			wasInvi = true;
 
-=======
->>>>>>> upstream
 		this.titleText = title;
 		this.descText = desc;
 		this.confirmDisplay = confirm;
@@ -48,10 +45,6 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		persistentDraw = true;
 		persistentUpdate = false;
 		FlxG.mouse.visible = true;
-<<<<<<< HEAD
-=======
-		usesMouse = true;
->>>>>>> upstream
 
 		this.confirmThing = confirmCallback;
 		this.denyThing = declineCallback;
@@ -117,12 +110,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 			var daAlpha = spr.alpha;
 			spr.alpha = 0;
-<<<<<<< HEAD
 			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2}, 0.3, {ease: FlxEase.backOut});
 			FlxTween.tween(spr, {alpha: daAlpha}, 0.3);
-=======
-			FlxTween.tween(spr, {"scale.x": spr.scale.x - 0.2, "scale.y": spr.scale.y - 0.2, alpha: daAlpha}, 0.3, {ease: FlxEase.backOut});
->>>>>>> upstream
 		});
 	}
 
@@ -140,18 +129,12 @@ class ConfirmationPrompt extends MusicBeatSubstate
 		}
 	}
 
-<<<<<<< HEAD
 	var wasInvi:Bool = false;
 
 	function confirm()
 	{
 		if (wasInvi)
 			FlxG.mouse.visible = false;
-=======
-	function confirm()
-	{
-		FlxG.mouse.visible = false;
->>>>>>> upstream
 
 		if (confirmThing != null)
 			confirmThing();
@@ -172,12 +155,8 @@ class ConfirmationPrompt extends MusicBeatSubstate
 
 	function deny()
 	{
-<<<<<<< HEAD
 		if (wasInvi)
 			FlxG.mouse.visible = false;
-=======
-		FlxG.mouse.visible = false;
->>>>>>> upstream
 
 		if (denyThing != null)
 			denyThing();

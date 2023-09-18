@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 #if FILESYSTEM
 package editors;
 
@@ -44,20 +43,11 @@ class MenuCharacterEditor extends MusicBeatState
 	var fakeGF:MenuCharacter;
 	var fakeBF:MenuCharacter;
 	
-=======
-package editors;
-
-import MenuCharacter.MenuCharacterJSON;
-
-class MenuCharacterEditor extends MusicBeatState
-{
->>>>>>> upstream
 	var _char:MenuCharacterJSON = {
 		character: "bf",
 		animations: {
 			idle: {
 				prefix: "idle0",
-<<<<<<< HEAD
 				indices: null,
 				fps: 24,
 				looped: false
@@ -67,39 +57,17 @@ class MenuCharacterEditor extends MusicBeatState
 				indices: null,
 				fps: 24,
 				looped: false
-=======
-				offset: null,
-				indices: null,
-				fps: null,
-				looped: null
-			},
-			hey: {
-				prefix: "hey0",
-				offset: null,
-				indices: null,
-				fps: null,
-				looped: null
->>>>>>> upstream
 			},
 			danceLeft: null,
 			danceRight: null
 		},
 		settings: {
-<<<<<<< HEAD
 			flipped: true,
 			scale: 1
 		}
 	}
 	
 	var yellowBG:FlxSprite;
-=======
-			x: 0,
-			y: -20,
-			flipped: true,
-			scale: null
-		}
-	}
->>>>>>> upstream
 
 	public function new(?char:MenuCharacterJSON)
 	{
@@ -109,7 +77,6 @@ class MenuCharacterEditor extends MusicBeatState
 			this._char = char;
 	}
 
-<<<<<<< HEAD
 	var originalWidth:Float = 1.0;
 
 	override function create() 
@@ -862,15 +829,3 @@ class MenuCharacterEditor extends MusicBeatState
 	}
 }
 #end
-=======
-	override function create()
-	{
-		super.create();
-	}
-
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
-	}
-}
->>>>>>> upstream

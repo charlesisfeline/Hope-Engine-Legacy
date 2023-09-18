@@ -52,13 +52,10 @@
 		0,
 		0
 	],
-<<<<<<< HEAD
 	"positionOffset": [
 		-503,
 		-21
 	],
-=======
->>>>>>> upstream
 	"antialiasing": true,
 	"name": "bf-car-dead",
 	"isDeath": true,

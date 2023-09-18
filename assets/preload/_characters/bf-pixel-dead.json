@@ -52,13 +52,10 @@
 		0,
 		0
 	],
-<<<<<<< HEAD
 	"positionOffset": [
 		-3,
 		27
 	],
-=======
->>>>>>> upstream
 	"antialiasing": false,
 	"name": "bf-pixel-dead",
 	"isDeath": true,

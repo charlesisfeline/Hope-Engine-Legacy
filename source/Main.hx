@@ -1,6 +1,5 @@
 package;
 
-<<<<<<< HEAD
 import flixel.input.mouse.FlxMouseEventManager;
 import achievements.Achievements;
 import flixel.FlxG;
@@ -10,18 +9,10 @@ import flixel.tweens.FlxTween;
 import haxe.CallStack;
 import lime.app.Application;
 import modifiers.Modifiers;
-=======
-import flixel.FlxG;
-import flixel.FlxGame;
-import flixel.FlxState;
-import flixel.graphics.FlxGraphic;
-import flixel.tweens.FlxTween;
->>>>>>> upstream
 import openfl.Assets;
 import openfl.Lib;
 import openfl.display.Sprite;
 import openfl.events.Event;
-<<<<<<< HEAD
 import openfl.events.UncaughtErrorEvent;
 import scripts.ScriptConsole;
 import stats.CustomFPS;
@@ -40,13 +31,6 @@ class Main extends Sprite
 	// whoever the fuck rewrote this wholly without warning
 	public static var mouseManager:FlxMouseEventManager;
 
-=======
-import stats.CustomFPS;
-import stats.CustomMEM;
-
-class Main extends Sprite
-{
->>>>>>> upstream
 	var gameWidth:Int = 1280; // Width of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var gameHeight:Int = 720; // Height of the game in pixels (might be less / more in actual pixels depending on your zoom).
 	var initialState:Class<FlxState> = TitleState; // The FlxState the game starts with.
@@ -107,30 +91,12 @@ class Main extends Sprite
 		initialState = TitleState;
 		#end
 
-<<<<<<< HEAD
 		game = new FlxGame(gameWidth, gameHeight, initialState, framerate, framerate, skipSplash, startFullscreen);
 
 		// FlxGraphic.defaultPersist = true;
 		addChild(game);
 		CustomTransition.init();
 		addChild(CustomTransition.trans);
-=======
-		game = new FlxGame(gameWidth, gameHeight, initialState, zoom, framerate, framerate, skipSplash, startFullscreen);
-
-		// FlxGraphic.defaultPersist = true;
-		addChild(game);
-
-		#if !mobile
-		fpsCounter = new CustomFPS(10, 3, 0xFFFFFF);
-		addChild(fpsCounter);
-
-		#if debug
-		var ramCount = new CustomMEM(10, 16, 0xffffff);
-		addChild(ramCount);
-		#end
-
-		toggleFPS(Settings.fps);
->>>>>>> upstream
 
 		FlxG.fixedTimestep = false;
 		FlxG.mouse.useSystemCursor = true;
@@ -140,7 +106,6 @@ class Main extends Sprite
 		PlayerSettings.init();
 		Settings.init();
 		Achievements.init();
-<<<<<<< HEAD
 		Modifiers.init();
 		signalsShit();
 
@@ -177,24 +142,12 @@ class Main extends Sprite
 		FlxG.plugins.add(mouseManager);
 	}
 	
-=======
-		autopauseMusicShit();
-		#end
-
-		// WHAT????
-		openfl.Assets.cache.enabled = !Settings.cacheImages && !Settings.cacheMusic;
-		
-		MainMenuState.hopeEngineVer = Assets.getText('version.awesome');
-	}
-
->>>>>>> upstream
 	var game:FlxGame;
 	var fpsCounter:CustomFPS;
 
 	public function toggleFPS(fpsEnabled:Bool):Void
 		fpsCounter.visible = fpsEnabled;
 
-<<<<<<< HEAD
 	public static function signalsShit():Void
 	{
 		FlxG.signals.focusGained.add(function()
@@ -229,17 +182,6 @@ class Main extends Sprite
 		{
 			if (CustomState.window != null)
 				CustomState.window.close();
-=======
-	public static function autopauseMusicShit():Void
-	{
-		FlxG.signals.focusGained.add(function() {
-			if (!Settings.autopause)
-				fadeIn();
-		});
-		FlxG.signals.focusLost.add(function() {
-			if (!Settings.autopause)
-				fadeOut();
->>>>>>> upstream
 		});
 	}
 
@@ -257,7 +199,6 @@ class Main extends Sprite
 		FlxTween.cancelTweensOf(FlxG.sound, ["volume"]);
 		FlxTween.tween(FlxG.sound, {volume: lmao}, 0.5);
 	}
-<<<<<<< HEAD
 
 	// hi izzy engine
 	// gedehari is a swag guy like fr
@@ -304,6 +245,4 @@ class Main extends Sprite
 		Application.current.window.alert(calls, "Error!");
 		Application.current.window.close();
 	}
-=======
->>>>>>> upstream
 }

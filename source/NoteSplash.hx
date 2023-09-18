@@ -1,6 +1,5 @@
 package;
 
-<<<<<<< HEAD
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
@@ -11,27 +10,6 @@ class NoteSplash extends FlxSprite
 {
 	public var strumNote:StaticArrow;
 	public var actualAlpha:Float = 0.6;
-=======
-import Character.Animation;
-import PlayState;
-import flixel.FlxG;
-import flixel.FlxSprite;
-import flixel.graphics.frames.FlxAtlasFrames;
-import flixel.math.FlxMath;
-import flixel.tweens.FlxTween;
-import flixel.util.FlxColor;
-import haxe.Json;
-
-using StringTools;
-
-#if FILESYSTEM
-import sys.io.File;
-#end
-
-class NoteSplash extends FlxSprite
-{
-	public var noteData:Int = 0;
->>>>>>> upstream
 
 	public static var swagWidth:Float = 160 * 0.7;
 	public static var PURP_NOTE:Int = 0;
@@ -43,7 +21,6 @@ class NoteSplash extends FlxSprite
 
 	public var onFinish:Void->Void;
 
-<<<<<<< HEAD
 	public var skin:FlxAtlasFrames;
 
 	public function new(?skin:FlxAtlasFrames)
@@ -75,26 +52,12 @@ class NoteSplash extends FlxSprite
 
 		animation.play("splash " + randy + " " + noteData);
 		centerOffsets();
-=======
-	public function new(noteData:Int, ?skin:FlxAtlasFrames, ?onFinish:Void->Void)
-	{
-		super();
-
-		this.onFinish = onFinish;
-
-		this.noteData = noteData;
-		frames = skin;
-
-		animation.addByPrefix("splash", dirs[noteData] + " splash", 24, false);
-		animation.play("splash");
->>>>>>> upstream
 	}
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
-<<<<<<< HEAD
 		if (strumNote != null)
 		{
 			angle = strumNote.angle;
@@ -104,8 +67,6 @@ class NoteSplash extends FlxSprite
 			y = strumNote.y + (strumNote.staticHeight / 2) - (height / 2);
 		}
 
-=======
->>>>>>> upstream
 		if (animation.curAnim != null)
 		{
 			if (animation.curAnim.finished)

@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"animations": {
 		"danceRight": null,
 		"danceLeft": null,
@@ -16,16 +15,4 @@
 		"flipped": false
 	},
 	"character": "dad"
-=======
-    "character" : "dad",
-    "animations" : {
-        "idle" : {
-            "prefix" : "idle0"
-        }
-    },
-    "settings" : {
-        "x" : -15,
-        "y" : 130
-    }
->>>>>>> upstream
 }

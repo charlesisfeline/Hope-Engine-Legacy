@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"canScore": false,
 	"scaleLockX": true,
 	"noHolds": true,
@@ -74,40 +73,4 @@
 		}
 	},
 	"angleLock": true
-=======
-    "name" : "Fire Note",
-    "assetName" : "FIRENOTE_assets",
-    "canMiss" : true,
-    "canScore" : false,
-    "upSpriteOnly" : false,
-    "offsetMultiplier" : [1, 1],
-    "noHolds" : true,
-    "scale" : 0.86,
-    "sprites" : {
-        "left" : {
-            "note" : {
-                "prefix" : "purple fire",
-                "offset" : [50, 65]
-            }
-        },
-        "down" : {
-            "note" : {
-                "prefix" : "blue fire",
-                "offset" : [50, 65]
-            }
-        },
-        "up" : {
-            "note" : {
-                "prefix" : "green fire",
-                "offset" : [50, 65]
-            }
-        },
-        "right" : {
-            "note" : {
-                "prefix" : "red fire",
-                "offset" : [50, 65]
-            }
-        }
-    }
->>>>>>> upstream
 }

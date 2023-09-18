@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
 	"settings": {
 		"flipped": false,
 		"scale": 1
@@ -15,17 +14,4 @@
 		"danceRight": null
 	},
 	"character": "senpai"
-=======
-    "character" : "senpai",
-    "animations" : {
-        "idle" : {
-            "prefix" : "idle0"
-        }
-    },
-    "settings" : {
-        "x" : -40,
-        "y" : -45,
-        "scale" : 1.4
-    }
->>>>>>> upstream
 }

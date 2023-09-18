@@ -1,11 +1,7 @@
 package;
 
 import Conductor.BPMChangeEvent;
-<<<<<<< HEAD
 import flixel.FlxSprite;
-=======
-import flixel.FlxG;
->>>>>>> upstream
 import flixel.FlxSubState;
 
 class MusicBeatSubstate extends FlxSubState
@@ -25,16 +21,12 @@ class MusicBeatSubstate extends FlxSubState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-<<<<<<< HEAD
 	override function create()
 	{
 		super.create();
 
 		updateAntialiasing();
 	}
-=======
-	var usesMouse:Bool = false;
->>>>>>> upstream
 
 	override function update(elapsed:Float)
 	{
@@ -48,15 +40,6 @@ class MusicBeatSubstate extends FlxSubState
 			stepHit();
 
 		super.update(elapsed);
-<<<<<<< HEAD
-=======
-
-		if (usesMouse)
-		{
-			if (FlxG.mouse.justMoved && !FlxG.mouse.visible)
-				FlxG.mouse.visible = true;
-		}
->>>>>>> upstream
 	}
 
 	private function updateCurStep():Void
@@ -85,7 +68,6 @@ class MusicBeatSubstate extends FlxSubState
 	{
 		// do literally nothing dumbass
 	}
-<<<<<<< HEAD
 
 	var antialiasedSprites:Array<FlxSprite> = [];
 
@@ -108,6 +90,4 @@ class MusicBeatSubstate extends FlxSubState
 			}
 		}, true);
 	}
-=======
->>>>>>> upstream
 }

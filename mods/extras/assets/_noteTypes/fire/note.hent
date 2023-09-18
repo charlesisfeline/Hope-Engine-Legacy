@@ -14,13 +14,8 @@ function onNoteHit(note)
     smoke.animation.finishCallback = function(name:String) { smoke.kill(); };
 
     var strumNote = playerStrums.members[note.noteData];
-<<<<<<< HEAD
     smoke.x =  strumNote.x + (strumNote.staticWidth / 2) - (smoke.width / 2);
     smoke.y =  strumNote.y + (strumNote.staticHeight / 2) - (smoke.height / 2);
-=======
-    smoke.x =  strumNote.x + (strumNote.width / 2) - (smoke.width / 2);
-    smoke.y =  strumNote.y + (strumNote.height / 2) - (smoke.height / 2);
->>>>>>> upstream
     
     add(smoke);
     smoke.cameras = [camHUD];

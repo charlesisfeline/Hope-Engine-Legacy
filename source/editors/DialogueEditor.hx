@@ -2,7 +2,6 @@ package editors;
 
 import DialogueSubstate.DialogueSettings;
 import flixel.FlxG;
-<<<<<<< HEAD
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUI;
@@ -44,15 +43,6 @@ class DialogueEditor extends MusicBeatState
 			duration: 0,
 			color: "000000"
 		},
-=======
-import flixel.addons.ui.FlxUITabMenu;
-
-class DialogueEditor extends MusicBeatState
-{
-	var UI_box:FlxUITabMenu;
-
-	var _settings:DialogueSettings = {
->>>>>>> upstream
 		bgMusic: {
 			name: "breakfast",
 			fadeIn: {
@@ -61,20 +51,11 @@ class DialogueEditor extends MusicBeatState
 				duration: 1
 			}
 		},
-<<<<<<< HEAD
 		type: "normal"
-=======
-		bg: {
-			alpha: 0.5,
-			duration: 0,
-			color: "000000"
-		}
->>>>>>> upstream
 	}
 
 	override function create()
 	{
-<<<<<<< HEAD
 		#if FILESYSTEM
 		Paths.destroyCustomImages();
 		Paths.clearCustomSoundCache();
@@ -141,15 +122,10 @@ class DialogueEditor extends MusicBeatState
 		{
 			obj.scrollFactor.set();
 		}, true);
-=======
-		FlxG.mouse.visible = true;
-		usesMouse = true;
->>>>>>> upstream
 
 		super.create();
 	}
 
-<<<<<<< HEAD
 	var colorInput:InputTextFix;
 	var colorPreview:FlxSprite;
 	var alphaInput:NumStepperFix;
@@ -691,10 +667,5 @@ class DialogueEditor extends MusicBeatState
 		_file = null;
 
 		FlxG.mouse.visible = true;
-=======
-	override function update(elapsed:Float)
-	{
-		super.update(elapsed);
->>>>>>> upstream
 	}
 }
