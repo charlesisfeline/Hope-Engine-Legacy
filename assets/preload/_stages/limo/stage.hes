@@ -3,6 +3,7 @@ var limo:FlxSprite;
 
 var fastCarCanDrive:Bool = true;
 
+<<<<<<< HEAD
 var bgLimo:FlxSprite;
 
 var dancers:Array<BackgroundDancer> = [];
@@ -11,6 +12,10 @@ var lights:Array<FlxSprite> = [];
 var lightX:Float = -1000;
 var lightMax:Float = 2000;
 
+=======
+var dancers:Array<BackgroundDancer> = [];
+
+>>>>>>> upstream
 function createBackground()
 {
     // This happens BEFORE BF and GF get put.
@@ -19,6 +24,7 @@ function createBackground()
     skyBG.scrollFactor.set(0.1, 0.1);
     add(skyBG);
 
+<<<<<<< HEAD
     if (Settings.extraDetails)
     {
         var lightAmount = 10;
@@ -35,11 +41,17 @@ function createBackground()
     }
 
     bgLimo = new FlxSprite(-200, 480);
+=======
+    var bgLimo:FlxSprite = new FlxSprite(-200, 480);
+>>>>>>> upstream
     bgLimo.frames = Paths.getSparrowAtlas('limo/bgLimo','week4');
     bgLimo.animation.addByPrefix('drive', "background limo pink", 24);
     bgLimo.animation.play('drive');
     bgLimo.scrollFactor.set(0.4, 0.4);
+<<<<<<< HEAD
     bgLimo.antialiasing = true;
+=======
+>>>>>>> upstream
     add(bgLimo);
 
     if (Settings.distractions)
@@ -53,6 +65,7 @@ function createBackground()
         }
     }
 
+<<<<<<< HEAD
     if (Settings.extraDetails)
     {
         var particleBackEmitter = new FlxEmitter(-400);
@@ -78,6 +91,8 @@ function createBackground()
         add(particleBackEmitter);
     }
 
+=======
+>>>>>>> upstream
     var limoTex = Paths.getSparrowAtlas('limo/limoDrive','week4');
 
     limo = new FlxSprite(-120, 550);
@@ -95,19 +110,35 @@ function createBackground()
     }
 }
 
+<<<<<<< HEAD
 function createForeground()
+=======
+function createForeground(bf:Character, gf:Character, dad:Character)
+>>>>>>> upstream
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
 
+<<<<<<< HEAD
     // and I quote
     // shitty layering, but it works
 
     remove(boyfriend);
+=======
+    // bf is Boyfriend/Player 1/Player
+    // gf is, well, Girlfriend
+    // dad is Dad/Player 2/Enemy
+
+    // and I quote
+    // shitty layering, but it works
+
+    remove(bf);
+>>>>>>> upstream
     remove(dad);
 
     add(limo);
 
+<<<<<<< HEAD
     add(boyfriend);
     add(dad);
 
@@ -138,6 +169,12 @@ function createForeground()
 var henchDying:Bool = false;
 var henchDied:Bool = false;
 
+=======
+    add(bf);
+    add(dad);
+}
+
+>>>>>>> upstream
 function beatHit(curBeat:Int)
 {
     // This happens when a beat is hit.
@@ -151,6 +188,7 @@ function beatHit(curBeat:Int)
         if (FlxG.random.bool(10) && fastCarCanDrive)
             fastCarDrive();
     }
+<<<<<<< HEAD
     
     if (Settings.extraDetails && song == 'MILF')
     {
@@ -200,6 +238,8 @@ function beatHit(curBeat:Int)
             bgLimo.acceleration.x = -8.2;
         }
     }
+=======
+>>>>>>> upstream
 }
 
 function stepHit(curStep:Int)
@@ -208,12 +248,16 @@ function stepHit(curStep:Int)
     // I don't actually know what this is useful for
 }
 
+<<<<<<< HEAD
 var lightTime:Float = 0;
 
+=======
+>>>>>>> upstream
 function onUpdate(elapsed:Float)
 {
     // This happens every frame.
     // Useful for checking key presses, and other things
+<<<<<<< HEAD
 
     if (Settings.extraDetails && !PlayState.paused)
     {
@@ -244,6 +288,8 @@ function onUpdate(elapsed:Float)
             lightTime = 0;
         }
     }
+=======
+>>>>>>> upstream
 }
 
 function resetFastCar():Void

@@ -18,7 +18,11 @@ typedef SwagSong =
 	var notes:Array<SwagSection>;
 	var bpm:Float;
 	var needsVoices:Bool;
+<<<<<<< HEAD
 	var speed:Null<Float>;
+=======
+	var speed:Float;
+>>>>>>> upstream
 
 	var player1:String;
 	var player2:String;
@@ -52,7 +56,11 @@ class Song
 	public static function loadFromJson(jsonInput:String, ?folder:String, ?mod:String = ""):SwagSong
 	{
 		// pre lowercasing the song name (update)
+<<<<<<< HEAD
 		var folderLowercase = Paths.toSongPath(folder);
+=======
+		var folderLowercase = StringTools.replace(folder, " ", "-").toLowerCase();
+>>>>>>> upstream
 
 		trace('loading ' + folderLowercase + '/' + jsonInput.toLowerCase());
 

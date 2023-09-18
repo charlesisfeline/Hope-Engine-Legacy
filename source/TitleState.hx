@@ -1,5 +1,6 @@
 package;
 
+<<<<<<< HEAD
 import shaders.LensDistortion;
 import Discord.DiscordClient;
 import achievements.Achievements;
@@ -7,6 +8,19 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
+=======
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
+import flixel.addons.transition.FlxTransitionableState;
+import flixel.addons.transition.TransitionData;
+import flixel.graphics.FlxGraphic;
+import flixel.group.FlxGroup;
+import flixel.input.gamepad.FlxGamepad;
+import flixel.input.keyboard.FlxKey;
+import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
+>>>>>>> upstream
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import hopeUI.HopeTitle;
@@ -15,21 +29,32 @@ import openfl.Assets;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
 import openfl.filters.ShaderFilter;
+<<<<<<< HEAD
+=======
+import shaders.Grain;
+import shaders.Mosaic;
+>>>>>>> upstream
 
 using StringTools;
 
 #if desktop
 import Discord.DiscordClient;
 #end
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream
 #if FILESYSTEM
 import sys.FileSystem;
 #end
 
+<<<<<<< HEAD
 // #if VIDEOS_ALLOWED
 // import vlc.MP4Handler;
 // #end
 
+=======
+>>>>>>> upstream
 class TitleState extends MusicBeatState
 {
 	static var initialized:Bool = false;
@@ -40,6 +65,7 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 	var wackyImage:FlxSprite;
 
+<<<<<<< HEAD
 	// version
 	public static var requestedVersion:Null<String> = null;
 
@@ -76,6 +102,28 @@ class TitleState extends MusicBeatState
 		{
 			if (skinName.trim() == 'default')
 				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+=======
+	var code:Array<FlxKey> = [H, O, P, E];
+	var typed:Array<FlxKey> = [];
+
+	// version
+	var requestedVersion:Null<String> = null;
+
+	override public function create():Void
+	{
+		#if FILESYSTEM
+		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
+			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
+
+		if (!FileSystem.exists(Sys.getCwd() + "/mods"))
+			FileSystem.createDirectory(Sys.getCwd() + "/mods");
+
+		// quick check
+		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/assets/skins"))
+		{
+			if (skinName.trim() == 'default')
+				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+>>>>>>> upstream
 					function()
 					{
 						Sys.exit(0);
@@ -85,14 +133,22 @@ class TitleState extends MusicBeatState
 		for (mod in FileSystem.readDirectory(Sys.getCwd() + "/mods"))
 		{
 			if (mod.trim().toLowerCase() == 'hopeengine')
+<<<<<<< HEAD
 				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+=======
+				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+>>>>>>> upstream
 					function()
 					{
 						Sys.exit(0);
 					}));
 
 			if (mod.trim().toLowerCase() == 'none')
+<<<<<<< HEAD
 				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+=======
+				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+>>>>>>> upstream
 					function()
 					{
 						Sys.exit(0);
@@ -122,7 +178,10 @@ class TitleState extends MusicBeatState
 		{
 			Settings.lastVolume = FlxG.sound.volume;
 			Settings.lastMuted = FlxG.sound.muted;
+<<<<<<< HEAD
 			Settings.botplay = false;
+=======
+>>>>>>> upstream
 
 			Settings.save();
 			Achievements.save();
@@ -146,6 +205,7 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
+<<<<<<< HEAD
 			// var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
 			// diamond.persist = true;
 			// diamond.destroyOnNoUse = false;
@@ -157,12 +217,29 @@ class TitleState extends MusicBeatState
 
 			// transIn = FlxTransitionableState.defaultTransIn;
 			// transOut = FlxTransitionableState.defaultTransOut;
+=======
+			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
+			diamond.persist = true;
+			diamond.destroyOnNoUse = false;
+
+			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, -1),
+				{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
+			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1),
+				{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
+
+			transIn = FlxTransitionableState.defaultTransIn;
+			transOut = FlxTransitionableState.defaultTransOut;
+>>>>>>> upstream
 
 			// HAD TO MODIFY SOME BACKEND SHIT
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
+<<<<<<< HEAD
 			#if (FILESYSTEM && MODS_FEATURE)
+=======
+			#if FILESYSTEM
+>>>>>>> upstream
 			var prevMod = Paths.currentMod;
 
 			for (mod in FileSystem.readDirectory('mods'))
@@ -182,7 +259,11 @@ class TitleState extends MusicBeatState
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 			});
 
+<<<<<<< HEAD
 			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/main/version.awesome');
+=======
+			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/master/version.awesome');
+>>>>>>> upstream
 
 			http.onData = function(data:String)
 			{
@@ -273,13 +354,20 @@ class TitleState extends MusicBeatState
 
 	var hahaArray:Array<Array<BitmapFilter>> = [
 		[],
+<<<<<<< HEAD
 		[new ShaderFilter(new shaders.VCR())],
+=======
+		[new ShaderFilter(new shaders.CRTCurve())],
+>>>>>>> upstream
 		[new ShaderFilter(new shaders.ChromaticAberration())],
 		[new ShaderFilter(new shaders.Grain(1.0))],
 		[new ShaderFilter(new shaders.Hq2x())],
 		[new ShaderFilter(new shaders.Mosaic(8, 8))],
 		[new ShaderFilter(new shaders.Scanline(2.0))],
+<<<<<<< HEAD
 		[new ShaderFilter(new shaders.LensDistortion())],
+=======
+>>>>>>> upstream
 		[
 			new ColorMatrixFilter([
 				-1,  0,  0, 0, 255,
@@ -291,6 +379,7 @@ class TitleState extends MusicBeatState
 	];
 
 	var curFilter:Int = 0;
+<<<<<<< HEAD
 	var swing:Bool = FlxG.random.bool(0.004);
 
 	var typed:String = "";
@@ -305,13 +394,25 @@ class TitleState extends MusicBeatState
 		if (swing)
 			logoBl.angle = Math.sin(FlxG.game.ticks / 500) * -5;
 
+=======
+
+	override function update(elapsed:Float)
+	{
+>>>>>>> upstream
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
+<<<<<<< HEAD
 		if (FlxG.keys.justPressed.F4)
+=======
+		if (FlxG.keys.justPressed.G)
+			FlxG.switchState(new hopeUI.HopeTitle());
+
+		if (FlxG.keys.justPressed.F3)
+>>>>>>> upstream
 		{
 			curFilter++;
 
@@ -324,7 +425,45 @@ class TitleState extends MusicBeatState
 			FlxG.game.setFilters(hahaArray[curFilter]);
 		}
 
+<<<<<<< HEAD
 		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.UI_ACCEPT;
+=======
+		if (FlxG.keys.anyJustPressed([ANY]))
+		{
+			typed.push(cast FlxG.keys.firstJustPressed());
+
+			var cur = 0;
+			
+			for (key in typed) 
+			{
+				var curKey = code[cur];
+
+				if (key != curKey)
+				{
+					for (k in typed)
+						typed.remove(k);
+
+					break;
+				}
+
+				cur++;
+			}
+
+			if (typed.length == code.length)
+			{
+				FlxG.sound.music.volume = 0;
+				var a = FlxG.sound.play(Paths.sound("titleShoot"), 0.6).length / 1000;
+				
+				FlxG.camera.flash(FlxColor.WHITE, a, true);
+				FlxG.camera.fade(0xff000000, a);
+				new FlxTimer().start(a, function(tmr:FlxTimer) {
+					FlxG.switchState(new HopeTitle());	
+				});
+			}
+		}
+
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
+>>>>>>> upstream
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -350,6 +489,7 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.R)
 		{
 			if (FlxG.keys.pressed.CONTROL)
+<<<<<<< HEAD
 			{
 				FlxG.resetGame();
 				initialized = false;
@@ -388,6 +528,9 @@ class TitleState extends MusicBeatState
 			}
 			else
 				typed = '';
+=======
+				FlxG.resetGame();
+>>>>>>> upstream
 		}
 
 		if (pressedEnter && !transitioning && skippedIntro)
@@ -413,6 +556,7 @@ class TitleState extends MusicBeatState
 					if (MainMenuState.hopeEngineVer.trim() < requestedVersion.trim())
 					{
 						trace("\noutdated lmao! currently at: " + MainMenuState.hopeEngineVer.trim() + "\nlatest: " + requestedVersion.trim());
+<<<<<<< HEAD
 						CustomTransition.switchTo(new OutdatedState());
 					}
 					else
@@ -421,6 +565,16 @@ class TitleState extends MusicBeatState
 				else
 				#end
 				CustomTransition.switchTo(new MainMenuState());
+=======
+						FlxG.switchState(new OutdatedState());
+					}
+					else
+						FlxG.switchState(new MainMenuState());
+				}
+				else
+				#end
+				FlxG.switchState(new MainMenuState());
+>>>>>>> upstream
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}

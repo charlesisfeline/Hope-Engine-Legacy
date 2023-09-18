@@ -2,6 +2,7 @@
 <TextureAtlas imagePath="pixel_splashes.png">
 	<!-- Created with Adobe Animate version 18.0.1.115 -->
 	<!-- http://www.adobe.com/products/animate.html -->
+<<<<<<< HEAD
 	<SubTexture name="blue splash 10000" x="133" y="213" width="15" height="18" frameX="-12" frameY="-13" frameWidth="39" frameHeight="44"/>
 	<SubTexture name="blue splash 10001" x="223" y="5" width="21" height="28" frameX="-9" frameY="-9" frameWidth="39" frameHeight="44"/>
 	<SubTexture name="blue splash 10002" x="83" y="142" width="31" height="35" frameX="-4" frameY="-5" frameWidth="39" frameHeight="44"/>
@@ -42,4 +43,26 @@
 	<SubTexture name="red splash 20002" x="69" y="182" width="27" height="33" frameX="-5" frameY="-5" frameWidth="37" frameHeight="42"/>
 	<SubTexture name="red splash 20003" x="5" y="101" width="34" height="39" frameX="-1" frameY="-2" frameWidth="37" frameHeight="42"/>
 	<SubTexture name="red splash 20004" x="5" y="54" width="37" height="42"/>
+=======
+	<SubTexture name="blue splash0000" x="0" y="0" width="39" height="43"/>
+	<SubTexture name="blue splash0001" x="39" y="0" width="39" height="43"/>
+	<SubTexture name="blue splash0002" x="81" y="0" width="39" height="43"/>
+	<SubTexture name="blue splash0003" x="121" y="0" width="39" height="43"/>
+	<SubTexture name="blue splash0004" x="0" y="44" width="39" height="43"/>
+	<SubTexture name="green splash0000" x="39" y="44" width="39" height="43"/>
+	<SubTexture name="green splash0001" x="81" y="44" width="39" height="43"/>
+	<SubTexture name="green splash0002" x="121" y="44" width="39" height="43"/>
+	<SubTexture name="green splash0003" x="0" y="89" width="39" height="43"/>
+	<SubTexture name="green splash0004" x="39" y="89" width="39" height="43"/>
+	<SubTexture name="purple splash0000" x="81" y="89" width="39" height="43"/>
+	<SubTexture name="purple splash0001" x="121" y="89" width="39" height="43"/>
+	<SubTexture name="purple splash0002" x="0" y="133" width="39" height="43"/>
+	<SubTexture name="purple splash0003" x="39" y="133" width="39" height="43"/>
+	<SubTexture name="purple splash0004" x="81" y="133" width="39" height="43"/>
+	<SubTexture name="red splash0000" x="121" y="133" width="39" height="43"/>
+	<SubTexture name="red splash0001" x="0" y="177" width="39" height="43"/>
+	<SubTexture name="red splash0002" x="39" y="177" width="39" height="43"/>
+	<SubTexture name="red splash0003" x="81" y="177" width="39" height="43"/>
+	<SubTexture name="red splash0004" x="121" y="177" width="39" height="43"/>
+>>>>>>> upstream
 </TextureAtlas>

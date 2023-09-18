@@ -1,6 +1,9 @@
 package options;
 
+<<<<<<< HEAD
 import AlphabetRedux;
+=======
+>>>>>>> upstream
 import Checkbox.CheckBox;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -10,7 +13,11 @@ import flixel.util.FlxColor;
 
 class Option extends FlxSpriteGroup
 {
+<<<<<<< HEAD
 	public var alphaDisplay:AlphaReduxLine;
+=======
+	public var alphaDisplay:Alphabet;
+>>>>>>> upstream
 	public var display:String = '';
 	public var desc:String = '';
 	public var targetY:Float = 0.0;
@@ -23,7 +30,11 @@ class Option extends FlxSpriteGroup
 		this.display = display;
 		this.desc = desc;
 
+<<<<<<< HEAD
 		alphaDisplay = new AlphaReduxLine(0, 0, display, false);
+=======
+		alphaDisplay = new Alphabet(0, 0, display, false);
+>>>>>>> upstream
 		this.add(alphaDisplay);
 	}
 
@@ -56,13 +67,21 @@ class OptionCategory extends FlxSpriteGroup
 {
 	public var name:String;
 	public var options:Array<Option>;
+<<<<<<< HEAD
 	public var alphaDisplay:AlphaReduxLine;
+=======
+	public var alphaDisplay:Alphabet;
+>>>>>>> upstream
 
 	public function new(name:String, options:Array<Option>)
 	{
 		super();
 
+<<<<<<< HEAD
 		this.alphaDisplay = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
+=======
+		this.alphaDisplay = new Alphabet(0, 0, name, true);
+>>>>>>> upstream
 		this.name = name;
 		this.options = options;
 
@@ -84,7 +103,11 @@ class StateCategory extends OptionCategory
 
 	override function press()
 	{
+<<<<<<< HEAD
 		CustomTransition.switchTo(Type.createInstance(Type.getClass(state), []));
+=======
+		FlxG.switchState(state);
+>>>>>>> upstream
 	}
 }
 
@@ -100,7 +123,11 @@ class StateOption extends Option
 
 	override function press()
 	{
+<<<<<<< HEAD
 		CustomTransition.switchTo(state);
+=======
+		FlxG.switchState(state);
+>>>>>>> upstream
 	}
 }
 
@@ -114,7 +141,11 @@ class OptionSubCategoryTitle extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
+<<<<<<< HEAD
 		alphaDisplay = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
+=======
+		alphaDisplay = new Alphabet(0, 0, name, true);
+>>>>>>> upstream
 		add(alphaDisplay);
 
 		alphaDisplay.color = color;
@@ -190,9 +221,12 @@ class ValueOptionFloat extends Option
 		else
 			Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) - (increment * funneMultiplier), precision));
 
+<<<<<<< HEAD
 		if (onChange != null)
 			onChange();
 
+=======
+>>>>>>> upstream
 		updateDisplay();
 	}
 
@@ -203,9 +237,12 @@ class ValueOptionFloat extends Option
 		else
 			Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) + (increment * funneMultiplier), precision));
 
+<<<<<<< HEAD
 		if (onChange != null)
 			onChange();
 
+=======
+>>>>>>> upstream
 		updateDisplay();
 	}
 
@@ -219,10 +256,13 @@ class ValueOptionFloat extends Option
 		if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
 		{
 			Reflect.setField(Settings, theNumber, resetValue);
+<<<<<<< HEAD
 
 			if (onChange != null)
 				onChange();
 			
+=======
+>>>>>>> upstream
 			updateDisplay();
 		}
 
@@ -235,8 +275,16 @@ class ValueOptionFloat extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
+<<<<<<< HEAD
 		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
 		add(alphaDisplay);
+=======
+		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		add(alphaDisplay);
+
+		if (onChange != null)
+			onChange();
+>>>>>>> upstream
 	}
 }
 
@@ -276,9 +324,12 @@ class ValueOptionInt extends Option
 		else
 			Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) - (increment * funneMultiplier));
 
+<<<<<<< HEAD
 		if (onChange != null)
 			onChange();
 
+=======
+>>>>>>> upstream
 		updateDisplay();
 	}
 
@@ -289,9 +340,12 @@ class ValueOptionInt extends Option
 		else
 			Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) + (increment * funneMultiplier));
 
+<<<<<<< HEAD
 		if (onChange != null)
 			onChange();
 
+=======
+>>>>>>> upstream
 		updateDisplay();
 	}
 
@@ -305,10 +359,13 @@ class ValueOptionInt extends Option
 		if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
 		{
 			Reflect.setField(Settings, theNumber, resetValue);
+<<<<<<< HEAD
 
 			if (onChange != null)
 				onChange();
 
+=======
+>>>>>>> upstream
 			updateDisplay();
 		}
 
@@ -321,8 +378,16 @@ class ValueOptionInt extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
+<<<<<<< HEAD
 		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
 		add(alphaDisplay);
+=======
+		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		add(alphaDisplay);
+
+		if (onChange != null)
+			onChange();
+>>>>>>> upstream
 	}
 }
 
@@ -331,15 +396,23 @@ class SelectionOption extends Option
 	var theType:String;
 	var curSelected:Int;
 	var types:Array<String>;
+<<<<<<< HEAD
 	var onChange:Void->Void;
 
 	public function new(display:String, desc:String, typeToChange:String, types:Array<String>, ?onChange:Void->Void)
+=======
+
+	public function new(display:String, desc:String, typeToChange:String, types:Array<String>)
+>>>>>>> upstream
 	{
 		super(display, desc);
 
 		theType = typeToChange;
 		this.types = types;
+<<<<<<< HEAD
 		this.onChange = onChange;
+=======
+>>>>>>> upstream
 
 		updateDisplay();
 
@@ -350,17 +423,23 @@ class SelectionOption extends Option
 	override function left()
 	{
 		changeSelection(-1);
+<<<<<<< HEAD
 
 		if (onChange != null)
 			onChange();
+=======
+>>>>>>> upstream
 	}
 
 	override function right()
 	{
 		changeSelection(1);
+<<<<<<< HEAD
 
 		if (onChange != null)
 			onChange();
+=======
+>>>>>>> upstream
 	}
 
 	function updateDisplay()
@@ -369,7 +448,11 @@ class SelectionOption extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
+<<<<<<< HEAD
 		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
+=======
+		alphaDisplay = new Alphabet(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
+>>>>>>> upstream
 		add(alphaDisplay);
 	}
 
@@ -377,6 +460,12 @@ class SelectionOption extends Option
 	{
 		curSelected += huh;
 
+<<<<<<< HEAD
+=======
+		if (huh != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+
+>>>>>>> upstream
 		if (curSelected < 0)
 			curSelected = types.length - 1;
 		if (curSelected > types.length - 1)

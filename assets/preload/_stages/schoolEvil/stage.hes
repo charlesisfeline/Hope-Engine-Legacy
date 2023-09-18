@@ -11,16 +11,26 @@ function createBackground()
     add(bg);
 }
 
+<<<<<<< HEAD
 function createForeground()
+=======
+function createForeground(bf:Character, gf:Character, dad:Character)
+>>>>>>> upstream
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
 
+<<<<<<< HEAD
     var evilTrail = new FlxTrail(dad, null, 4, 24, 0.3, 0.069);
 
     remove(dad);
     add(evilTrail);
     add(dad);
+=======
+    // bf is Boyfriend/Player 1/Player
+    // gf is, well, Girlfriend
+    // dad is Dad/Player 2/Enemy
+>>>>>>> upstream
 }
 
 function beatHit(curBeat:Int)

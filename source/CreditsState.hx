@@ -1,6 +1,9 @@
 package;
 
+<<<<<<< HEAD
 import editors.CreditsEditor;
+=======
+>>>>>>> upstream
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
@@ -14,6 +17,7 @@ import lime.utils.Assets;
 #if desktop
 import Discord.DiscordClient;
 #end
+<<<<<<< HEAD
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -35,6 +39,8 @@ typedef Credit =
 	@:optional var iconAntialiasing:Null<Bool>;
 	@:optional @:noCompletion var funnyMod:String;
 }
+=======
+>>>>>>> upstream
 
 class CreditsState extends MusicBeatState
 {
@@ -48,6 +54,7 @@ class CreditsState extends MusicBeatState
 
 	override function create()
 	{
+<<<<<<< HEAD
 		if (Paths.priorityMod != "hopeEngine")
 		{
 			if (Paths.exists(Paths.state("CreditsState")))
@@ -65,6 +72,8 @@ class CreditsState extends MusicBeatState
 		else
 			Paths.setCurrentMod(Paths.priorityMod);
 
+=======
+>>>>>>> upstream
 		#if desktop
 		DiscordClient.changePresence("Credits", null);
 		#end
@@ -74,7 +83,11 @@ class CreditsState extends MusicBeatState
 		Paths.clearCustomSoundCache();
 		#end
 
+<<<<<<< HEAD
 		menuBG = new FlxBackdrop(Paths.image('credBG'), Y);
+=======
+		menuBG = new FlxBackdrop(Paths.image('credBG'), 1, 1, false);
+>>>>>>> upstream
 		menuBG.screenCenter(X);
 		menuBG.antialiasing = true;
 		menuBG.color = 0xff3e3040;
@@ -97,6 +110,7 @@ class CreditsState extends MusicBeatState
 
 		descBackground.setPosition(descriptionShit.x - 4, descriptionShit.y - 4);
 
+<<<<<<< HEAD
 		var credits:Array<CreditCategory> = cast Json.parse(Assets.getText(Paths.json('credits')));
 		var creditsGet:Array<CreditCategory> = [];
 
@@ -128,6 +142,9 @@ class CreditsState extends MusicBeatState
 
 		for (cat in creditsGet)
 			credits.insert(0, cat);
+=======
+		var credits:Array<Dynamic> = Json.parse(Assets.getText(Paths.json('credits')));
+>>>>>>> upstream
 
 		for (i in 0...credits.length)
 		{
@@ -142,7 +159,12 @@ class CreditsState extends MusicBeatState
 
 			allTheShit.push([curCategory.categoryName, "", ""]);
 
+<<<<<<< HEAD
 			for (i2 in 0...curCategory.categoryItems.length)
+=======
+			var catItems:Array<Dynamic> = curCategory.categoryItems;
+			for (i2 in 0...catItems.length)
+>>>>>>> upstream
 			{
 				var curCredit = curCategory.categoryItems[i2];
 
@@ -153,6 +175,7 @@ class CreditsState extends MusicBeatState
 				credLabel.screenCenter(X);
 				alphabets.add(credLabel);
 
+<<<<<<< HEAD
 				if (curCredit.icon != null)
 				{
 					Paths.setCurrentMod(null);
@@ -167,18 +190,27 @@ class CreditsState extends MusicBeatState
 					credLabel.screenCenter(X);
 				}
 
+=======
+>>>>>>> upstream
 				allTheShit.push([
 					curCredit.name,
 					(curCredit.desc == null ? "" : curCredit.desc),
 					(curCredit.link == null ? "" : curCredit.link),
+<<<<<<< HEAD
 					(curCredit.tint == null ? "3e3040" : curCredit.tint),
 					(curCredit.icon == null ? "" : curCredit.icon),
+=======
+					(curCredit.tint == null ? "3e3040" : curCredit.tint)
+>>>>>>> upstream
 				]);
 			}
 		}
 
+<<<<<<< HEAD
 		Paths.setCurrentMod(prevMod);
 
+=======
+>>>>>>> upstream
 		changeSelection();
 		if (alphabets.members[curSelected].isBold)
 			changeSelection(1);
@@ -188,6 +220,7 @@ class CreditsState extends MusicBeatState
 
 	var bgTargetY:Float = 0;
 
+<<<<<<< HEAD
 	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
 
 	override function update(elapsed:Float)
@@ -195,43 +228,69 @@ class CreditsState extends MusicBeatState
 		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
 			return;
 		
+=======
+	override function update(elapsed:Float)
+	{
+>>>>>>> upstream
 		super.update(elapsed);
 
 		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, Helper.boundTo(elapsed * 9.6, 0, 1));
 
+<<<<<<< HEAD
 		if (FlxG.keys.justPressed.SEVEN)
 			CustomTransition.switchTo(new editors.CreditsEditor());
 
 		if (controls.UI_UP_P)
+=======
+		if (controls.UP_P)
+>>>>>>> upstream
 		{
 			changeSelection(-1);
 			if (alphabets.members[curSelected].isBold)
 				changeSelection(-1);
 		}
 
+<<<<<<< HEAD
 		if (controls.UI_DOWN_P)
+=======
+		if (controls.DOWN_P)
+>>>>>>> upstream
 		{
 			changeSelection(1);
 			if (alphabets.members[curSelected].isBold)
 				changeSelection(1);
 		}
 
+<<<<<<< HEAD
 		if (controls.UI_ACCEPT)
+=======
+		if (controls.ACCEPT)
+>>>>>>> upstream
 		{
 			if (allTheShit[curSelected][2] != "")
 				fancyOpenURL(allTheShit[curSelected][2]);
 		}
 
+<<<<<<< HEAD
 		if (controls.UI_BACK)
 		{
 			CustomTransition.switchTo(new MainMenuState());
+=======
+		if (controls.BACK)
+		{
+			FlxG.switchState(new MainMenuState());
+>>>>>>> upstream
 		}
 	}
 
 	function changeSelection(change:Int = 0)
 	{
+<<<<<<< HEAD
 		if (change != 0)
 			FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+=======
+		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+>>>>>>> upstream
 
 		curSelected += change;
 

@@ -1,6 +1,9 @@
 package hopeUI;
 
+<<<<<<< HEAD
 import achievements.Achievements;
+=======
+>>>>>>> upstream
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -14,7 +17,11 @@ import flixel.util.FlxGradient;
 
 using StringTools;
 
+<<<<<<< HEAD
 class HopeMainMenu extends MusicBeatState
+=======
+class HopeMainMenu extends MusicBeatState 
+>>>>>>> upstream
 {
 	var optionShit:Array<String> = [
 		'story mode',
@@ -24,6 +31,7 @@ class HopeMainMenu extends MusicBeatState
 		'credits',
 		'options'
 	];
+<<<<<<< HEAD
 
 	var fuckingStupid:Array<Float> = [];
 	var menuItems:FlxSpriteGroup;
@@ -32,6 +40,16 @@ class HopeMainMenu extends MusicBeatState
 	var camPos:FlxObject;
 
 	override function create()
+=======
+	
+	var fuckingStupid:Array<Float> = [];
+	var menuItems:FlxSpriteGroup;
+	var curSelected:Int = 0;
+	var camFollow:FlxObject;
+	var camPos:FlxObject;
+
+	override function create() 
+>>>>>>> upstream
 	{
 		var bg = new FlxBackdrop(Paths.image('hopeUI/bgInvert'), 1, 1, false);
 		bg.screenCenter(X);
@@ -39,12 +57,15 @@ class HopeMainMenu extends MusicBeatState
 		bg.scrollFactor.set(0, 0.1);
 		add(bg);
 
+<<<<<<< HEAD
 		var overlay = new FlxBackdrop(Paths.image("hopeUI/genericCheckeredOverlay"));
 		overlay.velocity.set(120, -120);
 		overlay.scale.set(2, 2);
 		overlay.alpha = 0.3;
 		add(overlay);
 
+=======
+>>>>>>> upstream
 		var gradi = FlxGradient.createGradientFlxSprite(FlxG.width, FlxG.height, [0xffad34ff, FlxColor.TRANSPARENT], 1, 180);
 		gradi.scrollFactor.set();
 		gradi.screenCenter();
@@ -111,9 +132,12 @@ class HopeMainMenu extends MusicBeatState
 
 	function changeItem(huh:Int = 0)
 	{
+<<<<<<< HEAD
 		if (huh != 0)
 			FlxG.sound.play(Paths.sound('scrollMenu'));
 		
+=======
+>>>>>>> upstream
 		curSelected += huh;
 
 		if (curSelected >= menuItems.length)
@@ -127,6 +151,10 @@ class HopeMainMenu extends MusicBeatState
 
 			if (spr.ID == curSelected)
 			{
+<<<<<<< HEAD
+=======
+				FlxG.sound.play(Paths.sound('scrollMenu'));
+>>>>>>> upstream
 				camFollow.setPosition(spr.x + (FlxG.width * 0.45), spr.getGraphicMidpoint().y);
 				spr.animation.play('selected');
 			}
@@ -141,11 +169,18 @@ class HopeMainMenu extends MusicBeatState
 	{
 		selected = true;
 		FlxG.sound.play(Paths.sound("confirmMenu"));
+<<<<<<< HEAD
 
 		FlxTween.tween(FlxG.camera, {zoom: 1.1}, 1, {
 			ease: FlxEase.sineInOut,
 			onComplete: function(twn:FlxTween)
 			{
+=======
+		
+		FlxTween.tween(FlxG.camera, {zoom: 1.1}, 1, {
+			ease: FlxEase.sineInOut,
+			onComplete: function(twn:FlxTween) {
+>>>>>>> upstream
 				goToState();
 			}
 		});
@@ -166,11 +201,19 @@ class HopeMainMenu extends MusicBeatState
 		switch (lma)
 		{
 			case "story mode":
+<<<<<<< HEAD
 				CustomTransition.switchTo(new StoryMenuState());
 		}
 	}
 
 	override function update(elapsed:Float)
+=======
+				FlxG.switchState(new StoryMenuState());
+		}
+	}
+
+	override function update(elapsed:Float) 
+>>>>>>> upstream
 	{
 		super.update(elapsed);
 
@@ -186,6 +229,7 @@ class HopeMainMenu extends MusicBeatState
 
 		if (!selected)
 		{
+<<<<<<< HEAD
 			if (controls.UI_UP_P)
 				changeItem(-1);
 
@@ -196,6 +240,18 @@ class HopeMainMenu extends MusicBeatState
 				CustomTransition.switchTo(new HopeTitle());
 
 			if (controls.UI_ACCEPT)
+=======
+			if (controls.UP_P)
+				changeItem(-1);
+	
+			if (controls.DOWN_P)
+				changeItem(1);
+	
+			if (controls.BACK)
+				FlxG.switchState(new HopeTitle());
+	
+			if (controls.ACCEPT)
+>>>>>>> upstream
 				selectItem();
 		}
 
@@ -205,4 +261,8 @@ class HopeMainMenu extends MusicBeatState
 				spr.offset.set(0, Math.abs((fuckingStupid[curSelected] / 2) - (spr.height / 2)));
 		});
 	}
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> upstream

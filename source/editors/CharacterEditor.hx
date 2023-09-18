@@ -7,10 +7,17 @@ import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxGridOverlay;
 import flixel.addons.plugin.screengrab.FlxScreenGrab;
+<<<<<<< HEAD
 import flixel.addons.ui.FlxInputText;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
+=======
+import flixel.addons.ui.FlxUI;
+import flixel.addons.ui.FlxUIButton;
+import flixel.addons.ui.FlxUICheckBox;
+import flixel.addons.ui.FlxUIDropDownMenu;
+>>>>>>> upstream
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.graphics.FlxGraphic;
@@ -25,10 +32,17 @@ import lime.app.Application;
 import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileReference;
+<<<<<<< HEAD
 import ui.*;
 
 using StringTools;
 
+=======
+
+using StringTools;
+
+
+>>>>>>> upstream
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
@@ -65,6 +79,7 @@ class CharacterEditor extends MusicBeatState
 
 	var gridBG:FlxSprite;
 
+<<<<<<< HEAD
 	var instructionsText:String = "Hotkeys:" 
 								+ "\nCTRL + S: Save character file" 
 								+ "\n\nCharacter:" 
@@ -78,6 +93,11 @@ class CharacterEditor extends MusicBeatState
 								+ "\n\nUI:" 
 								+ "\nALT: Hide/Unhide instructions" 
 								+ "\nF1: Hide/Unhide UI";
+=======
+	var instructionsText:String = "Hotkeys:" + "\nCTRL + S: Save character file" + "\n\nCharacter:" + "\nArrow Keys: Change offset"
+		+ "\nI, K: Cycle through animations" + "\n\nCamera:" + "\nW, A, S, D, Right Click: Move around" + "\nQ, E, Mouse wheel: Control zoom"
+		+ "\nR: Reset position and zoom" + "\n\nUI:" + "\nALT: Hide/Unhide instructions" + "\nF1: Hide/Unhide UI";
+>>>>>>> upstream
 
 	public function new(isDad:Bool = false, char:String = 'bf')
 	{
@@ -99,6 +119,10 @@ class CharacterEditor extends MusicBeatState
 		#end
 
 		FlxG.mouse.visible = true;
+<<<<<<< HEAD
+=======
+		usesMouse = true;
+>>>>>>> upstream
 
 		camEdit = new FlxCamera();
 		camHUD = new FlxCamera();
@@ -207,10 +231,17 @@ class CharacterEditor extends MusicBeatState
 		add(healthBarBG);
 		add(healthBarColor);
 
+<<<<<<< HEAD
 		iconHealthy = new HealthIcon(character.icon);
 		iconHealthy.animation.curAnim.curFrame = 0;
 
 		iconDeath = new HealthIcon(character.icon);
+=======
+		iconHealthy = new HealthIcon(character.curCharacter);
+		iconHealthy.animation.curAnim.curFrame = 0;
+
+		iconDeath = new HealthIcon(character.curCharacter);
+>>>>>>> upstream
 		iconDeath.animation.curAnim.curFrame = 1;
 
 		iconDeath.x = healthBarBG.x + 10;
@@ -240,6 +271,7 @@ class CharacterEditor extends MusicBeatState
 		characterName.callback = function(a:String, b:String)
 		{
 			character.curCharacter = a;
+<<<<<<< HEAD
 
 			if (character.icon == null)
 			{
@@ -260,6 +292,12 @@ class CharacterEditor extends MusicBeatState
 			iconDeath.animation.curAnim.curFrame = 1;
 		}
 
+=======
+			iconHealthy.changeIcon(a);
+			iconDeath.changeIcon(a);
+		};
+
+>>>>>>> upstream
 		var assetPathLabel = new FlxText(10, 50, 0, "Asset Path");
 		assetPath = new InputTextFix(10, assetPathLabel.y + assetPathLabel.height, 150, character.image);
 
@@ -290,8 +328,11 @@ class CharacterEditor extends MusicBeatState
 		tab_group_assets.name = "1";
 		tab_group_assets.add(characterNameLabel);
 		tab_group_assets.add(characterName);
+<<<<<<< HEAD
 		tab_group_assets.add(iconTitle);
 		tab_group_assets.add(icon);
+=======
+>>>>>>> upstream
 		tab_group_assets.add(assetPathLabel);
 		tab_group_assets.add(assetPath);
 		tab_group_assets.add(scaleStepperLabel);
@@ -304,7 +345,11 @@ class CharacterEditor extends MusicBeatState
 	}
 
 	var animationName:InputTextFix;
+<<<<<<< HEAD
 	var animationDropdown:DropdownMenuFix;
+=======
+	var animationDropdown:FlxUIDropDownMenu;
+>>>>>>> upstream
 	var animationIndices:InputTextFix;
 	var frameRate:InputTextFix;
 	var prefix:InputTextFix;
@@ -322,8 +367,13 @@ class CharacterEditor extends MusicBeatState
 		if (holypiss.length < 1)
 			holypiss.push('NO ANIMATIONS');
 		var availableAnimations = new FlxText(10, 10, 0, "Available Animations");
+<<<<<<< HEAD
 		animationDropdown = new DropdownMenuFix(10, availableAnimations.y + availableAnimations.height,
 			DropdownMenuFix.makeStrIdLabelArray(holypiss, true), function(a:String)
+=======
+		animationDropdown = new FlxUIDropDownMenu(10, availableAnimations.y + availableAnimations.height,
+			FlxUIDropDownMenu.makeStrIdLabelArray(holypiss, true), function(a:String)
+>>>>>>> upstream
 		{
 			animationName.text = animationDropdown.selectedLabel;
 
@@ -369,7 +419,10 @@ class CharacterEditor extends MusicBeatState
 
 		var fpsTitle = new FlxText(animationIndices.width + 20, 80, 0, "FPS");
 		frameRate = new InputTextFix(animationIndices.width + 20, indicesTitle.y + indicesTitle.height, Std.int((animationDropdown.width / 2) - 10));
+<<<<<<< HEAD
 		frameRate.filterMode = FlxInputText.ONLY_NUMERIC;
+=======
+>>>>>>> upstream
 
 		var postfixTitle = new FlxText(animationIndices.width + frameRate.width + 30, 80, 0, "Postfix");
 		postfix = new InputTextFix(animationIndices.width
@@ -410,19 +463,26 @@ class CharacterEditor extends MusicBeatState
 					return 0;
 			});
 
+<<<<<<< HEAD
 			animationDropdown.setData(DropdownMenuFix.makeStrIdLabelArray(piss, true));
+=======
+			animationDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(piss, true));
+>>>>>>> upstream
 		});
 
 		reloadAnimations.x = UI_box.width - reloadAnimations.width - 10;
 
 		var addUpdateButton = new FlxButton(0, 0, "Add/Update", function()
 		{
+<<<<<<< HEAD
 			if (animationName.text.trim() == "NO ANIMATIONS")
 			{
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.7);
 				return;
 			}
 
+=======
+>>>>>>> upstream
 			var indices:Array<Int> = [];
 			var indicesStr:Array<String> = animationIndices.text.trim().replace(" ", "").split(",");
 
@@ -436,9 +496,15 @@ class CharacterEditor extends MusicBeatState
 				}
 			}
 
+<<<<<<< HEAD
 			if (character.animation.curAnim != null && character.animationsArray.length > 0)
 			{
 				if (character.animation.curAnim.numFrames > 0)
+=======
+			if (character.animation.curAnim != null)
+			{
+				if (character.animation.curAnim.frames.length > 0)
+>>>>>>> upstream
 				{
 					if (animationName.text == character.animation.curAnim.name)
 						character.animation.stop();
@@ -450,7 +516,11 @@ class CharacterEditor extends MusicBeatState
 			if (character.animationsArray[curAnim] != null)
 				lastAnim = character.animationsArray[curAnim].name;
 
+<<<<<<< HEAD
 			var lastOffsets:Array<Float> = [0, 0];
+=======
+			var lastOffsets:Array<Int> = [0, 0];
+>>>>>>> upstream
 			for (anim in character.animationsArray)
 			{
 				if (animationName.text == anim.name)
@@ -505,8 +575,11 @@ class CharacterEditor extends MusicBeatState
 				{
 					var resetAnim:Bool = (character.animation.curAnim != null && anim.name == character.animation.curAnim.name);
 
+<<<<<<< HEAD
 					character.animation.stop();
 
+=======
+>>>>>>> upstream
 					if (character.animation.getByName(anim.name) != null)
 						character.animation.remove(anim.name);
 
@@ -517,7 +590,10 @@ class CharacterEditor extends MusicBeatState
 
 					if (resetAnim && character.animationsArray.length > 0)
 						character.playAnim(character.animationsArray[0].name, true);
+<<<<<<< HEAD
 						
+=======
+>>>>>>> upstream
 
 					reloadAnimationDropdown();
 					genBoyOffsets();
@@ -655,6 +731,7 @@ class CharacterEditor extends MusicBeatState
 		UI_box.addGroup(tab_group_misc);
 	}
 
+<<<<<<< HEAD
 	var characterDropdown:DropdownMenuFix;
 
 	function addCharacterStuff():Void
@@ -679,6 +756,16 @@ class CharacterEditor extends MusicBeatState
 			DropdownMenuFix.makeStrIdLabelArray(characters, true));
 		characterDropdown.selectedLabel = 'bf';
 		characterDropdown.scrollable = true;
+=======
+	var characterDropdown:FlxUIDropDownMenu;
+
+	function addCharacterStuff():Void
+	{
+		var characterDropdownTitle = new FlxText(10, 10, 0, "Available Characters");
+		characterDropdown = new FlxUIDropDownMenu(10, characterDropdownTitle.y + characterDropdownTitle.height,
+			FlxUIDropDownMenu.makeStrIdLabelArray(CoolUtil.coolTextFile(Paths.txt('characterList')), true));
+		characterDropdown.selectedLabel = 'bf';
+>>>>>>> upstream
 
 		var opponentTick = new FlxUICheckBox(10, 50, null, null, "Character is opponent?");
 
@@ -688,7 +775,11 @@ class CharacterEditor extends MusicBeatState
 			openSubState(new ConfirmationPrompt("Yo, wait a sec!",
 				"Remember to save before you load a different character's JSON file! Your current changes will not be saved!", "Sure", "Nah", function()
 			{
+<<<<<<< HEAD
 				CustomTransition.switchTo(new editors.CharacterEditor(opponentTick.checked, characterDropdown.selectedLabel));
+=======
+				FlxG.switchState(new editors.CharacterEditor(opponentTick.checked, characterDropdown.selectedLabel));
+>>>>>>> upstream
 			}, function()
 			{
 				FlxG.mouse.visible = camHUD.visible = true;
@@ -705,8 +796,12 @@ class CharacterEditor extends MusicBeatState
 		EXTRAS_box.addGroup(tab_group_char);
 	}
 
+<<<<<<< HEAD
 	var availableGhostAnims:DropdownMenuFix;
 	var charTintld:InputTextFix;
+=======
+	var availableGhostAnims:FlxUIDropDownMenu;
+>>>>>>> upstream
 
 	function addGhostStuff():Void
 	{
@@ -717,6 +812,7 @@ class CharacterEditor extends MusicBeatState
 		if (holypiss.length < 1)
 			holypiss.push('NO ANIMATIONS');
 		var availableGhostAnimsTitle = new FlxText(10, 10, 0, "Ghost's Animations");
+<<<<<<< HEAD
 		availableGhostAnims = new DropdownMenuFix(10, availableGhostAnimsTitle.y + availableGhostAnimsTitle.height,
 			DropdownMenuFix.makeStrIdLabelArray(holypiss, true));
 		availableGhostAnims.callback = function(a:String)
@@ -728,6 +824,15 @@ class CharacterEditor extends MusicBeatState
 				ghostCharacter.animation.play(availableGhostAnims.selectedLabel, true);
 				ghostCharacter.offset.set(animOffset[0], animOffset[1]);
 			}
+=======
+		availableGhostAnims = new FlxUIDropDownMenu(10, availableGhostAnimsTitle.y + availableGhostAnimsTitle.height,
+			FlxUIDropDownMenu.makeStrIdLabelArray(holypiss, true));
+		availableGhostAnims.callback = function(a:String)
+		{
+			var animOffset = character.animOffsets.get(availableGhostAnims.selectedLabel);
+			ghostCharacter.offset.set(animOffset[0], animOffset[1]);
+			ghostCharacter.animation.play(availableGhostAnims.selectedLabel, true);
+>>>>>>> upstream
 		};
 
 		availableGhostAnims.callback('');
@@ -736,6 +841,7 @@ class CharacterEditor extends MusicBeatState
 		visibleTick.callback = function()
 		{
 			ghostCharacter.visible = visibleTick.checked;
+<<<<<<< HEAD
 			character.alpha = ghostCharacter.visible ? 0.5 : 1;
 			charTintld.callback("", "");
 		}
@@ -759,16 +865,23 @@ class CharacterEditor extends MusicBeatState
 		}
 		visibleTick.callback();
 		charTintld.callback("", "");
+=======
+		}
+		visibleTick.callback();
+>>>>>>> upstream
 
 		var tab_group_ghost = new FlxUI(null, EXTRAS_box);
 		tab_group_ghost.name = "ghostTab";
 		tab_group_ghost.add(availableGhostAnimsTitle);
 		tab_group_ghost.add(availableGhostAnims);
 		tab_group_ghost.add(visibleTick);
+<<<<<<< HEAD
 		tab_group_ghost.add(tintTitle);
 		tab_group_ghost.add(tintField);
 		tab_group_ghost.add(charTintle);
 		tab_group_ghost.add(charTintld);
+=======
+>>>>>>> upstream
 
 		EXTRAS_box.addGroup(tab_group_ghost);
 	}
@@ -784,6 +897,7 @@ class CharacterEditor extends MusicBeatState
 
 		character = new Character(0, 0, char, !isDad);
 		character.debugMode = true;
+<<<<<<< HEAD
 		character.updateHitbox();
 		character.screenCenter();
 		add(character);
@@ -797,6 +911,14 @@ class CharacterEditor extends MusicBeatState
 		ghostCharacter.frames = character.frames;
 		ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
 		ghostCharacter.scale.set(character.scale.x, character.scale.y);
+=======
+		character.screenCenter();
+		add(character);
+
+		ghostCharacter.flipX = character.flipX;
+		ghostCharacter.frames = character.frames;
+		ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
+>>>>>>> upstream
 	}
 
 	function createToolTips():Void
@@ -938,6 +1060,7 @@ class CharacterEditor extends MusicBeatState
 		if (character.animation.curAnim != null)
 			lastAnim = character.animation.curAnim.name;
 
+<<<<<<< HEAD
 		if (Paths.image(character.image) is String)
 		{
 			var s:String = cast Paths.image(character.image);
@@ -950,12 +1073,18 @@ class CharacterEditor extends MusicBeatState
 			}
 		}
 
+=======
+>>>>>>> upstream
 		if (Paths.exists(Paths.getPath('shared/images/' + character.image + '.txt', TEXT, null)))
 			character.frames = Paths.getPackerAtlas(character.image, 'shared');
 		else
 		{
 			if (FlxG.keys.pressed.ALT) // for debugging other assets... lmao
+<<<<<<< HEAD
 				character.frames = Paths.getSparrowAtlas(character.image, "preload");
+=======
+				character.frames = Paths.getSparrowAtlas(character.image);
+>>>>>>> upstream
 			else
 				character.frames = Paths.getSparrowAtlas(character.image);
 		}
@@ -977,6 +1106,7 @@ class CharacterEditor extends MusicBeatState
 
 		character.animation.stop();
 
+<<<<<<< HEAD
 		if (character.animationsArray.length > 0)
 		{
 			if (lastAnim != '')
@@ -984,15 +1114,24 @@ class CharacterEditor extends MusicBeatState
 			else
 				character.dance();
 		}
+=======
+		if (lastAnim != '')
+			character.playAnim(lastAnim, true);
+		else
+			character.dance();
+>>>>>>> upstream
 
 		character.updateHitbox();
 		character.screenCenter();
 		defaultWidth = character.width;
 
+<<<<<<< HEAD
 		ghostCharacter.width = character.width;
 		ghostCharacter.height = character.height;
 		ghostCharacter.screenCenter();
 
+=======
+>>>>>>> upstream
 		ghostCharacter.frames = character.frames;
 		ghostCharacter.animation = ghostCharacter.animation.copyFrom(character.animation);
 	}
@@ -1005,11 +1144,16 @@ class CharacterEditor extends MusicBeatState
 
 		if (piss.length < 1)
 			piss.push('NO ANIMATIONS');
+<<<<<<< HEAD
 		animationDropdown.setData(DropdownMenuFix.makeStrIdLabelArray(piss, true));
 		availableGhostAnims.setData(DropdownMenuFix.makeStrIdLabelArray(piss, true));
 
 		animationDropdown.callback("");
 		availableGhostAnims.callback("");
+=======
+		animationDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray(piss, true));
+		availableGhostAnims.setData(FlxUIDropDownMenu.makeStrIdLabelArray(piss, true));
+>>>>>>> upstream
 	}
 
 	function genBoyOffsets():Void
@@ -1074,7 +1218,10 @@ class CharacterEditor extends MusicBeatState
 	var isTyping:Bool = false;
 	var isEyedropping:Bool = false;
 	var multiplier:Float = 1; // makin this global
+<<<<<<< HEAD
 	var backing:Bool = false;
+=======
+>>>>>>> upstream
 
 	override function update(elapsed:Float)
 	{
@@ -1119,6 +1266,7 @@ class CharacterEditor extends MusicBeatState
 		}
 		#end
 
+<<<<<<< HEAD
 		character.screenCenter();
 		character.x += character.positionOffset[0];
 		character.y += character.positionOffset[1];
@@ -1133,10 +1281,14 @@ class CharacterEditor extends MusicBeatState
 		if (animOffset != null)
 			ghostCharacter.offset.set(animOffset[0], animOffset[1]);
 		
+=======
+		ghostCharacter.screenCenter();
+>>>>>>> upstream
 		if (ghostCharacter.antialiasing != character.antialiasing)
 			ghostCharacter.antialiasing = character.antialiasing;
 		healthBarColor.color = character.getColor();
 
+<<<<<<< HEAD
 		if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 		{
 			backing = true;
@@ -1148,6 +1300,16 @@ class CharacterEditor extends MusicBeatState
 			}
 			else
 			#end
+=======
+		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		{
+			if (fromEditors)
+			{
+				FlxG.switchState(new EditorsState());
+				fromEditors = false;
+			}
+			else
+>>>>>>> upstream
 				LoadingState.loadAndSwitchState(new PlayState());
 
 			FlxG.mouse.visible = false;
@@ -1166,8 +1328,12 @@ class CharacterEditor extends MusicBeatState
 		if (FlxG.keys.pressed.SHIFT)
 			multiplier = 3;
 
+<<<<<<< HEAD
 		if (!DropdownMenuFix.isDropdowning)
 			FlxG.camera.zoom += FlxG.mouse.wheel * 0.05 * multiplier;
+=======
+		FlxG.camera.zoom += FlxG.mouse.wheel * 0.05 * multiplier;
+>>>>>>> upstream
 
 		if (FlxG.mouse.pressedRight)
 		{
@@ -1177,8 +1343,13 @@ class CharacterEditor extends MusicBeatState
 				mousePastPos = [FlxG.mouse.getScreenPosition(camHUD).x, FlxG.mouse.getScreenPosition(camHUD).y];
 			}
 
+<<<<<<< HEAD
 			camFollow.x = pastCameraPos[0] + ((mousePastPos[0] - FlxG.mouse.getScreenPosition(camHUD).x) / FlxG.camera.zoom);
 			camFollow.y = pastCameraPos[1] + ((mousePastPos[1] - FlxG.mouse.getScreenPosition(camHUD).y) / FlxG.camera.zoom);
+=======
+			camFollow.x = pastCameraPos[0] + (mousePastPos[0] - FlxG.mouse.getScreenPosition(camHUD).x);
+			camFollow.y = pastCameraPos[1] + (mousePastPos[1] - FlxG.mouse.getScreenPosition(camHUD).y);
+>>>>>>> upstream
 		}
 
 		if (FlxG.camera.zoom <= 0.2)
@@ -1238,6 +1409,7 @@ class CharacterEditor extends MusicBeatState
 				FlxG.camera.zoom = 0;
 			}
 
+<<<<<<< HEAD
 			if (FlxG.keys.justPressed.T)
 			{
 				character.animOffsets.set(character.animationsArray[curAnim].name, [0, 0]);
@@ -1252,6 +1424,8 @@ class CharacterEditor extends MusicBeatState
 				character.playAnim(character.animationsArray[curAnim].name);
 			}
 
+=======
+>>>>>>> upstream
 			if (FlxG.keys.justPressed.K || FlxG.keys.justPressed.I || FlxG.keys.justPressed.SPACE)
 			{
 				if (FlxG.keys.justPressed.I)
@@ -1375,7 +1549,10 @@ class CharacterEditor extends MusicBeatState
 		var json = {
 			name: character.curCharacter,
 			image: character.image,
+<<<<<<< HEAD
 			icon: character.icon,
+=======
+>>>>>>> upstream
 			antialiasing: character.antialiasing,
 			scale: character.setScale,
 			facesLeft: character.facesLeft,
@@ -1406,8 +1583,11 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
+<<<<<<< HEAD
 
 		FlxG.mouse.visible = camHUD.visible = true;
+=======
+>>>>>>> upstream
 	}
 
 	/**
@@ -1419,8 +1599,11 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+<<<<<<< HEAD
 
 		FlxG.mouse.visible = camHUD.visible = true;
+=======
+>>>>>>> upstream
 	}
 
 	/**
@@ -1433,7 +1616,12 @@ class CharacterEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+<<<<<<< HEAD
 
 		FlxG.mouse.visible = camHUD.visible = true;
 	}
 }
+=======
+	}
+}
+>>>>>>> upstream

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"settings": {
 		"flipped": true,
 		"scale": 1
@@ -14,4 +15,15 @@
 		"danceRight": null
 	},
 	"character": "pico"
+=======
+    "character" : "pico",
+    "animations" : {
+        "idle" : {
+            "prefix" : "idle0"
+        }
+    },
+    "settings" : {
+        "flipped" : true
+    }
+>>>>>>> upstream
 }

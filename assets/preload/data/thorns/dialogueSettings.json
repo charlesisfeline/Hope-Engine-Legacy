@@ -11,6 +11,10 @@
         "color": "000000",
         "alpha": 0.7,
         "duration": 1
+<<<<<<< HEAD
     },
     "type": "pixel-spirit"
+=======
+    }
+>>>>>>> upstream
 }

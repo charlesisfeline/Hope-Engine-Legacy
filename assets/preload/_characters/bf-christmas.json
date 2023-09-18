@@ -110,7 +110,10 @@
 		0,
 		-100
 	],
+<<<<<<< HEAD
 	"icon": "bf",
+=======
+>>>>>>> upstream
 	"antialiasing": true,
 	"name": "bf-christmas",
 	"isDeath": false,

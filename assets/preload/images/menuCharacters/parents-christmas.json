@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"settings": {
 		"flipped": false,
 		"scale": 1
@@ -15,4 +16,17 @@
 		"danceRight": null
 	},
 	"character": "parents-christmas"
+=======
+    "character" : "parents-christmas",
+    "animations" : {
+        "idle" : {
+            "prefix" : "idle0"
+        }
+    },
+    "settings" : {
+        "x" : 100,
+        "y" : 130,
+        "scale" : 1.8
+    }
+>>>>>>> upstream
 }

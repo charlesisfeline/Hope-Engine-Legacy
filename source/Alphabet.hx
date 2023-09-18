@@ -4,6 +4,10 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
+<<<<<<< HEAD
+=======
+import flixel.util.FlxColor;
+>>>>>>> upstream
 import flixel.util.FlxTimer;
 
 using StringTools;
@@ -20,7 +24,11 @@ class Alphabet extends FlxSpriteGroup
 
 	public var typeDelay:Float = 0.05;
 
+<<<<<<< HEAD
 	public var text(default, set):String = "";
+=======
+	public var text:String = "";
+>>>>>>> upstream
 
 	var _finalText:String = "";
 	var _curText:String = "";
@@ -51,6 +59,7 @@ class Alphabet extends FlxSpriteGroup
 		super(x, y);
 
 		_finalText = text;
+<<<<<<< HEAD
 		isBold = bold;
 		rightAligned = isRight;
 
@@ -58,6 +67,14 @@ class Alphabet extends FlxSpriteGroup
 		// 	addText();
 
 		this.text = text;
+=======
+		this.text = text;
+		isBold = bold;
+		rightAligned = isRight;
+
+		if (text != "")
+			addText();
+>>>>>>> upstream
 
 		if (!bold)
 			color = 0xFF000000;
@@ -69,7 +86,10 @@ class Alphabet extends FlxSpriteGroup
 
 		var xPos:Float = 0;
 		var curRow:Int = 0;
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream
 		for (character in splitWords)
 		{
 			if (character == " ")
@@ -84,10 +104,23 @@ class Alphabet extends FlxSpriteGroup
 				curRow++;
 			}
 
+<<<<<<< HEAD
 			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
 
 			if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1 || isNumber || isSymbol)
+=======
+			#if (haxe >= "4.0.0")
+			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
+			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
+			#else
+			var isNumber:Bool = AlphaCharacter.numbers.indexOf(character) != -1;
+			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(character) != -1;
+			#end
+
+			if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1 || isNumber || isSymbol)
+				// if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
+>>>>>>> upstream
 			{
 				if (lastSprite != null && !xPosResetted)
 				{
@@ -98,7 +131,11 @@ class Alphabet extends FlxSpriteGroup
 					xPosResetted = false;
 
 				var wasSpaced:Bool = false;
+<<<<<<< HEAD
 
+=======
+				
+>>>>>>> upstream
 				if (lastWasSpace)
 				{
 					xPos += 40;
@@ -151,6 +188,7 @@ class Alphabet extends FlxSpriteGroup
 		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
 		return (scaledY * 120) + additive;
 	}
+<<<<<<< HEAD
 
 	function set_text(value:String):String 
 	{
@@ -170,6 +208,8 @@ class Alphabet extends FlxSpriteGroup
 
 		return value;
 	}
+=======
+>>>>>>> upstream
 }
 
 class AlphaCharacter extends FlxSprite
@@ -233,7 +273,11 @@ class AlphaCharacter extends FlxSprite
 			case "," | "_" | ".":
 				y += 45;
 			case "-":
+<<<<<<< HEAD
 				y += 20;
+=======
+				y += 30;
+>>>>>>> upstream
 			case "+":
 				y += 14;
 		}
@@ -288,7 +332,11 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, 'exclamation point', 24);
 				animation.play(letter);
 			case '_':
+<<<<<<< HEAD
 				animation.addByPrefix(letter, '-', 24);
+=======
+				animation.addByPrefix(letter, '_', 24);
+>>>>>>> upstream
 				animation.play(letter);
 				y += 40;
 			case "#":
@@ -315,7 +363,11 @@ class AlphaCharacter extends FlxSprite
 			case "-":
 				animation.addByPrefix(letter, '-', 24);
 				animation.play(letter);
+<<<<<<< HEAD
 				y += 20;
+=======
+				y += 35;
+>>>>>>> upstream
 			case '"':
 				animation.addByPrefix(letter, '"', 24);
 				animation.play(letter);

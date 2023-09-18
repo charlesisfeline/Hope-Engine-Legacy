@@ -4,7 +4,11 @@
 			"paramID": "camGame_zoom",
 			"defaultValue": 0.015,
 			"value": null,
+<<<<<<< HEAD
 			"increment": 0.1,
+=======
+			"increment": 0.001,
+>>>>>>> upstream
 			"paramName": "Game zoom",
 			"type": "number",
 			"maxLetters": null
@@ -13,7 +17,11 @@
 			"paramID": "camHUD_zoom",
 			"defaultValue": 0.03,
 			"value": null,
+<<<<<<< HEAD
 			"increment": 0.1,
+=======
+			"increment": 0.001,
+>>>>>>> upstream
 			"paramName": "HUD zoom",
 			"type": "number",
 			"maxLetters": null

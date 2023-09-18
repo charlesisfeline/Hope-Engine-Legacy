@@ -1,7 +1,11 @@
 {
 	"params": [
 		{
+<<<<<<< HEAD
 			"paramID": "char",
+=======
+			"paramID": "character",
+>>>>>>> upstream
 			"defaultValue": "bf",
 			"value": null,
 			"increment": null,
@@ -10,7 +14,11 @@
 			"maxLetters": null
 		},
 		{
+<<<<<<< HEAD
 			"paramID": "anim",
+=======
+			"paramID": "animation",
+>>>>>>> upstream
 			"defaultValue": "",
 			"value": null,
 			"increment": null,
@@ -19,20 +27,36 @@
 			"maxLetters": null
 		},
 		{
+<<<<<<< HEAD
 			"paramID": "force",
 			"defaultValue": true,
 			"value": null,
 			"increment": null,
 			"paramName": "Force the animation to play?",
+=======
+			"paramID": "forced",
+			"defaultValue": true,
+			"value": null,
+			"increment": null,
+			"paramName": "Forced to play?",
+>>>>>>> upstream
 			"type": "bool",
 			"maxLetters": null
 		},
 		{
+<<<<<<< HEAD
 			"paramID": "reverse",
 			"defaultValue": false,
 			"value": null,
 			"increment": null,
 			"paramName": "Reverse when played?",
+=======
+			"paramID": "reversed",
+			"defaultValue": false,
+			"value": null,
+			"increment": null,
+			"paramName": "Play the animation in reverse?",
+>>>>>>> upstream
 			"type": "bool",
 			"maxLetters": null
 		},
@@ -40,8 +64,13 @@
 			"paramID": "starting_frame",
 			"defaultValue": 0,
 			"value": null,
+<<<<<<< HEAD
 			"increment": null,
 			"paramName": "(ADVANCED) Starting Frame",
+=======
+			"increment": 1,
+			"paramName": "(ADVANCED) Starting frame",
+>>>>>>> upstream
 			"type": "number",
 			"maxLetters": null
 		}

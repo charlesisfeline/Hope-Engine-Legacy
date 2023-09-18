@@ -3,7 +3,10 @@ package;
 import flixel.FlxSprite;
 import flixel.util.FlxColor;
 import haxe.Json;
+<<<<<<< HEAD
 import openfl.Assets;
+=======
+>>>>>>> upstream
 
 using StringTools;
 
@@ -16,7 +19,10 @@ typedef CharacterJSON =
 {
 	var name:String;
 	var image:String;
+<<<<<<< HEAD
 	@:optional var icon:String;
+=======
+>>>>>>> upstream
 	var healthColor:String;
 
 	var antialiasing:Null<Bool>;
@@ -27,8 +33,11 @@ typedef CharacterJSON =
 	var cameraOffset:Array<Float>;
 	var singDuration:Null<Float>;
 	var animations:Array<Animation>;
+<<<<<<< HEAD
 
 	var positionOffset:Null<Array<Float>>;
+=======
+>>>>>>> upstream
 }
 
 typedef Animation =
@@ -38,7 +47,11 @@ typedef Animation =
 
 	var frameRate:Null<Int>;
 	var loopedAnim:Null<Bool>;
+<<<<<<< HEAD
 	var offset:Array<Float>;
+=======
+	var offset:Array<Int>;
+>>>>>>> upstream
 	var indices:Array<Int>;
 	var postfix:String;
 	var flipX:Null<Bool>;
@@ -47,20 +60,30 @@ typedef Animation =
 
 class Character extends FlxSprite
 {
+<<<<<<< HEAD
 	public var animOffsets:Map<String, Array<Float>>;
+=======
+	public var animOffsets:Map<String, Array<Dynamic>>;
+>>>>>>> upstream
 
 	public var isPlayer:Bool = false; // if they are a player
 	public var isDeath:Bool = false; // if they are a character that shows up on the gameover screen
 
 	public var curCharacter:String = 'bf';
 	public var image:String = '';
+<<<<<<< HEAD
 	public var icon:String = 'face';
+=======
+>>>>>>> upstream
 	public var setAntialiasing:Bool = true;
 	public var setScale:Float = 1;
 	public var facesLeft:Bool = true;
 	public var initAnim:String = 'idle';
 	public var cameraOffset:Array<Float> = [0, 0];
+<<<<<<< HEAD
 	public var positionOffset:Array<Float> = [0, 0];
+=======
+>>>>>>> upstream
 	public var singDuration:Float = 4;
 	public var healthColor:String;
 
@@ -75,7 +98,11 @@ class Character extends FlxSprite
 	{
 		super(x, y);
 
+<<<<<<< HEAD
 		animOffsets = new Map<String, Array<Float>>();
+=======
+		animOffsets = new Map<String, Array<Dynamic>>();
+>>>>>>> upstream
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 
@@ -98,18 +125,25 @@ class Character extends FlxSprite
 				var charFile:CharacterJSON = cast Json.parse(rawJSON);
 
 				image = charFile.image != null ? charFile.image : '';
+<<<<<<< HEAD
 				icon = charFile.icon != null ? charFile.icon : curCharacter;
+=======
+>>>>>>> upstream
 				setAntialiasing = charFile.antialiasing != null ? charFile.antialiasing : true;
 				setScale = charFile.scale != null ? charFile.scale : 1;
 				facesLeft = charFile.facesLeft != null ? charFile.facesLeft : false;
 				isDeath = charFile.isDeath != null ? charFile.isDeath : false;
 				initAnim = charFile.initialAnimation != null ? charFile.initialAnimation : 'idle';
 				cameraOffset = charFile.cameraOffset != null ? charFile.cameraOffset : [0, 0];
+<<<<<<< HEAD
 				positionOffset = charFile.positionOffset != null ? charFile.positionOffset : [0, 0];
+=======
+>>>>>>> upstream
 				singDuration = charFile.singDuration != null ? charFile.singDuration : 4;
 				animationsArray = charFile.animations != null ? charFile.animations : [];
 				healthColor = charFile.healthColor != null ? charFile.healthColor : "a1a1a1";
 
+<<<<<<< HEAD
 				// force them to be shared
 				// mod files dont get affected anyway
 				#if html5
@@ -121,6 +155,16 @@ class Character extends FlxSprite
 					frames = Paths.getPackerAtlas(charFile.image, "shared");
 				else
 					frames = Paths.getSparrowAtlas(charFile.image, "shared");
+=======
+				#if html5
+				if (Paths.exists(Paths.getPath('images/' + charFile.image + '.txt', TEXT, null)))
+				#else
+				if (Paths.exists('assets/shared/images/' + charFile.image + '.txt'))
+				#end
+				frames = Paths.getPackerAtlas(charFile.image);
+				else
+					frames = Paths.getSparrowAtlas(charFile.image);
+>>>>>>> upstream
 
 				if (setScale != 1)
 				{

@@ -11,6 +11,10 @@
         "color": "B3DFd8",
         "alpha": 0.7,
         "duration": 1
+<<<<<<< HEAD
     },
     "type": "pixel"
+=======
+    }
+>>>>>>> upstream
 }

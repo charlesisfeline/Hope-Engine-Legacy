@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 #if FILESYSTEM
+=======
+>>>>>>> upstream
 package;
 
 import editors.*;
@@ -10,6 +13,7 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+<<<<<<< HEAD
 import sys.FileSystem;
 import sys.io.File;
 
@@ -40,12 +44,36 @@ class EditorsState extends MusicBeatState
 
 	static var curSelected:Int = 0;
 	static var curMod:Int = 0;
+=======
+
+using StringTools;
+
+#if desktop
+import Discord.DiscordClient;
+#end
+#if FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+class EditorsState extends MusicBeatState
+{
+	var options:Array<String> = ["Chart Editor", "Character Editor", "Week Editor", "Event Editor"];
+
+	var grpOptions:FlxTypedGroup<Alphabet>;
+	
+	var mods:Array<String> = ["none"];
+
+	var curSelected:Int = 0;
+	var curMod:Int = 0;
+>>>>>>> upstream
 
 	var modTxt:FlxText;
 	var modTxtBG:FlxSprite;
 
 	override function create()
 	{
+<<<<<<< HEAD
 		if (Paths.priorityMod != "hopeEngine")
 		{
 			if (Paths.exists(Paths.state("EditorsState")))
@@ -62,6 +90,9 @@ class EditorsState extends MusicBeatState
 			Paths.setCurrentMod(null);
 		else
 			Paths.setCurrentMod(Paths.priorityMod);
+=======
+		Paths.setCurrentMod(null);
+>>>>>>> upstream
 
 		#if desktop
 		DiscordClient.changePresence("Editors Menu");
@@ -69,8 +100,11 @@ class EditorsState extends MusicBeatState
 
 		super.create();
 
+<<<<<<< HEAD
 		FlxG.mouse.visible = false;
 
+=======
+>>>>>>> upstream
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image("menuDesat_gradient"));
 		bg.screenCenter();
 		bg.color = 0xffad34ff;
@@ -122,7 +156,11 @@ class EditorsState extends MusicBeatState
 		{
 			item.targetY = bullShit - curSelected;
 			bullShit++;
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> upstream
 			item.alpha = 0.6;
 
 			if (item.targetY == 0)
@@ -162,6 +200,7 @@ class EditorsState extends MusicBeatState
 			case "Chart Editor":
 				ChartingState.fromEditors = true;
 				state = new ChartingState();
+<<<<<<< HEAD
 				LoadingState.loadAndSwitchState(state);
 				return;
 			case "Character Editor":
@@ -170,12 +209,18 @@ class EditorsState extends MusicBeatState
 			case "Dialogue Editor":
 				DialogueEditor.fromEditors = true;
 				state = new DialogueEditor();
+=======
+			case "Character Editor":
+				CharacterEditor.fromEditors = true;
+				state = new CharacterEditor();
+>>>>>>> upstream
 			case "Week Editor":
 				WeekEditor.fromEditors = true;
 				state = new WeekEditor();
 			case "Event Editor":
 				EventEditor.fromEditors = true;
 				state = new EventEditor();
+<<<<<<< HEAD
 			case "Menu Character Editor":
 				MenuCharacterEditor.fromEditors = true;
 				state = new MenuCharacterEditor();
@@ -221,6 +266,30 @@ class EditorsState extends MusicBeatState
 		if (controls.UI_LEFT_P)
 			changeMod(-1);
 		if (controls.UI_RIGHT_P)
+=======
+		}
+
+		FlxG.switchState(state);
+	}
+
+	override function update(elapsed:Float)
+	{
+		super.update(elapsed);
+
+		if (controls.BACK)
+			FlxG.switchState(new MainMenuState());
+		if (controls.ACCEPT)
+			select();
+
+		if (controls.UP_P)
+			changeSelection(-1);
+		if (controls.DOWN_P)
+			changeSelection(1);
+
+		if (controls.LEFT_P)
+			changeMod(-1);
+		if (controls.RIGHT_P)
+>>>>>>> upstream
 			changeMod(1);
 
 		for (opt in grpOptions)
@@ -229,4 +298,7 @@ class EditorsState extends MusicBeatState
 		modTxt.y = modTxtBG.y + (modTxtBG.height / 2) - (modTxt.height / 2);
 	}
 }
+<<<<<<< HEAD
 #end
+=======
+>>>>>>> upstream

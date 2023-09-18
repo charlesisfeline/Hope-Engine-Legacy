@@ -75,7 +75,11 @@ class WarningSubstate extends MusicBeatSubstate
 		else
 			wait += elapsed;
 
+<<<<<<< HEAD
 		if (controls.UI_ACCEPT && pressEnter.visible)
+=======
+		if (controls.ACCEPT && pressEnter.visible)
+>>>>>>> upstream
 		{
 			if (finishCallback != null)
 				finishCallback();

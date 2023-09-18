@@ -1,5 +1,6 @@
 package;
 
+<<<<<<< HEAD
 import editors.WeekEditor.Week;
 import haxe.Json;
 import lime.utils.Assets;
@@ -12,6 +13,15 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
+=======
+#if FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
+import lime.utils.Assets;
+
+using StringTools;
+>>>>>>> upstream
 
 class CoolUtil
 {
@@ -67,6 +77,7 @@ class CoolUtil
 	}
 	#end
 
+<<<<<<< HEAD
 	public static function fileNameCheck(name:String):Bool
 	{
 		switch (name.toUpperCase())
@@ -79,6 +90,8 @@ class CoolUtil
 		}
 	}
 
+=======
+>>>>>>> upstream
 	public static function coolTextFile(path:String):Array<String>
 	{
 		var daList:Array<String> = Assets.getText(path).trim().split('\n');
@@ -124,6 +137,7 @@ class CoolUtil
 		}
 		return dumbArray;
 	}
+<<<<<<< HEAD
 
 	public static function getWeek(num:Int, ?mod:Null<String> = null):Week
 	{
@@ -148,4 +162,6 @@ class CoolUtil
 
 		return null;
 	}
+=======
+>>>>>>> upstream
 }

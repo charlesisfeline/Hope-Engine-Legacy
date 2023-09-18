@@ -15,6 +15,7 @@
 			"indices": []
 		},
 		{
+<<<<<<< HEAD
 			"prefix": "Pico SHOOT",
 			"loopedAnim": false,
 			"indices": [],
@@ -35,6 +36,14 @@
 				-83
 			],
 			"name": "singDOWN",
+=======
+			"prefix": "pico Up note0",
+			"offset": [
+				-29,
+				27
+			],
+			"name": "singUP",
+>>>>>>> upstream
 			"flipX": false,
 			"loopedAnim": false,
 			"flipY": false,
@@ -71,6 +80,7 @@
 			"indices": []
 		},
 		{
+<<<<<<< HEAD
 			"prefix": "pico Up note0",
 			"offset": [
 				-29,
@@ -83,6 +93,20 @@
 			"postfix": "",
 			"frameRate": 24,
 			"indices": []
+=======
+			"prefix": "Pico Down Note0",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "singDOWN",
+			"offset": [
+				182,
+				-83
+			]
+>>>>>>> upstream
 		}
 	],
 	"healthColor": "B7D855",
@@ -90,6 +114,7 @@
 	"image": "characters/Pico_FNF_assetss",
 	"singDuration": 4,
 	"initialAnimation": "idle",
+<<<<<<< HEAD
 	"cameraOffset": [
 		0,
 		0
@@ -99,4 +124,9 @@
 	"name": "pico",
 	"isDeath": false,
 	"scale": 1
+=======
+	"antialiasing": true,
+	"name": "pico",
+	"isDeath": false
+>>>>>>> upstream
 }

@@ -14,6 +14,11 @@ class HealthIcon extends FlxSprite
 	public var isPlayer:Bool = false;
 	public var isOldIcon:Bool = false;
 
+<<<<<<< HEAD
+=======
+	public static var splitWhitelist:Array<String> = [];
+
+>>>>>>> upstream
 	public function new(char:String = 'bf', isPlayer:Bool = false)
 	{
 		super();
@@ -28,11 +33,26 @@ class HealthIcon extends FlxSprite
 
 	public function swapOldIcon()
 	{
+<<<<<<< HEAD
 		(isOldIcon = !isOldIcon) ? changeIcon("bf-old" + (char.endsWith("-pixel") ? "-pixel" : "")) : changeIcon(char);
+=======
+		(isOldIcon = !isOldIcon) ? changeIcon("bf-old") : changeIcon(char);
+>>>>>>> upstream
 	}
 
 	public final function changeIcon(char:String)
 	{
+<<<<<<< HEAD
+=======
+		var pissOffMate:Array<String> = CoolUtil.coolTextFile('assets/images/icons/_dontSplitThese.txt');
+
+		if (splitWhitelist != pissOffMate)
+			splitWhitelist = pissOffMate;
+
+		if (!splitWhitelist.contains(char))
+			char = char.split("-")[0];
+
+>>>>>>> upstream
 		loadGraphic(Paths.image('icons/face'), true, 150, 150);
 
 		if (Paths.exists(Paths.image('icons/' + char)))

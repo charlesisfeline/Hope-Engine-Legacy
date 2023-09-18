@@ -1,7 +1,10 @@
 package;
 
 import flixel.FlxG;
+<<<<<<< HEAD
 import flixel.FlxSprite;
+=======
+>>>>>>> upstream
 import flixel.group.FlxSpriteGroup;
 import flixel.text.FlxText;
 import flixel.util.FlxColor;
@@ -19,13 +22,18 @@ class SplashState extends MusicBeatState
 	private var _curPart:Int = 0;
 	private var _functions:Array<Void->Void>;
 
+<<<<<<< HEAD
 	var logo:FlxSprite;
+=======
+	var notes:FlxSpriteGroup;
+>>>>>>> upstream
 
 	var topText:FlxText;
 	var botText:FlxText;
 
 	override public function create():Void
 	{
+<<<<<<< HEAD
 		if (Paths.priorityMod != "hopeEngine")
 		{
 			if (Paths.exists(Paths.state("SplashState")))
@@ -43,6 +51,8 @@ class SplashState extends MusicBeatState
 		else
 			Paths.setCurrentMod(Paths.priorityMod);
 
+=======
+>>>>>>> upstream
 		new FlxTimer().start(1.5, function(tmr:FlxTimer)
 		{
 			FlxG.fixedTimestep = false;
@@ -58,6 +68,7 @@ class SplashState extends MusicBeatState
 				new FlxTimer().start(time, timerCallback);
 			}
 
+<<<<<<< HEAD
 			logo = new FlxSprite().loadGraphic(Paths.image("haxeflixel", "preload"), true, 720, 720);
 			logo.animation.add('lgoo', [0, 1, 2, 3, 4], 0, false);
 			logo.animation.play('lgoo');
@@ -67,23 +78,50 @@ class SplashState extends MusicBeatState
 			logo.antialiasing = true;
 			logo.visible = false;
 			add(logo);
+=======
+			notes = new FlxSpriteGroup();
+			add(notes);
+
+			for (i in 0...4)
+			{
+				var note = new Note(0, i, null, false, "hopeEngine/normal");
+				note.x = Note.swagWidth * i;
+				note.y = 0;
+				note.visible = false;
+				notes.add(note);
+			}
+
+			notes.screenCenter();
+>>>>>>> upstream
 
 			topText = new FlxText(0, 0, 0, "Made with");
 			topText.size = 32;
 			topText.alignment = CENTER;
 			topText.screenCenter(X);
+<<<<<<< HEAD
 			topText.y = logo.y - topText.height - 8;
+=======
+			topText.y = notes.y - topText.height - 8;
+>>>>>>> upstream
 			add(topText);
 
 			topText.fieldWidth = topText.width;
 			topText.text = "";
 			topText.alignment = LEFT;
 
+<<<<<<< HEAD
 			botText = new FlxText(0, 0, 0, "HaxeFlixel");
 			botText.size = 32;
 			botText.alignment = CENTER;
 			botText.screenCenter(X);
 			botText.y = logo.y + logo.height + 8;
+=======
+			botText = new FlxText(0, 0, 0, "Haxeflixel");
+			botText.size = 32;
+			botText.alignment = CENTER;
+			botText.screenCenter(X);
+			botText.y = notes.y + notes.height + 8;
+>>>>>>> upstream
 			add(botText);
 
 			botText.fieldWidth = botText.width;
@@ -96,16 +134,22 @@ class SplashState extends MusicBeatState
 		super.create();
 	}
 
+<<<<<<< HEAD
 	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
 
+=======
+>>>>>>> upstream
 	override public function update(elapsed:Float):Void
 	{
 		// Thing to skip the splash screen
 		// Comment this out if you want it unskippable
+<<<<<<< HEAD
 
 		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
 			return;
 		
+=======
+>>>>>>> upstream
 		if (FlxG.keys.justPressed.ANY)
 		{
 			finishTween();
@@ -118,8 +162,13 @@ class SplashState extends MusicBeatState
 	{
 		_functions[_curPart]();
 
+<<<<<<< HEAD
 		logo.visible = true;
 		logo.animation.curAnim.curFrame = _curPart;
+=======
+		if (_curPart < 4)
+			notes.members[_curPart].visible = true;
+>>>>>>> upstream
 
 		_curPart++;
 
@@ -127,9 +176,13 @@ class SplashState extends MusicBeatState
 		{
 			// What happens when the final sound/timer time passes
 			// change parameters to whatever you feel like
+<<<<<<< HEAD
 			new FlxTimer().start(0.25, function(_) {
 				FlxG.camera.fade(FlxColor.BLACK, 3.25, false, finishTween);
 			});
+=======
+			FlxG.camera.fade(FlxColor.BLACK, 3.25, false, finishTween);
+>>>>>>> upstream
 		}
 	}
 
@@ -154,18 +207,30 @@ class SplashState extends MusicBeatState
 	private function addText4():Void
 	{
 		// stuff that happens
+<<<<<<< HEAD
 		botText.text = "HaxeFlix";
+=======
+		botText.text = "Haxeflix";
+>>>>>>> upstream
 	}
 
 	private function addText5():Void
 	{
 		// stuff that happens
+<<<<<<< HEAD
 		botText.text = "HaxeFlixel";
+=======
+		botText.text = "Haxeflixel";
+>>>>>>> upstream
 	}
 
 	private function finishTween():Void
 	{
 		// Switches to MenuState when the fadeout tween(in the timerCallback function) is finished
+<<<<<<< HEAD
 		CustomTransition.switchTo(new TitleState());
+=======
+		FlxG.switchState(new TitleState());
+>>>>>>> upstream
 	}
 }

@@ -8,22 +8,31 @@ import openfl.Assets;
 import openfl.display.BitmapData;
 import openfl.utils.AssetType;
 import openfl.utils.Assets as OpenFlAssets;
+<<<<<<< HEAD
 
 using StringTools;
+=======
+>>>>>>> upstream
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 import yaml.Yaml;
 #end
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> upstream
 class Paths
 {
 	inline public static var SOUND_EXT = #if web "mp3" #else "ogg" #end;
 
 	static var currentLevel:String;
 	public static var currentMod:Null<String>;
+<<<<<<< HEAD
 	public static var priorityMod:String = "hopeEngine";
+=======
+>>>>>>> upstream
 
 	public static var customImages:Map<String, FlxGraphic> = new Map();
 	public static var customSounds:Map<String, Sound> = new Map();
@@ -38,6 +47,7 @@ class Paths
 
 	static public function setCurrentMod(name:String)
 	{
+<<<<<<< HEAD
 		#if MODS_FEATURE
 		currentMod = (name == null ? null : name.toLowerCase());
 		#else
@@ -50,6 +60,9 @@ class Paths
 		var f = ~/[\\\/:*?"<>|]/g;
 
 		return f.replace(song, "").replace(" ", "-").toLowerCase().trim();
+=======
+		currentMod = (name == null ? null : name);
+>>>>>>> upstream
 	}
 
 	public static function getPath(file:String, type:AssetType, library:Null<String>)
@@ -76,7 +89,11 @@ class Paths
 		var doesIt:Bool = false;
 
 		#if FILESYSTEM
+<<<<<<< HEAD
 		doesIt = FileSystem.exists(Sys.getCwd() + path);
+=======
+		doesIt = FileSystem.exists(path);
+>>>>>>> upstream
 		#else
 		doesIt = Assets.exists(path);
 		#end
@@ -132,8 +149,13 @@ class Paths
 	inline static public function file(file:String, type:AssetType = TEXT, ?library:String)
 	{
 		#if FILESYSTEM
+<<<<<<< HEAD
 		if (currentMod != null && FileSystem.exists(modFile(file)))
 			return File.getContent(modFile(file));
+=======
+		if (currentMod != null && FileSystem.exists(modFile(file, type, library)))
+			return File.getContent(modFile(file, type, library));
+>>>>>>> upstream
 		#end
 
 		return getPath(file, type, library);
@@ -234,8 +256,13 @@ class Paths
 	inline static public function txt(key:String, ?library:String)
 	{
 		#if FILESYSTEM
+<<<<<<< HEAD
 		if (currentMod != null && FileSystem.exists(modTxt(key)))
 			return modTxt(key);
+=======
+		if (currentMod != null && FileSystem.exists(modTxt(key, library)))
+			return modTxt(key, library);
+>>>>>>> upstream
 		#end
 
 		return getPath('data/$key.txt', TEXT, library);
@@ -249,8 +276,13 @@ class Paths
 	inline static public function json(key:String, ?library:String)
 	{
 		#if FILESYSTEM
+<<<<<<< HEAD
 		if (currentMod != null && FileSystem.exists(modJson(key)))
 			return modJson(key);
+=======
+		if (currentMod != null && FileSystem.exists(modJson(key, library)))
+			return modJson(key, library);
+>>>>>>> upstream
 		#end
 
 		return getPath('data/$key.json', TEXT, library);
@@ -321,7 +353,11 @@ class Paths
 		var pissOff:String;
 
 		#if FILESYSTEM
+<<<<<<< HEAD
 		pissOff = modSound(key);
+=======
+		pissOff = modSound(key, library);
+>>>>>>> upstream
 		if (FileSystem.exists(pissOff))
 		{
 			if (!customSounds.exists(pissOff))
@@ -356,7 +392,11 @@ class Paths
 		var pissOff:String;
 
 		#if FILESYSTEM
+<<<<<<< HEAD
 		pissOff = modMusic(key);
+=======
+		pissOff = modMusic(key, library);
+>>>>>>> upstream
 		if (FileSystem.exists(pissOff))
 		{
 			if (!customSounds.exists(pissOff))
@@ -383,7 +423,11 @@ class Paths
 
 	inline static public function voices(song:String):Dynamic
 	{
+<<<<<<< HEAD
 		var songLowercase = Paths.toSongPath(song);
+=======
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+>>>>>>> upstream
 		var pissOff:String;
 
 		#if FILESYSTEM
@@ -414,7 +458,11 @@ class Paths
 
 	inline static public function inst(song:String):Dynamic
 	{
+<<<<<<< HEAD
 		var songLowercase = Paths.toSongPath(song);
+=======
+		var songLowercase = StringTools.replace(song, " ", "-").toLowerCase();
+>>>>>>> upstream
 		var pissOff:String;
 
 		#if FILESYSTEM
@@ -448,7 +496,11 @@ class Paths
 		var pissOff:String;
 
 		#if FILESYSTEM
+<<<<<<< HEAD
 		pissOff = modImage(key);
+=======
+		pissOff = modImage(key, library);
+>>>>>>> upstream
 		if (FileSystem.exists(pissOff))
 		{
 			if (!customImages.exists(pissOff))
@@ -494,6 +546,7 @@ class Paths
 		return 'assets/_stages/$key/data.json';
 	}
 
+<<<<<<< HEAD
 	inline static public function stageJSON(key:String)
 	{
 		#if FILESYSTEM
@@ -511,14 +564,23 @@ class Paths
 			return modFont(key);
 		#end
 
+=======
+	inline static public function font(key:String)
+	{
+>>>>>>> upstream
 		return 'assets/fonts/$key';
 	}
 
 	inline static public function video(key:String, ?library:String)
 	{
 		#if FILESYSTEM
+<<<<<<< HEAD
 		if (currentMod != null && FileSystem.exists(modVideo(key)))
 			return modVideo(key);
+=======
+		if (currentMod != null && FileSystem.exists(modVideo(key, library)))
+			return modVideo(key, library);
+>>>>>>> upstream
 		#end
 
 		return getPath('videos/$key.mp4', BINARY, library);
@@ -535,6 +597,7 @@ class Paths
 	}
 
 	#if FILESYSTEM
+<<<<<<< HEAD
 	// previous file names are kept for backwards compatibility
 	// file content will stay the same though
 
@@ -555,6 +618,19 @@ class Paths
 	}
 
 	inline static public function checkModLoad(mod:String):Bool
+=======
+	inline static public function loadModFile(mod:String) // the "loadMod" file
+	{
+		return 'mods/$mod/loadMod';
+	}
+
+	inline static public function modInfoFile(mod:String) // mod-info.json
+	{
+		return 'mods/$mod/modInfo';
+	}
+
+	inline static public function checkModLoad(mod:String):Bool // mod-info.json
+>>>>>>> upstream
 	{
 		if (FileSystem.exists(loadModFile(mod)))
 		{
@@ -575,6 +651,7 @@ class Paths
 		return 'mods/$currentMod/assets/songs/${song}/Voices.$SOUND_EXT';
 	}
 
+<<<<<<< HEAD
 	inline static public function modMusic(key:String)
 	{
 		return 'mods/$currentMod/assets/music/$key.$SOUND_EXT';
@@ -588,6 +665,21 @@ class Paths
 	inline static public function modImage(image:String)
 	{
 		return 'mods/$currentMod/assets/images/$image.png';
+=======
+	inline static public function modMusic(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('music/$key.$SOUND_EXT', MUSIC, library);
+	}
+
+	inline static public function modSound(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('sounds/$key.$SOUND_EXT', MUSIC, library);
+	}
+
+	inline static public function modImage(image:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('images/$image.png', IMAGE, library);
+>>>>>>> upstream
 	}
 
 	inline static public function modStageScript(key:String)
@@ -600,6 +692,7 @@ class Paths
 		return 'mods/$currentMod/assets/_stages/$key/data.json';
 	}
 
+<<<<<<< HEAD
 	inline static public function modStageJSON(key:String)
 	{
 		return 'mods/$currentMod/assets/_stages/$key/stage.json';
@@ -608,6 +701,11 @@ class Paths
 	inline static public function modModchart(key:String, ?library:String) // I am so fucking terrified
 	{
 		return 'mods/$currentMod/assets/data/$key.hemc';
+=======
+	inline static public function modModchart(key:String, ?library:String) // I am so fucking terrified
+	{
+		return 'mods/$currentMod/' + getPath('data/$key.hemc', TEXT, library);
+>>>>>>> upstream
 	}
 
 	inline static public function modDialogueStartFile(key:String)
@@ -650,6 +748,7 @@ class Paths
 		return 'mods/$currentMod/assets/_achievements/_achievementList.txt';
 	}
 
+<<<<<<< HEAD
 	inline static public function modTxt(key:String)
 	{
 		return 'mods/$currentMod/assets/data/$key.txt';
@@ -678,6 +777,26 @@ class Paths
 	inline static public function state(key:String)
 	{
 		return 'mods/$priorityMod/assets/_states/$key.hest';
+=======
+	inline static public function modTxt(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('data/$key.txt', TEXT, library);
+	}
+
+	inline static public function modJson(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('data/$key.json', TEXT, library);
+	}
+
+	inline static public function modVideo(key:String, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath('videos/$key.mp4', BINARY, library);
+	}
+
+	inline static public function modFile(file:String, type:AssetType = TEXT, ?library:String)
+	{
+		return 'mods/$currentMod/' + getPath(file, type, library);
+>>>>>>> upstream
 	}
 	#end
 }

@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
 	"animations": {
 		"danceRight": null,
 		"danceLeft": null,
@@ -16,4 +17,13 @@
 		"flipped": false
 	},
 	"character": "extras"
+=======
+    "character" : "extras",
+    "animations" : {
+        "idle" : {
+            "prefix" : "extras",
+            "fps" : 12
+        }
+    }
+>>>>>>> upstream
 }

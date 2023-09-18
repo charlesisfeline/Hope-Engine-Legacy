@@ -2,6 +2,7 @@ function trigger(params:Map<String, Dynamic>)
 {
 	var camGameInt:Float = params.get("camGame_int");
 	var camGameDur:Float = params.get("camGame_dur");
+<<<<<<< HEAD
 	var camGameAxis:String = params.get("camGame_axis");
 
 	var camHUDInt:Float = params.get("camHUD_int");
@@ -23,4 +24,11 @@ function trigger(params:Map<String, Dynamic>)
 		camHUD.shake(camHUDInt, camHUDDur, null, true, FlxAxes.Y);
 	else
 		camHUD.shake(camHUDInt, camHUDDur, null, true, FlxAxes.XY);
+=======
+	var camHUDInt:Float = params.get("camHUD_int");
+	var camHUDDur:Float = params.get("camHUD_dur");
+
+	FlxG.camera.shake(camGameInt, camGameDur);
+	camHUD.shake(camHUDInt, camHUDDur);
+>>>>>>> upstream
 }

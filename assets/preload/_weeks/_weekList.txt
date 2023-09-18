@@ -4,5 +4,9 @@ week2
 week3
 week4
 week5
+<<<<<<< HEAD
 week6
 week7
+=======
+week6
+>>>>>>> upstream

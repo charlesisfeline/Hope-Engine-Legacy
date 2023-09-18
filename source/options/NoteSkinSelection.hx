@@ -1,6 +1,7 @@
 package options;
 
 // this shit's just a superior image and file replacer
+<<<<<<< HEAD
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.graphics.FlxGraphic;
@@ -27,16 +28,44 @@ class NoteSkinSelection extends MusicBeatSubstate
 	var registeredPixelPreviews:Array<FlxSpriteGroup> = [];
 	var previewTargetYs:Array<Int> = [];
 	var pixelPreviewsActive:Array<Null<Bool>> = [];
+=======
+import flixel.graphics.FlxGraphic;
+#if FILESYSTEM
+import flixel.FlxG;
+import flixel.FlxSprite;
+import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.group.FlxSpriteGroup;
+import flixel.text.FlxText;
+import flixel.tweens.FlxTween;
+import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
+import openfl.display.BitmapData;
+import sys.FileSystem;
+import sys.io.File;
+
+using StringTools;
+
+class NoteSkinSelection extends MusicBeatSubstate
+{
+	var registeredPreviews:Array<FlxSpriteGroup> = [];
+>>>>>>> upstream
 
 	public static var registeredSkins:Array<String> = ["default"];
 
 	var bg:FlxSprite;
+<<<<<<< HEAD
+=======
+	var arrows:FlxSprite;
+>>>>>>> upstream
 
 	var previousOptionText:FlxText;
 	var nextOptionText:FlxText;
 	var infoText:FlxText;
 	var skinName:FlxText;
+<<<<<<< HEAD
 	var skinCreator:FlxText;
+=======
+>>>>>>> upstream
 	var skinDesc:FlxText;
 
 	var splashSparrow:FlxAtlasFrames;
@@ -48,7 +77,11 @@ class NoteSkinSelection extends MusicBeatSubstate
 	{
 		super();
 
+<<<<<<< HEAD
 		if (registeredSkins.length - 1 != FileSystem.readDirectory(Sys.getCwd() + "/skins").length)
+=======
+		if (registeredSkins.length - 1 != FileSystem.readDirectory(Sys.getCwd() + "/assets/skins").length)
+>>>>>>> upstream
 			refreshSkins();
 
 		persistentUpdate = persistentDraw = true;
@@ -59,6 +92,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 		bg.screenCenter();
 		add(bg);
 
+<<<<<<< HEAD
 		infoText = new FlxText(FlxG.width * 0.5 + 10, 0, FlxG.width * 0.5 - 20,
 			"Skins folder is at the \"skins\" folder.\nSee \"swag\" folder on how one works.\nPress ESCAPE to save choice.\nPress BACKSPACE to leave without saving.",
 			72);
@@ -69,11 +103,23 @@ class NoteSkinSelection extends MusicBeatSubstate
 		add(infoText);
 
 		skinName = new FlxText(FlxG.width * 0.5 + 10, FlxG.height * 0.3, FlxG.width * 0.5 - 20, "", 72);
+=======
+		infoText = new FlxText(0, FlxG.height * 0.8, FlxG.width,
+			"Skins folder is at assets/skins. See \"swag\" folder on how one works.\nPress ESCAPE to save choice, press BACKSPACE to leave without saving.",
+			72);
+		infoText.scrollFactor.set();
+		infoText.setFormat("VCR OSD Mono", 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoText.borderSize = 3;
+		add(infoText);
+
+		skinName = new FlxText(0, FlxG.height * 0.15, FlxG.width, "", 72);
+>>>>>>> upstream
 		skinName.scrollFactor.set();
 		skinName.setFormat("VCR OSD Mono", 48, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		skinName.borderSize = 3;
 		add(skinName);
 
+<<<<<<< HEAD
 		skinCreator = new FlxText(FlxG.width * 0.5 + 10, skinName.y + skinName.height + 5, FlxG.width * 0.5 - 20, "", 72);
 		skinCreator.scrollFactor.set();
 		skinCreator.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
@@ -139,12 +185,51 @@ class NoteSkinSelection extends MusicBeatSubstate
 
 	function createPreviews():Void
 	{
+=======
+		skinDesc = new FlxText(0, FlxG.height * 0.05 + 50, FlxG.width, "The default one. Seems to be normal.", 72);
+		skinDesc.scrollFactor.set();
+		skinDesc.setFormat("VCR OSD Mono", 24, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		skinDesc.borderSize = 3;
+		// add(skinDesc);
+
+		var arrow_tex = Paths.getSparrowAtlas('arrow');
+		arrows = new FlxSprite();
+		arrows.frames = arrow_tex;
+		arrows.animation.addByPrefix('idle', "arrow idle", 24);
+		arrows.animation.play('idle');
+		arrows.scrollFactor.set();
+		arrows.antialiasing = true;
+		arrows.setGraphicSize(Std.int(FlxG.width * 1.0625), 0);
+		arrows.updateHitbox();
+		arrows.screenCenter();
+		add(arrows);
+
+		previousOptionText = new FlxText(0, 0, FlxG.width * 0.1875, "", 32);
+		previousOptionText.scrollFactor.set();
+		previousOptionText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		previousOptionText.borderSize = 3;
+		previousOptionText.screenCenter(Y);
+		add(previousOptionText);
+
+		nextOptionText = new FlxText(FlxG.width * 0.8125, 0, FlxG.width * 0.1875, "", 32);
+		nextOptionText.scrollFactor.set();
+		nextOptionText.setFormat("VCR OSD Mono", 32, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		nextOptionText.borderSize = 3;
+		nextOptionText.screenCenter(Y);
+		add(nextOptionText);
+
+		// now create the previews
+>>>>>>> upstream
 		for (skinName in registeredSkins)
 		{
 			var theSex:FlxAtlasFrames = null;
 			if (skinName != "default")
 				theSex = FlxAtlasFrames.fromSparrow(loadedNoteSkins.get(skinName),
+<<<<<<< HEAD
 					File.getContent(Sys.getCwd() + "skins/" + skinName + "/normal/NOTE_assets.xml"));
+=======
+					File.getContent(Sys.getCwd() + "assets/skins/" + skinName + "/normal/NOTE_assets.xml"));
+>>>>>>> upstream
 
 			var skinPreview:FlxSpriteGroup = new FlxSpriteGroup();
 
@@ -152,11 +237,15 @@ class NoteSkinSelection extends MusicBeatSubstate
 			{
 				for (noteDir in 0...4)
 				{
+<<<<<<< HEAD
 					var pissArrow:FlxSprite = null;
 					if (noteType == 0)
 						pissArrow = new StaticArrow(0, 0);
 					else
 						pissArrow = new FlxSprite();
+=======
+					var pissArrow:FlxSprite = new FlxSprite();
+>>>>>>> upstream
 
 					if (theSex == null)
 						pissArrow.frames = Paths.getSparrowAtlas('NOTE_assets', 'shared'); // use default
@@ -259,6 +348,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 						pissArrow.updateHitbox();
 						pissArrow.x = 160 * 0.7 * noteDir;
 						pissArrow.y = 160 * 0.7 * noteType;
+<<<<<<< HEAD
 
 						if (pissArrow is StaticArrow)
 						{
@@ -271,10 +361,18 @@ class NoteSkinSelection extends MusicBeatSubstate
 			}
 			// skinPreview.screenCenter();
 			skinPreview.x = FlxG.width * 0.25 - skinPreview.width * 0.5;
+=======
+					}
+				}
+			}
+			skinPreview.screenCenter();
+			skinPreview.alpha = 0;
+>>>>>>> upstream
 			registeredPreviews.push(skinPreview);
 			add(skinPreview);
 		}
 
+<<<<<<< HEAD
 		// now let's do it all over again!
 
 		for (skinName in registeredSkins)
@@ -436,19 +534,41 @@ class NoteSkinSelection extends MusicBeatSubstate
 			pixelPreviewsActive.push(false);
 			add(skinPreview);
 		}
+=======
+		forEachOfType(FlxSprite, function(spr:FlxSprite)
+		{
+			var desiredAlpha:Float = 1;
+			if (spr.alpha == 1)
+				spr.alpha = 0;
+			else
+				desiredAlpha = spr.alpha;
+
+			FlxTween.tween(spr, {alpha: desiredAlpha}, 0.5);
+		});
+
+		new FlxTimer().start(0.5, function(tmr:FlxTimer)
+		{
+			changeItem((registeredSkins.indexOf(Settings.noteSkin) == -1 ? 0 : registeredSkins.indexOf(Settings.noteSkin)));
+		});
+>>>>>>> upstream
 	}
 
 	public static function refreshSkins()
 	{
 		registeredSkins = ['default'];
 
+<<<<<<< HEAD
 		for (skinName in (FileSystem.readDirectory(Sys.getCwd() + "/skins")))
+=======
+		for (skinName in (FileSystem.readDirectory(Sys.getCwd() + "/assets/skins")))
+>>>>>>> upstream
 			registeredSkins.push(skinName);
 
 		for (skinName in registeredSkins)
 		{
 			if (skinName != 'default')
 			{
+<<<<<<< HEAD
 				loadedNoteSkins.remove(skinName);
 				loadedSplashes.remove(skinName);
 
@@ -457,34 +577,55 @@ class NoteSkinSelection extends MusicBeatSubstate
 				loadedSplashes.remove(skinName + "-pixel");
 
 				var piss:BitmapData = BitmapData.fromFile(Sys.getCwd() + "skins/" + skinName + "/normal/NOTE_assets.png");
+=======
+				var piss:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/normal/NOTE_assets.png");
+>>>>>>> upstream
 				var shitoffmate:FlxGraphic = FlxGraphic.fromBitmapData(piss);
 				shitoffmate.persist = true;
 				shitoffmate.destroyOnNoUse = false;
 				loadedNoteSkins.set(skinName, shitoffmate);
 
+<<<<<<< HEAD
 				if (FileSystem.exists(Sys.getCwd() + "skins/" + skinName + "/normal/note_splashes.png")
 					&& FileSystem.exists(Sys.getCwd() + "skins/" + skinName + "/normal/note_splashes.xml"))
 				{
 					var noteSplashNormal:BitmapData = BitmapData.fromFile(Sys.getCwd() + "skins/" + skinName + "/normal/note_splashes.png");
+=======
+				if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.png")
+					&& FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.xml"))
+				{
+					var noteSplashNormal:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/normal/note_splashes.png");
+>>>>>>> upstream
 					var shitoffmateSplash:FlxGraphic = FlxGraphic.fromBitmapData(noteSplashNormal);
 					shitoffmateSplash.persist = true;
 					shitoffmateSplash.destroyOnNoUse = false;
 					loadedSplashes.set(skinName, shitoffmateSplash);
 				}
 
+<<<<<<< HEAD
 				if (FileSystem.exists(Sys.getCwd() + "skins/" + skinName + "/pixel/"))
 				{
 					var piss2:BitmapData = BitmapData.fromFile(Sys.getCwd() + "skins/" + skinName + "/pixel/arrows-pixels.png");
+=======
+				if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/"))
+				{
+					var piss2:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/arrows-pixels.png");
+>>>>>>> upstream
 					var shitoffmate2:FlxGraphic = FlxGraphic.fromBitmapData(piss2);
 					shitoffmate2.persist = true;
 					shitoffmate2.destroyOnNoUse = false;
 					loadedNoteSkins.set(skinName + "-pixel", shitoffmate2);
 
+<<<<<<< HEAD
 					var piss3:BitmapData = BitmapData.fromFile(Sys.getCwd() + "skins/" + skinName + "/pixel/arrowEnds.png");
+=======
+					var piss3:BitmapData = BitmapData.fromFile(Sys.getCwd() + "assets/skins/" + skinName + "/pixel/arrowEnds.png");
+>>>>>>> upstream
 					var shitoffmate3:FlxGraphic = FlxGraphic.fromBitmapData(piss3);
 					shitoffmate3.persist = true;
 					shitoffmate3.destroyOnNoUse = false;
 					loadedNoteSkins.set(skinName + "-pixelEnds", shitoffmate3);
+<<<<<<< HEAD
 
 					if (FileSystem.exists(Sys.getCwd() + "skins/" + skinName + "/pixel/pixel_splashes.png")
 						&& FileSystem.exists(Sys.getCwd() + "skins/" + skinName + "/pixel/pixel_splashes.xml"))
@@ -495,6 +636,8 @@ class NoteSkinSelection extends MusicBeatSubstate
 						shitoffmateSplash.destroyOnNoUse = false;
 						loadedSplashes.set(skinName + "-pixel", shitoffmateSplash);
 					}
+=======
+>>>>>>> upstream
 				}
 			}
 		}
@@ -514,6 +657,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 			isPressedPlaying = !isPressedPlaying;
 
 		if (isPressedPlaying)
+<<<<<<< HEAD
 		{
 			var shitPiss:StaticArrow = cast registeredPreviews[curSelected].members[curBeat % 4];
 
@@ -530,11 +674,18 @@ class NoteSkinSelection extends MusicBeatSubstate
 				shitPiss = cast registeredPixelPreviews[curSelected].members[curBeat % 4];
 
 			shitPiss.playAnim('piss confirm');
+=======
+			registeredPreviews[curSelected].members[curBeat % 4].animation.play('piss pressed');
+		else
+		{
+			registeredPreviews[curSelected].members[curBeat % 4].animation.play('piss confirm');
+>>>>>>> upstream
 
 			if (splashSparrow != null)
 			{
 				if (Settings.noteSplashes)
 				{
+<<<<<<< HEAD
 					var splash = new NoteSplash(splashSparrow);
 					var strumNote:StaticArrow = shitPiss;
 
@@ -554,13 +705,25 @@ class NoteSkinSelection extends MusicBeatSubstate
 					add(splash);
 
 					splash.splash(curBeat % 4);
+=======
+					var splash = new NoteSplash(curBeat % 4, splashSparrow);
+					var strumNote = registeredPreviews[curSelected].members[curBeat % 4];
+
+					splash.x = strumNote.x + (strumNote.width / 2) - (splash.width / 2);
+					splash.y = strumNote.y + (strumNote.height / 2) - (splash.height / 2);
+
+					add(splash);
+>>>>>>> upstream
 				}
 			}
 		}
 	}
 
+<<<<<<< HEAD
 	var exiting:Bool = false;
 
+=======
+>>>>>>> upstream
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -570,6 +733,7 @@ class NoteSkinSelection extends MusicBeatSubstate
 
 		registeredPreviews[curSelected].forEach(function(spr:FlxSprite)
 		{
+<<<<<<< HEAD
 			if (spr.animation.curAnim.name.startsWith('piss') && !(spr is StaticArrow) && spr.animation.curAnim.finished)
 				spr.animation.play('piss');
 
@@ -607,6 +771,27 @@ class NoteSkinSelection extends MusicBeatSubstate
 				if (Note.noteSkin != null)
 					Note.noteSkin.destroy();
 				Note.noteSkin = null;
+=======
+			if (spr.animation.curAnim.name.startsWith('piss') && spr.animation.curAnim.finished)
+				spr.animation.play('piss');
+
+			if (spr.animation.curAnim.name.endsWith('confirm'))
+			{
+				spr.centerOffsets();
+				spr.offset.x -= 13;
+				spr.offset.y -= 13;
+			}
+			else
+				spr.centerOffsets();
+		});
+
+		if (!options.OptionsState.acceptInput)
+		{
+			if (FlxG.keys.justPressed.ESCAPE)
+			{
+				FlxG.sound.play(Paths.sound('confirmMenu'));
+				Settings.noteSkin = registeredSkins[curSelected];
+>>>>>>> upstream
 				FlxG.save.flush();
 				options.OptionsState.acceptInput = true;
 
@@ -615,16 +800,20 @@ class NoteSkinSelection extends MusicBeatSubstate
 					FlxTween.tween(spr, {alpha: 0}, 0.5, {
 						onComplete: function(twn:FlxTween)
 						{
+<<<<<<< HEAD
 							var a = remove(spr, true);
 							a.exists = false;
 							a.destroy();
 							
+=======
+>>>>>>> upstream
 							close();
 						}
 					});
 				});
 			}
 
+<<<<<<< HEAD
 			if (FlxG.keys.justPressed.P)
 			{
 				if (pixelPreviewsActive[curSelected] != null)
@@ -637,6 +826,10 @@ class NoteSkinSelection extends MusicBeatSubstate
 			{
 				exiting = true;
 
+=======
+			if (FlxG.keys.justPressed.BACKSPACE)
+			{
+>>>>>>> upstream
 				FlxG.sound.play(Paths.sound('cancelMenu'));
 				options.OptionsState.acceptInput = true;
 
@@ -651,17 +844,26 @@ class NoteSkinSelection extends MusicBeatSubstate
 				});
 			}
 
+<<<<<<< HEAD
 			if (controls.UI_UP_P)
+=======
+			if (FlxG.keys.justPressed.LEFT)
+>>>>>>> upstream
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(-1);
 			}
 
+<<<<<<< HEAD
 			if (controls.UI_DOWN_P)
+=======
+			if (FlxG.keys.justPressed.RIGHT)
+>>>>>>> upstream
 			{
 				FlxG.sound.play(Paths.sound('scrollMenu'));
 				changeItem(1);
 			}
+<<<<<<< HEAD
 
 			for (i in 0...registeredPreviews.length)
 			{
@@ -680,6 +882,8 @@ class NoteSkinSelection extends MusicBeatSubstate
 					}
 				}
 			}
+=======
+>>>>>>> upstream
 		}
 	}
 
@@ -699,12 +903,17 @@ class NoteSkinSelection extends MusicBeatSubstate
 		previousOption = curSelected == 0 ? registeredPreviews.length - 1 : curSelected - 1;
 		nextOption = curSelected == registeredPreviews.length - 1 ? 0 : curSelected + 1;
 
+<<<<<<< HEAD
 		// skinName.text = registeredSkins[curSelected].toUpperCase();
+=======
+		skinName.text = registeredSkins[curSelected].toUpperCase();
+>>>>>>> upstream
 		previousOptionText.text = registeredSkins[previousOption].toUpperCase();
 		nextOptionText.text = registeredSkins[nextOption].toUpperCase();
 
 		if (registeredSkins[curSelected] != "default")
 		{
+<<<<<<< HEAD
 			splashSparrow = null;
 
 			if (pixelPreviewsActive[curSelected])
@@ -773,3 +982,24 @@ class NoteSkinSelection extends MusicBeatSubstate
 	}
 	#end
 }
+=======
+			if (FileSystem.exists(Sys.getCwd() + "assets/skins/" + registeredSkins[curSelected] + "/normal/note_splashes.xml"))
+				splashSparrow = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedSplashes.get(registeredSkins[curSelected]),
+					File.getContent(Sys.getCwd() + "assets/skins/" + registeredSkins[curSelected] + "/normal/note_splashes.xml"));
+			else
+				splashSparrow = null;
+		}
+		else
+			splashSparrow = Paths.getSparrowAtlas('note_splashes', 'shared');
+
+		for (preview in registeredPreviews)
+		{
+			if (registeredPreviews[curSelected] == preview)
+				FlxTween.tween(preview, {alpha: 1}, 0.05, {startDelay: 0.05});
+			else
+				FlxTween.tween(preview, {alpha: 0}, 0.05);
+		}
+	}
+}
+#end
+>>>>>>> upstream

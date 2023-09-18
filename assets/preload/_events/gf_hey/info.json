@@ -1,4 +1,8 @@
 {
+<<<<<<< HEAD
 	"eventDesc": "Make a character do their \"Hey!\" or \"Cheer\" animation.",
+=======
+	"eventDesc": "Make a character do its' \"Hey!\" or \"Cheer\" animation.",
+>>>>>>> upstream
 	"eventName": "Hey!"
 }

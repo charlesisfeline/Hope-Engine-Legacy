@@ -1,7 +1,12 @@
 package options;
 
+<<<<<<< HEAD
 import flixel.FlxG;
 import flixel.FlxObject;
+=======
+import flixel.FlxCamera;
+import flixel.FlxG;
+>>>>>>> upstream
 import flixel.FlxSprite;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
@@ -21,11 +26,17 @@ class RatingPosSubstate extends MusicBeatSubstate
 
 	var rPos:FlxText;
 	var cPos:FlxText;
+<<<<<<< HEAD
 	var csPos:FlxText;
 
 	var rate:FlxSprite;
 	var comb:FlxSprite;
 	var combSpr:FlxSprite;
+=======
+
+	var rate:FlxSprite;
+	var comb:FlxSprite;
+>>>>>>> upstream
 
 	var playStrums:FlxTypedSpriteGroup<StaticArrow>;
 	var oppoStrums:FlxTypedSpriteGroup<StaticArrow>;
@@ -35,6 +46,10 @@ class RatingPosSubstate extends MusicBeatSubstate
 		super();
 
 		FlxG.mouse.visible = true;
+<<<<<<< HEAD
+=======
+		usesMouse = true;
+>>>>>>> upstream
 
 		bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.1), Std.int(FlxG.height * 1.1), FlxColor.BLACK);
 		bg.screenCenter();
@@ -49,6 +64,7 @@ class RatingPosSubstate extends MusicBeatSubstate
 		add(info);
 
 		cPos = new FlxText();
+<<<<<<< HEAD
 		cPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(cPos);
 
@@ -60,6 +76,15 @@ class RatingPosSubstate extends MusicBeatSubstate
 		csPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		add(csPos);
 
+=======
+		cPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(cPos);
+
+		rPos = new FlxText();
+		rPos.setFormat("VCR OSD Mono", 16, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		add(rPos);
+
+>>>>>>> upstream
 		createArrows();
 
 		rate = new FlxSprite().loadGraphic(Paths.image("sick", "shared"));
@@ -69,12 +94,15 @@ class RatingPosSubstate extends MusicBeatSubstate
 		rate.antialiasing = true;
 		add(rate);
 
+<<<<<<< HEAD
 		combSpr = new FlxSprite().loadGraphic(Paths.image('combo', 'shared'));
 		combSpr.setPosition(Settings.comboSprPos[0], Settings.comboSprPos[1]);
 		combSpr.setGraphicSize(Std.int(combSpr.width * 0.7));
 		combSpr.updateHitbox();
 		add(combSpr);
 
+=======
+>>>>>>> upstream
 		comb = new Count(0, 0, FlxG.random.int(0, 999, [69, 420, 690]) + "");
 		comb.setPosition(Settings.comboPos[0], Settings.comboPos[1]);
 		add(comb);
@@ -100,7 +128,11 @@ class RatingPosSubstate extends MusicBeatSubstate
 		#if FILESYSTEM
 		if (Settings.noteSkin != "default")
 			theSex = FlxAtlasFrames.fromSparrow(options.NoteSkinSelection.loadedNoteSkins.get(Settings.noteSkin),
+<<<<<<< HEAD
 				File.getContent(Sys.getCwd() + "skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
+=======
+				File.getContent(Sys.getCwd() + "assets/skins/" + Settings.noteSkin + "/normal/NOTE_assets.xml"));
+>>>>>>> upstream
 		#end
 
 		var a = ["arrowLEFT", "arrowDOWN", "arrowUP", "arrowRIGHT"];
@@ -136,6 +168,7 @@ class RatingPosSubstate extends MusicBeatSubstate
 
 		playStrums.y = 50;
 		if (Settings.downscroll)
+<<<<<<< HEAD
 		{
 			playStrums.y = FlxG.height - 50 - playStrums.height - 1;
 			info.y = (FlxG.height * 0.2) - info.height;
@@ -148,21 +181,33 @@ class RatingPosSubstate extends MusicBeatSubstate
 			playStrums.screenCenter(X);
 			oppoStrums.visible = false;
 		}
+=======
+			playStrums.y = FlxG.height - 50 - playStrums.height - 1;
+
+		oppoStrums.y = playStrums.y;
+>>>>>>> upstream
 	}
 
 	var mousePastPos:Array<Float> = [];
 	var ratePastPos:Array<Float> = [];
 	var combPastPos:Array<Float> = [];
+<<<<<<< HEAD
 	var combSprPastPos:Array<Float> = [];
 
 	var changingRate:Bool = false;
 	var changingComb:Bool = false;
 	var changingCombSpr:Bool = false;
+=======
+
+	var changingRate:Bool = false;
+	var changingComb:Bool = false;
+>>>>>>> upstream
 
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
 
+<<<<<<< HEAD
 		rPos.text = "Rating Position:\n"
 			+ Helper.truncateFloat(Settings.ratingPos[0], 2)
 			+ ", "
@@ -183,6 +228,22 @@ class RatingPosSubstate extends MusicBeatSubstate
 		rPos.setPosition(16, cPos.y - rPos.height);
 
 		if (controls.UI_BACK)
+=======
+		rPos.text = "Rating Position: "
+			+ Helper.truncateFloat(Settings.ratingPos[0], 2)
+			+ ", "
+			+ Helper.truncateFloat(Settings.ratingPos[1], 2);
+
+		cPos.text = "Combo Position: "
+			+ Helper.truncateFloat(Settings.comboPos[0], 2)
+			+ ", "
+			+ Helper.truncateFloat(Settings.comboPos[1], 2);
+
+		rPos.setPosition(16, cPos.y - rPos.height - 16);
+		cPos.setPosition(16, FlxG.height - cPos.height - 16);
+
+		if (controls.BACK)
+>>>>>>> upstream
 		{
 			FlxG.mouse.visible = false;
 
@@ -204,11 +265,18 @@ class RatingPosSubstate extends MusicBeatSubstate
 			{
 				ratePastPos = [rate.x, rate.y];
 				combPastPos = [comb.x, comb.y];
+<<<<<<< HEAD
 				combSprPastPos = [combSpr.x, combSpr.y];
 				mousePastPos = [FlxG.mouse.getScreenPosition().x, FlxG.mouse.getScreenPosition().y];
 			}
 
 			if ((FlxG.mouse.overlaps(rate) && !changingComb && !changingCombSpr) || changingRate)
+=======
+				mousePastPos = [FlxG.mouse.getScreenPosition().x, FlxG.mouse.getScreenPosition().y];
+			}
+
+			if ((FlxG.mouse.overlaps(rate) && !changingComb) || changingRate)
+>>>>>>> upstream
 			{
 				changingRate = true;
 
@@ -219,7 +287,11 @@ class RatingPosSubstate extends MusicBeatSubstate
 				Settings.ratingPos[1] = rate.y;
 			}
 
+<<<<<<< HEAD
 			if ((FlxG.mouse.overlaps(comb) && !changingRate && !changingCombSpr) || changingComb)
+=======
+			if ((FlxG.mouse.overlaps(comb) && !changingRate) || changingComb)
+>>>>>>> upstream
 			{
 				changingComb = true;
 
@@ -229,6 +301,7 @@ class RatingPosSubstate extends MusicBeatSubstate
 				Settings.comboPos[0] = comb.x;
 				Settings.comboPos[1] = comb.y;
 			}
+<<<<<<< HEAD
 
 			if ((FlxG.mouse.overlaps(combSpr) && !changingRate && !changingComb) || changingCombSpr)
 			{
@@ -240,24 +313,35 @@ class RatingPosSubstate extends MusicBeatSubstate
 				Settings.comboSprPos[0] = combSpr.x;
 				Settings.comboSprPos[1] = combSpr.y;
 			}
+=======
+>>>>>>> upstream
 		}
 
 		if (FlxG.mouse.justReleased)
 		{
 			changingRate = false;
 			changingComb = false;
+<<<<<<< HEAD
 			changingCombSpr = false;
+=======
+>>>>>>> upstream
 		}
 
 		if (FlxG.keys.justPressed.R)
 		{
 			Settings.ratingPos = [(FlxG.width / 3 + 5), (FlxG.height / 2 + 5)];
 			Settings.comboPos = [(FlxG.width / 3 + 5), (FlxG.height / 2 + 155)];
+<<<<<<< HEAD
 			Settings.comboSprPos = [Settings.ratingPos[0] + 150, Settings.ratingPos[1] + 75];
 
 			rate.setPosition(Settings.ratingPos[0], Settings.ratingPos[1]);
 			comb.setPosition(Settings.comboPos[0], Settings.comboPos[1]);
 			combSpr.setPosition(Settings.comboSprPos[0], Settings.comboSprPos[1]);
+=======
+
+			rate.setPosition(Settings.ratingPos[0], Settings.ratingPos[1]);
+			comb.setPosition(Settings.comboPos[0], Settings.comboPos[1]);
+>>>>>>> upstream
 		}
 	}
 }

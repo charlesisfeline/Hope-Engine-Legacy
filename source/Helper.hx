@@ -1,11 +1,15 @@
+<<<<<<< HEAD
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.FlxObject;
 
+=======
+>>>>>>> upstream
 using StringTools;
 
 class Helper
 {
+<<<<<<< HEAD
 	/**
 	 * Similar to `FlxMath.roundDecimal()`.
 	 * 
@@ -13,6 +17,8 @@ class Helper
 	 * @param precision How many decimal places should this have when truncated?
 	 * @return Truncated float with the precision provided.
 	 */
+=======
+>>>>>>> upstream
 	public static function truncateFloat(number:Float, precision:Int):Float
 	{
 		var num = number;
@@ -21,6 +27,7 @@ class Helper
 		return num;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Gives off a "complete" percent.
 	 * Replaces missing precision places with zeros.
@@ -58,6 +65,9 @@ class Helper
 	 * @return String as a bool.
 	 */
 	public static function toBool(bool:String):Bool
+=======
+	public static function toBool(bool:String):Null<Bool>
+>>>>>>> upstream
 	{
 		switch (bool.toLowerCase())
 		{
@@ -67,7 +77,11 @@ class Helper
 				return false;
 		}
 
+<<<<<<< HEAD
 		return false;
+=======
+		return null;
+>>>>>>> upstream
 	}
 
 	public static function getERegMatches(ereg:EReg, input:String, unique:Bool = false, index:Int = 0):Array<String>
@@ -88,6 +102,7 @@ class Helper
 		return matches;
 	}
 
+<<<<<<< HEAD
 	/**
 	 * Hi Psych!
 	 * Similar to `FlxMath.bound()`.
@@ -126,4 +141,9 @@ class Helper
 		Transparency.setTransparency("Friday Night Funkin' : Hope Engine", color);
 	}
 	#end
+=======
+	// hi Psych
+	public static function boundTo(value:Float, min:Float, max:Float):Float
+		return Math.max(min, Math.min(max, value));
+>>>>>>> upstream
 }

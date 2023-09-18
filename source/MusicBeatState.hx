@@ -5,8 +5,15 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
+<<<<<<< HEAD
 import lime.utils.Assets;
 import openfl.Assets as OpenFlAssets;
+=======
+import lime.app.Application;
+import lime.system.System;
+import openfl.Assets as OpenFlAssets;
+import openfl.Lib;
+>>>>>>> upstream
 
 using StringTools;
 
@@ -22,11 +29,82 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
+<<<<<<< HEAD
 	override function create()
 	{
 		super.create();
 
 		updateAntialiasing();
+=======
+	private static var assets:Array<FlxSprite> = [];
+	private static var toDestroy:Array<FlxSprite> = [];
+
+	var usesMouse:Bool = false;
+
+	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
+	{
+		if (Std.isOfType(Object, FlxSprite))
+		{
+			var spr:FlxSprite = cast(Object, FlxSprite);
+
+			if (spr.graphic != null)
+			{
+				assets.push(spr);
+			}
+		}
+
+		var result = super.add(Object);
+		return result;
+	}
+
+	public function clean()
+	{
+		for (i in assets)
+		{
+			assets.remove(i);
+			remove(i, true);
+			toDestroy.push(i);
+		}
+	}
+
+	public function new()
+	{
+		#if !html5
+		if (!Settings.cacheMusic)
+		{
+			for (sound in Paths.trackedSoundKeys)
+			{
+				OpenFlAssets.cache.clear(sound);
+				Paths.trackedSoundKeys.remove(sound);
+			}
+		}
+		#end
+
+		if (!Settings.cacheImages)
+		{
+			for (image in Paths.trackedImageKeys)
+			{
+				OpenFlAssets.cache.clear(image);
+				Paths.trackedImageKeys.remove(image);
+			}
+		}
+
+		super();
+		clean();
+	}
+
+	override function create()
+	{
+		for (i in toDestroy)
+		{
+			i.destroy();
+			toDestroy.remove(i);
+		}
+
+		super.create();
+
+		openfl.system.System.gc();
+>>>>>>> upstream
 	}
 
 	override function update(elapsed:Float)
@@ -41,6 +119,15 @@ class MusicBeatState extends FlxUIState
 			stepHit();
 
 		super.update(elapsed);
+<<<<<<< HEAD
+=======
+
+		if (usesMouse)
+		{
+			if (FlxG.mouse.justMoved && !FlxG.mouse.visible)
+				FlxG.mouse.visible = true;
+		}
+>>>>>>> upstream
 	}
 
 	private function updateBeat():Void
@@ -84,6 +171,7 @@ class MusicBeatState extends FlxUIState
 		FlxG.openURL(schmancy);
 		#end
 	}
+<<<<<<< HEAD
 
 	override function destroy()
 	{
@@ -149,4 +237,6 @@ class MusicBeatState extends FlxUIState
 			}
 		}, true);
 	}
+=======
+>>>>>>> upstream
 }

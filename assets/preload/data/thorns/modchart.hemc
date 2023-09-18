@@ -1,9 +1,17 @@
 function onStart()
 {
+<<<<<<< HEAD
     if (isStoryMode && !PlayStateClass.seenCutscene)
     {
         PlayState.inCutscene = true;
         camHUD.visible = false;
+=======
+    if (isStoryMode)
+    {
+        cutsceneDuration = 9.2;
+        camHUD.visible = false;
+        addingUp = true;
+>>>>>>> upstream
 
         var red = new FlxSprite();
         red.makeGraphic(Std.int(FlxG.width * 2), Std.int(FlxG.height * 2), 0xFFFF0000);
@@ -27,7 +35,10 @@ function onStart()
             FlxG.sound.play(Paths.sound('Senpai_Dies'), 1, false, null, true, function() {
                 camHUD.visible = true;
                 FlxG.camera.stopFX();
+<<<<<<< HEAD
                 PlayState.inCutscene = false;
+=======
+>>>>>>> upstream
 
                 remove(senpaiTransforms);
                 remove(red);
