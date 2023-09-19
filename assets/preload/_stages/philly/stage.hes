@@ -16,12 +16,14 @@ function createBackground()
 
     var bg:FlxSprite = new FlxSprite(-100).loadGraphic(Paths.image('philly/sky', 'week3'));
     bg.scrollFactor.set(0.1, 0.1);
+    bg.antialiasing = true;
     add(bg);
 
     var city:FlxSprite = new FlxSprite(-10).loadGraphic(Paths.image('philly/city', 'week3'));
     city.scrollFactor.set(0.3, 0.3);
     city.setGraphicSize(Std.int(city.width * 0.85));
     city.updateHitbox();
+    city.antialiasing = true;
     add(city);
 
     for (i in 0...5) 
@@ -37,9 +39,11 @@ function createBackground()
     }
 
     var streetBehind:FlxSprite = new FlxSprite(-40, 50).loadGraphic(Paths.image('philly/behindTrain','week3'));
+    streetBehind.antialiasing = true;
     add(streetBehind);
 
     phillyTrain = new FlxSprite(2000, 360).loadGraphic(Paths.image('philly/train','week3'));
+    phillyTrain.antialiasing = true;
 
     if (Settings.distractions)
         add(phillyTrain);
@@ -48,17 +52,14 @@ function createBackground()
     FlxG.sound.list.add(trainSound);
 
     var street:FlxSprite = new FlxSprite(-40, streetBehind.y).loadGraphic(Paths.image('philly/street','week3'));
+    street.antialiasing = true;
     add(street);
 }
 
-function createForeground(bf:Character, gf:Character, dad:Character)
+function createForeground()
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
-
-    // bf is Boyfriend/Player 1/Player
-    // gf is, well, Girlfriend
-    // dad is Dad/Player 2/Enemy
 }
 
 function beatHit(curBeat:Int)

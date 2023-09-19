@@ -4,7 +4,6 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
-import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 
 using StringTools;
@@ -21,7 +20,7 @@ class Alphabet extends FlxSpriteGroup
 
 	public var typeDelay:Float = 0.05;
 
-	public var text:String = "";
+	public var text(default, set):String = "";
 
 	var _finalText:String = "";
 	var _curText:String = "";
@@ -52,12 +51,13 @@ class Alphabet extends FlxSpriteGroup
 		super(x, y);
 
 		_finalText = text;
-		this.text = text;
 		isBold = bold;
 		rightAligned = isRight;
 
-		if (text != "")
-			addText();
+		// if (text != "")
+		// 	addText();
+
+		this.text = text;
 
 		if (!bold)
 			color = 0xFF000000;
@@ -69,6 +69,7 @@ class Alphabet extends FlxSpriteGroup
 
 		var xPos:Float = 0;
 		var curRow:Int = 0;
+
 		for (character in splitWords)
 		{
 			if (character == " ")
@@ -83,16 +84,10 @@ class Alphabet extends FlxSpriteGroup
 				curRow++;
 			}
 
-			#if (haxe >= "4.0.0")
 			var isNumber:Bool = AlphaCharacter.numbers.contains(character);
 			var isSymbol:Bool = AlphaCharacter.symbols.contains(character);
-			#else
-			var isNumber:Bool = AlphaCharacter.numbers.indexOf(character) != -1;
-			var isSymbol:Bool = AlphaCharacter.symbols.indexOf(character) != -1;
-			#end
 
 			if (AlphaCharacter.alphabet.indexOf(character.toLowerCase()) != -1 || isNumber || isSymbol)
-				// if (AlphaCharacter.alphabet.contains(character.toLowerCase()))
 			{
 				if (lastSprite != null && !xPosResetted)
 				{
@@ -103,7 +98,7 @@ class Alphabet extends FlxSpriteGroup
 					xPosResetted = false;
 
 				var wasSpaced:Bool = false;
-				
+
 				if (lastWasSpace)
 				{
 					xPos += 40;
@@ -155,6 +150,25 @@ class Alphabet extends FlxSpriteGroup
 	{
 		var scaledY = FlxMath.remapToRange(targetY, 0, 1, 0, 1.3);
 		return (scaledY * 120) + additive;
+	}
+
+	function set_text(value:String):String 
+	{
+		if (value != text)
+		{
+			text = value.trim();
+			_finalText = text;
+			lastSprite = null;
+
+			clear();
+			addText();
+
+			color = 0xFFFFFFFF;
+			if (!isBold)
+				color = 0xFF000000;
+		}
+
+		return value;
 	}
 }
 
@@ -219,7 +233,7 @@ class AlphaCharacter extends FlxSprite
 			case "," | "_" | ".":
 				y += 45;
 			case "-":
-				y += 30;
+				y += 20;
 			case "+":
 				y += 14;
 		}
@@ -274,7 +288,7 @@ class AlphaCharacter extends FlxSprite
 				animation.addByPrefix(letter, 'exclamation point', 24);
 				animation.play(letter);
 			case '_':
-				animation.addByPrefix(letter, '_', 24);
+				animation.addByPrefix(letter, '-', 24);
 				animation.play(letter);
 				y += 40;
 			case "#":
@@ -301,7 +315,7 @@ class AlphaCharacter extends FlxSprite
 			case "-":
 				animation.addByPrefix(letter, '-', 24);
 				animation.play(letter);
-				y += 35;
+				y += 20;
 			case '"':
 				animation.addByPrefix(letter, '"', 24);
 				animation.play(letter);

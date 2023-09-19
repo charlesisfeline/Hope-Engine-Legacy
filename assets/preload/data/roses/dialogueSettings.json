@@ -11,5 +11,6 @@
         "color": "B3DFd8",
         "alpha": 0.7,
         "duration": 1
-    }
+    },
+    "type": "pixel"
 }

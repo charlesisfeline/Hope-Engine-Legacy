@@ -1,5 +1,6 @@
 package;
 
+import editors.CreditsEditor;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
@@ -13,6 +14,27 @@ import lime.utils.Assets;
 #if desktop
 import Discord.DiscordClient;
 #end
+#if FILESYSTEM
+import sys.FileSystem;
+import sys.io.File;
+#end
+
+typedef CreditCategory =
+{
+	var categoryName:String;
+	var categoryItems:Array<Credit>;
+}
+
+typedef Credit =
+{
+	var name:String;
+	var desc:String;
+	@:optional var link:Null<String>;
+	@:optional var tint:Null<String>;
+	@:optional var icon:Null<String>;
+	@:optional var iconAntialiasing:Null<Bool>;
+	@:optional @:noCompletion var funnyMod:String;
+}
 
 class CreditsState extends MusicBeatState
 {
@@ -26,6 +48,23 @@ class CreditsState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("CreditsState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("CreditsState", CREDITS));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Credits", null);
 		#end
@@ -35,7 +74,7 @@ class CreditsState extends MusicBeatState
 		Paths.clearCustomSoundCache();
 		#end
 
-		menuBG = new FlxBackdrop(Paths.image('credBG'), 1, 1, false);
+		menuBG = new FlxBackdrop(Paths.image('credBG'), Y);
 		menuBG.screenCenter(X);
 		menuBG.antialiasing = true;
 		menuBG.color = 0xff3e3040;
@@ -58,7 +97,37 @@ class CreditsState extends MusicBeatState
 
 		descBackground.setPosition(descriptionShit.x - 4, descriptionShit.y - 4);
 
-		var credits:Array<Dynamic> = Json.parse(Assets.getText(Paths.json('credits')));
+		var credits:Array<CreditCategory> = cast Json.parse(Assets.getText(Paths.json('credits')));
+		var creditsGet:Array<CreditCategory> = [];
+
+		var prevMod = Paths.currentMod;
+
+		#if (FILESYSTEM && MODS_FEATURE)
+		for (mod in FileSystem.readDirectory('mods'))
+		{
+			Paths.setCurrentMod(mod);
+
+			if (Paths.checkModLoad(mod) && Paths.exists(Paths.modJson('credits')))
+			{
+				var cred:Array<CreditCategory> = cast Json.parse(File.getContent(Paths.json('credits')));
+
+
+				for (cat in cred)
+				{
+					for (info in cat.categoryItems)
+						info.funnyMod = mod;
+
+					creditsGet.push(cat);
+				}
+			}
+		}
+		#end
+
+		Paths.setCurrentMod(null);
+		creditsGet.reverse();
+
+		for (cat in creditsGet)
+			credits.insert(0, cat);
 
 		for (i in 0...credits.length)
 		{
@@ -73,8 +142,7 @@ class CreditsState extends MusicBeatState
 
 			allTheShit.push([curCategory.categoryName, "", ""]);
 
-			var catItems:Array<Dynamic> = curCategory.categoryItems;
-			for (i2 in 0...catItems.length)
+			for (i2 in 0...curCategory.categoryItems.length)
 			{
 				var curCredit = curCategory.categoryItems[i2];
 
@@ -85,14 +153,31 @@ class CreditsState extends MusicBeatState
 				credLabel.screenCenter(X);
 				alphabets.add(credLabel);
 
+				if (curCredit.icon != null)
+				{
+					Paths.setCurrentMod(null);
+					if (curCredit.funnyMod != null)
+						Paths.setCurrentMod(curCredit.funnyMod);
+					var icon = new FlxSprite().loadGraphic(Paths.image("creditIcons/" + curCredit.icon));
+					icon.x = credLabel.width + 25;
+					icon.y = (credLabel.height / 2) - (icon.height / 2);
+					icon.antialiasing = true;
+					credLabel.add(icon);
+
+					credLabel.screenCenter(X);
+				}
+
 				allTheShit.push([
 					curCredit.name,
 					(curCredit.desc == null ? "" : curCredit.desc),
 					(curCredit.link == null ? "" : curCredit.link),
-					(curCredit.tint == null ? "3e3040" : curCredit.tint)
+					(curCredit.tint == null ? "3e3040" : curCredit.tint),
+					(curCredit.icon == null ? "" : curCredit.icon),
 				]);
 			}
 		}
+
+		Paths.setCurrentMod(prevMod);
 
 		changeSelection();
 		if (alphabets.members[curSelected].isBold)
@@ -103,41 +188,50 @@ class CreditsState extends MusicBeatState
 
 	var bgTargetY:Float = 0;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		super.update(elapsed);
 
 		menuBG.y = FlxMath.lerp(menuBG.y, bgTargetY, Helper.boundTo(elapsed * 9.6, 0, 1));
 
-		if (controls.UP_P)
+		if (FlxG.keys.justPressed.SEVEN)
+			CustomTransition.switchTo(new editors.CreditsEditor());
+
+		if (controls.UI_UP_P)
 		{
 			changeSelection(-1);
 			if (alphabets.members[curSelected].isBold)
 				changeSelection(-1);
 		}
 
-		if (controls.DOWN_P)
+		if (controls.UI_DOWN_P)
 		{
 			changeSelection(1);
 			if (alphabets.members[curSelected].isBold)
 				changeSelection(1);
 		}
 
-		if (controls.ACCEPT)
+		if (controls.UI_ACCEPT)
 		{
 			if (allTheShit[curSelected][2] != "")
 				fancyOpenURL(allTheShit[curSelected][2]);
 		}
 
-		if (controls.BACK)
+		if (controls.UI_BACK)
 		{
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		}
 	}
 
 	function changeSelection(change:Int = 0)
 	{
-		FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
+		if (change != 0)
+			FlxG.sound.play(Paths.sound("scrollMenu"), 0.4);
 
 		curSelected += change;
 

@@ -1,0 +1,49 @@
+{
+	"animations": [
+		{
+			"prefix": "GF STARTS TO TURN PART 1",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "p1",
+			"offset": [
+				0,
+				0
+			]
+		},
+		{
+			"prefix": "GF STARTS TO TURN PART 2",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "p2",
+			"offset": [
+				225,
+				446
+			]
+		}
+	],
+	"healthColor": "A5004D",
+	"facesLeft": false,
+	"image": "characters/gf-cutscene-stress",
+	"singDuration": 4,
+	"initialAnimation": "danceLeft",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"positionOffset": [
+		-109,
+		-5
+	],
+	"antialiasing": true,
+	"name": "gf",
+	"isDeath": false,
+	"scale": 1
+}

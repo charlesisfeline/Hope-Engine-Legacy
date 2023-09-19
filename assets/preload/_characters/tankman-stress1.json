@@ -1,0 +1,35 @@
+{
+	"animations": [
+		{
+			"prefix": "TANK",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "talk",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "FFFFFF",
+	"facesLeft": false,
+	"image": "characters/tankman-cutscene-stress-1",
+	"singDuration": 4,
+	"initialAnimation": "talk",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"positionOffset": [
+		-94,
+		-33
+	],
+	"antialiasing": true,
+	"name": "tankman-guns",
+	"isDeath": false,
+	"scale": 1
+}

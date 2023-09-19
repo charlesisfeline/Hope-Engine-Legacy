@@ -1,0 +1,35 @@
+{
+	"animations": [
+		{
+			"prefix": "PICO",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "do",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "B7D855",
+	"facesLeft": false,
+	"image": "characters/pico-cutscene-stress3",
+	"singDuration": 4,
+	"initialAnimation": "do",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"positionOffset": [
+		-819,
+		-136
+	],
+	"antialiasing": true,
+	"name": "pico-stress3",
+	"isDeath": false,
+	"scale": 1
+}

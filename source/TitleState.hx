@@ -1,16 +1,12 @@
 package;
 
+import shaders.LensDistortion;
+import Discord.DiscordClient;
+import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.addons.transition.FlxTransitionSprite.GraphicTransTileSquare;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.addons.transition.TransitionData;
-import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.input.gamepad.FlxGamepad;
-import flixel.input.keyboard.FlxKey;
-import flixel.math.FlxPoint;
-import flixel.math.FlxRect;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import hopeUI.HopeTitle;
@@ -19,17 +15,20 @@ import openfl.Assets;
 import openfl.filters.BitmapFilter;
 import openfl.filters.ColorMatrixFilter;
 import openfl.filters.ShaderFilter;
-import shaders.Grain;
-import shaders.Mosaic;
 
 using StringTools;
 
 #if desktop
 import Discord.DiscordClient;
 #end
+
 #if FILESYSTEM
 import sys.FileSystem;
 #end
+
+// #if VIDEOS_ALLOWED
+// import vlc.MP4Handler;
+// #end
 
 class TitleState extends MusicBeatState
 {
@@ -41,26 +40,42 @@ class TitleState extends MusicBeatState
 	var curWacky:Array<String> = [];
 	var wackyImage:FlxSprite;
 
-	var code:Array<FlxKey> = [H, O, P, E];
-	var typed:Array<FlxKey> = [];
-
 	// version
-	var requestedVersion:Null<String> = null;
+	public static var requestedVersion:Null<String> = null;
 
 	override public function create():Void
-	{
-		#if FILESYSTEM
-		if (!FileSystem.exists(Sys.getCwd() + "/assets/skins"))
-			FileSystem.createDirectory(Sys.getCwd() + "/assets/skins");
+	{	
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("TitleState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("TitleState", TITLESTATE));
 
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+		
+		#if FILESYSTEM
+		if (!FileSystem.exists(Sys.getCwd() + "/skins"))
+			FileSystem.createDirectory(Sys.getCwd() + "/skins");
+
+		#if MODS_FEATURE
 		if (!FileSystem.exists(Sys.getCwd() + "/mods"))
 			FileSystem.createDirectory(Sys.getCwd() + "/mods");
+		#end
 
 		// quick check
-		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/assets/skins"))
+		for (skinName in FileSystem.readDirectory(Sys.getCwd() + "/skins"))
 		{
 			if (skinName.trim() == 'default')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the note skins folder called \"default\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
@@ -70,14 +85,14 @@ class TitleState extends MusicBeatState
 		for (mod in FileSystem.readDirectory(Sys.getCwd() + "/mods"))
 		{
 			if (mod.trim().toLowerCase() == 'hopeengine')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"hopeengine\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
 					}));
 
 			if (mod.trim().toLowerCase() == 'none')
-				FlxG.switchState(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
+				CustomTransition.switchTo(new WarningState("Uhoh!\n\nYou seem to have a folder in the mods folder called \"none\".\n\nThe engine uses this name internally!\n\nPlease change it!",
 					function()
 					{
 						Sys.exit(0);
@@ -107,6 +122,7 @@ class TitleState extends MusicBeatState
 		{
 			Settings.lastVolume = FlxG.sound.volume;
 			Settings.lastMuted = FlxG.sound.muted;
+			Settings.botplay = false;
 
 			Settings.save();
 			Achievements.save();
@@ -130,23 +146,23 @@ class TitleState extends MusicBeatState
 	{
 		if (!initialized)
 		{
-			var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
-			diamond.persist = true;
-			diamond.destroyOnNoUse = false;
+			// var diamond:FlxGraphic = FlxGraphic.fromClass(GraphicTransTileSquare);
+			// diamond.persist = true;
+			// diamond.destroyOnNoUse = false;
 
-			FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, -1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
-			FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1),
-				{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
+			// FlxTransitionableState.defaultTransIn = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, -1),
+			// 	{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
+			// FlxTransitionableState.defaultTransOut = new TransitionData(FADE, FlxColor.BLACK, 0.5, new FlxPoint(0, 1),
+			// 	{asset: diamond, width: 32, height: 32}, new FlxRect(FlxG.width * -2, FlxG.height * -1, FlxG.width * 5, FlxG.height * 2));
 
-			transIn = FlxTransitionableState.defaultTransIn;
-			transOut = FlxTransitionableState.defaultTransOut;
+			// transIn = FlxTransitionableState.defaultTransIn;
+			// transOut = FlxTransitionableState.defaultTransOut;
 
 			// HAD TO MODIFY SOME BACKEND SHIT
 			// IF THIS PR IS HERE IF ITS ACCEPTED UR GOOD TO GO
 			// https://github.com/HaxeFlixel/flixel-addons/pull/348
 
-			#if FILESYSTEM
+			#if (FILESYSTEM && MODS_FEATURE)
 			var prevMod = Paths.currentMod;
 
 			for (mod in FileSystem.readDirectory('mods'))
@@ -166,7 +182,7 @@ class TitleState extends MusicBeatState
 				FlxG.sound.music.fadeIn(4, 0, 0.7);
 			});
 
-			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/master/version.awesome');
+			var http = new haxe.Http('https://raw.githubusercontent.com/skuqre/Hope-Engine/main/version.awesome');
 
 			http.onData = function(data:String)
 			{
@@ -257,12 +273,13 @@ class TitleState extends MusicBeatState
 
 	var hahaArray:Array<Array<BitmapFilter>> = [
 		[],
-		[new ShaderFilter(new shaders.CRTCurve())],
+		[new ShaderFilter(new shaders.VCR())],
 		[new ShaderFilter(new shaders.ChromaticAberration())],
 		[new ShaderFilter(new shaders.Grain(1.0))],
 		[new ShaderFilter(new shaders.Hq2x())],
 		[new ShaderFilter(new shaders.Mosaic(8, 8))],
 		[new ShaderFilter(new shaders.Scanline(2.0))],
+		[new ShaderFilter(new shaders.LensDistortion())],
 		[
 			new ColorMatrixFilter([
 				-1,  0,  0, 0, 255,
@@ -274,19 +291,27 @@ class TitleState extends MusicBeatState
 	];
 
 	var curFilter:Int = 0;
+	var swing:Bool = FlxG.random.bool(0.004);
+
+	var typed:String = "";
+
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
 
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
+		if (swing)
+			logoBl.angle = Math.sin(FlxG.game.ticks / 500) * -5;
+
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
 		if (FlxG.keys.justPressed.F)
 			FlxG.fullscreen = !FlxG.fullscreen;
 
-		if (FlxG.keys.justPressed.G)
-			FlxG.switchState(new hopeUI.HopeTitle());
-
-		if (FlxG.keys.justPressed.F3)
+		if (FlxG.keys.justPressed.F4)
 		{
 			curFilter++;
 
@@ -299,41 +324,7 @@ class TitleState extends MusicBeatState
 			FlxG.game.setFilters(hahaArray[curFilter]);
 		}
 
-		if (FlxG.keys.anyJustPressed([ANY]))
-		{
-			typed.push(cast FlxG.keys.firstJustPressed());
-
-			var cur = 0;
-			
-			for (key in typed) 
-			{
-				var curKey = code[cur];
-
-				if (key != curKey)
-				{
-					for (k in typed)
-						typed.remove(k);
-
-					break;
-				}
-
-				cur++;
-			}
-
-			if (typed.length == code.length)
-			{
-				FlxG.sound.music.volume = 0;
-				var a = FlxG.sound.play(Paths.sound("titleShoot"), 0.6).length / 1000;
-				
-				FlxG.camera.flash(FlxColor.WHITE, a, true);
-				FlxG.camera.fade(0xff000000, a);
-				new FlxTimer().start(a, function(tmr:FlxTimer) {
-					FlxG.switchState(new HopeTitle());	
-				});
-			}
-		}
-
-		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.ACCEPT;
+		var pressedEnter:Bool = FlxG.keys.justPressed.ENTER || controls.UI_ACCEPT;
 
 		#if mobile
 		for (touch in FlxG.touches.list)
@@ -359,7 +350,44 @@ class TitleState extends MusicBeatState
 		if (FlxG.keys.justPressed.R)
 		{
 			if (FlxG.keys.pressed.CONTROL)
+			{
 				FlxG.resetGame();
+				initialized = false;
+			}
+		}
+
+		if (FlxG.keys.justPressed.ANY)
+		{
+			var a:Array<Bool> = [];
+			var acceptableWords:Array<String> = [
+				"hope",
+				"pringles"
+			];
+
+			typed += FlxG.keys.getIsDown()[FlxG.keys.getIsDown().length - 1].ID.toString();
+			typed = typed.trim().toLowerCase();
+
+			for (word in acceptableWords)
+				a.push(word.startsWith(typed));
+
+			if (a.contains(true))
+			{
+				switch (typed.trim().toLowerCase())
+				{
+					case 'hope':
+						FlxG.sound.music.stop();
+						FlxG.sound.play(Paths.sound('Lights_Shut_off'), 1, function() {
+							CustomTransition.switchTo(new HopeTitle());
+						});
+						FlxG.camera.fade(FlxColor.BLACK, 0);
+					#if VIDEOS_ALLOWED
+					case 'pringles':
+						new VideoHandler().playVideo(Paths.video("ninjamuffin_eating_pringles", "preload"), true);
+					#end
+				}
+			}
+			else
+				typed = '';
 		}
 
 		if (pressedEnter && !transitioning && skippedIntro)
@@ -385,14 +413,14 @@ class TitleState extends MusicBeatState
 					if (MainMenuState.hopeEngineVer.trim() < requestedVersion.trim())
 					{
 						trace("\noutdated lmao! currently at: " + MainMenuState.hopeEngineVer.trim() + "\nlatest: " + requestedVersion.trim());
-						FlxG.switchState(new OutdatedState());
+						CustomTransition.switchTo(new OutdatedState());
 					}
 					else
-						FlxG.switchState(new MainMenuState());
+						CustomTransition.switchTo(new MainMenuState());
 				}
 				else
 				#end
-				FlxG.switchState(new MainMenuState());
+				CustomTransition.switchTo(new MainMenuState());
 			});
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}

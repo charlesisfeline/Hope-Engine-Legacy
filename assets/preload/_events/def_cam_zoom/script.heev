@@ -12,10 +12,10 @@ function trigger(params:Map<String, Dynamic>)
 
 	var actualEase = FlxEase.linear;
 
-	switch (easingDirection)
+	switch (easingDirection.toLowerCase())
 	{
 		case "in":
-			switch (easingStyle)
+			switch (easingStyle.toLowerCase())
 			{
 				case "back": actualEase = FlxEase.backIn;
 				case "bounce": actualEase = FlxEase.bounceIn;
@@ -27,11 +27,11 @@ function trigger(params:Map<String, Dynamic>)
 				case "quart": actualEase = FlxEase.quartIn;
 				case "quint": actualEase = FlxEase.quintIn;
 				case "sine": actualEase = FlxEase.sineIn;
-				case "smoothStep": actualEase = FlxEase.smoothStepIn;
-				case "smootherStep": actualEase = FlxEase.smootherStepIn;
+				case "smoothstep": actualEase = FlxEase.smoothStepIn;
+				case "smootherstep": actualEase = FlxEase.smootherStepIn;
 			}
 		case "out":
-			switch (easingStyle)
+			switch (easingStyle.toLowerCase())
 			{
 				case "back": actualEase = FlxEase.backOut;
 				case "bounce": actualEase = FlxEase.bounceOut;
@@ -43,12 +43,12 @@ function trigger(params:Map<String, Dynamic>)
 				case "quart": actualEase = FlxEase.quartOut;
 				case "quint": actualEase = FlxEase.quintOut;
 				case "sine": actualEase = FlxEase.sineOut;
-				case "smoothStep": actualEase = FlxEase.smoothStepOut;
-				case "smootherStep": actualEase = FlxEase.smootherStepOut;
+				case "smoothstep": actualEase = FlxEase.smoothStepOut;
+				case "smootherstep": actualEase = FlxEase.smootherStepOut;
 			}
 
-		case "inOut":
-			switch (easingStyle)
+		case "inout":
+			switch (easingStyle.toLowerCase())
 			{
 				case "back": actualEase = FlxEase.backInOut;
 				case "bounce": actualEase = FlxEase.bounceInOut;
@@ -60,8 +60,8 @@ function trigger(params:Map<String, Dynamic>)
 				case "quart": actualEase = FlxEase.quartInOut;
 				case "quint": actualEase = FlxEase.quintInOut;
 				case "sine": actualEase = FlxEase.sineInOut;
-				case "smoothStep": actualEase = FlxEase.smoothStepInOut;
-				case "smootherStep": actualEase = FlxEase.smootherStepInOut;
+				case "smoothstep": actualEase = FlxEase.smoothStepInOut;
+				case "smootherstep": actualEase = FlxEase.smootherStepInOut;
 			}
 	}
 

@@ -5,10 +5,8 @@ import flixel.FlxBasic;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUIState;
-import lime.app.Application;
-import lime.system.System;
+import lime.utils.Assets;
 import openfl.Assets as OpenFlAssets;
-import openfl.Lib;
 
 using StringTools;
 
@@ -24,74 +22,11 @@ class MusicBeatState extends FlxUIState
 	inline function get_controls():Controls
 		return PlayerSettings.player1.controls;
 
-	private static var assets:Array<FlxSprite> = [];
-	private static var toDestroy:Array<FlxSprite> = [];
-
-	var usesMouse:Bool = false;
-
-	override function add(Object:flixel.FlxBasic):flixel.FlxBasic
-	{
-		if (Std.isOfType(Object, FlxSprite))
-		{
-			var spr:FlxSprite = cast(Object, FlxSprite);
-
-			if (spr.graphic != null)
-			{
-				assets.push(spr);
-			}
-		}
-
-		var result = super.add(Object);
-		return result;
-	}
-
-	public function clean()
-	{
-		for (i in assets)
-		{
-			assets.remove(i);
-			remove(i, true);
-			toDestroy.push(i);
-		}
-	}
-
-	public function new()
-	{
-		#if !html5
-		if (!Settings.cacheMusic)
-		{
-			for (sound in Paths.trackedSoundKeys)
-			{
-				OpenFlAssets.cache.clear(sound);
-				Paths.trackedSoundKeys.remove(sound);
-			}
-		}
-		#end
-
-		if (!Settings.cacheImages)
-		{
-			for (image in Paths.trackedImageKeys)
-			{
-				OpenFlAssets.cache.clear(image);
-				Paths.trackedImageKeys.remove(image);
-			}
-		}
-
-		super();
-		clean();
-	}
-
 	override function create()
 	{
-		for (i in toDestroy)
-		{
-			i.destroy();
-			toDestroy.remove(i);
-		}
-
 		super.create();
 
-		openfl.system.System.gc();
+		updateAntialiasing();
 	}
 
 	override function update(elapsed:Float)
@@ -106,12 +41,6 @@ class MusicBeatState extends FlxUIState
 			stepHit();
 
 		super.update(elapsed);
-
-		if (usesMouse)
-		{
-			if (FlxG.mouse.justMoved && !FlxG.mouse.visible)
-				FlxG.mouse.visible = true;
-		}
 	}
 
 	private function updateBeat():Void
@@ -154,5 +83,70 @@ class MusicBeatState extends FlxUIState
 		#else
 		FlxG.openURL(schmancy);
 		#end
+	}
+
+	override function destroy()
+	{
+		#if !html5
+		if (!Settings.cacheMusic)
+		{
+			for (sound in Paths.trackedSoundKeys)
+			{
+				OpenFlAssets.cache.clear(sound);
+				Paths.trackedSoundKeys.remove(sound);
+			}
+
+			Assets.cache.clear("assets/songs");
+		}
+		#end
+
+		Assets.cache.clear("assets/sounds");
+		Assets.cache.clear("assets/shared/sounds");
+
+		if (!Settings.cacheImages)
+		{
+			for (image in Paths.trackedImageKeys)
+			{
+				OpenFlAssets.cache.clear(image);
+				Paths.trackedImageKeys.remove(image);
+			}
+
+			forEachExists(function(basic:FlxBasic)
+			{
+				remove(basic);
+				basic.exists = false;
+				basic.kill();
+				basic.destroy();
+			}, true);
+		}
+
+		super.destroy();
+
+		if (!Settings.cacheImages)
+			FlxG.bitmap.clearCache();
+
+		openfl.system.System.gc();
+	}
+
+	var antialiasedSprites:Array<FlxSprite> = [];
+
+	public function updateAntialiasing():Void
+	{
+		forEachOfType(FlxSprite, function(spr:FlxSprite)
+		{
+			if (spr.antialiasing)
+			{
+				spr.antialiasing = Settings.antialiasing;
+
+				if (!antialiasedSprites.contains(spr))
+					antialiasedSprites.push(spr);
+			}
+
+			if (Settings.antialiasing)
+			{
+				for (sprite in antialiasedSprites)
+					sprite.antialiasing = true;
+			}
+		}, true);
 	}
 }

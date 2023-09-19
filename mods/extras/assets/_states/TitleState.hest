@@ -1,0 +1,39 @@
+import CustomTransition;
+import MainMenuState;
+
+function onCreate()
+{
+    var bigTitle = new FlxText(10, 50, 0, "Hope Engine - The Extras!");
+    bigTitle.size = 32;
+    add(bigTitle);
+
+    var subTitle = new FlxText(10, bigTitle.y + bigTitle.height + 5, 0, "Custom Title Screen idk");
+    subTitle.size = 24;
+    add(subTitle);
+
+    var inst = new FlxText(10, 0, 0, "Press Enter to Begin!");
+    inst.size = 24;
+    inst.y = FlxG.height - inst.height - 10;
+    add(inst);
+}
+
+var pressed:Bool = false;
+
+function onUpdate(elapsed:Float)
+{
+    if (FlxG.keys.justPressed.ENTER && !pressed)
+    {
+        pressed = true;
+        CustomTransition.switchTo(new MainMenuState());
+    }
+}
+
+function onStepHit(curStep:Int)
+{
+    
+}
+
+function onBeatHit(curBeat:Int)
+{
+    
+}

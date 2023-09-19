@@ -110,6 +110,7 @@
 		0,
 		-100
 	],
+	"icon": "bf",
 	"antialiasing": true,
 	"name": "bf-christmas",
 	"isDeath": false,

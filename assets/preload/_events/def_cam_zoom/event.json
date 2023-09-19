@@ -4,7 +4,7 @@
 			"paramID": "change",
 			"defaultValue": 0,
 			"value": null,
-			"increment": 0.001,
+			"increment": 0.1,
 			"paramName": "Change by",
 			"type": "number",
 			"maxLetters": null

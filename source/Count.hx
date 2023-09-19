@@ -3,6 +3,7 @@ package;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
+import flixel.math.FlxRandom;
 import flixel.tweens.FlxTween;
 
 using StringTools;
@@ -21,20 +22,19 @@ class Count extends FlxSpriteGroup
 
 	public var uniform:Bool = true;
 
-	public function new(x:Null<Float> = 0, y:Null<Float> = 0, text:String = "", ?uniform:Bool = true)
+	var rand:FlxRandom = new FlxRandom();
+
+	public function new(x:Null<Float> = 0, y:Null<Float> = 0, text:String = "", ?uniform:Bool = true, ?isPixel:Bool = false)
 	{
 		super(x, y);
 
 		this.uniform = uniform;
 
-		if (PlayState.SONG != null)
+		if (isPixel)
 		{
-			if (PlayState.SONG.noteStyle == "pixel")
-			{
-				pixelShitPart1 = 'pixelUI/';
-				pixelShitPart2 = '-pixel';
-				pixelZoom = PlayState.daPixelZoom;
-			}
+			pixelShitPart1 = 'pixelUI/';
+			pixelShitPart2 = '-pixel';
+			pixelZoom = PlayState.daPixelZoom;
 		}
 
 		if (Std.parseInt(text) != null)
@@ -110,7 +110,13 @@ class Count extends FlxSpriteGroup
 			forEachOfType(FlxSprite, function(spr:FlxSprite)
 			{
 				spr.x += 2.5 * a;
-				spr.offset.set(spr.offset.x + FlxG.random.float(-3, 3), spr.offset.y + FlxG.random.float(-3, 3));
+
+				rand.currentSeed = PlayState.SONG != null ? letterToInt(PlayState.SONG.song) : letterToInt("IRyS");
+				rand.currentSeed += Std.int(currentNumber);
+				var xFloat = rand.int(-3, 3);
+				var yFloat = rand.int(-3, 3);
+
+				spr.offset.set(spr.offset.x + xFloat, spr.offset.y + yFloat);
 				a++;
 			});
 		}
@@ -118,10 +124,10 @@ class Count extends FlxSpriteGroup
 
 	function createCharacter(name:String = "", huh:Float = 0)
 	{
-		var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'num' + name + pixelShitPart2));
+		var numScore:FlxSprite = new FlxSprite().loadGraphic(Paths.image(pixelShitPart1 + 'combo/num' + name + pixelShitPart2));
 
 		numScore.antialiasing = (pixelZoom == 1 ? true : false);
-		numScore.setGraphicSize(Std.int(numScore.width * (pixelZoom == 1 ? 0.5 : pixelZoom)));
+		numScore.setGraphicSize(Std.int(numScore.width * (pixelZoom == 1 ? 0.5 : pixelZoom * 0.8)));
 		numScore.updateHitbox();
 
 		add(numScore);
@@ -134,7 +140,7 @@ class Count extends FlxSpriteGroup
 	function createCharacterFromSpriteSheet(name:String = "", huh:Float = 0)
 	{
 		var numScore:FlxSprite = new FlxSprite();
-		numScore.frames = Paths.getSparrowAtlas(pixelShitPart1 + "comboAlphabet" + pixelShitPart2);
+		numScore.frames = Paths.getSparrowAtlas(pixelShitPart1 + "combo/comboAlphabet" + pixelShitPart2);
 		numScore.animation.addByPrefix(name, 'letter ${name}0', 24);
 		numScore.animation.play(name);
 
@@ -147,6 +153,22 @@ class Count extends FlxSpriteGroup
 			numScore.x = x + width;
 
 		numScore.y = y + (63 * yMultiplier);
+	}
+
+	function letterToInt(let:String):Int
+	{
+		var spl = let.split("");
+		var cur = "";
+
+		for (l in spl)
+		{
+			if (Std.parseInt(l) != null)
+				cur += l;
+			else
+				cur += letters.indexOf(l.toLowerCase().trim()) + "";
+		}
+
+		return Std.parseInt(cur);
 	}
 
 	public function changeNumber(text:String = "")

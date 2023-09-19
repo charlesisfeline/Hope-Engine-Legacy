@@ -20,14 +20,10 @@ function createBackground()
     add(evilSnow);
 }
 
-function createForeground(bf:Character, gf:Character, dad:Character)
+function createForeground()
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
-
-    // bf is Boyfriend/Player 1/Player
-    // gf is, well, Girlfriend
-    // dad is Dad/Player 2/Enemy
 }
 
 function beatHit(curBeat:Int)

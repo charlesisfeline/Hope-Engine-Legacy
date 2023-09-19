@@ -1,5 +1,6 @@
 package options;
 
+import AlphabetRedux;
 import Checkbox.CheckBox;
 import flixel.FlxG;
 import flixel.FlxState;
@@ -9,7 +10,7 @@ import flixel.util.FlxColor;
 
 class Option extends FlxSpriteGroup
 {
-	public var alphaDisplay:Alphabet;
+	public var alphaDisplay:AlphaReduxLine;
 	public var display:String = '';
 	public var desc:String = '';
 	public var targetY:Float = 0.0;
@@ -22,7 +23,7 @@ class Option extends FlxSpriteGroup
 		this.display = display;
 		this.desc = desc;
 
-		alphaDisplay = new Alphabet(0, 0, display, false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display, false);
 		this.add(alphaDisplay);
 	}
 
@@ -55,13 +56,13 @@ class OptionCategory extends FlxSpriteGroup
 {
 	public var name:String;
 	public var options:Array<Option>;
-	public var alphaDisplay:Alphabet;
+	public var alphaDisplay:AlphaReduxLine;
 
 	public function new(name:String, options:Array<Option>)
 	{
 		super();
 
-		this.alphaDisplay = new Alphabet(0, 0, name, true);
+		this.alphaDisplay = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
 		this.name = name;
 		this.options = options;
 
@@ -83,7 +84,7 @@ class StateCategory extends OptionCategory
 
 	override function press()
 	{
-		FlxG.switchState(state);
+		CustomTransition.switchTo(Type.createInstance(Type.getClass(state), []));
 	}
 }
 
@@ -99,7 +100,7 @@ class StateOption extends Option
 
 	override function press()
 	{
-		FlxG.switchState(state);
+		CustomTransition.switchTo(state);
 	}
 }
 
@@ -113,7 +114,7 @@ class OptionSubCategoryTitle extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, name, true);
+		alphaDisplay = new AlphaReduxLine(0, 0, name.toUpperCase(), true);
 		add(alphaDisplay);
 
 		alphaDisplay.color = color;
@@ -189,6 +190,9 @@ class ValueOptionFloat extends Option
 		else
 			Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) - (increment * funneMultiplier), precision));
 
+		if (onChange != null)
+			onChange();
+
 		updateDisplay();
 	}
 
@@ -198,6 +202,9 @@ class ValueOptionFloat extends Option
 			Reflect.setField(Settings, theNumber, max);
 		else
 			Reflect.setField(Settings, theNumber, Helper.truncateFloat(Reflect.field(Settings, theNumber) + (increment * funneMultiplier), precision));
+
+		if (onChange != null)
+			onChange();
 
 		updateDisplay();
 	}
@@ -212,6 +219,10 @@ class ValueOptionFloat extends Option
 		if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
 		{
 			Reflect.setField(Settings, theNumber, resetValue);
+
+			if (onChange != null)
+				onChange();
+			
 			updateDisplay();
 		}
 
@@ -224,11 +235,8 @@ class ValueOptionFloat extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
 		add(alphaDisplay);
-
-		if (onChange != null)
-			onChange();
 	}
 }
 
@@ -268,6 +276,9 @@ class ValueOptionInt extends Option
 		else
 			Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) - (increment * funneMultiplier));
 
+		if (onChange != null)
+			onChange();
+
 		updateDisplay();
 	}
 
@@ -277,6 +288,9 @@ class ValueOptionInt extends Option
 			Reflect.setField(Settings, theNumber, max);
 		else
 			Reflect.setField(Settings, theNumber, Reflect.field(Settings, theNumber) + (increment * funneMultiplier));
+
+		if (onChange != null)
+			onChange();
 
 		updateDisplay();
 	}
@@ -291,6 +305,10 @@ class ValueOptionInt extends Option
 		if (FlxG.keys.justPressed.R && resetValue != null && targetY == 0)
 		{
 			Reflect.setField(Settings, theNumber, resetValue);
+
+			if (onChange != null)
+				onChange();
+
 			updateDisplay();
 		}
 
@@ -303,11 +321,8 @@ class ValueOptionInt extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + Reflect.field(Settings, theNumber) + unit + ' >', false);
 		add(alphaDisplay);
-
-		if (onChange != null)
-			onChange();
 	}
 }
 
@@ -316,13 +331,15 @@ class SelectionOption extends Option
 	var theType:String;
 	var curSelected:Int;
 	var types:Array<String>;
+	var onChange:Void->Void;
 
-	public function new(display:String, desc:String, typeToChange:String, types:Array<String>)
+	public function new(display:String, desc:String, typeToChange:String, types:Array<String>, ?onChange:Void->Void)
 	{
 		super(display, desc);
 
 		theType = typeToChange;
 		this.types = types;
+		this.onChange = onChange;
 
 		updateDisplay();
 
@@ -333,11 +350,17 @@ class SelectionOption extends Option
 	override function left()
 	{
 		changeSelection(-1);
+
+		if (onChange != null)
+			onChange();
 	}
 
 	override function right()
 	{
 		changeSelection(1);
+
+		if (onChange != null)
+			onChange();
 	}
 
 	function updateDisplay()
@@ -346,16 +369,13 @@ class SelectionOption extends Option
 		alphaDisplay.kill();
 		alphaDisplay.destroy();
 
-		alphaDisplay = new Alphabet(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
+		alphaDisplay = new AlphaReduxLine(0, 0, display + ' < ' + types[Reflect.field(Settings, theType)] + ' >', false);
 		add(alphaDisplay);
 	}
 
 	function changeSelection(huh:Int = 0)
 	{
 		curSelected += huh;
-
-		if (huh != 0)
-			FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		if (curSelected < 0)
 			curSelected = types.length - 1;

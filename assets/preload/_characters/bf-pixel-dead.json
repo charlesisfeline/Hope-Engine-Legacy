@@ -52,6 +52,10 @@
 		0,
 		0
 	],
+	"positionOffset": [
+		-3,
+		27
+	],
 	"antialiasing": false,
 	"name": "bf-pixel-dead",
 	"isDeath": true,

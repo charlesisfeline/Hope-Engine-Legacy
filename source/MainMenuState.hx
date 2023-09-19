@@ -1,12 +1,12 @@
 package;
 
-import Controls.KeyboardScheme;
+import achievements.AchievementState;
+import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.display.FlxBackdrop;
 import flixel.effects.FlxFlicker;
-import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
@@ -23,7 +23,7 @@ import Discord.DiscordClient;
 
 class MainMenuState extends MusicBeatState
 {
-	var curSelected:Int = 0;
+	static var curSelected:Int = 0;
 
 	var bg:FlxBackdrop;
 	var magenta:FlxBackdrop;
@@ -32,38 +32,53 @@ class MainMenuState extends MusicBeatState
 
 	#if !switch
 	var optionShit:Array<String> = [
-		'story mode',
+		'story_mode',
 		'freeplay',
-		#if FILESYSTEM 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
-		'achievements', // remove this line if you want the Achievements Menu to be inaccessible!
+		#if (FILESYSTEM && MODS_FEATURE) 'mods', #end // remove this line if you want the Mods Menu to be inaccessible!
+		#if ACHIEVEMENTS_FEATURE 'achievements', #end // remove this line if you want the Achievements Menu to be inaccessible!
 		'credits',
 		'options'
 	];
 	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
+	var optionShit:Array<String> = ['story_mode', 'freeplay'];
 	#end
 
 	public static var hopeEngineVer:String = "";
 	public static var kadeEngineVer:String = "1.5.2";
-	public static var gameVer:String = "0.2.7.1";
+	public static var gameVer:String = "0.2.8 (:troll:)";
 
 	var camFollow:FlxObject;
 	var camPos:FlxObject;
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("MainMenuState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("MainMenuState", MAINMENU));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("In the Menus", null);
 		#end
-
-		Paths.setCurrentMod(null); // this menu is unmoddable
 
 		#if FILESYSTEM
 		Paths.destroyCustomImages();
 		Paths.clearCustomSoundCache();
 		#end
 
-		if (!FlxG.sound.music.playing)
+		if (FlxG.sound.music == null || !FlxG.sound.music.playing)
 		{
 			FlxG.sound.playMusic(Paths.music('freakyMenu'));
 			Conductor.changeBPM(102);
@@ -71,13 +86,13 @@ class MainMenuState extends MusicBeatState
 
 		persistentUpdate = persistentDraw = true;
 
-		bg = new FlxBackdrop(Paths.image('menuBG'), 1, 1, false);
+		bg = new FlxBackdrop(Paths.image('menuBG'), Y);
 		bg.screenCenter(X);
 		bg.antialiasing = true;
 		bg.scrollFactor.set(0, 0.1);
 		add(bg);
 
-		magenta = new FlxBackdrop(Paths.image('menuDesat'), 1, 1, false);
+		magenta = new FlxBackdrop(Paths.image('menuDesat'), Y);
 		magenta.scrollFactor.set(0, 0.1);
 		magenta.screenCenter(X);
 		magenta.visible = false;
@@ -109,17 +124,7 @@ class MainMenuState extends MusicBeatState
 		for (i in 0...optionShit.length)
 		{
 			var menuItem:FlxSprite = new FlxSprite(0, 0);
-			switch (optionShit[i])
-			{
-				case 'credits':
-					menuItem.frames = Paths.getSparrowAtlas('credits_assets');
-				case 'mods':
-					menuItem.frames = Paths.getSparrowAtlas('mods_assets');
-				case 'achievements':
-					menuItem.frames = Paths.getSparrowAtlas('wins_assets');
-				default:
-					menuItem.frames = Paths.getSparrowAtlas('FNF_main_menu_assets');
-			}
+			menuItem.frames = Paths.getSparrowAtlas('mainmenu/' + optionShit[i] + "_assets");
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.addByPrefix('tweakin', optionShit[i] + " basic", 24);
 			menuItem.animation.play('tweakin');
@@ -131,7 +136,7 @@ class MainMenuState extends MusicBeatState
 			menuItem.y = (i * 160);
 			fuckingStupid.push(menuItem.height);
 		}
-		
+
 		menuItems.screenCenter(Y);
 
 		var cur = menuItems.members[curSelected];
@@ -156,8 +161,13 @@ class MainMenuState extends MusicBeatState
 
 	var holdTime:Float = 0;
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		if (FlxG.sound.music.volume < 0.8)
 			FlxG.sound.music.volume += 0.5 * FlxG.elapsed;
 
@@ -170,24 +180,26 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			if (controls.UP_P)
+			if (controls.UI_UP_P)
 				changeItem(-1);
 
-			if (controls.DOWN_P)
+			if (controls.UI_DOWN_P)
 				changeItem(1);
 
-			if (controls.BACK)
-				FlxG.switchState(new TitleState());
+			if (controls.UI_BACK)
+				CustomTransition.switchTo(new TitleState());
 
-			if (controls.ACCEPT)
+			if (controls.UI_ACCEPT)
 				acceptItem();
 		}
 
+		#if FILESYSTEM
 		if (FlxG.keys.justPressed.EIGHT)
 		{
 			if (FlxG.keys.pressed.SHIFT)
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 		}
+		#end
 
 		menuItems.forEach(function(spr:FlxSprite)
 		{
@@ -246,23 +258,28 @@ class MainMenuState extends MusicBeatState
 
 		switch (daChoice)
 		{
-			case 'story mode':
-				FlxG.switchState(new StoryMenuState());
+			case 'story_mode':
+				CustomTransition.switchTo(new StoryMenuState());
 			case 'freeplay':
-				FlxG.switchState(new FreeplayState());
+				CustomTransition.switchTo(new FreeplayState());
 			case 'credits':
-				FlxG.switchState(new CreditsState());
+				CustomTransition.switchTo(new CreditsState());
+			#if (FILESYSTEM && MODS_FEATURE)
 			case 'mods':
-				FlxG.switchState(new ModLoadingState());
+				CustomTransition.switchTo(new mods.ModLoadingState());
+			#end
 			case 'achievements':
-				FlxG.switchState(new AchievementState());
+				CustomTransition.switchTo(new AchievementState());
 			case 'options':
-				FlxG.switchState(new options.OptionsState());
+				CustomTransition.switchTo(new options.OptionsState());
 		}
 	}
 
 	function changeItem(huh:Int = 0)
 	{
+		if (huh != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+		
 		curSelected += huh;
 
 		if (curSelected >= menuItems.length)
@@ -276,9 +293,8 @@ class MainMenuState extends MusicBeatState
 
 			if (spr.ID == curSelected)
 			{
-				FlxG.sound.play(Paths.sound('scrollMenu'));
 				spr.animation.play('selected');
-				
+
 				var sprY = FlxMath.remapToRange(spr.y + (spr.height / 2), menuItems.y, menuItems.height, 0, FlxG.height);
 				camFollow.setPosition(spr.getGraphicMidpoint().x, sprY);
 			}

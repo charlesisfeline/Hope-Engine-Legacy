@@ -1,6 +1,11 @@
-<?xml version='1.0' encoding='utf-8'?>
-<TextureAtlas imagePath="arrow.png"><SubTexture name="arrow idle0000" x="0" y="0" width="1924" height="1084" frameX="0" frameY="0" frameWidth="1924" frameHeight="1084" />
-<SubTexture name="arrow idle0001" x="1924" y="0" width="1924" height="1084" frameX="0" frameY="0" frameWidth="1924" frameHeight="1084" />
-<SubTexture name="arrow idle0002" x="3848" y="0" width="1924" height="1084" frameX="0" frameY="0" frameWidth="1924" frameHeight="1084" />
-<SubTexture name="arrow idle0003" x="5772" y="0" width="1924" height="1084" frameX="0" frameY="0" frameWidth="1924" frameHeight="1084" />
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="arrow.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="arrow0000" x="5" y="5" width="110" height="62"/>
+	<SubTexture name="arrow0001" x="5" y="5" width="110" height="62"/>
+	<SubTexture name="arrow0002" x="5" y="72" width="110" height="61" frameX="0" frameY="0" frameWidth="110" frameHeight="62"/>
+	<SubTexture name="arrow0003" x="5" y="72" width="110" height="61" frameX="0" frameY="0" frameWidth="110" frameHeight="62"/>
+	<SubTexture name="arrow0004" x="5" y="138" width="109" height="61" frameX="0" frameY="0" frameWidth="110" frameHeight="62"/>
+	<SubTexture name="arrow0005" x="5" y="138" width="109" height="61" frameX="0" frameY="0" frameWidth="110" frameHeight="62"/>
 </TextureAtlas>

@@ -1,0 +1,125 @@
+{
+	"animations": [
+		{
+			"prefix": "BF catches",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "catch",
+			"offset": [
+				0,
+				90
+			]
+		},
+		{
+			"prefix": "BF idle dance",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "idle",
+			"offset": [
+				-5,
+				0
+			]
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN0",
+			"offset": [
+				-15,
+				-12
+			],
+			"name": "singDOWN"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE DOWN MISS",
+			"offset": [
+				-15,
+				-12
+			],
+			"name": "singDOWNmiss"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT0",
+			"offset": [
+				4,
+				3
+			],
+			"name": "singLEFT"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE LEFT MISS",
+			"offset": [
+				4,
+				2
+			],
+			"name": "singLEFTmiss"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT0",
+			"offset": [
+				-54,
+				21
+			],
+			"name": "singRIGHT"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE RIGHT MISS",
+			"offset": [
+				-52,
+				34
+			],
+			"name": "singRIGHTmiss"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE UP0",
+			"offset": [
+				-45,
+				9
+			],
+			"name": "singUP"
+		},
+		{
+			"loopedAnim": false,
+			"frameRate": 24,
+			"prefix": "BF NOTE UP MISS",
+			"offset": [
+				-45,
+				9
+			],
+			"name": "singUPmiss"
+		}
+	],
+	"healthColor": "31B0D1",
+	"facesLeft": true,
+	"image": "characters/bf-holding-gf",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": true,
+	"name": "bf-and-gf",
+	"isDeath": false,
+	"scale": 1
+}

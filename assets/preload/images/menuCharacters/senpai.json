@@ -1,13 +1,17 @@
 {
-    "character" : "senpai",
-    "animations" : {
-        "idle" : {
-            "prefix" : "idle0"
-        }
-    },
-    "settings" : {
-        "x" : -40,
-        "y" : -45,
-        "scale" : 1.4
-    }
+	"settings": {
+		"flipped": false,
+		"scale": 1
+	},
+	"animations": {
+		"idle": {
+			"prefix": "idle",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		},
+		"danceLeft": null,
+		"danceRight": null
+	},
+	"character": "senpai"
 }

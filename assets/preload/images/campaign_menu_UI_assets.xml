@@ -2,8 +2,9 @@
 <TextureAtlas imagePath="campaign_menu_UI_assets.png">
 	<!-- Created with Adobe Animate version 18.0.1.115 -->
 	<!-- http://www.adobe.com/products/animate.html -->
-	<SubTexture name="arrow menu left0000" x="0" y="0" width="48" height="85"/>
-	<SubTexture name="arrow menu left0001" x="0" y="90" width="48" height="85"/>
-	<SubTexture name="arrow menu right0000" x="53" y="0" width="47" height="85"/>
-	<SubTexture name="arrow menu right0001" x="53" y="90" width="47" height="85"/>
+	<SubTexture name="arrow menu left0000" x="5" y="5" width="48" height="85"/>
+	<SubTexture name="arrow menu left0001" x="58" y="5" width="42" height="75" frameX="-3" frameY="-5" frameWidth="48" frameHeight="85"/>
+	<SubTexture name="arrow menu right0000" x="105" y="5" width="47" height="85"/>
+	<SubTexture name="arrow menu right0001" x="157" y="5" width="41" height="74" frameX="-3" frameY="-5" frameWidth="47" frameHeight="85"/>
+	<SubTexture name="lock0000" x="5" y="95" width="67" height="93"/>
 </TextureAtlas>

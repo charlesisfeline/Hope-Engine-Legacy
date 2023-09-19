@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="hench_death.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="hench death 10000" x="5" y="5" width="265" height="304" frameX="-85" frameY="-129" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10001" x="5" y="5" width="265" height="304" frameX="-85" frameY="-129" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10002" x="275" y="5" width="452" height="424" frameX="-7" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10003" x="275" y="5" width="452" height="424" frameX="-7" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10004" x="732" y="5" width="483" height="450" frameX="0" frameY="-1" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10005" x="732" y="5" width="483" height="450" frameX="0" frameY="-1" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10006" x="1220" y="5" width="455" height="432" frameX="-6" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10007" x="1220" y="5" width="455" height="432" frameX="-6" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10008" x="5" y="460" width="477" height="406" frameX="-2" frameY="-45" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10009" x="5" y="460" width="477" height="406" frameX="-2" frameY="-45" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10010" x="275" y="5" width="452" height="424" frameX="-7" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10011" x="275" y="5" width="452" height="424" frameX="-7" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10012" x="732" y="5" width="483" height="450" frameX="0" frameY="-1" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10013" x="732" y="5" width="483" height="450" frameX="0" frameY="-1" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10014" x="1220" y="5" width="455" height="432" frameX="-6" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10015" x="1220" y="5" width="455" height="432" frameX="-6" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10016" x="5" y="460" width="477" height="406" frameX="-2" frameY="-45" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10017" x="5" y="460" width="477" height="406" frameX="-2" frameY="-45" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10018" x="275" y="5" width="452" height="424" frameX="-7" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10019" x="275" y="5" width="452" height="424" frameX="-7" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10020" x="732" y="5" width="483" height="450" frameX="0" frameY="-1" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10021" x="732" y="5" width="483" height="450" frameX="0" frameY="-1" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10022" x="1220" y="5" width="455" height="432" frameX="-6" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 10023" x="1220" y="5" width="455" height="432" frameX="-6" frameY="0" frameWidth="483" frameHeight="451"/>
+	<SubTexture name="hench death 20000" x="487" y="460" width="433" height="379" frameX="-17" frameY="-69" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20001" x="487" y="460" width="433" height="379" frameX="-17" frameY="-69" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20002" x="925" y="460" width="452" height="435" frameX="-7" frameY="-2" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20003" x="925" y="460" width="452" height="435" frameX="-7" frameY="-2" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20004" x="1382" y="460" width="483" height="445" frameX="0" frameY="-19" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20005" x="1382" y="460" width="483" height="445" frameX="0" frameY="-19" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20006" x="5" y="910" width="455" height="445" frameX="-6" frameY="0" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20007" x="5" y="910" width="455" height="445" frameX="-6" frameY="0" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20008" x="465" y="910" width="477" height="414" frameX="-2" frameY="-50" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20009" x="465" y="910" width="477" height="414" frameX="-2" frameY="-50" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20010" x="925" y="460" width="452" height="435" frameX="-7" frameY="-2" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20011" x="925" y="460" width="452" height="435" frameX="-7" frameY="-2" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20012" x="1382" y="460" width="483" height="445" frameX="0" frameY="-19" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20013" x="1382" y="460" width="483" height="445" frameX="0" frameY="-19" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20014" x="5" y="910" width="455" height="445" frameX="-6" frameY="0" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20015" x="5" y="910" width="455" height="445" frameX="-6" frameY="0" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20016" x="465" y="910" width="477" height="414" frameX="-2" frameY="-50" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20017" x="465" y="910" width="477" height="414" frameX="-2" frameY="-50" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20018" x="925" y="460" width="452" height="435" frameX="-7" frameY="-2" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20019" x="925" y="460" width="452" height="435" frameX="-7" frameY="-2" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20020" x="1382" y="460" width="483" height="445" frameX="0" frameY="-19" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20021" x="1382" y="460" width="483" height="445" frameX="0" frameY="-19" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20022" x="5" y="910" width="455" height="445" frameX="-6" frameY="0" frameWidth="483" frameHeight="464"/>
+	<SubTexture name="hench death 20023" x="5" y="910" width="455" height="445" frameX="-6" frameY="0" frameWidth="483" frameHeight="464"/>
+</TextureAtlas>

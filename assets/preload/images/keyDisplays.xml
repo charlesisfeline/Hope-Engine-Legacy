@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TextureAtlas imagePath="keyDisplays.png">
+	<!-- Created with Adobe Animate version 18.0.1.115 -->
+	<!-- http://www.adobe.com/products/animate.html -->
+	<SubTexture name="backspace0000" x="5" y="5" width="193" height="106"/>
+	<SubTexture name="backspace0001" x="5" y="5" width="193" height="106"/>
+	<SubTexture name="backspace0002" x="203" y="5" width="193" height="106"/>
+	<SubTexture name="backspace0003" x="203" y="5" width="193" height="106"/>
+	<SubTexture name="enter0000" x="5" y="116" width="193" height="106"/>
+	<SubTexture name="enter0001" x="5" y="116" width="193" height="106"/>
+	<SubTexture name="enter0002" x="203" y="116" width="193" height="106"/>
+	<SubTexture name="enter0003" x="203" y="116" width="193" height="106"/>
+	<SubTexture name="escape0000" x="5" y="227" width="133" height="104"/>
+	<SubTexture name="escape0001" x="5" y="227" width="133" height="104"/>
+	<SubTexture name="escape0002" x="143" y="227" width="133" height="104"/>
+	<SubTexture name="escape0003" x="143" y="227" width="133" height="104"/>
+</TextureAtlas>

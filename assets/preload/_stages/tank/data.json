@@ -1,0 +1,7 @@
+{
+    "name": "tank",
+    "bfPosition": [850, 450],
+    "gfPosition": [200, 80],
+    "dadPosition": [20, 340],
+    "defaultCamZoom": 0.9
+}

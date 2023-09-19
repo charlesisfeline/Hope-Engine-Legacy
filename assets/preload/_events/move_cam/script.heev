@@ -1,4 +1,14 @@
 function trigger(params:Map<String, Dynamic>)
 {
-	
+    var xPos:Float = params["xpos"];
+    var yPos:Float = params["ypos"];
+    var reset:Float = params["reset"];
+
+    if (reset || (xPos == 0 && yPos == 0))
+        PlayState.isCamForced = false;   
+    else
+    {
+        PlayState.isCamForced = true;
+        PlayState.camFollow.setPosition(xPos, yPos);
+    }
 }

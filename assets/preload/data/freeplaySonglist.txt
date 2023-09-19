@@ -4,6 +4,7 @@ Fresh:dad:1:120:af66ce
 Dadbattle:dad:1:180:af66ce
 Spookeez:spooky:2:150:b28d68
 South:spooky:2:165:b28d68
+Monster:monster:2:95:f3ff6e
 Pico:pico:3:150:b7d855
 Philly Nice:pico:3:175:b7d855
 Blammed:pico:3:165:b7d855
@@ -12,7 +13,10 @@ High:mom:4:125:d8558e
 MILF:mom:4:180:d8558e
 Cocoa:parents:5:100:9f558e
 Eggnog:parents:5:150:9f558e
-Winter Horrorland:monster:5:159:f3ff6e
+Winter Horrorland:monster-christmas:5:159:f3ff6e
 Senpai:senpai:6:144:ffaa6f
-Roses:senpai:6:120:ffaa6f
+Roses:senpai-angry:6:120:ffaa6f
 Thorns:spirit:6:190:ffaa6f
+Ugh:tankman:7:160:ffffff
+Guns:tankman:7:185:ffffff
+Stress:tankman:7:178:ffffff

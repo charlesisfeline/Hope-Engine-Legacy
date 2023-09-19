@@ -1,0 +1,21 @@
+function trigger(params:Map<String, Dynamic>)
+{
+	// Self-explanatory.
+
+	if (Settings.extraDetails && dad.curCharacter == 'pico')
+	{
+		var sfx:Bool = params.get("sfx");
+
+		dad.specialAnim = true;
+		dad.playAnim("shoot", true);
+
+		boyfriend.specialAnim = true;
+		boyfriend.playAnim("dodge", true);
+
+		FlxG.camera.shake(0.015, Conductor.stepCrochet / 1000, null, true, FlxAxes.X);
+
+		// Credits to FNF HD for the original pico shoot sfx
+		if (sfx)
+			FlxG.sound.play(Paths.sound("pico_shoots", "week3"), 0.45);
+	}
+}

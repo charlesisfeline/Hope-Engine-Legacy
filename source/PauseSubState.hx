@@ -1,7 +1,9 @@
 package;
 
+import achievements.Achievements;
 import flixel.FlxG;
 import flixel.FlxSprite;
+import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.math.FlxMath;
 import flixel.system.FlxSound;
@@ -9,9 +11,8 @@ import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxStringUtil;
 import flixel.util.FlxTimer;
-import lime.utils.Assets;
-import openfl.Lib;
 
 using StringTools;
 
@@ -32,6 +33,9 @@ class PauseSubState extends MusicBeatSubstate
 
 	var offsetChanged:Bool = false;
 
+	var skipText:FlxText;
+	var skipToOption:Alphabet;
+
 	public function new()
 	{
 		super();
@@ -40,7 +44,12 @@ class PauseSubState extends MusicBeatSubstate
 		persistentUpdate = false;
 
 		if (PlayState.openedCharting)
-			menuItems = ['Resume', 'Restart Song', 'Toggle Botplay', 'Exit to menu'];
+		{
+			menuItems.insert(2, 'Toggle Botplay');
+
+			if (PlayState.instance.songStarted)
+				menuItems.insert(3, 'Skip To');
+		}
 
 		pauseMusic = new FlxSound().loadEmbedded(Paths.music('breakfast'), true, true);
 		pauseMusic.volume = 0;
@@ -80,7 +89,7 @@ class PauseSubState extends MusicBeatSubstate
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
 
-		perSongOffset = new FlxText(0, 0, FlxG.width - 20, "Song Offset: < " + PlayState.songOffset + " >\n(Hold CTRL to change!)", 12);
+		perSongOffset = new FlxText(0, 0, FlxG.width - 20, "Song Offset (in MS): < " + PlayState.songOffset + " >\n(Hold CTRL to change!)", 12);
 		perSongOffset.scrollFactor.set();
 		perSongOffset.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
 		perSongOffset.setPosition(0, FlxG.height - perSongOffset.height - 15);
@@ -94,28 +103,16 @@ class PauseSubState extends MusicBeatSubstate
 
 		if (PlayState.openedCharting)
 		{
-			var chartingText = new FlxText(0, 15 + 64, FlxG.width - 20, "CHARTING", 12);
+			var chartingText = new FlxText(0, levelDifficulty.y + 32, FlxG.width - 20, "CHARTING", 12);
 			chartingText.scrollFactor.set();
 			chartingText.setFormat(Paths.font('vcr.ttf'), 32, FlxColor.WHITE, RIGHT);
 			chartingText.alpha = 0;
 
 			add(chartingText);
-			chartingText.y -= 5;
 			FlxTween.tween(chartingText, {alpha: 1, y: chartingText.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
 		}
 
-		for (i in 0...menuItems.length)
-		{
-			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
-			songText.isMenuItem = true;
-			songText.x = 25;
-			songText.targetY = i;
-			grpMenuShit.add(songText);
-		}
-
-		changeSelection();
-
-		cameras = [FlxG.cameras.list[FlxG.cameras.list.length - 1]];
+		generateMenu();
 
 		if (FlxG.random.bool(0.001))
 		{
@@ -129,59 +126,97 @@ class PauseSubState extends MusicBeatSubstate
 			ooohhhHeFunkin.x = FlxG.width - ooohhhHeFunkin.width - 20;
 			ooohhhHeFunkin.y = perSongOffset.y - ooohhhHeFunkin.height - 20;
 			ooohhhHeFunkin.alpha = 0;
-			FlxTween.tween(ooohhhHeFunkin, {alpha: 1}, 5, {ease: FlxEase.expoInOut, startDelay: 0.5});
+			FlxTween.tween(ooohhhHeFunkin, {alpha: 1}, 5, {
+				ease: FlxEase.expoInOut,
+				startDelay: 0.5,
+				onComplete: function(twn:FlxTween)
+				{
+					Achievements.give('funky_guy');
+				}
+			});
 			add(ooohhhHeFunkin);
 		}
 	}
 
 	var resuming:Bool = false;
+	var curTime:Float = Math.max(0.0, Conductor.songPosition);
+	var origTime:Float = Math.max(0.0, Conductor.songPosition);
 
 	var holdTimer:Float = 0;
 
 	override function update(elapsed:Float)
 	{
+		super.update(elapsed);
+
 		if (pauseMusic.volume < 0.5)
 			pauseMusic.volume += 0.01 * elapsed;
 
 		for (item in grpMenuShit)
 			item.x = FlxMath.lerp(item.x, (item.targetY * 20) + 90, Helper.boundTo(elapsed * 9.6, 0, 1));
 
-		super.update(elapsed);
-
-		var upP = controls.UP_P;
-		var downP = controls.DOWN_P;
-		var accepted = controls.ACCEPT;
-
-		if (upP)
+		if (skipText != null)
 		{
-			FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
-			changeSelection(-1);
-		}
-		else if (downP)
-		{
-			FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
-			changeSelection(1);
+			if (skipToOption != null)
+			{
+				skipText.x = skipToOption.x + skipToOption.width + 48;
+				skipText.y = skipToOption.y + (skipToOption.height / 2) - (skipText.height / 2);
+				skipText.alpha = skipToOption.alpha;
+				skipText.visible = true;
+			}
+			else
+				skipText.visible = false;
+
+			if (!grpMenuShit.members.contains(skipToOption))
+				skipText.visible = false;
+
+			skipText.text = '< ${FlxStringUtil.formatTime(curTime / 1000)} / ${FlxStringUtil.formatTime(FlxG.sound.music.length / 1000)} >';
 		}
 
-		#if FILESYSTEM
+		var upP = controls.UI_UP_P;
+		var downP = controls.UI_DOWN_P;
+		var accepted = controls.UI_ACCEPT;
+		var backed = controls.UI_BACK;
+
+		if (!resuming)
+		{
+			if (upP)
+			{
+				FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
+				changeSelection(-1);
+			}
+			else if (downP)
+			{
+				FlxG.sound.play(Paths.sound("scrollMenu", "preload"));
+				changeSelection(1);
+			}
+		}
+
+		if (backed)
+		{
+			changeSelection(-curSelected);
+			accepted = true;
+		}
+		
 		var multi:Float = 0.1;
+
 		if (FlxG.keys.pressed.CONTROL)
 		{
+			#if FILESYSTEM
 			if (FlxG.keys.pressed.SHIFT)
 				multi = 1;
 
-			if (controls.LEFT_P)
+			if (controls.UI_LEFT_P)
 				changeOffset(-1 * multi);
-			else if (controls.RIGHT_P)
+			else if (controls.UI_RIGHT_P)
 				changeOffset(1 * multi);
 
-			if (controls.LEFT || controls.RIGHT)
+			if (controls.UI_LEFT || controls.UI_RIGHT)
 			{
 				if (holdTimer > Main.globalMaxHoldTime)
 				{
-					if (controls.LEFT)
+					if (controls.UI_LEFT)
 						changeOffset(-1 * multi);
-					else if (controls.RIGHT)
+					else if (controls.UI_RIGHT)
 						changeOffset(1 * multi);
 				}
 				else
@@ -190,10 +225,54 @@ class PauseSubState extends MusicBeatSubstate
 			else
 				holdTimer = 0;
 
-			if (controls.RESET)
-				changeOffset(PlayState.songOffset * -1);
+			if (controls.UI_RESET)
+			{
+				if (FlxG.keys.pressed.ALT)
+				{
+					PlayState.songOffset = originalOffset;
+					changeOffset();
+				}
+				else
+				{
+					PlayState.songOffset = 0;
+					changeOffset();
+				}
+			}
+			#end
 		}
-		#end
+		else
+		{
+			if (menuItems[curSelected] == 'Skip To')
+			{
+				if (controls.UI_LEFT_P)
+					curTime -= 1000;
+				else if (controls.UI_RIGHT_P)
+					curTime += 1000;
+	
+				if (controls.UI_LEFT || controls.UI_RIGHT)
+				{
+					if (holdTimer > Main.globalMaxHoldTime)
+					{
+						if (controls.UI_LEFT)
+							curTime -= 1000;
+						else if (controls.UI_RIGHT)
+							curTime += 1000;
+					}
+					else
+						holdTimer += elapsed;
+				}
+				else
+					holdTimer = 0;
+	
+				if (curTime > FlxG.sound.music.length)
+					curTime = 0;
+				if (curTime < 0)
+					curTime = FlxG.sound.music.length;
+
+				if (controls.UI_RESET)
+					curTime = origTime;
+			}
+		}
 
 		if (accepted && !resuming)
 		{
@@ -202,40 +281,84 @@ class PauseSubState extends MusicBeatSubstate
 			switch (daSelected)
 			{
 				case "Resume":
-					if (Settings.resumeCountdown && PlayState.instance.songStarted)
-					{
-						resuming = true;
-						var swagCounter:Int = 0;
-
-						forEachOfType(FlxSprite, function(spr:FlxSprite)
-						{
-							spr.visible = false;
-						}, true);
-
-						new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
-						{
-							PlayState.instance.countdownThing(swagCounter);
-							swagCounter += 1;
-
-							if (swagCounter > 4)
-								close();
-						}, 5);
-					}
-					else
-						close();
+					resume();
 				case "Restart Song":
-					FlxG.resetState();
+					CustomTransition.reset();
 				case "Exit to menu":
-					FlxG.switchState(new MainMenuState());
-					PlayState.openedCharting = false;
-					Settings.botplay = false;
+					exitToMenu();
 				case "Toggle Botplay":
-					Settings.botplay = !Settings.botplay;
-
-					@:privateAccess // shoutout to private access for being so sexy
-					PlayState.instance.botPlayState.visible = PlayState.instance.scrollSpeedText.visible = Settings.botplay;
+					toggleBotplay();
+				case "Skip To":
+					if (curTime == Conductor.songPosition)
+						close();
+					else
+					{
+						FlxTransitionableState.skipNextTransIn = false;
+						FlxTransitionableState.skipNextTransOut = false;
+						PlayState.startAt = curTime;
+						CustomTransition.reset();
+					}
 			}
 		}
+	}
+
+	function resume():Void
+	{
+		if (Settings.resumeCountdown && PlayState.instance.songStarted)
+		{
+			resuming = true;
+			var swagCounter:Int = 0;
+
+			forEachOfType(FlxSprite, function(spr:FlxSprite)
+			{
+				spr.visible = false;
+			}, true);
+
+			new FlxTimer().start(Conductor.crochet / 1000, function(tmr:FlxTimer)
+			{
+				PlayState.instance.countdownThing(swagCounter);
+				swagCounter += 1;
+
+				if (swagCounter > 4)
+				{
+					close();
+				}
+			}, 5);
+		}
+		else
+			close();
+	}
+
+	function exitToMenu():Void
+	{
+		FlxG.sound.playMusic(Paths.music('freakyMenu'));
+		Conductor.changeBPM(102);
+		
+		if (PlayState.isStoryMode)
+			CustomTransition.switchTo(new StoryMenuState());
+		else
+			CustomTransition.switchTo(new FreeplayState());
+		
+		PlayState.openedCharting = false;
+		PlayState.startAt = 0;
+		Settings.botplay = false;
+		PlayState.seenCutscene = false;
+	}
+
+	function toggleBotplay():Void
+	{
+		Settings.botplay = !Settings.botplay;
+
+		@:privateAccess // shoutout to private access for being so sexy
+		{
+			PlayState.instance.botPlayState.visible = PlayState.instance.scrollSpeedText.visible = Settings.botplay;
+			var npsShit = (Settings.npsDisplay ? "NPS: " + PlayState.instance.nps + " (Max " + PlayState.instance.maxNPS + ") | " : "");
+			PlayState.instance.scoreTxt.text = npsShit + Ratings.CalculateRanking(PlayState.songScore, PlayState.instance.songScoreDef, 
+				PlayState.instance.nps, PlayState.instance.maxNPS, PlayState.accuracy);
+		}
+
+		if (PlayState.instance.iconP1.char.startsWith('bf'))
+			PlayState.instance.iconP1.changeIcon((Settings.botplay ? 'bf-bot' : 'bf') + (PlayState.SONG.noteStyle == "pixel" ? "-pixel" : ""));
 	}
 
 	var originalOffset:Null<Float>;
@@ -246,7 +369,7 @@ class PauseSubState extends MusicBeatSubstate
 		if (originalOffset == null)
 			originalOffset = PlayState.songOffset;
 
-		var songPath = 'assets/data/' + PlayState.SONG.song.toLowerCase().replace(" ", "-") + '/.offset';
+		var songPath = 'assets/data/' + Paths.toSongPath(PlayState.SONG.song) + '/.offset';
 
 		if (Paths.currentMod != null && FileSystem.exists(Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath))
 			songPath = Sys.getCwd() + "mods/" + Paths.currentMod + "/" + songPath;
@@ -270,28 +393,52 @@ class PauseSubState extends MusicBeatSubstate
 		if (PlayState.openedCharting)
 		{
 			if (PlayState.songOffset == originalOffset)
+			{
 				menuItems = ["Resume", "Restart Song", "Toggle Botplay", "Exit to menu"];
+				
+				if (PlayState.instance.songStarted)
+					menuItems.insert(3, 'Skip To');
+			}
 			else
 				menuItems = ["Restart Song", "Toggle Botplay", "Exit to menu"];
 		}
 
 		if (oldMenuItemsLength != menuItems.length)
-		{
-			grpMenuShit.clear();
-
-			for (i in 0...menuItems.length)
-			{
-				var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
-				songText.isMenuItem = true;
-				songText.x = 25;
-				songText.targetY = i;
-				grpMenuShit.add(songText);
-			}
-
-			changeSelection();
-		}
+			generateMenu();
 	}
 	#end
+
+	function generateMenu():Void
+	{
+		grpMenuShit.clear();
+		if (skipText != null)
+			skipText.destroy();
+		skipToOption = null;
+
+		for (i in 0...menuItems.length)
+		{
+			var songText:Alphabet = new Alphabet(0, (70 * i) + 30, menuItems[i], true, false);
+			songText.isMenuItem = true;
+			songText.x = 25;
+			songText.targetY = i;
+
+			if (menuItems[i] == 'Skip To')
+			{
+				skipToOption = songText;
+				
+				skipText = new FlxText();
+				skipText.setFormat('Funkerin Regular', 72, OUTLINE, FlxColor.BLACK);
+				skipText.borderSize = 3;
+				skipText.antialiasing = true;
+				skipText.visible = false;
+				add(skipText);
+			}
+
+			grpMenuShit.add(songText);
+		}
+
+		changeSelection();
+	}
 
 	override function destroy()
 	{

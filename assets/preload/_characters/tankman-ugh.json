@@ -1,0 +1,45 @@
+{
+	"animations": [
+		{
+			"prefix": "TANK TALK 1 P2",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "postbeep",
+			"offset": [
+				38,
+				9
+			]
+		},
+		{
+			"prefix": "TANK TALK 1 P1",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "prebeep",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "FFFFFF",
+	"facesLeft": false,
+	"image": "characters/tankman-cutscene-ugh",
+	"singDuration": 4,
+	"initialAnimation": "prebeep",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": true,
+	"name": "tankman-ugh",
+	"isDeath": false,
+	"scale": 1
+}

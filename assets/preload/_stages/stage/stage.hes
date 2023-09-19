@@ -17,14 +17,10 @@ function createBackground()
     add(stageFront);
 }
 
-function createForeground(bf:Character, gf:Character, dad:Character)
+function createForeground()
 {
     // This happens AFTER BF and GF get put.
     // Meaning sprites created here will be put INFRONT of the characters
-
-    // bf is Boyfriend/Player 1/Player
-    // gf is, well, Girlfriend
-    // dad is Dad/Player 2/Enemy
 
     var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
     stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));

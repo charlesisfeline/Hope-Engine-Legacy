@@ -2,31 +2,30 @@ package;
 
 import haxe.Json;
 import openfl.Assets;
-import sys.FileSystem;
 
 using StringTools;
-
 #if FILESYSTEM
+import sys.FileSystem;
 import sys.io.File;
 #end
+
 
 typedef EventData =
 {
 	var events:Array<Array<EventNote>>; // WELL?!?!?!
-	
 	/*
-	See "events json model.jsonc"
-	*/
+		See "events json model.jsonc"
+	 */
 }
 
-typedef EventNote = 
+typedef EventNote =
 {
 	var strumTime:Float;
 	var events:Array<SwagEvent>;
 }
 
 // used in JSON file
-typedef EventInfo = 
+typedef EventInfo =
 {
 	var eventName:String;
 	var eventDesc:String;
@@ -60,10 +59,12 @@ class Event
 		var rawJson:Null<String> = null;
 
 		#if FILESYSTEM
-		if (!FileSystem.exists(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/events.json')) return null;
+		if (!FileSystem.exists(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/events.json'))
+			return null;
 		rawJson = File.getContent(Sys.getCwd() + mod + "/assets/data/" + folderLowercase + '/events.json').trim();
 		#else
-		if (!Assets.exists(Paths.json(folderLowercase + '/events'))) return null;
+		if (!Assets.exists(Paths.json(folderLowercase + '/events')))
+			return null;
 		rawJson = Assets.getText(Paths.json(folderLowercase + '/events')).trim();
 		#end
 
@@ -72,8 +73,9 @@ class Event
 
 	public static function parseJSON(rawJson:Null<String>):Null<EventData>
 	{
-		if (rawJson == null) return null;
-		
+		if (rawJson == null)
+			return null;
+
 		var swagShit:EventData = cast Json.parse(rawJson);
 		return swagShit;
 	}

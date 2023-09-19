@@ -1,5 +1,7 @@
 package;
 
+
+import editors.WeekEditor.Week;
 import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.transition.FlxTransitionableState;
@@ -17,6 +19,7 @@ import openfl.utils.Assets;
 using StringTools;
 
 #if FILESYSTEM
+import editors.WeekEditor.Week;
 import sys.FileSystem;
 import sys.io.File;
 #end
@@ -26,9 +29,10 @@ import Discord.DiscordClient;
 
 class StoryMenuState extends MusicBeatState
 {
-	var scoreText:FlxText;
+	static var curWeek:Int = 0;
+	static var curDifficulty:Int = 1;
 
-	var curDifficulty:Int = 1;
+	var scoreText:FlxText;
 
 	public static var weekUnlocked:Array<Bool> = [];
 
@@ -42,7 +46,6 @@ class StoryMenuState extends MusicBeatState
 	var weekDifficultyLock:Array<Null<String>> = [];
 
 	var txtWeekTitle:FlxText;
-	var curWeek:Int = 0;
 	var txtTracklist:FlxText;
 	var yellowBG:FlxSprite;
 
@@ -58,6 +61,23 @@ class StoryMenuState extends MusicBeatState
 
 	override function create()
 	{
+		if (Paths.priorityMod != "hopeEngine")
+		{
+			if (Paths.exists(Paths.state("StoryMenuState")))
+			{
+				Paths.setCurrentMod(Paths.priorityMod);
+				FlxG.switchState(new CustomState("StoryMenuState", STORYMENU));
+
+				DONTFUCKINGTRIGGERYOUPIECEOFSHIT = true;
+				return;
+			}
+		}
+
+		if (Paths.priorityMod == "hopeEngine")
+			Paths.setCurrentMod(null);
+		else
+			Paths.setCurrentMod(Paths.priorityMod);
+
 		#if desktop
 		DiscordClient.changePresence("Story Menu");
 		#end
@@ -85,10 +105,10 @@ class StoryMenuState extends MusicBeatState
 		{
 			#if FILESYSTEM
 			var path = Sys.getCwd() + "assets/_weeks/" + i + ".json";
-			var week = Json.parse(File.getContent(path));
+			var week:Week = cast Json.parse(File.getContent(path));
 			#else
 			var path = "assets/_weeks/" + i + ".json";
-			var week = Json.parse(Assets.getText(path));
+			var week:Week = cast Json.parse(Assets.getText(path));
 			#end
 
 			weekData.push(week.tracks);
@@ -99,22 +119,27 @@ class StoryMenuState extends MusicBeatState
 			weekDifficultyLock.push(week.difficultyLock);
 		}
 
-		#if FILESYSTEM
+		#if (FILESYSTEM && MODS_FEATURE)
 		for (i in FileSystem.readDirectory(Sys.getCwd() + 'mods'))
 		{
 			if (FileSystem.exists(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt") && Paths.checkModLoad(i))
 			{
-				for (jsonName in CoolUtil.coolStringFile(File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt")))
-				{
-					var path = Sys.getCwd() + "mods/" + i + "/assets/_weeks/" + jsonName + ".json";
-					var week = Json.parse(File.getContent(path));
+				var content = File.getContent(Sys.getCwd() + "mods/" + i + "/assets/_weeks/_weekList.txt");
 
-					weekData.push(week.tracks);
-					weekNames.push(week.weekName);
-					weekCharacters.push(week.characters);
-					weekJsonNames.push(jsonName);
-					weekMods.push(i);
-					weekDifficultyLock.push(week.difficultyLock);
+				if (content.trim().length > 0)
+				{
+					for (jsonName in CoolUtil.coolStringFile(content))
+					{
+						var path = Sys.getCwd() + "mods/" + i + "/assets/_weeks/" + jsonName + ".json";
+						var week:Week = cast Json.parse(File.getContent(path));
+	
+						weekData.push(week.tracks);
+						weekNames.push(week.weekName);
+						weekCharacters.push(week.characters);
+						weekJsonNames.push(jsonName);
+						weekMods.push(i);
+						weekDifficultyLock.push(week.difficultyLock);
+					}
 				}
 			}
 		}
@@ -232,6 +257,7 @@ class StoryMenuState extends MusicBeatState
 		add(tracksText);
 
 		changeDifficulty();
+		changeWeek();
 		updateText();
 
 		super.create();
@@ -256,8 +282,13 @@ class StoryMenuState extends MusicBeatState
 		});
 	}
 
+	var DONTFUCKINGTRIGGERYOUPIECEOFSHIT:Bool = false;
+
 	override function update(elapsed:Float)
 	{
+		if (DONTFUCKINGTRIGGERYOUPIECEOFSHIT)
+			return;
+		
 		if (FlxG.sound.music != null)
 			Conductor.songPosition = FlxG.sound.music.time;
 
@@ -275,25 +306,25 @@ class StoryMenuState extends MusicBeatState
 		{
 			if (!selectedWeek)
 			{
-				if (controls.UP_P)
+				if (controls.UI_UP_P)
 					changeWeek(-1);
 
-				if (controls.DOWN_P)
+				if (controls.UI_DOWN_P)
 					changeWeek(1);
 
-				if (controls.RIGHT)
+				if (controls.UI_RIGHT)
 					rightArrow.animation.play('press');
 				else
 					rightArrow.animation.play('idle');
 
-				if (controls.LEFT)
+				if (controls.UI_LEFT)
 					leftArrow.animation.play('press');
 				else
 					leftArrow.animation.play('idle');
 
-				if (controls.RIGHT_P && weekDifficultyLock[curWeek] == null)
+				if (controls.UI_RIGHT_P && weekDifficultyLock[curWeek] == null)
 					changeDifficulty(1);
-				if (controls.LEFT_P && weekDifficultyLock[curWeek] == null)
+				if (controls.UI_LEFT_P && weekDifficultyLock[curWeek] == null)
 					changeDifficulty(-1);
 
 				if (weekDifficultyLock[curWeek] != null)
@@ -308,22 +339,24 @@ class StoryMenuState extends MusicBeatState
 				}
 			}
 
-			if (controls.ACCEPT)
+			if (controls.UI_ACCEPT)
 				selectWeek();
 		}
 
-		if (controls.BACK && !movedBack && !selectedWeek)
+		if (controls.UI_BACK && !movedBack && !selectedWeek)
 		{
 			FlxG.sound.play(Paths.sound('cancelMenu'));
 			movedBack = true;
-			FlxG.switchState(new MainMenuState());
+			CustomTransition.switchTo(new MainMenuState());
 		}
 
+		#if FILESYSTEM
 		if (FlxG.keys.justPressed.SEVEN && !movedBack && !selectedWeek)
 		{
 			movedBack = true;
-			FlxG.switchState(new editors.WeekEditor());
+			CustomTransition.switchTo(new editors.WeekEditor());
 		}
+		#end
 
 		super.update(elapsed);
 	}
@@ -356,6 +389,7 @@ class StoryMenuState extends MusicBeatState
 				stopspamming = true;
 			}
 
+			PlayState.resetWeekStats();
 			PlayState.storyPlaylist = weekData[curWeek];
 			PlayState.weekName = weekNames[curWeek];
 			PlayState.isStoryMode = true;
@@ -364,10 +398,11 @@ class StoryMenuState extends MusicBeatState
 			var diffic = CoolUtil.difficultySuffixfromInt(curDifficulty);
 
 			PlayState.storyDifficulty = curDifficulty;
-			var lma = StringTools.replace(PlayState.storyPlaylist[0], " ", "-").toLowerCase();
+			var lma = Paths.toSongPath(PlayState.storyPlaylist[0]);
 			PlayState.SONG = Song.loadFromJson(lma + diffic, lma, (Paths.currentMod != null
 				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
-			PlayState.EVENTS = Event.load(lma, (Paths.currentMod != null && Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
+			PlayState.EVENTS = Event.load(lma, (Paths.currentMod != null
+				&& Paths.currentMod.length > 0 ? "mods/" + Paths.currentMod : ""));
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
 			new FlxTimer().start(1, function(tmr:FlxTimer)
@@ -412,6 +447,9 @@ class StoryMenuState extends MusicBeatState
 
 	function changeWeek(change:Int = 0):Void
 	{
+		if (change != 0)
+			FlxG.sound.play(Paths.sound('scrollMenu'));
+		
 		curWeek += change;
 
 		if (curWeek >= weekData.length)
@@ -438,8 +476,6 @@ class StoryMenuState extends MusicBeatState
 				item.alpha = 0.6;
 			bullShit++;
 		}
-
-		FlxG.sound.play(Paths.sound('scrollMenu'));
 
 		var prevScore = intendedScore;
 		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);

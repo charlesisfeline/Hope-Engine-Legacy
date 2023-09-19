@@ -5,11 +5,14 @@ import flixel.FlxG;
 import flixel.FlxSprite;
 import flixel.addons.text.FlxTypeText;
 import flixel.group.FlxGroup.FlxTypedGroup;
+import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
+import flixel.util.FlxTimer;
 import haxe.Json;
+import openfl.Assets;
 
 using StringTools;
 
@@ -32,6 +35,7 @@ typedef DialogueSettings =
 {
 	var bgMusic:BGMusic;
 	var bg:BG;
+	var type:String;
 }
 
 typedef BGMusic =
@@ -56,42 +60,44 @@ typedef MusicFadeIn =
 
 class DialogueSubstate extends MusicBeatSubstate
 {
-	var pissCamera:FlxCamera;
+	public static var instance:DialogueSubstate;
 
-	var splitName:Array<String>;
-	var dialogueList:Array<String> = [];
-	var whosSpeaking:String = '';
-	var speakerEmotion:String = '';
-	var speakerPosition:String = 'right';
-	var dialogueType:String = 'normal';
-	var dialogueBox:FlxSprite;
-	var thatFuckerOnTheLeft:FlxSprite;
-	var thatFuckerOnTheRight:FlxSprite;
-	var onComplete:Void->Void;
+	public var sounds(default, set):Array<FlxSound>;
 
-	var typedText:FlxTypeText;
-	var useAlphabet:Bool = false;
-	var style:DialogueStyle = NORMAL;
+	public var splitName:Array<String>;
+	public var dialogueList:Array<String> = [];
+	public var whosSpeaking:String = '';
+	public var speakerEmotion:String = '';
+	public var speakerPosition:String = 'right';
+	public var dialogueType:String = 'normal';
+	public var dialogueBox:FlxSprite;
+	public var thatFuckerOnTheLeft:FlxSprite;
+	public var thatFuckerOnTheRight:FlxSprite;
+	public var onComplete:Void->Void;
 
-	var skipText:FlxText;
+	public var typedText:FlxTypeText;
+	public var useAlphabet:Bool = false;
+	public var style:DialogueStyle = NORMAL;
 
-	var portraitGroup:FlxTypedGroup<FlxSprite>;
+	public var skipText:FlxText;
 
-	var desiredBgAlpha:Null<Float> = 0.5;
-	var desiredBgColor:FlxColor = FlxColor.fromString("#000000");
-	var desiredBgDuration:Null<Float> = 0;
+	public var portraitGroup:FlxTypedGroup<FlxSprite>;
 
-	var desiredMusic:Null<String> = "breakfast";
-	var desiredFadeTo:Null<Float> = 0.8;
-	var desiredFadeFrom:Null<Float> = 0;
-	var desiredFadeDuration:Null<Float> = 1;
+	public var desiredBgAlpha:Null<Float> = 0.5;
+	public var desiredBgColor:FlxColor = FlxColor.fromString("#000000");
+	public var desiredBgDuration:Null<Float> = 0;
 
-	var bg:FlxSprite;
+	public var desiredMusic:Null<String> = "breakfast";
+	public var desiredFadeTo:Null<Float> = 0.8;
+	public var desiredFadeFrom:Null<Float> = 0;
+	public var desiredFadeDuration:Null<Float> = 1;
 
-	var customColorRegEx:EReg = new EReg("<#(?:[a-f\\d]{3}){1,2}\\b>", "g");
-	var customColorFormatMarkers:Array<FlxTextFormatMarkerPair> = [];
+	public var bg:FlxSprite;
 
-	public function new(dialogues:Array<String>, style:DialogueStyle = NORMAL, ?onComplete:Void->Void, ?dialogueSettings:DialogueSettings = null)
+	public var customColorRegEx:EReg = new EReg("<#(?:[a-f\\d]{3}){1,2}\\b>", "g");
+	public var customColorFormatMarkers:Array<FlxTextFormatMarkerPair> = [];
+
+	public function new(dialogues:Array<String>, style:DialogueStyle = null, ?onComplete:Void->Void, ?dialogueSettings:DialogueSettings = null)
 	{
 		super();
 
@@ -128,12 +134,7 @@ class DialogueSubstate extends MusicBeatSubstate
 			}
 		}
 
-		pissCamera = new FlxCamera();
-		pissCamera.bgColor.alphaFloat = 0;
-		FlxG.cameras.add(pissCamera);
-
 		bg = new FlxSprite().makeGraphic(Std.int(FlxG.width * 1.5), Std.int(FlxG.height * 1.5));
-		bg.cameras = [pissCamera];
 		bg.alpha = 0;
 		bg.screenCenter();
 		add(bg);
@@ -144,11 +145,11 @@ class DialogueSubstate extends MusicBeatSubstate
 		if (settingsJSON == null)
 		{
 			#if FILESYSTEM
-			if (FileSystem.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
-				settingsJSON = cast Json.parse(File.getContent(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
+			if (FileSystem.exists(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))))
+				settingsJSON = cast Json.parse(File.getContent(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))));
 			#else
-			if (Assets.exists(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())))
-				settingsJSON = cast Json.parse(Assets.getText(Paths.dialogueSettingsFile(PlayState.SONG.song.replace(" ", "-").toLowerCase())));
+			if (Assets.exists(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))))
+				settingsJSON = cast Json.parse(Assets.getText(Paths.dialogueSettingsFile(Paths.toSongPath(PlayState.SONG.song))));
 			#end
 		}
 
@@ -168,6 +169,22 @@ class DialogueSubstate extends MusicBeatSubstate
 				desiredBgDuration = settingsJSON.bg.duration != null ? settingsJSON.bg.duration : 0;
 				desiredBgColor = settingsJSON.bg.color != null ? FlxColor.fromString("#" + settingsJSON.bg.color) : FlxColor.fromString("#000000");
 			}
+
+			if (settingsJSON.type != null)
+			{
+				if (style == null)
+				{
+					switch (settingsJSON.type.toLowerCase())
+					{
+						default:
+							style = NORMAL;
+						case 'pixel' | 'pixel-normal':
+							style = PIXEL_NORMAL;
+						case 'pixel-spirit':
+							style = PIXEL_SPIRIT;
+					}
+				}
+			}
 		}
 
 		bg.color = desiredBgColor;
@@ -179,7 +196,7 @@ class DialogueSubstate extends MusicBeatSubstate
 
 		if (desiredMusic != "")
 		{
-			FlxG.sound.playMusic(Paths.music(desiredMusic));
+			FlxG.sound.playMusic(Paths.music(desiredMusic), desiredFadeFrom);
 			FlxG.sound.music.fadeIn(desiredFadeDuration, desiredFadeFrom, desiredFadeTo);
 		}
 
@@ -187,7 +204,9 @@ class DialogueSubstate extends MusicBeatSubstate
 
 		this.dialogueList = dialogues;
 		this.onComplete = onComplete;
-		this.style = style;
+
+		if (style != null)
+			this.style = style;
 
 		thatFuckerOnTheLeft = new FlxSprite();
 		thatFuckerOnTheRight = new FlxSprite();
@@ -202,7 +221,7 @@ class DialogueSubstate extends MusicBeatSubstate
 		typedText.setBorderStyle(FlxTextBorderStyle.SHADOW, 0xFFD89494, 2);
 		typedText.shadowOffset.set(1, 1);
 
-		if (style == NORMAL)
+		if (this.style == NORMAL)
 		{
 			dialogueBox.frames = Paths.getSparrowAtlas('speech_bubble_talking', 'shared');
 			dialogueBox.animation.addByPrefix('normal open', 'Speech Bubble Normal Open0', 24, false);
@@ -221,7 +240,7 @@ class DialogueSubstate extends MusicBeatSubstate
 			typedText.antialiasing = true;
 			typedText.borderColor = FlxColor.TRANSPARENT;
 		}
-		else if (style == PIXEL_NORMAL)
+		else if (this.style == PIXEL_NORMAL)
 		{
 			dialogueBox.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-pixel', 'shared');
 			dialogueBox.animation.addByPrefix('normal open', 'Text Box Appear instance', 24, false);
@@ -229,7 +248,7 @@ class DialogueSubstate extends MusicBeatSubstate
 			dialogueBox.setGraphicSize(Std.int(dialogueBox.width * PlayState.daPixelZoom * 0.9));
 			typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
-		else if (style == PIXEL_SPIRIT)
+		else if (this.style == PIXEL_SPIRIT)
 		{
 			dialogueBox.frames = Paths.getSparrowAtlas('pixelUI/dialogueBox-evil', 'shared');
 			dialogueBox.animation.addByPrefix('normal open', 'Spirit Textbox spawn instance', 24, false);
@@ -241,31 +260,28 @@ class DialogueSubstate extends MusicBeatSubstate
 			typedText.sounds = [FlxG.sound.load(Paths.sound('pixelText'), 0.6)];
 		}
 
-		typedText.cameras = [pissCamera];
-
 		dialogueBox.scrollFactor.set();
 		dialogueBox.y = FlxG.height * 0.5;
 		dialogueBox.animation.play("normal open");
 		dialogueBox.screenCenter(X);
 		add(dialogueBox);
-		dialogueBox.cameras = [pissCamera];
 
 		add(typedText);
 
 		skipText = new FlxText(0, 0, 0, "Press BACKSPACE to skip dialogue.");
-		skipText.setFormat(null, 24, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
+		skipText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, LEFT, OUTLINE, 0xFF000000);
 		skipText.borderSize = 3;
 		skipText.x = 5;
 		skipText.y = FlxG.height - skipText.height - 5;
 		add(skipText);
-
-		skipText.cameras = [pissCamera];
 
 		if (PlayState.instance != null)
 			FlxTween.tween(PlayState.instance.camHUD, {alpha: 0}, 0.5);
 
 		started = true;
 		start();
+
+		instance = this;
 	}
 
 	override function update(elapsed:Float)
@@ -301,22 +317,21 @@ class DialogueSubstate extends MusicBeatSubstate
 			}
 		}
 
-		if (FlxG.keys.justPressed.ANY && started)
+		if (FlxG.keys.justPressed.ANY)
 		{
 			if (started)
 			{
 				if (!useAlphabet)
 					FlxG.sound.play(Paths.sound('clickText'), 0.8);
 
-				if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length)
+				if (typedText.text.length >= customColorRegEx.replace(dialogueList[0], "").length ||
+					typedText.text.length >= ~/<[a-z]+>/g.replace(dialogueList[0], "").length)
 				{
 					if (dialogueList[1] == null && dialogueList[0] != null)
 					{
 						if (!ending)
 						{
 							ending = true;
-							if (onComplete != null)
-								onComplete();
 
 							if (PlayState.instance != null)
 							{
@@ -324,12 +339,19 @@ class DialogueSubstate extends MusicBeatSubstate
 								PlayState.instance.inCutscene = false;
 							}
 
-							FlxTween.tween(pissCamera, {alpha: 0}, 1, {
-								onComplete: function(twn:FlxTween)
-								{
-									FlxG.cameras.remove(pissCamera, true);
-									close();
-								}
+							forEachOfType(FlxSprite, function(spr:FlxSprite) {
+								FlxTween.tween(spr, {alpha: 0}, 1);
+							}, true);
+			
+							new FlxTimer().start(1, function(twn:FlxTimer)
+							{
+								close();
+			
+								if (PlayState.instance != null)
+									PlayState.seenCutscene = true;
+			
+								if (onComplete != null)
+									onComplete();
 							});
 						}
 					}
@@ -340,9 +362,7 @@ class DialogueSubstate extends MusicBeatSubstate
 					}
 				}
 				else
-				{
 					typedText.skip();
-				}
 			}
 
 			if (!started)
@@ -357,18 +377,26 @@ class DialogueSubstate extends MusicBeatSubstate
 			if (!ending)
 			{
 				ending = true;
-				if (onComplete != null)
-					onComplete();
 
 				if (PlayState.instance != null)
+				{
 					FlxTween.tween(PlayState.instance.camHUD, {alpha: 1}, 0.25);
+					PlayState.instance.inCutscene = false;
+				}
 
-				FlxTween.tween(pissCamera, {alpha: 0}, 1, {
-					onComplete: function(twn:FlxTween)
-					{
-						FlxG.cameras.remove(pissCamera, true);
-						close();
-					}
+				forEachOfType(FlxSprite, function(spr:FlxSprite) {
+					FlxTween.tween(spr, {alpha: 0}, 1);
+				}, true);
+
+				new FlxTimer().start( 1, function(twn:FlxTimer)
+				{
+					close();
+
+					if (PlayState.instance != null)
+						PlayState.seenCutscene = true;
+
+					if (onComplete != null)
+						onComplete();
 				});
 			}
 		}
@@ -392,7 +420,7 @@ class DialogueSubstate extends MusicBeatSubstate
 
 		if (speakerPosition == "left")
 		{
-			thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
+			thatFuckerOnTheLeft = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase()));
 			thatFuckerOnTheRight = new FlxSprite();
 
 			thatFuckerOnTheLeft.antialiasing = true;
@@ -416,12 +444,11 @@ class DialogueSubstate extends MusicBeatSubstate
 				thatFuckerOnTheLeft.y = dialogueBox.y - thatFuckerOnTheLeft.height + 80;
 			}
 
-			thatFuckerOnTheLeft.cameras = [pissCamera];
 			portraitGroup.add(thatFuckerOnTheLeft);
 		}
 		else if (speakerPosition == "right")
 		{
-			thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase(), 'shared'));
+			thatFuckerOnTheRight = new FlxSprite().loadGraphic(Paths.image('portraits/' + whosSpeaking + "-" + speakerEmotion.toUpperCase()));
 			thatFuckerOnTheLeft = new FlxSprite();
 
 			// since all sprites look to the right,
@@ -448,7 +475,6 @@ class DialogueSubstate extends MusicBeatSubstate
 				thatFuckerOnTheRight.y = dialogueBox.y - thatFuckerOnTheRight.height + 80;
 			}
 
-			thatFuckerOnTheRight.cameras = [pissCamera];
 			portraitGroup.add(thatFuckerOnTheRight);
 		}
 
@@ -456,6 +482,10 @@ class DialogueSubstate extends MusicBeatSubstate
 		{
 			typedText.visible = true;
 			typedText.resetText(dialogueList[0]);
+
+			if (customColorFormatMarkers.length > 0)
+				typedText.applyMarkup(dialogueList[0], customColorFormatMarkers);
+
 			typedText.start(0.05, true);
 		}
 		else
@@ -501,5 +531,12 @@ class DialogueSubstate extends MusicBeatSubstate
 		speakerPosition = splitName[3];
 		var thing = splitName[1].length + splitName[2].length + splitName[3].length + splitName[4].length + 5;
 		dialogueList[0] = dialogueList[0].substr(thing).replace("\\n", "\n");
+	}
+
+	function set_sounds(value:Array<FlxSound>):Array<FlxSound> 
+	{
+		typedText.sounds = value;
+		
+		return value;
 	}
 }

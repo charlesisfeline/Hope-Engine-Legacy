@@ -1,0 +1,14 @@
+{
+	"params": [
+		{
+			"paramID": "new_speed",
+			"defaultValue": 1,
+			"value": null,
+			"increment": null,
+			"paramName": "New GF Speed",
+			"type": "number",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}

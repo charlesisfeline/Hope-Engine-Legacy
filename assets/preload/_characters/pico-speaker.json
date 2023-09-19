@@ -1,0 +1,167 @@
+{
+	"animations": [
+		{
+			"prefix": "Pico Dual Wield",
+			"offset": [
+				0,
+				0
+			],
+			"name": "idle",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico shoot 1",
+			"offset": [
+				2,
+				130
+			],
+			"name": "shoot 1",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico shoot 1",
+			"loopedAnim": true,
+			"indices": [
+				5,
+				6,
+				7,
+				8
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 32,
+			"name": "shoot 1-loop",
+			"offset": [
+				2,
+				130
+			]
+		},
+		{
+			"prefix": "Pico shoot 2",
+			"offset": [
+				2,
+				2
+			],
+			"name": "shoot 2",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico shoot 2",
+			"loopedAnim": true,
+			"indices": [
+				4,
+				5,
+				6,
+				7
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 32,
+			"name": "shoot 2-loop",
+			"offset": [
+				2,
+				2
+			]
+		},
+		{
+			"prefix": "Pico shoot 3",
+			"offset": [
+				415,
+				66
+			],
+			"name": "shoot 3",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico shoot 3",
+			"loopedAnim": true,
+			"indices": [
+				5,
+				6,
+				7,
+				8
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 32,
+			"name": "shoot 3-loop",
+			"offset": [
+				415,
+				66
+			]
+		},
+		{
+			"prefix": "Pico shoot 4",
+			"offset": [
+				442,
+				111
+			],
+			"name": "shoot 4",
+			"flipX": false,
+			"loopedAnim": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"indices": []
+		},
+		{
+			"prefix": "Pico shoot 4",
+			"loopedAnim": true,
+			"indices": [
+				5,
+				6,
+				7,
+				8
+			],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 32,
+			"name": "shoot 4-loop",
+			"offset": [
+				442,
+				111
+			]
+		}
+	],
+	"healthColor": "B7D855",
+	"facesLeft": false,
+	"image": "characters/speakerPico",
+	"singDuration": 4,
+	"initialAnimation": "idle",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"positionOffset": [
+		111,
+		-12
+	],
+	"antialiasing": true,
+	"name": "pico-speaker",
+	"isDeath": false,
+	"scale": 1
+}

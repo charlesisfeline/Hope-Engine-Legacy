@@ -1,0 +1,939 @@
+{
+	"events": [
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 6000
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 9200
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 12400
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 15600
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 18800
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 22000
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 25200
+			}
+		],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 31600
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 34800
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 38000
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 41200
+			}
+		],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 47600
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 50800
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 54000
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 57200
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 60400
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 63600
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 66800
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 70000
+			}
+		],
+		[],
+		[],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 76400
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 79600
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 82800
+			}
+		],
+		[],
+		[
+			{
+				"events": [
+					{
+						"params": [
+							{
+								"paramName": "Should GF Hey?",
+								"defaultValue": true,
+								"paramID": "gfHey",
+								"maxLetters": null,
+								"value": true,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should BF Hey?",
+								"defaultValue": null,
+								"paramID": "bfHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							},
+							{
+								"paramName": "Should Dad Hey?",
+								"defaultValue": false,
+								"paramID": "dadHey",
+								"maxLetters": null,
+								"value": false,
+								"type": "bool",
+								"increment": null
+							}
+						],
+						"eventID": "hopeEngine/gf_hey"
+					}
+				],
+				"strumTime": 86000
+			}
+		],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[],
+		[]
+	]
+}

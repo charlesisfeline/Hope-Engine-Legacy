@@ -1,0 +1,59 @@
+{
+	"animations": [
+		{
+			"prefix": "RETRY confirm",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "deathConfirm",
+			"offset": [
+				0,
+				14
+			]
+		},
+		{
+			"prefix": "BF Dead",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "deathLoop",
+			"offset": [
+				0,
+				-17
+			]
+		},
+		{
+			"prefix": "BF Dies with GF",
+			"loopedAnim": false,
+			"indices": [],
+			"flipX": false,
+			"flipY": false,
+			"postfix": "",
+			"frameRate": 24,
+			"name": "firstDeath",
+			"offset": [
+				0,
+				0
+			]
+		}
+	],
+	"healthColor": "31B0D1",
+	"facesLeft": false,
+	"image": "characters/bf-holding-gf",
+	"singDuration": 4,
+	"initialAnimation": "firstDeath",
+	"cameraOffset": [
+		0,
+		0
+	],
+	"antialiasing": true,
+	"name": "bf-and-gf-dead",
+	"isDeath": true,
+	"scale": 1
+}

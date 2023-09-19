@@ -1,16 +1,23 @@
 {
-    "character" : "bf",
-    "animations" : {
-        "idle" : {
-            "prefix" : "idle0"
-        },
-        "hey" : {
-            "prefix" : "hey0"
-        }
-    },
-    "settings" : {
-        "x" : 0,
-        "y" : -20,
-        "flipped" : true
-    }
+	"animations": {
+		"danceRight": null,
+		"danceLeft": null,
+		"hey": {
+			"prefix": "hey0",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		},
+		"idle": {
+			"prefix": "idle0",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		}
+	},
+	"settings": {
+		"scale": 1,
+		"flipped": true
+	},
+	"character": "bf"
 }

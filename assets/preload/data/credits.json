@@ -6,25 +6,29 @@
                 "name": "ninjamuffin99",
                 "desc": "Programmer for the Funk",
                 "link": "https://twitter.com/ninja_muffin99",
-                "tint": "ff0000"
+                "tint": "ff3333",
+                "icon": "ninjamuff"
             },
             {
                 "name": "Kawai Sprite",
                 "desc": "Musician for the Funk",
                 "link": "https://twitter.com/kawaisprite",
-                "tint": "0aade6"
+                "tint": "0aade6",
+                "icon": "kawai"
             },
             {
                 "name": "PhantomArcade",
                 "desc": "Artist for the Funk",
                 "link": "https://twitter.com/phantomarcade3k",
-                "tint": "7EED56"
+                "tint": "7EED56",
+                "icon": "dave"
             },
             {
                 "name": "EvilSk8r",
                 "desc": "Artist for the Funk",
                 "link": "https://twitter.com/evilsk8r",
-                "tint": "dedede"
+                "tint": "dedede",
+                "icon": "sk8r"
             },
             {
                 "name": "THE ORIGINAL GAME",
@@ -75,12 +79,12 @@
             {
                 "name": "PolybiusProxy",
                 "desc": "MP4 Support. God overall.",
-                "link": "https://github.com/polybiusproxy"
+                "link": "https://twitter.com/polybiusproxy"
             },
             {
                 "name": "GITHUB REPO",
                 "desc": "Press ENTER to get redirected",
-                "link": "https://github.com/brightfyregit/Friday-Night-Funkin-Mp4-Video-Support"
+                "link": "https://github.com/polybiusproxy/hxCodec"
             }
         ]
     },
@@ -91,7 +95,8 @@
                 "name": "skuqre",
                 "desc": "Maintainer of whatever the hell this is",
                 "link": "https://twitter.com/skuqre",
-                "tint": "ad34ff"
+                "tint": "ad34ff",
+                "icon": "skuqre"
             }
         ]
     }

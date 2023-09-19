@@ -1,0 +1,41 @@
+name: Compilation Issue
+description: Trying to build Hope Engine and ran into an issue? File an issue here!
+title: "[COMPILATION]: "
+labels: ["compilation issue"]
+assignees:
+  - skuqre
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: What Happened?
+      description: Well, what happened?
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Command Prompt Logs
+      render: shell
+    validations:
+      required: false
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version of Hope Engine are you compiling with?
+      placeholder: dev/main
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform/Compilation Target
+      description: "What kinda computer are you on?"
+      options:
+        - Windows (64 bit)
+        - Windows (32 bit or 86 bit, untested!!)
+        - macOS (untested!!)
+        - Linux (semi-tested)
+    validations:
+      required: true

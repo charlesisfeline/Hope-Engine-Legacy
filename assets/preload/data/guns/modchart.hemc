@@ -1,0 +1,113 @@
+var funnySound:FlxSound;
+var tankTalker:Character;
+var curCharacter:Character;
+
+function onStart()
+{
+    if (Settings.videoCutscenes && isStoryMode && !PlayStateClass.seenCutscene)
+    {
+        playVideo("gunsCutscene", "week7");
+        PlayStateClass.seenCutscene = true;
+        return;
+    }
+
+    if (isStoryMode && !PlayStateClass.seenCutscene)
+    {
+        PlayState.inCutscene = true;
+        PlayState.isCamForced = true;
+        PlayState.camZooming = false;
+        camHUD.visible = false;
+
+        FlxTween.tween(FlxG.camera, {zoom: 1.1}, 5, {ease: FlxEase.backInOut});
+
+        tankTalker = new Character(dad.x, dad.y, "tankman-guns");
+        tankTalker.x += tankTalker.positionOffset[0];
+        tankTalker.y += tankTalker.positionOffset[1];
+        tankTalker.visible = false;
+        tankTalker.animation.stop();
+        PlayState.insert(PlayState.members.indexOf(dad) + 1, tankTalker);
+
+        curCharacter = dad;
+
+        var skipText = new FlxText(0, 0, 0, "Press BACKSPACE to skip cutscene.");
+		skipText.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, 0xFF000000);
+		skipText.borderSize = 3;
+		skipText.x = 5;
+		skipText.y = FlxG.height - skipText.height - 5;
+		add(skipText);
+
+        skipText.cameras = [camMisc];
+
+        new FlxTimer().start(0.5, function(tmr:FlxTimer) {
+            dad.visible = false;
+
+            funnySound = FlxG.sound.play(Paths.sound('gunsCutscene', 'week7'));
+
+            tankTalker.visible = true;
+            curCharacter = dad;
+            tankTalker.playAnim("tight");
+
+            funnySound.onComplete = function() {
+                PlayStateClass.seenCutscene = true;
+                PlayState.inCutscene = false;
+                PlayState.isCamForced = false;
+                PlayState.camZooming = true;
+                camHUD.visible = true;
+                dad.visible = true;
+
+                remove(tankTalker, true);
+                tankTalker.kill();
+                tankTalker.destroy();
+
+                remove(skipText, true);
+                skipText.kill();
+                skipText.destroy();
+            }
+        });
+    }
+}
+
+var camTweened:Bool = false;
+
+function onUpdate(elapsed:Float)
+{
+    if (isStoryMode && !PlayStateClass.seenCutscene && !Settings.videoCutscenes)
+    {
+        if (FlxG.keys.justPressed.BACKSPACE)
+        {
+            if (funnySound != null && tankTalker != null)
+            {
+                // cutscenes rely on the sound really lmao
+                funnySound.time = funnySound.length - 10;
+            }
+        }
+
+        if (curCharacter != null)
+        {
+            if (curCharacter == boyfriend)
+            {
+                PlayState.camFollow.x = curCharacter.getGraphicMidpoint().x - 100 + boyfriend.cameraOffset[0];
+                PlayState.camFollow.y = curCharacter.getGraphicMidpoint().y - 100 + boyfriend.cameraOffset[1];
+            }
+            else
+            {
+                PlayState.camFollow.x = curCharacter.getGraphicMidpoint().x + 150 + dad.cameraOffset[0];
+                PlayState.camFollow.y = curCharacter.getGraphicMidpoint().y - 100 + dad.cameraOffset[1];
+            }
+        }
+
+        if (funnySound != null && tankTalker != null)
+        {
+            if (funnySound.time / 1000 >= 4.225)
+            {
+                gf.playAnim('sad');
+
+                if (!camTweened)
+                {
+                    camTweened = true;
+                    FlxTween.tween(FlxG.camera, {zoom: 1}, 0.9, {ease: FlxEase.backInOut});
+                }
+            }
+        }
+    }
+}

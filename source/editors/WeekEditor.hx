@@ -6,12 +6,12 @@ import flixel.FlxSprite;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
 import flixel.addons.ui.FlxUICheckBox;
-import flixel.addons.ui.FlxUIDropDownMenu;
 import flixel.addons.ui.FlxUIList;
 import flixel.addons.ui.FlxUINumericStepper;
 import flixel.addons.ui.FlxUITabMenu;
 import flixel.addons.ui.FlxUIText;
 import flixel.addons.ui.interfaces.IFlxUIWidget;
+import flixel.graphics.FlxGraphic;
 import flixel.group.FlxGroup;
 import flixel.group.FlxSpriteGroup;
 import flixel.math.FlxPoint;
@@ -24,9 +24,9 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
 import openfl.net.FileReference;
+import ui.*;
 
 using StringTools;
-
 
 #if FILESYSTEM
 import sys.FileSystem;
@@ -44,6 +44,7 @@ typedef Week =
 	var difficultyLock:Null<String>;
 }
 
+#if FILESYSTEM
 class WeekEditor extends MusicBeatState
 {
 	public static var fromEditors:Bool = false;
@@ -77,12 +78,16 @@ class WeekEditor extends MusicBeatState
 
 	override function create()
 	{
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		Paths.clearCustomSoundCache();
+		#end
+		
 		#if desktop
 		DiscordClient.changePresence("Week Editor");
 		#end
 
 		FlxG.mouse.visible = true;
-		usesMouse = true;
 
 		var blackBarThingie:FlxSprite = new FlxSprite().makeGraphic(FlxG.width, 56, FlxColor.BLACK);
 		add(blackBarThingie);
@@ -198,7 +203,7 @@ class WeekEditor extends MusicBeatState
 
 	var weekNameInput:InputTextFix;
 	var weekJSONNameInput:InputTextFix;
-	var diffLockDropdown:FlxUIDropDownMenu;
+	var diffLockDropdown:DropdownMenuFix;
 
 	function createWeekDataUI():Void
 	{
@@ -220,7 +225,7 @@ class WeekEditor extends MusicBeatState
 		for (i in CoolUtil.difficultyArray)
 			diffList.push(i[0]);
 
-		diffLockDropdown = new FlxUIDropDownMenu(10, diffLockTitle.y + diffLockTitle.height, FlxUIDropDownMenu.makeStrIdLabelArray(diffList));
+		diffLockDropdown = new DropdownMenuFix(10, diffLockTitle.y + diffLockTitle.height, DropdownMenuFix.makeStrIdLabelArray(diffList));
 		diffLockDropdown.callback = diffShit;
 
 		var weekJSONTitle:FlxText = new FlxText(diffLockDropdown.x + diffLockDropdown.width + 10, diffLockTitle.y, "Week File Name and Week Image Name");
@@ -230,7 +235,7 @@ class WeekEditor extends MusicBeatState
 		{
 			weekJSONName = weekJSONNameInput.text;
 
-			if (Paths.exists(Paths.image('storymenu/' + weekJSONName)))
+			if (Paths.exists(Paths.image('storymenu/' + weekJSONName)) || Paths.image('storymenu/' + weekJSONName) is FlxGraphic)
 			{
 				var uhh = grpWeekText.members[0];
 
@@ -540,6 +545,7 @@ class WeekEditor extends MusicBeatState
 
 	var isTyping:Bool = false;
 	var isVisible:Bool = true;
+	var backing:Bool = false;
 
 	override function update(elapsed:Float)
 	{
@@ -569,15 +575,18 @@ class WeekEditor extends MusicBeatState
 			FlxG.sound.volumeDownKeys = [MINUS, NUMPADMINUS];
 			FlxG.sound.muteKeys = [ZERO, NUMPADZERO];
 
-			if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+			if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 			{
+				backing = true;
+				#if FILESYSTEM
 				if (fromEditors)
 				{
-					FlxG.switchState(new EditorsState());
+					CustomTransition.switchTo(new EditorsState());
 					fromEditors = false;
 				}
 				else
-					FlxG.switchState(new StoryMenuState());
+					#end
+					CustomTransition.switchTo(new StoryMenuState());
 			}
 
 			if (FlxG.keys.pressed.CONTROL)
@@ -588,22 +597,22 @@ class WeekEditor extends MusicBeatState
 					loadJSON();
 			}
 
-			if (controls.RIGHT_P && _week.difficultyLock == null)
+			if (controls.UI_RIGHT_P && _week.difficultyLock == null)
 				changeDifficulty(1);
-			if (controls.LEFT_P && _week.difficultyLock == null)
+			if (controls.UI_LEFT_P && _week.difficultyLock == null)
 				changeDifficulty(-1);
 
-			if (controls.RIGHT)
+			if (controls.UI_RIGHT)
 				rightArrow.animation.play('press');
 			else
 				rightArrow.animation.play('idle');
 
-			if (controls.LEFT)
+			if (controls.UI_LEFT)
 				leftArrow.animation.play('press');
 			else
 				leftArrow.animation.play('idle');
 
-			if (controls.ACCEPT || controls.UP_P || controls.DOWN_P)
+			if (controls.UI_ACCEPT || controls.UI_UP_P || controls.UI_DOWN_P)
 				FlxG.sound.play(Paths.soundRandom('missnote', 1, 3, "shared"), 0.3);
 
 			if (FlxG.keys.justPressed.F1)
@@ -647,13 +656,13 @@ class WeekEditor extends MusicBeatState
 
 	private function loadJSON()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
 	}
 
 	var path:String = null;
@@ -696,6 +705,8 @@ class WeekEditor extends MusicBeatState
 
 		path = null;
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadCancel(_):Void
@@ -704,6 +715,8 @@ class WeekEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadError(_):Void
@@ -712,6 +725,8 @@ class WeekEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	private function saveJSON()
@@ -734,6 +749,8 @@ class WeekEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onSaveCancel(_):Void
@@ -742,6 +759,8 @@ class WeekEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onSaveError(_):Void
@@ -750,6 +769,8 @@ class WeekEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function createToolTips():Void
@@ -834,3 +855,4 @@ class WeekEditor extends MusicBeatState
 		}
 	}
 }
+#end

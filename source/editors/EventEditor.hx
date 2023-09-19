@@ -4,6 +4,7 @@ import Discord.DiscordClient;
 import Event;
 import flixel.FlxBasic;
 import flixel.FlxG;
+import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.addons.ui.FlxUI;
 import flixel.addons.ui.FlxUIButton;
@@ -22,20 +23,19 @@ import openfl.events.Event;
 import openfl.events.IOErrorEvent;
 import openfl.net.FileFilter;
 import openfl.net.FileReference;
+import ui.*;
 
 using StringTools;
-
 
 #if FILESYSTEM
 import sys.FileSystem;
 import sys.io.File;
 #end
 
-
 class EventEditor extends MusicBeatState
 {
 	public static var fromEditors:Bool = false;
-	
+
 	var UI_box:FlxUITabMenu;
 	var fakeoutBox:FlxUITabMenu;
 	var eventTextPreview:TrackedText;
@@ -52,6 +52,11 @@ class EventEditor extends MusicBeatState
 
 	override function create()
 	{
+		#if FILESYSTEM
+		Paths.destroyCustomImages();
+		Paths.clearCustomSoundCache();
+		#end
+		
 		#if desktop
 		DiscordClient.changePresence("Events Editor");
 		#end
@@ -60,15 +65,11 @@ class EventEditor extends MusicBeatState
 		bg.color = 0x2e2e2e;
 		bg.scrollFactor.set();
 		add(bg);
-		
+
 		FlxG.mouse.visible = true;
-		usesMouse = true;
-		
-		var tabs = [
-			{name: "1", label: 'Event Info'},
-			{name: "2", label: 'Parameters'},
-		];
-		
+
+		var tabs = [{name: "1", label: 'Event Info'}, {name: "2", label: 'Parameters'}];
+
 		UI_box = new FlxUITabMenu(null, tabs, true);
 		UI_box.scrollFactor.set();
 		UI_box.resize(300, 300);
@@ -88,6 +89,13 @@ class EventEditor extends MusicBeatState
 		saveEvent.y = UI_box.y + UI_box.height + 10;
 		add(saveEvent);
 
+		var loadEvent = new FlxButton(0, 0, "Load Event", function() {
+			FlxG.state.openSubState(new ConfirmationPrompt("You sure?", "Be sure to save your event! Current progress will be lost", "ok", "no", loadEvents, null));
+		});
+		loadEvent.x = saveEvent.x + saveEvent.width + 10;
+		loadEvent.y = UI_box.y + UI_box.height + 10;
+		add(loadEvent);
+
 		var gridCell:FlxSprite = new FlxSprite().makeGraphic(ChartingState.GRID_SIZE, ChartingState.GRID_SIZE, (FlxG.random.bool() ? 0xffe7e6e6 : 0xffd9d5d5));
 		gridCell.x = fakeoutBox.x + fakeoutBox.width - gridCell.width;
 		gridCell.y = fakeoutBox.y + fakeoutBox.height + 10;
@@ -101,7 +109,7 @@ class EventEditor extends MusicBeatState
 		eventIcon.antialiasing = true;
 		add(eventIcon);
 
-		eventTextPreview = new TrackedText(eventIcon.x, eventIcon.y, "");
+		eventTextPreview = new TrackedText(eventIcon, "");
 		eventTextPreview.fieldWidth = 145;
 		eventTextPreview.xOffset = -eventTextPreview.width - 5;
 		add(eventTextPreview);
@@ -113,6 +121,14 @@ class EventEditor extends MusicBeatState
 		addEventUI();
 		updateEventParams();
 		updateEventsUI();
+
+		forEachOfType(FlxObject, function(obj:FlxObject) {
+			obj.scrollFactor.set(1, 1);
+		});
+
+		bg.scrollFactor.set();
+		var xThing = fakeoutBox.x + (((UI_box.x + UI_box.width) - fakeoutBox.x) / 2);
+		FlxG.camera.focusOn(FlxPoint.get(xThing, FlxG.height / 2));
 	}
 
 	var nameInput:InputTextFix;
@@ -122,7 +138,8 @@ class EventEditor extends MusicBeatState
 	{
 		var nameLabel = new FlxText(10, 10, "Event Name");
 		nameInput = new InputTextFix(10, nameLabel.height + 10, Std.int(UI_box.width - 20), _info.eventName);
-		nameInput.callback = function(s1:String, s2:String) {
+		nameInput.callback = function(s1:String, s2:String)
+		{
 			_info.eventName = nameInput.text;
 			updateEventsUI();
 		}
@@ -130,7 +147,8 @@ class EventEditor extends MusicBeatState
 		var descLabel = new FlxText(10, nameInput.y + nameInput.height + 20, "Event Description");
 		descInput = new InputTextFix(10, descLabel.y + descLabel.height, Std.int(UI_box.width - 20), _info.eventDesc);
 		descInput.lines = 3;
-		descInput.callback = function(s1:String, s2:String) {
+		descInput.callback = function(s1:String, s2:String)
+		{
 			_info.eventDesc = descInput.text;
 			updateEventsUI();
 		}
@@ -139,14 +157,10 @@ class EventEditor extends MusicBeatState
 		saveJSON.x = UI_box.width - saveJSON.width - 10;
 		saveJSON.y = UI_box.height - (saveJSON.height * 1.5) - 20;
 
-		var loadJSON = new FlxButton(0, 0, "Load Info", function() {
-			FlxG.state.openSubState(new ConfirmationPrompt(
-				"You sure?", 
-				"Be sure to save first!\nYour changes will NOT be saved if you load in a new Info JSON!", 
-				"ok", 
-				"nah", 
-				loadJSON, 
-				null));
+		var loadJSON = new FlxButton(0, 0, "Load Info", function()
+		{
+			FlxG.state.openSubState(new ConfirmationPrompt("You sure?",
+				"Be sure to save first!\nYour changes will NOT be saved if you load in a new Info JSON!", "ok", "nah", loadJSON, null));
 		});
 		loadJSON.x = UI_box.width - loadJSON.width - saveJSON.width - 20;
 		loadJSON.y = UI_box.height - (loadJSON.height * 1.5) - 20;
@@ -164,17 +178,13 @@ class EventEditor extends MusicBeatState
 
 	var paramNameInput:InputTextFix;
 	var paramIDInput:InputTextFix;
-	var paramTypeDropdown:FlxUIDropDownMenu;
-	var paramTypes:Array<String> = [
-		"bool",
-		"string",
-		"number"
-	];
+	var paramTypeDropdown:DropdownMenuFix;
+	var paramTypes:Array<String> = ["bool", "string", "number"];
 
 	var paramsFieldsInUI:Array<Dynamic> = [];
-	
+
 	var defaultValueInput:InputTextFix;
-	
+
 	var incrementLabel:FlxText;
 	var incrementInput:InputTextFix;
 	var maxLettersLabel:FlxText;
@@ -185,7 +195,7 @@ class EventEditor extends MusicBeatState
 	function addParamUI():Void
 	{
 		var eventExists:Bool = false;
-		
+
 		var paramNameLabel = new FlxText(10, 10, "Parameter Name");
 		paramNameInput = new InputTextFix(10, paramNameLabel.y + paramNameLabel.height, Std.int((UI_box.width / 2) - 15));
 
@@ -201,6 +211,8 @@ class EventEditor extends MusicBeatState
 					paramTypeDropdown.selectedLabel = event.type;
 					paramTypeDropdown.callback("");
 					eventExists = true;
+
+					return;
 				}
 				else
 					eventExists = false;
@@ -208,7 +220,8 @@ class EventEditor extends MusicBeatState
 		}
 
 		var paramTypeLabel = new FlxText(10, paramIDInput.y + paramIDInput.height + 10, "Parameter Type");
-		paramTypeDropdown = new FlxUIDropDownMenu(10, paramTypeLabel.y + paramTypeLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray(paramTypes, true), new FlxUIDropDownHeader(Std.int((UI_box.width / 2) - 15)));
+		paramTypeDropdown = new DropdownMenuFix(10, paramTypeLabel.y + paramTypeLabel.height, DropdownMenuFix.makeStrIdLabelArray(paramTypes, true),
+			new FlxUIDropDownHeader(Std.int((UI_box.width / 2) - 15)));
 		paramTypeDropdown.callback = function(s:String)
 		{
 			for (event in _event.params)
@@ -220,20 +233,20 @@ class EventEditor extends MusicBeatState
 			switch (paramTypeDropdown.selectedLabel)
 			{
 				case 'bool':
-					incrementLabel.active = incrementLabel.visible = false;
-					maxLettersLabel.active = maxLettersLabel.visible = false;
-					incrementInput.active = incrementInput.visible = false;
-					maxLettersInput.active = maxLettersInput.visible = false;
+					incrementLabel.exists = false;
+					maxLettersLabel.exists = false;
+					incrementInput.exists = false;
+					maxLettersInput.exists = false;
 				case 'string':
-					incrementLabel.active = incrementLabel.visible = false;
-					maxLettersLabel.active = maxLettersLabel.visible = true;
-					incrementInput.active = incrementInput.visible = false;
-					maxLettersInput.active = maxLettersInput.visible = true;
+					incrementLabel.exists = false;
+					maxLettersLabel.exists = true;
+					incrementInput.exists = false;
+					maxLettersInput.exists = true;
 				case 'number':
-					incrementLabel.active = incrementLabel.visible = true;
-					maxLettersLabel.active = maxLettersLabel.visible = false;
-					incrementInput.active = incrementInput.visible = true;
-					maxLettersInput.active = maxLettersInput.visible = false;
+					incrementLabel.exists = true;
+					maxLettersLabel.exists = false;
+					incrementInput.exists = true;
+					maxLettersInput.exists = false;
 			}
 		}
 
@@ -247,24 +260,23 @@ class EventEditor extends MusicBeatState
 		maxLettersInput = new InputTextFix(10, maxLettersLabel.y + maxLettersLabel.height, Std.int((UI_box.width / 2) - 15));
 
 		var paramInfo = new FlxText();
-		paramInfo.text = "Parameter Types:"
-					   + "\nbool: Turns into checkmark"
-					   + "\n\nstring: Turns into a textfield"
-					   + "\n\nnumber: Turns into a number stepper thing";
+		paramInfo.text = "Parameter Types:" + "\nbool: Turns into checkmark" + "\n\nstring: Turns into a textfield"
+			+ "\n\nnumber: Turns into a number stepper thing";
 		paramInfo.fieldWidth = Std.int((UI_box.width / 2) - 15);
 		paramInfo.x = paramIDInput.x;
 		paramInfo.y = paramTypeLabel.y;
 
-		var updateButton:FlxButton = new FlxButton(0, 0, "Add/Update", function() {
+		var updateButton:FlxButton = new FlxButton(0, 0, "Add/Update", function()
+		{
 			var lmao:Int = _event.params.length;
-			
+
 			for (i in 0..._event.params.length)
 			{
 				var event = _event.params[i];
 				if (paramIDInput.text == event.paramID)
 					lmao = i;
 			}
-				
+
 			var defaultV:Dynamic = null;
 			var increment:Null<Float> = null;
 			var maxLetters:Null<Int> = null;
@@ -277,8 +289,8 @@ class EventEditor extends MusicBeatState
 					defaultV = defaultValueInput.text;
 					maxLetters = Std.parseInt(maxLettersInput.text);
 				case 'number':
-					defaultV = Std.parseFloat(defaultValueInput.text);
-					increment = Std.parseFloat(incrementInput.text);
+					defaultV = Math.isNaN(Std.parseFloat(defaultValueInput.text)) ? null : Std.parseFloat(defaultValueInput.text);
+					increment = Math.isNaN(Std.parseFloat(incrementInput.text)) ? null : Std.parseFloat(incrementInput.text);
 			}
 			_event.params[lmao] = {
 				paramID: paramIDInput.text,
@@ -297,16 +309,17 @@ class EventEditor extends MusicBeatState
 		updateButton.x = (UI_box.width / 2) - updateButton.width - 5;
 		updateButton.y = UI_box.height - (updateButton.height * 1.5) - 20;
 
-		var removeButton:FlxButton = new FlxButton(0, 0, "Remove", function() {
+		var removeButton:FlxButton = new FlxButton(0, 0, "Remove", function()
+		{
 			var lmao:EventParam = null;
-			
+
 			for (event in _event.params)
 			{
 				if (paramIDInput.text == event.paramID)
 					lmao = event;
 			}
 
-			if (lmao != null) 
+			if (lmao != null)
 			{
 				_event.params.remove(lmao);
 
@@ -339,11 +352,11 @@ class EventEditor extends MusicBeatState
 
 		paramTypeDropdown.selectedLabel = 'bool';
 		paramTypeDropdown.callback("bool");
-		incrementLabel.active = incrementLabel.visible = false;
-		maxLettersLabel.active = maxLettersLabel.visible = false;
+		incrementLabel.exists = false;
+		maxLettersLabel.exists = false;
 	}
 
-	var eventDropdown:FlxUIDropDownMenu;
+	var eventDropdown:DropdownMenuFix;
 	var description:FlxText;
 	var tab_group_events:FlxUI;
 	var curEventParams:Array<FlxSprite> = [];
@@ -351,7 +364,8 @@ class EventEditor extends MusicBeatState
 	function addEventUI():Void
 	{
 		var eventsLabel = new FlxText(10, 10, "Events List");
-		eventDropdown = new FlxUIDropDownMenu(10, eventsLabel.y + eventsLabel.height, FlxUIDropDownMenu.makeStrIdLabelArray([""]), new FlxUIDropDownHeader(Std.int(fakeoutBox.width - 205)));
+		eventDropdown = new DropdownMenuFix(10, eventsLabel.y + eventsLabel.height, DropdownMenuFix.makeStrIdLabelArray([""]),
+			new FlxUIDropDownHeader(Std.int(fakeoutBox.width - 205)));
 
 		description = new FlxText(10, eventDropdown.y + eventDropdown.header.height + 10, Std.int(fakeoutBox.width - 20), _info.eventDesc);
 
@@ -370,7 +384,7 @@ class EventEditor extends MusicBeatState
 
 	function updateEventsUI():Void
 	{
-		// eventDropdown.setData(FlxUIDropDownMenu.makeStrIdLabelArray([]));
+		// eventDropdown.setData(DropdownMenuFix.makeStrIdLabelArray([]));
 		// eventDropdown.selectedLabel = _info.eventName;
 
 		eventTextPreview.text = "Events:\n" + _info.eventName;
@@ -422,7 +436,7 @@ class EventEditor extends MusicBeatState
 
 					tab_group_events.add(label);
 					curEventParams.push(label);
-					
+
 					var ass:InputTextFix = cast itemToAdd;
 					ass.maxLength = param.maxLetters;
 					ass.text = param.value != null ? param.value : param.defaultValue;
@@ -433,7 +447,7 @@ class EventEditor extends MusicBeatState
 
 					tab_group_events.add(label);
 					curEventParams.push(label);
-					
+
 					var ass:FlxUINumericStepper = cast itemToAdd;
 					ass.decimals = 5;
 					ass.stepSize = param.increment != null ? param.increment : .1;
@@ -470,6 +484,8 @@ class EventEditor extends MusicBeatState
 		descInput.callback("", "");
 	}
 
+	var backing:Bool = false;
+
 	override function update(elapsed:Float)
 	{
 		super.update(elapsed);
@@ -480,15 +496,18 @@ class EventEditor extends MusicBeatState
 			trace(Json.stringify(_event, null, "\t"));
 		}
 
-		if (controls.BACK && !FlxG.keys.justPressed.BACKSPACE)
+		if (controls.UI_BACK && !backing && !FlxG.keys.justPressed.BACKSPACE)
 		{
+			backing = true;
+			#if FILESYSTEM
 			if (fromEditors)
 			{
-				FlxG.switchState(new EditorsState());
+				CustomTransition.switchTo(new EditorsState());
 				fromEditors = false;
 			}
 			else
-				FlxG.switchState(new StoryMenuState());
+			#end
+				CustomTransition.switchTo(new StoryMenuState());
 		}
 	}
 
@@ -529,6 +548,8 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.notice("Successfully saved LEVEL DATA.");
+
+		FlxG.mouse.visible = true;
 	}
 
 	/**
@@ -540,6 +561,8 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onSaveCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	/**
@@ -552,19 +575,32 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onSaveError);
 		_file = null;
 		FlxG.log.error("Problem saving Level data");
+
+		FlxG.mouse.visible = true;
 	}
 
 	////////////////////////
 
 	private function loadJSON()
 	{
-		var imageFilter:FileFilter = new FileFilter('JSON', 'json');
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
 
 		_file = new FileReference();
 		_file.addEventListener(Event.SELECT, onLoadComplete);
 		_file.addEventListener(Event.CANCEL, onLoadCancel);
 		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
-		_file.browse([imageFilter]);
+		_file.browse([funnyFilter]);
+	}
+
+	private function loadEvents()
+	{
+		var funnyFilter:FileFilter = new FileFilter('JSON', 'json');
+
+		_file = new FileReference();
+		_file.addEventListener(Event.SELECT, onEventsLoadComplete);
+		_file.addEventListener(Event.CANCEL, onLoadCancel);
+		_file.addEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+		_file.browse([funnyFilter]);
 	}
 
 	var path:String;
@@ -591,6 +627,33 @@ class EventEditor extends MusicBeatState
 		updateInfoTab();
 
 		_file = null;
+
+		FlxG.mouse.visible = true;
+	}
+
+	function onEventsLoadComplete(_)
+	{
+		_file.removeEventListener(Event.SELECT, onLoadComplete);
+		_file.removeEventListener(Event.CANCEL, onLoadCancel);
+		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
+
+		#if sys
+		@:privateAccess
+		{
+			if (_file.__path != null)
+				path = _file.__path;
+		}
+
+		_event = cast Json.parse(File.getContent(path).trim());
+		#else
+		trace("File couldn't be loaded! You aren't on Desktop, are you?");
+		#end
+
+		updateEventParams();
+
+		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadCancel(_):Void
@@ -599,6 +662,8 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 
 	function onLoadError(_):Void
@@ -607,5 +672,7 @@ class EventEditor extends MusicBeatState
 		_file.removeEventListener(Event.CANCEL, onLoadCancel);
 		_file.removeEventListener(IOErrorEvent.IO_ERROR, onLoadError);
 		_file = null;
+
+		FlxG.mouse.visible = true;
 	}
 }

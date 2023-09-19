@@ -19,8 +19,6 @@ typedef MenuCharacterJSON =
 
 typedef MenuCharSettings =
 {
-	var x:Null<Int>;
-	var y:Null<Int>;
 	var flipped:Null<Bool>;
 	var scale:Null<Float>;
 }
@@ -36,7 +34,6 @@ typedef MenuCharAnimations =
 typedef MenuCharAnimation =
 {
 	var prefix:Null<String>;
-	var offset:Null<Array<Float>>;
 	var indices:Null<Array<Int>>;
 	var fps:Null<Int>;
 	var looped:Null<Bool>;
@@ -44,15 +41,11 @@ typedef MenuCharAnimation =
 
 class CharacterSetting
 {
-	public var x(default, null):Int;
-	public var y(default, null):Int;
 	public var scale(default, null):Float;
 	public var flipped(default, null):Bool;
 
-	public function new(x:Int = 0, y:Int = 0, scale:Float = 1.0, flipped:Bool = false)
+	public function new(scale:Float = 1.0, flipped:Bool = false)
 	{
-		this.x = x;
-		this.y = y;
 		this.scale = scale;
 		this.flipped = flipped;
 	}
@@ -88,14 +81,14 @@ class MenuCharacter extends FlxSprite
 		#end
 
 		if (pain.settings != null)
-			settings.set(pain.character, new CharacterSetting(pain.settings.x, pain.settings.y, pain.settings.scale, pain.settings.flipped));
+			settings.set(pain.character, new CharacterSetting(pain.settings.scale, pain.settings.flipped));
 
 		this.flipped = flipped;
 		this.scaleDeezNuts = scale;
 		antialiasing = true;
 
-		setGraphicSize(Std.int(width * scale));
-		updateHitbox();
+		// setGraphicSize(Std.int(width * scale));
+		// updateHitbox();
 	}
 
 	public function setCharacter(character:String):Void
@@ -113,11 +106,19 @@ class MenuCharacter extends FlxSprite
 		else
 			return;
 
+		if (!Paths.exists(Paths.menuCharacterJSON(curCharacter)))
+			return;
+
+		#if FILESYSTEM
 		if (curCharacter != '')
 			pain = cast Json.parse(File.getContent(Paths.menuCharacterJSON(curCharacter)));
+		#else
+		if (curCharacter != '')
+			pain = cast Json.parse(Assets.getText(Paths.menuCharacterJSON(curCharacter)));
+		#end
 
 		if (pain.settings != null)
-			settings.set(pain.character, new CharacterSetting(pain.settings.x, pain.settings.y, pain.settings.scale, pain.settings.flipped));
+			settings.set(pain.character, new CharacterSetting(pain.settings.scale, pain.settings.flipped));
 
 		frames = Paths.getSparrowAtlas('menuCharacters/' + character);
 
@@ -147,7 +148,7 @@ class MenuCharacter extends FlxSprite
 		{
 			setGraphicSize(Std.int(width * setting.scale));
 			flipX = setting.flipped != flipped;
-			offset.set(setting.x, setting.y);
+			updateHitbox();
 		}
 
 		if (animation.getByName("danceLeft") != null && animation.getByName("danceRight") != null)

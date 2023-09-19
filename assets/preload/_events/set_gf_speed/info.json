@@ -1,0 +1,4 @@
+{
+	"eventDesc": "Set GF's head-bop speed.\nLower values mean faster.\nHigher values mean slower.\nSet to 1 or nothing to turn it back to normal!",
+	"eventName": "Set GF Speed"
+}

@@ -1,0 +1,14 @@
+{
+	"params": [
+		{
+			"paramID": "sfx",
+			"defaultValue": true,
+			"value": null,
+			"increment": null,
+			"paramName": "Play gunshot",
+			"type": "bool",
+			"maxLetters": null
+		}
+	],
+	"eventID": ""
+}

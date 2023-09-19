@@ -1,36 +1,76 @@
 {
-    "name" : "Fire Note",
-    "assetName" : "FIRENOTE_assets",
-    "canMiss" : true,
-    "canScore" : false,
-    "upSpriteOnly" : false,
-    "offsetMultiplier" : [1, 1],
-    "noHolds" : true,
-    "scale" : 0.86,
-    "sprites" : {
-        "left" : {
-            "note" : {
-                "prefix" : "purple fire",
-                "offset" : [50, 65]
-            }
-        },
-        "down" : {
-            "note" : {
-                "prefix" : "blue fire",
-                "offset" : [50, 65]
-            }
-        },
-        "up" : {
-            "note" : {
-                "prefix" : "green fire",
-                "offset" : [50, 65]
-            }
-        },
-        "right" : {
-            "note" : {
-                "prefix" : "red fire",
-                "offset" : [50, 65]
-            }
-        }
-    }
+	"canScore": false,
+	"scaleLockX": true,
+	"noHolds": true,
+	"positionLockX": true,
+	"scaleLockY": true,
+	"offsetMultiplier": [
+		1,
+		1
+	],
+	"positionLockY": true,
+	"unblandWhat": null,
+	"alphaLock": true,
+	"noNoteSplash": true,
+	"scale": 0.86,
+	"assetName": "FIRENOTE_assets",
+	"name": "Fire Note",
+	"upSpriteOnly": false,
+	"canMiss": true,
+	"visibleLock": true,
+	"sprites": {
+		"right": {
+			"note": {
+				"flipY": false,
+				"frameRate": 24,
+				"prefix": "red fire",
+				"flipX": false,
+				"offset": [
+					48,
+					59
+				],
+				"looped": true
+			}
+		},
+		"down": {
+			"note": {
+				"flipY": false,
+				"frameRate": 24,
+				"prefix": "blue fire",
+				"flipX": false,
+				"offset": [
+					50,
+					57
+				],
+				"looped": true
+			}
+		},
+		"up": {
+			"note": {
+				"flipY": false,
+				"frameRate": 24,
+				"prefix": "green fire",
+				"flipX": false,
+				"offset": [
+					49,
+					61
+				],
+				"looped": true
+			}
+		},
+		"left": {
+			"note": {
+				"flipY": false,
+				"frameRate": 24,
+				"prefix": "purple fire",
+				"flipX": false,
+				"offset": [
+					50,
+					58
+				],
+				"looped": true
+			}
+		}
+	},
+	"angleLock": true
 }

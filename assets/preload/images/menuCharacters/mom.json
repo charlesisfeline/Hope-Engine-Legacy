@@ -1,13 +1,18 @@
 {
-    "character" : "mom",
-    "animations" : {
-        "idle" : {
-            "prefix" : "idle0"
-        }
-    },
-    "settings" : {
-        "x" : -30,
-        "y" : 140,
-        "scale" : 0.85
-    }
+	"settings": {
+		"flipped": false,
+		"scale": 1
+	},
+	"animations": {
+		"idle": {
+			"prefix": "idle",
+			"indices": null,
+			"fps": 24,
+			"looped": false
+		},
+		"hey": null,
+		"danceLeft": null,
+		"danceRight": null
+	},
+	"character": "mom"
 }
