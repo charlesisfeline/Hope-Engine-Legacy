@@ -2,14 +2,8 @@
 <project>
 	<!-- _________________________ Application Settings _________________________ -->
 
-	<app title="Friday Night Funkin': Hope Engine Legacy" file="HopeEngine" packageName="com.skuqre.hopeengine" package="com.skuqre.hopeengine" main="Main" version="0.2.7.1" company="skuqre" />
+	<app title="Friday Night Funkin': Hope Engine Legacy" file="HopeEngine" packageName="com.skuqre.hopeengine" package="com.skuqre.hopeengine" main="Main" version="0.2.8" company="skuqre" />
 
-	<!--Switch Export with Unique ApplicationID and Icon-->
-	<set name="APP_ID" value="0x0100f6c013bbc000" />
-
-	<!--The flixel preloader is not accurate in Chrome. You can use it regularly if you embed the swf into a html file
-		or you can set the actual size of your file manually at "FlxPreloaderBase-onUpdate-bytesTotal"-->
-	<!-- <app preloader="Preloader" resizable="true" /> -->
 	<app preloader="flixel.system.FlxPreloader" />
 
 	<!--Minimum without FLX_NO_GAMEPAD: 11.8, without FLX_NO_NATIVE_CURSOR: 11.2-->
@@ -28,9 +22,6 @@
 
 	<!--Mobile-specific-->
 	<window if="mobile" orientation="landscape" fullscreen="true" width="0" height="0" resizable="false"/>
-
-	<!--Switch-specific-->
-	<window if="switch" orientation="landscape" fullscreen="true" width="0" height="0" resizable="true" />
 
 	<!-- _____________________________ Path Settings ____________________________ -->
 
@@ -128,15 +119,8 @@
 	<assets path='mods' if="desktop" embed="false"/>
 	<assets path='skins' if="desktop" embed="false"/>
 	<assets path='LICENSE' rename='LICENSE.txt' />
-	
-	<!-- <assets path="CHANGELOG.md" rename='changelog.txt'/> -->
 
-	<!-- NOTE FOR FUTURE SELF SINCE FONTS ARE ALWAYS FUCKY 
-		TO FIX ONE OF THEM, I CONVERTED IT TO OTF. DUNNO IF YOU NEED TO
-		THEN UHHH I USED THE NAME OF THE FONT WITH SETFORMAT() ON THE TEXT!!!
-		NOT USING A DIRECT THING TO THE ASSET!!!
-	-->
-	<assets path="assets/fonts" embed='true'/>
+	<assets path="assets/fonts" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
 
@@ -168,25 +152,7 @@
 	<!-- ______________________________ Haxedefines _____________________________ -->
 
 	<!--Enable the Flixel core recording system-->
-	<!--<haxedef name="FLX_RECORD" />-->
-
-	<!--Disable the right and middle mouse buttons-->
-	<!-- <haxedef name="FLX_NO_MOUSE_ADVANCED" /> -->
-
-	<!--Disable the native cursor API on Flash-->
-	<!--<haxedef name="FLX_NO_NATIVE_CURSOR" />-->
-
-	<!--Optimise inputs, be careful you will get null errors if you don't use conditionals in your game-->
-	<!-- <haxedef name="FLX_NO_MOUSE" if="mobile" /> -->
-	<!-- <haxedef name="FLX_NO_KEYBOARD" if="mobile" /> -->
-	<!-- <haxedef name="FLX_NO_TOUCH" if="desktop" /> -->
-	<!--<haxedef name="FLX_NO_GAMEPAD" />-->
-
-	<!--Disable the Flixel core sound tray-->
-	<!--<haxedef name="FLX_NO_SOUND_TRAY" />-->
-
-	<!--Disable the Flixel sound management code-->
-	<!--<haxedef name="FLX_NO_SOUND_SYSTEM" />-->
+	<haxedef name="FLX_RECORD" if="debug" />
 
 	<!--Disable the Flixel core focus lost screen-->
 	<haxedef name="FLX_NO_FOCUS_LOST_SCREEN" />
@@ -226,5 +192,5 @@
 	<error value="haxe ${haxe} ain't gonna do it come on" if="${haxe &lt; 4.1.5}" />
 
 	<!-- COMMENT THIS TAG OUT IF YOU WANT TO FIX HOPE ENGINE HTML5 ERRORS -->
-	<error value="HTML5 builds will error a lot. Remove this error in Project.xml to not error when compiling." if="web" />
+	<error value="Hope Engine is not optimized for HTML5 and may bring up a lot of errors. Remove this error in Project.xml to not error when compiling." if="web" />
 </project>
