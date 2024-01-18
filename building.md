@@ -1,19 +1,13 @@
 # Building
 
-> THESE INSTRUCTIONS ARE FOR COMPILING THE GAME'S SOURCE CODE!!!
->
-> IF YOU WANT TO JUST DOWNLOAD AND INSTALL AND PLAY THE GAME NORMALLY, GO TO ITCH.IO TO DOWNLOAD THE GAME FOR PC, MAC, AND LINUX!!
->
-> <https://ninja-muffin24.itch.io/funkin>
->
-> IF YOU WANT TO COMPILE THE GAME YOURSELF, CONTINUE READING!!!
+(The action builds don't work for now, cya when I see a PR fixing the action build stuff, I guess.)
 
 ### Notes
 - **You need to be familiar with the command line!** Check this guide out by ninjamuffin99 if you're not familiar: <https://ninjamuffin99.newgrounds.com/news/post/1090480>
 - **To build in one platform, one must be in that platform.** Like your computer must be Windows in order to build for Windows. _For HTML5, you can use any platform._
 
 ### Getting the needed stuff
-- [Install the **latest** version of Haxe.](https://haxe.org/download/) Not 4.1.5.
+- [Install Haxe 4.2.5.](https://haxe.org/download/4.2.5) Not 4.1.5.
 - [Follow these directions to install HaxeFlixel.](https://haxeflixel.com/documentation/install-haxeflixel/)
 - Install [git-scm](https://git-scm.com/downloads).
     - For **Linux** --  install the git package: sudo apt install git (ubuntu), sudo pacman -S git (arch), etc… (you probably already have it) (from Kade Engine building).
